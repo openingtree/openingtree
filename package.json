@@ -1,0 +1,21 @@
+{
+  "name": "opening-prep",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "chess-eco-codes": "git+https://git@github.com/kevinludwig/chess-eco-codes.git",
+    "chess-tools": "^0.3.0",
+    "chess.js": "^0.10.2",
+    "react": "^16.3.2",
+    "react-chessground": "^1.0.0",
+    "react-dom": "^16.3.2",
+    "react-scripts": "1.1.4",
+    "request": "^2.85.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  }
+}
