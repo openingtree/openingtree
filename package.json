@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bootstrap": "^4.4.1",
     "chess-eco-codes": "git+https://git@github.com/kevinludwig/chess-eco-codes.git",
     "chess-tools": "^0.3.0",
     "chess.js": "^0.10.2",

@@ -6,6 +6,7 @@ import {openingGraph} from '../app/OpeningGraph'
 import PGNLoader from './PGNLoader'
 import SettingsView from './Settings'
 import Navigator from './Navigator'
+import GlobalHeader from './GlobalHeader'
 
 export default class MainContainer extends React.Component {
   
@@ -133,7 +134,7 @@ export default class MainContainer extends React.Component {
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     return <div> 
-        
+        <GlobalHeader/>
         <Chessground
       width={512}
       height={512}
