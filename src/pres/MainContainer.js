@@ -7,6 +7,7 @@ import PGNLoader from './PGNLoader'
 import SettingsView from './Settings'
 import Navigator from './Navigator'
 import GlobalHeader from './GlobalHeader'
+import {Container, Row, Col} from 'reactstrap'
 
 export default class MainContainer extends React.Component {
   
@@ -135,7 +136,8 @@ export default class MainContainer extends React.Component {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     return <div> 
         <GlobalHeader/>
-        <Chessground
+        <Container>
+          <Row><Col><Chessground
       width={512}
       height={512}
       n={this.state.n}
@@ -152,8 +154,11 @@ export default class MainContainer extends React.Component {
         autoShapes: this.autoShapes()
       }}
       style={{ margin: 'auto' }}
-    /><div>Number of games processed: {this.state.gamesProcessed}</div><PGNLoader notify = {this.updateProcessedGames.bind(this)}/>
-    <SettingsView onChange = {this.settingsChange.bind(this)}/><div><button onClick = {this.reset.bind(this)}>Reset</button><button onClick = {this.clear.bind(this)}>Clear</button></div>
-    <Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/></div>
+    /></Col><Col>
+        <div>Number of games processed: {this.state.gamesProcessed}</div><PGNLoader notify = {this.updateProcessedGames.bind(this)}/>
+        <Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
+        <SettingsView onChange = {this.settingsChange.bind(this)}/><div><button onClick = {this.reset.bind(this)}>Reset</button><button onClick = {this.clear.bind(this)}>Clear</button></div>
+    </Col></Row></Container>
+    </div>
   }
 }
