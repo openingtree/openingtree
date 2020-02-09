@@ -8,6 +8,7 @@ import SettingsView from './Settings'
 import Navigator from './Navigator'
 import GlobalHeader from './GlobalHeader'
 import {Container, Row, Col} from 'reactstrap'
+import ControlsContainer from './ControlsContainer'
 
 export default class MainContainer extends React.Component {
   
@@ -154,11 +155,13 @@ export default class MainContainer extends React.Component {
         autoShapes: this.autoShapes()
       }}
       style={{ margin: 'auto' }}
-    /></Col><Col>
-        <div>Number of games processed: {this.state.gamesProcessed}</div><PGNLoader notify = {this.updateProcessedGames.bind(this)}/>
-        <Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
-        <SettingsView onChange = {this.settingsChange.bind(this)}/><div><button onClick = {this.reset.bind(this)}>Reset</button><button onClick = {this.clear.bind(this)}>Clear</button></div>
-    </Col></Row></Container>
+    /></Col><Col sm="4"><ControlsContainer 
+                gamesProcessed={this.state.gamesProcessed} 
+                updateProcessedGames={this.updateProcessedGames.bind(this)}
+                settingsChange={this.settingsChange.bind(this)}
+                reset={this.reset.bind(this)}
+                clear={this.clear.bind(this)}/></Col>
+    </Row><Row><Col><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/></Col></Row></Container>
     </div>
   }
 }
