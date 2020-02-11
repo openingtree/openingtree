@@ -59,6 +59,7 @@ export default class MainContainer extends React.Component {
                 gamesProcessed={this.state.gamesProcessed} 
                 updateProcessedGames={this.updateProcessedGames.bind(this)}
                 settingsChange={this.settingsChange.bind(this)}
+                settings={this.state.settings}
                 reset={this.reset.bind(this)}
                 clear={this.clear.bind(this)}/></Col>
     </Row><Row><Col><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/></Col></Row></Container>

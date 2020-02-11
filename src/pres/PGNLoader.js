@@ -8,7 +8,7 @@ export default class PGNLoader extends React.Component {
         super(props)
         this.state = {
             playerName:'',
-            playerColor:'white'
+            playerColor:this.props.settings.playerColor
         }
     }
     playerNameChange(event) {
@@ -39,8 +39,8 @@ export default class PGNLoader extends React.Component {
                 <button onClick = {this.load.bind(this)}>Load</button> 
                 <div>Playing as: 
                     <div>
-                    <Button onClick = {this.handleChange('white')} color = {this.state.playerColor === 'white'?'secondary':'link'}>White</Button>
-                    <Button onClick = {this.handleChange('black')} color = {this.state.playerColor === 'black'?'secondary':'link'}>Black</Button>
+                    <Button onClick = {this.handleChange('white')} color = {this.props.settings.playerColor === 'white'?'secondary':'link'}>White</Button>
+                    <Button onClick = {this.handleChange('black')} color = {this.props.settings.playerColor === 'black'?'secondary':'link'}>Black</Button>
                   </div>
                 </div>
 

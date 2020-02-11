@@ -1,31 +1,36 @@
 import React from 'react'
 import {Button} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRetweet, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+import { faRetweet, faTrashAlt, faRandom, faFastBackward } from '@fortawesome/free-solid-svg-icons'
+import {Container, Row, Col} from 'reactstrap'
 
 export default class SettingsView extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            orientation:'white'
+            settings:this.props.settings,
+
         }
     }
 
-    handleChange(eventState){
-        return (()=> {this.setState({
-                orientation: eventState
+    toggle(eventName){
+        return (()=> {this.setState({ settings: {
+                [eventName]: this.state.settings[eventName] === 'white' ? 'black':'white'
+                }
             }, ()=> {
-                this.props.onChange(this.state)
+                this.props.onChange(this.state.settings)
             })
         }).bind(this)
     }
     render() {
         return <div>
-            <div>
-        <Button className="settingButton" onClick = {this.handleChange(this.state.orientation === 'white'?'black':'white')} color=""><h3><FontAwesomeIcon icon={faRetweet} /></h3> Flip board</Button>
+                <Container><Row><Col>
+        <Button className="settingButton" onClick = {this.toggle('orientation')} color=""><h3><FontAwesomeIcon icon={faRetweet} /></h3> Flip board</Button>
+        </Col><Col><Button className="settingButton" onClick = {this.toggle('playerColor')} color=""><h3><FontAwesomeIcon icon={faRandom} /></h3> Player color</Button>
+        </Col></Row><Row><Col>
         <Button className="settingButton" onClick = {this.props.clear} color=""><h3><FontAwesomeIcon icon={faTrashAlt} /></h3> Clear games</Button>
-      </div>
-
+        </Col><Col><Button className="settingButton" onClick = {this.props.reset} color=""><h3><FontAwesomeIcon icon={faFastBackward} /></h3> Starting position</Button>
+        </Col></Row></Container>
         </div>
     }
 }
