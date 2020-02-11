@@ -4,7 +4,7 @@ import SettingsView from './Settings'
 import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faList } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faList, faLightbulb, faCog } from '@fortawesome/free-solid-svg-icons'
 
 export default class ControlsContainer extends React.Component {
     constructor(props){
@@ -42,6 +42,22 @@ export default class ControlsContainer extends React.Component {
             onClick={() => { this.toggle('2'); }}
           >
             <FontAwesomeIcon icon={faList} />
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: this.state.activeTab === '3' })}
+            onClick={() => { this.toggle('3'); }}
+          >
+            <FontAwesomeIcon icon={faLightbulb} />
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
+            className={classnames({ active: this.state.activeTab === '4' })}
+            onClick={() => { this.toggle('4'); }}
+          >
+            <FontAwesomeIcon icon={faCog} />
           </NavLink>
         </NavItem>
       </Nav>
