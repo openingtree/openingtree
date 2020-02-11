@@ -1,17 +1,16 @@
 import React from 'react'
-import {ButtonGroup, Button} from 'reactstrap'
+import {Button} from 'reactstrap'
 export default class SettingsView extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            orientation:'white',
-            playerColor:'white'
+            orientation:'white'
         }
     }
 
-    handleChange(eventname, eventState){
+    handleChange(eventState){
         return (()=> {this.setState({
-                [eventname]: eventState
+                orientation: eventState
             }, ()=> {
                 this.props.onChange(this.state)
             })
@@ -19,9 +18,11 @@ export default class SettingsView extends React.Component {
     }
     render() {
         return <div>
-            <div>Playing as: {this.buttonGroup('playerColor')}</div>
-            <div>Orientation: {this.buttonGroup('orientation')}</div>
-            <Button onClick = {this.props.clear}>Clear</Button>
+            <div>
+        <Button onClick = {this.handleChange('white')} color = {this.state.orientation === 'white'?'secondary':'link'}>White</Button>
+        <Button onClick = {this.handleChange('black')} color = {this.state.orientation === 'black'?'secondary':'link'}>Black</Button>
+        <Button onClick = {this.props.clear}>Clear</Button>
+      </div>
 
         </div>
     }
