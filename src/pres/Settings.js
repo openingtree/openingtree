@@ -21,6 +21,8 @@ export default class SettingsView extends React.Component {
         return <div>
             <div>Playing as: {this.buttonGroup('playerColor')}</div>
             <div>Orientation: {this.buttonGroup('orientation')}</div>
+            <Button onClick = {this.props.clear}>Clear</Button>
+
         </div>
     }
 

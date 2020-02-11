@@ -10,13 +10,7 @@ export default class ControlsContainer extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            lastMove: null,
-            playerName:'',
-            activeTab:'1',
-            settings:{
-              orientation:'white',
-              playerColor:'white'
-            }
+            activeTab:'1'
           }
       }
     toggle(tab) {
@@ -66,29 +60,22 @@ export default class ControlsContainer extends React.Component {
           <Row>
             <Col sm="12">
             <div>{this.props.gamesProcessed>0?`Number of games Loaded: ${this.props.gamesProcessed}`:""}</div>
-            <PGNLoader notify = {this.props.updateProcessedGames}/>
-            <SettingsView onChange = {this.props.settingsChange}/>
-            <div>
-                <button onClick = {this.props.reset}>Reset</button>
-                <button onClick = {this.props.clear}>Clear</button>
-            </div>
+            <PGNLoader onChange = {this.props.settingsChange} notify = {this.props.updateProcessedGames}/>
+            
             </Col></Row>
             </TabPane>
         <TabPane tabId="2">
           <Row>
             <Col sm="6">
-              <Card body>
-                <CardTitle>Special Title Treatment</CardTitle>
-                <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                <Button>Go somewhere</Button>
-              </Card>
+            <button onClick = {this.props.reset}>Reset</button>
             </Col>
+          </Row>
+        </TabPane>
+        <TabPane tabId="4">
+          <Row>
             <Col sm="6">
-              <Card body>
-                <CardTitle>Special Title Treatment</CardTitle>
-                <CardText>With supporting text below as a natural lead-in to additional content.</CardText>
-                <Button>Go somewhere</Button>
-              </Card>
+            <SettingsView clear = {this.props.clear} onChange = {this.props.settingsChange}/>
+            
             </Col>
           </Row>
         </TabPane>
