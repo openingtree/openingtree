@@ -1,4 +1,6 @@
 .nav-tabs .nav-link {
     cursor: pointer;
   }
-  
+.settingButton:hover  {
+    background-color: #dcdcdc;
+}

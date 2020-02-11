@@ -1,5 +1,8 @@
 import React from 'react'
 import {Button} from 'reactstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faRetweet, faTrashAlt } from '@fortawesome/free-solid-svg-icons'
+
 export default class SettingsView extends React.Component {
     constructor(props){
         super(props)
@@ -19,19 +22,10 @@ export default class SettingsView extends React.Component {
     render() {
         return <div>
             <div>
-        <Button onClick = {this.handleChange('white')} color = {this.state.orientation === 'white'?'secondary':'link'}>White</Button>
-        <Button onClick = {this.handleChange('black')} color = {this.state.orientation === 'black'?'secondary':'link'}>Black</Button>
-        <Button onClick = {this.props.clear}>Clear</Button>
+        <Button className="settingButton" onClick = {this.handleChange(this.state.orientation === 'white'?'black':'white')} color=""><h3><FontAwesomeIcon icon={faRetweet} /></h3> Flip board</Button>
+        <Button className="settingButton" onClick = {this.props.clear} color=""><h3><FontAwesomeIcon icon={faTrashAlt} /></h3> Clear games</Button>
       </div>
 
         </div>
     }
-
-    buttonGroup(name) {
-        return <div>
-        <Button onClick = {this.handleChange(name, 'white')} color = {this.state[name] === 'white'?'secondary':'link'}>White</Button>
-        <Button onClick = {this.handleChange(name, 'black')} color = {this.state[name] === 'black'?'secondary':'link'}>Black</Button>
-      </div>
-    }
-
 }
