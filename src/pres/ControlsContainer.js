@@ -49,7 +49,7 @@ export default class ControlsContainer extends React.Component {
         <TabPane tabId="1">
           <Row>
             <Col sm="12">
-            <div>Number of games processed: {this.props.gamesProcessed}</div>
+            <div>{this.props.gamesProcessed>0?`Number of games Loaded: ${this.props.gamesProcessed}`:""}</div>
             <PGNLoader notify = {this.props.updateProcessedGames}/>
             <SettingsView onChange = {this.props.settingsChange}/>
             <div>

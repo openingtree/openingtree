@@ -1,5 +1,5 @@
 import React from 'react'
-
+import {ButtonGroup, Button} from 'reactstrap'
 export default class SettingsView extends React.Component {
     constructor(props){
         super(props)
@@ -9,16 +9,26 @@ export default class SettingsView extends React.Component {
         }
     }
 
-    handleChange(event){
-        let target = event.target
-        this.setState({
-            [target.name]: target.checked ? 'black' : 'white'
-        }, ()=> {
-            this.props.onChange(this.state)
-        })
+    handleChange(eventname, eventState){
+        return (()=> {this.setState({
+                [eventname]: eventState
+            }, ()=> {
+                this.props.onChange(this.state)
+            })
+        }).bind(this)
     }
     render() {
-        return <div><div>orientation black<input name = "orientation" type="checkbox" checked={this.state.orientation === 'black'} onChange={this.handleChange.bind(this)}/></div>
-        <div>player color black<input name = "playerColor" type="checkbox" checked={this.state.playerColor === 'black'} onChange={this.handleChange.bind(this)}/></div></div>
+        return <div>
+            <div>Playing as: {this.buttonGroup('playerColor')}</div>
+            <div>Orientation: {this.buttonGroup('orientation')}</div>
+        </div>
     }
+
+    buttonGroup(name) {
+        return <div>
+        <Button onClick = {this.handleChange(name, 'white')} color = {this.state[name] === 'white'?'secondary':'link'}>White</Button>
+        <Button onClick = {this.handleChange(name, 'black')} color = {this.state[name] === 'black'?'secondary':'link'}>Black</Button>
+      </div>
+    }
+
 }
