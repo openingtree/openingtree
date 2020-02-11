@@ -55,7 +55,7 @@ export default class MainContainer extends React.Component {
         autoShapes: this.autoShapes()
       }}
       style={{ margin: 'auto' }}
-    /></Col><Col sm="4"><ControlsContainer 
+    /></Col><Col sm="6"><ControlsContainer 
                 gamesProcessed={this.state.gamesProcessed} 
                 updateProcessedGames={this.updateProcessedGames.bind(this)}
                 settingsChange={this.settingsChange.bind(this)}
