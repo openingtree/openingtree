@@ -95,9 +95,11 @@ function clear() {
     this.reset()
 }
 
-function settingsChange(settings) {
+function settingsChange(name, value) {
     this.setState({
-        'settings':settings
+        'settings':{
+            [name]:value
+        }
     })
 }
 

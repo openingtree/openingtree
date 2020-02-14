@@ -7,16 +7,12 @@ import {Container, Row, Col} from 'reactstrap'
 export default class SettingsView extends React.Component {
     constructor(props){
         super(props)
-        this.state = this.props.settings
     }
 
     toggle(eventName){
-        return (()=> {this.setState({ 
-                [eventName]: this.state[eventName] === 'white' ? 'black':'white'
-                
-            }, ()=> {
-                this.props.onChange(this.state)
-            })
+        return (()=> {
+            let newValue = this.props.settings[eventName] === 'white' ? 'black':'white'
+            this.props.onChange(eventName, newValue)
         }).bind(this)
     }
     render() {
