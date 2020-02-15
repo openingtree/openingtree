@@ -96,10 +96,10 @@ function clear() {
 }
 
 function settingsChange(name, value) {
+    let settings = this.state.settings
+    settings[name] = value;
     this.setState({
-        'settings':{
-            [name]:value
-        }
+        'settings':settings
     })
 }
 
