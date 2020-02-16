@@ -1,6 +1,7 @@
 import React from 'react'
 import ChessEcoCodes from 'chess-eco-codes'
 import OpeningManager from '../app/OpeningManager'
+import {Container, Row, Col} from 'reactstrap'
 
 export default class Navigator extends React.Component {
     
@@ -38,6 +39,15 @@ export default class Navigator extends React.Component {
         if (opening) {
             this.opening = opening.name
         }
-        return <div><button onClick= {this.previous.bind(this)}>prev</button> {this.openingManager.pgnListSoFar()?this.openingManager.pgnListSoFar().join(' '):''} <button onClick = {this.next.bind(this)}>next</button><div>{this.opening}</div></div>
+        return <Container>
+            <Row>
+            <Col sm="auto"><button onClick= {this.previous.bind(this)}>&lt;</button> </Col>
+            {
+            this.openingManager.pgnListSoFar()? 
+            (this.openingManager.pgnListSoFar().map((move)=><Col sm="auto">{move}</Col>))
+            :''}
+            <Col sm="auto"><button onClick = {this.next.bind(this)}>&gt;</button></Col></Row>
+            <Row>{this.opening}</Row>
+        </Container>
     }
 }
