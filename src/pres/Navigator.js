@@ -38,6 +38,6 @@ export default class Navigator extends React.Component {
         if (opening) {
             this.opening = opening.name
         }
-        return <div><button onClick= {this.previous.bind(this)}>prev</button> {this.openingManager.pgnSoFar()} <button onClick = {this.next.bind(this)}>next</button><div>{this.opening}</div></div>
+        return <div><button onClick= {this.previous.bind(this)}>prev</button> {this.openingManager.pgnListSoFar()?this.openingManager.pgnListSoFar().join(' '):''} <button onClick = {this.next.bind(this)}>next</button><div>{this.opening}</div></div>
     }
 }

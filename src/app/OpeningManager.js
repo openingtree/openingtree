@@ -10,6 +10,7 @@ export default class OpeningManager {
         this.plys = this.plys.slice(0,this.currentIndex+1)
         this.plys.push({
             pgn: this.nextPGN(move.san),
+            pgnAsList:this.pgnAsList(move.san),
             fen: fen,
             move: move
         })
@@ -22,8 +23,29 @@ export default class OpeningManager {
         return `${this.pgnSoFar()} ${(numPlys+1)%2 === 0? `${(numPlys+1)/2}.` : ``} ${san}`
     }
 
+    pgnAsList(san) {
+        let pgnSoFar = this.pgnListSoFar()
+        let pgnList
+        if (!pgnSoFar) {
+            pgnList = []
+        } else {
+            pgnList = [...pgnSoFar]
+        }
+        let numPlys = this.plys.length
+        if(numPlys%2 !== 0) {
+            pgnList.push(`${pgnList.length+1}.${san}`)
+        } else {
+            pgnList[pgnList.length-1] = `${pgnList[pgnList.length-1]} ${san}`
+        }
+        return pgnList
+    }
+
     pgnSoFar(){
         return this.plys[this.currentIndex].pgn
+    }
+
+    pgnListSoFar(){
+        return this.plys[this.currentIndex].pgnAsList
     }
 
     fen(){
