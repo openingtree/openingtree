@@ -13,6 +13,10 @@ export default class Navigator extends React.Component {
     shouldComponentUpdate(newProps) {
         //console.log(newProps)
         if(newProps.fen !== this.openingManager.fen()) {
+            if(newProps.move.from === "ab1") {
+                this.openingManager = new OpeningManager()
+                return true
+            }
             this.openingManager.addPly(newProps.fen, newProps.move)
             return true
         }
