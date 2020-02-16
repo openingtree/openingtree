@@ -4,3 +4,9 @@
 .settingButton:hover  {
     background-color: #dcdcdc;
 }
+
+.pgnloadersection {
+    margin-top:10px;
+    margin-left:10px;
+    color:#555555;
+}
