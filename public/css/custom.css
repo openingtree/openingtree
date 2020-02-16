@@ -10,3 +10,17 @@
     margin-left:10px;
     color:#555555;
 }
+
+.border {
+    border:1px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+.navSection {
+    padding:0px;
+}
+.navCol {
+    padding-left:0px;
+    padding-right:0px;
+}

@@ -27,9 +27,15 @@ export default class OpeningManager {
         }
         let numPlys = this.plys.length
         if(numPlys%2 !== 0) {
-            pgnList.push(`${pgnList.length+1}.${san}`)
+            pgnList.push({
+                moveNumber:pgnList.length+1,
+                whitePly:san,
+                blackPly:'-'
+            })
         } else {
-            pgnList[pgnList.length-1] = `${pgnList[pgnList.length-1]} ${san}`
+            let currMove = pgnList[pgnList.length-1]
+            currMove.blackPly = san
+            pgnList[pgnList.length-1] = currMove
         }
         return pgnList
     }
