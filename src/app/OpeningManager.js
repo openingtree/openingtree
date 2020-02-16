@@ -9,18 +9,12 @@ export default class OpeningManager {
         }
         this.plys = this.plys.slice(0,this.currentIndex+1)
         this.plys.push({
-            pgn: this.nextPGN(move.san),
             pgnAsList:this.pgnAsList(move.san),
             fen: fen,
             move: move
         })
         this.currentIndex++;
         return this.plys[this.currentIndex]
-    }
-
-    nextPGN(san) {
-        let numPlys = this.plys.length
-        return `${this.pgnSoFar()} ${(numPlys+1)%2 === 0? `${(numPlys+1)/2}.` : ``} ${san}`
     }
 
     pgnAsList(san) {
@@ -38,10 +32,6 @@ export default class OpeningManager {
             pgnList[pgnList.length-1] = `${pgnList[pgnList.length-1]} ${san}`
         }
         return pgnList
-    }
-
-    pgnSoFar(){
-        return this.plys[this.currentIndex].pgn
     }
 
     pgnListSoFar(){
