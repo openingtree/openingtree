@@ -16,6 +16,7 @@ export default class PGNLoader extends React.Component {
         })
     }
     load() {
+        this.props.clear()
         new PGNReader().parsePGN(this.state.playerName, this.props.notify)
     }
 
