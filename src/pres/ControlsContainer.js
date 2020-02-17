@@ -62,7 +62,7 @@ export default class ControlsContainer extends React.Component {
             <PGNLoader gamesProcessed = {this.props.gamesProcessed} settings = {this.props.settings} onChange = {this.props.settingsChange} notify = {this.props.updateProcessedGames}/>
             </TabPane>
         <TabPane tabId="2">
-            <MovesList movesToShow={this.props.movesToShow}/>
+            <MovesList movesToShow={this.props.movesToShow} onMove={this.props.onMove}/>
         </TabPane>
         <TabPane tabId="4">
           <Row>

@@ -65,6 +65,7 @@ export default class MainContainer extends React.Component {
                 reset={this.reset.bind(this)}
                 clear={this.clear.bind(this)}
                 movesToShow={this.movesToShow()}
+                onMove={this.onMove.bind(this)}
                 /></Col>
     </Row></Container>
     </div>

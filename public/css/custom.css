@@ -39,12 +39,18 @@
     cursor: pointer;
 }
 
+.moveRow:hover  {
+    background-color: #dcdcdc;
+    cursor: pointer;
+}
+
+
 .smallCol {
     width: 2rem;
 }
 
 .whiteMove {
-    background-color: beige;
+    background-color: white;
 }
 .blackMove {
     background-color: darkgray;
