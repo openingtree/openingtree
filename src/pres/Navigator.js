@@ -38,6 +38,14 @@ export default class Navigator extends React.Component {
         this.setState({currentMove:this.openingManager.currentMove()})
     }
 
+    moveTo(index) {
+        return () => {
+            let newState = this.openingManager.moveTo(index*2+1)
+            this.props.onChange(newState.fen, newState.move)
+            this.setState({currentMove:this.openingManager.currentMove()})
+        }
+    }
+
     render(){
         let opening = ChessEcoCodes(this.openingManager.fen())
         if(this.openingManager.currentMove() !== this.state.currentMove) {
@@ -54,7 +62,7 @@ export default class Navigator extends React.Component {
             {
             this.openingManager.pgnListSoFar()? 
             (this.openingManager.pgnListSoFar().map((move, index)=>
-                <Row className={`navCol ${this.openingManager.currentMove() === index? 'selectedMove':''}`}>
+                <Row onClick={this.moveTo(index).bind(this)} className={`navCol ${this.openingManager.currentMove() === index? 'selectedMove':''}`}>
                         <Col sm="12" className = "border">{`${move.moveNumber}.${move.whitePly} ${move.blackPly}`}</Col>
                 </Row>))
             :''}
