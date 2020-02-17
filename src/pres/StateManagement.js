@@ -62,17 +62,22 @@ function moveToShape(move) {
 }
 
 function autoShapes() {
+    var moves = this.movesToShow()
+    if(moves) {
+        var shapes = moves.map(this.moveToShape.bind(this))
+        return this.fillArray(shapes,  25)
+    }
+    return this.fillArray([], 25) // dummy arrow to clear out existing arrows
+}
+
+function movesToShow() {
     var moves
     if (this.turnColor() === this.playerColor()) {
         moves = this.state.openingGraph.movesForFen(this.chess.fen())
     } else {
         moves = this.state.openingGraph.movesAgainstFen(this.chess.fen())
     } 
-    if(moves) {
-        var shapes = moves.map(this.moveToShape.bind(this))
-        return this.fillArray(shapes,  25)
-    }
-    return this.fillArray([], 25) // dummy arrow to clear out existing arrows
+    return moves
 }
 
 function fillArray(arr, len) {
@@ -118,6 +123,7 @@ function addStateManagement(obj){
     obj.fillArray = fillArray
     obj.brushes = brushes
     obj.moveToShape = moveToShape
+    obj.movesToShow = movesToShow
 }
 
 export {addStateManagement}

@@ -5,7 +5,7 @@ class OpeningGraph {
     clear() {
         this.graph = new Graph()
     }
-    addMoveForFen(fen, move) {
+    addMoveForFen(fen, move, result) {
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
             currNode = new GraphNode()
@@ -28,7 +28,7 @@ class OpeningGraph {
 
         
     }
-    addMoveAgainstFen(fen, move) {
+    addMoveAgainstFen(fen, move, result) {
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
             currNode = new GraphNode()
@@ -42,8 +42,18 @@ class OpeningGraph {
             movePlayedAgainst.move = move
             movesPlayedAgainst.set(move.san, movePlayedAgainst)
         }
-
+        let whiteWin = 0, blackWin = 0, draw = 0
+        if(result === '1-0') {
+            whiteWin = 1
+        } else if (result === '0-1') {
+            blackWin = 1
+        } else {
+            draw = 1
+        }
         movePlayedAgainst.count += 1
+        movesPlayedAgainst.blackWin += blackWin
+        movesPlayedAgainst.whiteWin += whiteWin
+        movesPlayedAgainst.draw += draw
         
         currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
         

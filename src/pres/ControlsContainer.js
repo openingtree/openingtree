@@ -5,6 +5,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, Ca
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faList, faLightbulb, faCog } from '@fortawesome/free-solid-svg-icons'
+import MovesList from './MovesList';
 
 export default class ControlsContainer extends React.Component {
     constructor(props){
@@ -66,7 +67,7 @@ export default class ControlsContainer extends React.Component {
         <TabPane tabId="2">
           <Row>
             <Col sm="6">
-            <button onClick = {this.props.reset}>Reset</button>
+            <MovesList movesToShow={this.props.movesToShow}/>
             </Col>
           </Row>
         </TabPane>

@@ -63,7 +63,9 @@ export default class MainContainer extends React.Component {
                 settingsChange={this.settingsChange.bind(this)}
                 settings={this.state.settings}
                 reset={this.reset.bind(this)}
-                clear={this.clear.bind(this)}/></Col>
+                clear={this.clear.bind(this)}
+                movesToShow={this.movesToShow()}
+                /></Col>
     </Row></Container>
     </div>
   }

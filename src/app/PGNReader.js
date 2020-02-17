@@ -28,9 +28,9 @@ export default class PGNReader {
             let fen = chess.fen()
             let move = chess.move(element.move)
             if(move.color === playerColor) {
-                openingGraph.addMoveForFen(fen, move)
+                openingGraph.addMoveForFen(fen, move, pgn.result)
             } else {
-                openingGraph.addMoveAgainstFen(fen,move)
+                openingGraph.addMoveAgainstFen(fen,move, pgn.result)
             }
         })
         setTimeout(()=>{this.parsePGNTimed(pgnArray, index+1, playerName, notify)},1)
