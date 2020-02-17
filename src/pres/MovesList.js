@@ -1,5 +1,6 @@
-import { Container, Row, Col } from "reactstrap"
+import { Container, Row, Col, Progress } from "reactstrap"
 import React from 'react'
+import { Table, TableRow, TableHead, TableBody, TableCell } from '@material-ui/core';
 
 export default class MovesList extends React.Component {
     constructor(props) {
@@ -7,26 +8,29 @@ export default class MovesList extends React.Component {
     }
 
     render(){
-        return <Container>                
-            <Row>
-                <Col className="border"><b>Move</b></Col>
-                <Col className="border"><b>Games</b></Col>
-                <Col className="border"><b>W</b></Col>
-                <Col className="border"><b>B</b></Col>
-                <Col className="border"><b>D</b></Col>
-            </Row>
+        return <Table>  
+            <TableHead>            
+            <TableRow>
+                <TableCell>Move</TableCell>
+                <TableCell>Games</TableCell>
+                <TableCell>Results</TableCell>
+            </TableRow></TableHead>  
+            <TableBody>
         {
             (this.props.movesToShow)? this.props.movesToShow.map(move => 
-                <Row>
-                    <Col className="border">{move.san}</Col>
-                    <Col className="border">{move.count}</Col>
-                    <Col className="border">{move.whiteWins}</Col>
-                    <Col className="border">{move.blackWins}</Col>
-                    <Col className="border">{move.draws}</Col>
-                    
-                </Row>
+                <TableRow>
+                    <TableCell>{move.san}</TableCell>
+                    <TableCell>{move.count}</TableCell>
+                    <TableCell>
+                        <Progress multi>
+                            <Progress bar className="white" color="success" value={`${move.whiteWins/move.count*100}`} />
+                            <Progress bar className="gray" color="info" value={`${move.draws/move.count*100}`} />
+                            <Progress bar className="black" color="danger" value={`${move.blackWins/move.count*100}`} />
+                        </Progress>
+                    </TableCell>
+                </TableRow>
             ):""
-        }
-        </Container>
+        }</TableBody>
+        </Table>
     }
 }
