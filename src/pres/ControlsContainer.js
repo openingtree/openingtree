@@ -59,17 +59,10 @@ export default class ControlsContainer extends React.Component {
       </Nav>
       <TabContent activeTab={this.state.activeTab}>
         <TabPane tabId="1">
-          <Row>
-            <Col sm="12">
             <PGNLoader gamesProcessed = {this.props.gamesProcessed} settings = {this.props.settings} onChange = {this.props.settingsChange} notify = {this.props.updateProcessedGames}/>
-            </Col></Row>
             </TabPane>
         <TabPane tabId="2">
-          <Row>
-            <Col sm="6">
             <MovesList movesToShow={this.props.movesToShow}/>
-            </Col>
-          </Row>
         </TabPane>
         <TabPane tabId="4">
           <Row>

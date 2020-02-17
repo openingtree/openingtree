@@ -20,7 +20,18 @@ class OpeningGraph {
             movesPlayedBy.set(move.san, movePlayedBy)
         }
 
+        let whiteWin = 0, blackWin = 0, draw = 0
+        if(result === '1-0') {
+            whiteWin = 1
+        } else if (result === '0-1') {
+            blackWin = 1
+        } else {
+            draw = 1
+        }
         movePlayedBy.count += 1
+        movePlayedBy.blackWins += blackWin
+        movePlayedBy.whiteWins += whiteWin
+        movePlayedBy.draws += draw
         
         currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.count)
         
@@ -51,9 +62,9 @@ class OpeningGraph {
             draw = 1
         }
         movePlayedAgainst.count += 1
-        movesPlayedAgainst.blackWin += blackWin
-        movesPlayedAgainst.whiteWin += whiteWin
-        movesPlayedAgainst.draw += draw
+        movePlayedAgainst.blackWins += blackWin
+        movePlayedAgainst.whiteWins += whiteWin
+        movePlayedAgainst.draws += draw
         
         currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
         
@@ -67,7 +78,12 @@ class OpeningGraph {
                 return {
                     orig:gMove.move.from,
                     dest:gMove.move.to,
-                    level:this.levelFor(gMove.count, currNode.playedByMax)
+                    level:this.levelFor(gMove.count, currNode.playedByMax),
+                    count:gMove.count,
+                    whiteWins:gMove.whiteWins,
+                    blackWins:gMove.blackWins,
+                    draws:gMove.draws,
+                    san:gMove.move.san
                 }
             })
         }        
@@ -81,7 +97,12 @@ class OpeningGraph {
                 return {
                     orig:gMove.move.from,
                     dest:gMove.move.to,
-                    level:this.levelFor(gMove.count, currNode.playedAgainstMax)
+                    level:this.levelFor(gMove.count, currNode.playedAgainstMax),
+                    count:gMove.count,
+                    whiteWins:gMove.whiteWins,
+                    blackWins:gMove.blackWins,
+                    draws:gMove.draws,
+                    san:gMove.move.san
                 }
             })
         }        
@@ -132,6 +153,9 @@ class GraphMove {
     fen = ''
     move = {}
     count = 0
+    blackWins = 0
+    whiteWins = 0
+    draws = 0
 }
 
 /*class EngineAnalysis {
