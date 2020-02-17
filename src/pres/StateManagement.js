@@ -77,7 +77,7 @@ function movesToShow() {
     } else {
         moves = this.state.openingGraph.movesAgainstFen(this.chess.fen())
     } 
-    return moves
+    return moves?moves.sort((a,b)=>b.count-a.count):moves
 }
 
 function fillArray(arr, len) {
