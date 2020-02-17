@@ -11,18 +11,23 @@
     color:#555555;
 }
 
-.border {
-    border:1px;
+.navMove {
     display:flex;
     justify-content:center;
     align-items:center;
 }
+
+
 .navSection {
     padding:0px;
 }
 .navCol {
     padding-left:0px;
     padding-right:0px;
+}
+
+.borderRadius {
+    border-radius:0.25rem;
 }
 
 .selectedMove {
@@ -32,4 +37,18 @@
 .navCol:hover  {
     background-color: #dcdcdc;
     cursor: pointer;
+}
+
+.smallCol {
+    width: 2rem;
+}
+
+.whiteMove {
+    background-color: beige;
+}
+.blackMove {
+    background-color: darkgray;
+}
+.grayMove {
+    background-color: lightgray;
 }
