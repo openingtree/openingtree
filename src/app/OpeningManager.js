@@ -30,7 +30,7 @@ export default class OpeningManager {
             pgnList.push({
                 moveNumber:pgnList.length+1,
                 whitePly:san,
-                blackPly:'-'
+                blackPly:''
             })
         } else {
             let currMove = pgnList[pgnList.length-1]

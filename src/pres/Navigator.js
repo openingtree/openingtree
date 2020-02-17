@@ -41,21 +41,16 @@ export default class Navigator extends React.Component {
         }
         return <Container>
             <Row>
-            <Col sm="auto" className="navSection"><button onClick= {this.previous.bind(this)}>&lt;</button> </Col>
-            <Col className="navSection"><Container><Row>
+            <Col lg="6" className="navSection"><button onClick= {this.previous.bind(this)}>&lt;prev</button> </Col>
+            <Col lg="6" className="navSection"><button onClick = {this.next.bind(this)}>next&gt;</button></Col></Row>
+            <Row>{this.opening}</Row>
             {
             this.openingManager.pgnListSoFar()? 
             (this.openingManager.pgnListSoFar().map((move)=>
-                <Col className="navCol" xs="2">
-                    <Container>
-                        <Row className = "border">{move.moveNumber}</Row>
-                        <Row className = "border">{move.whitePly}</Row>
-                        <Row className = "border">{move.blackPly}</Row>
-                    </Container>
-                </Col>))
-            :''}</Row></Container></Col>
-            <Col className="navSection" sm="auto"><button onClick = {this.next.bind(this)}>&gt;</button></Col></Row>
-            <Row>{this.opening}</Row>
+                <Row className="navCol">
+                        <Col sm="12" className = "border">{`${move.moveNumber}.${move.whitePly} ${move.blackPly}`}</Col>
+                </Row>))
+            :''}
         </Container>
     }
 }

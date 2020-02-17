@@ -38,7 +38,8 @@ export default class MainContainer extends React.Component {
     return <div> 
         <GlobalHeader/>
         <Container>
-          <Row><Col><Container><Row><Chessground
+          <Row><Col lg="2"><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
+    </Col><Col lg="6"><Chessground
       width={512}
       height={512}
       n={this.state.n}
@@ -55,9 +56,8 @@ export default class MainContainer extends React.Component {
         autoShapes: this.autoShapes()
       }}
       style={{ margin: 'auto' }}
-    /></Row>
-    <Row><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/></Row>
-    </Container></Col><Col sm="6"><ControlsContainer 
+    />
+    </Col><Col lg="4"><ControlsContainer 
                 gamesProcessed={this.state.gamesProcessed} 
                 updateProcessedGames={this.updateProcessedGames.bind(this)}
                 settingsChange={this.settingsChange.bind(this)}
