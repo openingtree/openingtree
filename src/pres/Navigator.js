@@ -48,9 +48,6 @@ export default class Navigator extends React.Component {
 
     render(){
         let opening = ChessEcoCodes(this.openingManager.fen())
-        if(this.openingManager.currentMove() !== this.state.currentMove) {
-            console.log('weird');
-        }
         if (opening) {
             this.opening = opening.name
         }
