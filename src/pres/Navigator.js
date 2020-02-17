@@ -8,7 +8,9 @@ export default class Navigator extends React.Component {
     constructor(props){
         super(props)
         this.openingManager = new OpeningManager()
-        
+        this.state = {
+            currentMove:0,
+          }        
     }
 
     shouldComponentUpdate(newProps) {
@@ -21,21 +23,26 @@ export default class Navigator extends React.Component {
             this.openingManager.addPly(newProps.fen, newProps.move)
             return true
         }
-        return false
+        return true
     }
 
     previous() {
         let newState = this.openingManager.moveBack()
         this.props.onChange(newState.fen, newState.move)
+        this.setState({currentMove:this.openingManager.currentMove()})
     }
 
     next() {
         let newState = this.openingManager.moveForward()
         this.props.onChange(newState.fen, newState.move)
+        this.setState({currentMove:this.openingManager.currentMove()})
     }
 
     render(){
         let opening = ChessEcoCodes(this.openingManager.fen())
+        if(this.openingManager.currentMove() !== this.state.currentMove) {
+            console.log('weird');
+        }
         if (opening) {
             this.opening = opening.name
         }
@@ -46,8 +53,8 @@ export default class Navigator extends React.Component {
             <Row>{this.opening}</Row>
             {
             this.openingManager.pgnListSoFar()? 
-            (this.openingManager.pgnListSoFar().map((move)=>
-                <Row className="navCol">
+            (this.openingManager.pgnListSoFar().map((move, index)=>
+                <Row className={`navCol ${this.openingManager.currentMove() === index? 'selectedMove':''}`}>
                         <Col sm="12" className = "border">{`${move.moveNumber}.${move.whitePly} ${move.blackPly}`}</Col>
                 </Row>))
             :''}

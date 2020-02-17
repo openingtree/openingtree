@@ -40,8 +40,12 @@ export default class OpeningManager {
         return pgnList
     }
 
+    currentMove() {
+        return Math.floor((this.currentIndex-1)/2);
+    }
+
     pgnListSoFar(){
-        return this.plys[this.currentIndex].pgnAsList
+        return this.plys[this.plys.length-1].pgnAsList
     }
 
     fen(){

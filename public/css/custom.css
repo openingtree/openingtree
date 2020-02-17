@@ -24,3 +24,7 @@
     padding-left:0px;
     padding-right:0px;
 }
+
+.selectedMove {
+    background-color:rgba(173, 216, 230,0.4);
+}
