@@ -9,14 +9,26 @@ export default class LichessIterator {
             let newBody = remainingBody + data.toString();
             let lastValidPGN = newBody.lastIndexOf("\n\n\n")
             let body = newBody.slice(0, lastValidPGN).trim()
+
             remainingBody = newBody.slice(lastValidPGN).trim()
-            console.log("body", body)
-            console.log("remaining body", remainingBody)
-            let parsedPGNs = parse(body)
+            let pgnsArray = body.split("\n\n\n")
+
+            let parsedPGNs = pgnsArray.map((pgnString)=> {
+                try {
+                    return parse(pgnString)[0]
+                } catch (e) {
+                    console.log("failed to parse pgn", pgnString)
+                    console.log(e)
+                    return null
+                }
+            })
 
             ready(parsedPGNs.filter((pgn)=>{
+                if(!pgn) {
+                    return false
+                }
                 return pgn.headers.Variant === "Standard" &&
-                (pgn.headers.Black.toLowerCase() === playerName.toLowerCase() || pgn.headers.White.toLowerCase() === playerName.toLowerCase())
+                    (pgn.headers.Black.toLowerCase() === playerName.toLowerCase() || pgn.headers.White.toLowerCase() === playerName.toLowerCase())
             }))
         })
     }
