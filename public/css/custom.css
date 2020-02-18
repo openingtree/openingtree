@@ -50,11 +50,17 @@
 }
 
 .whiteMove {
-    background-color: white;
-}
-.blackMove {
-    background-color: darkgray;
+    background-color: #fff;
+    box-shadow: 0 -5px 7px rgba(0,0,0,0.1) inset;
+    color:#4d4d4d;
 }
 .grayMove {
-    background-color: lightgray;
+    background-color: #a0a0a0;
+    box-shadow: 0 5px 7px rgba(255,255,255,0.2) inset;
+    color:#fff
+}
+.blackMove {
+    background-color: #555;
+    box-shadow: 0 5px 7px rgba(255,255,255,0.2) inset;
+    color:#ddd;
 }

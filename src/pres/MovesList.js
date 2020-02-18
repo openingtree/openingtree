@@ -28,13 +28,11 @@ export default class MovesList extends React.Component {
                     <TableCell size="small" className="smallCol">{move.san}</TableCell>
                     <TableCell size="small" className="smallCol">{move.count}</TableCell>
                     <TableCell>
-                        <div className="border borderRadius">
                         <Progress multi>
-                            <Progress bar className="whiteMove" value={`${move.whiteWins/move.count*100}`} />
-                            <Progress bar className="grayMove" value={`${move.draws/move.count*100}`} />
-                            <Progress bar className="blackMove" value={`${move.blackWins/move.count*100}`} />
+                            <Progress bar className="whiteMove" value={`${move.whiteWins/move.count*100}`}>{move.whiteWins/move.count>0.1?move.whiteWins:''}</Progress>
+                            <Progress bar className="grayMove" value={`${move.draws/move.count*100}`}>{move.draws/move.count>0.1?move.draws:''}</Progress>
+                            <Progress bar className="blackMove" value={`${move.blackWins/move.count*100}`}>{move.blackWins/move.count>0.1?move.blackWins:''}</Progress>
                         </Progress>
-                        </div>
                     </TableCell>
                 </TableRow>
             ):""
