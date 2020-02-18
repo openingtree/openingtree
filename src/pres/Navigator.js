@@ -1,7 +1,9 @@
 import React from 'react'
 import ChessEcoCodes from 'chess-eco-codes'
 import OpeningManager from '../app/OpeningManager'
-import {Container, Row, Col} from 'reactstrap'
+import {Container, Row, Col, Button} from 'reactstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faStepForward, faStepBackward } from '@fortawesome/free-solid-svg-icons'
 
 export default class Navigator extends React.Component {
     
@@ -51,18 +53,20 @@ export default class Navigator extends React.Component {
         if (opening) {
             this.opening = opening.name
         }
+        if(!this.openingManager.pgnListSoFar()) {
+            return <div></div>
+        }
         return <Container>
             <Row>
-            <Col lg="6" className="navSection"><button onClick= {this.previous.bind(this)}>&lt;prev</button> </Col>
-            <Col lg="6" className="navSection"><button onClick = {this.next.bind(this)}>next&gt;</button></Col></Row>
+            <Col lg="6" className="navSection"><Button color="" className= "settingButton" onClick= {this.previous.bind(this)}><FontAwesomeIcon icon={faStepBackward} /> prev</Button> </Col>
+            <Col lg="6" className="navSection"><Button color="" className= "settingButton" onClick = {this.next.bind(this)}>next <FontAwesomeIcon icon={faStepForward} /></Button></Col></Row>
             <Row>{this.opening}</Row>
             {
-            this.openingManager.pgnListSoFar()? 
-            (this.openingManager.pgnListSoFar().map((move, index)=>
-                <Row onClick={this.moveTo(index).bind(this)} className={`navCol ${this.openingManager.currentMove() === index? 'selectedMove':''}`}>
-                    <Col sm="12" className = "navMove border">{`${move.moveNumber}.${move.whitePly} ${move.blackPly}`}</Col>
-                </Row>))
-            :''}
+                this.openingManager.pgnListSoFar().map((move, index)=>
+                    <Row onClick={this.moveTo(index).bind(this)} className={`navCol ${this.openingManager.currentMove() === index? 'selectedMove':''}`}>
+                        <Col sm="12" className = "navMove border">{`${move.moveNumber}.${move.whitePly} ${move.blackPly}`}</Col>
+                    </Row>)
+            }
         </Container>
     }
 }
