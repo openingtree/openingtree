@@ -37,7 +37,7 @@ export default class MainContainer extends React.Component {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     return <div> 
         <GlobalHeader/>
-        <Container>
+        <Container className="mainContainer">
           <Row><Col lg="2"><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
     </Col><Col lg="6"><Chessground
       width={512}

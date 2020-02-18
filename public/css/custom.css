@@ -64,3 +64,7 @@
     box-shadow: 0 5px 7px rgba(255,255,255,0.2) inset;
     color:#ddd;
 }
+
+.mainContainer {
+    margin-top:15px;
+}
