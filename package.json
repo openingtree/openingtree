@@ -8,7 +8,7 @@
     "@fortawesome/react-fontawesome": "^0.1.8",
     "@material-ui/core": "^4.9.3",
     "bootstrap": "^4.4.1",
-    "chess-eco-codes": "git+https://git@github.com/kevinludwig/chess-eco-codes.git",
+    "chess-eco-codes": "git+https://git@github.com/vjuneja/chess-eco-codes.git",
     "chess-tools": "^0.3.0",
     "chess.js": "^0.10.2",
     "react": "^16.12.0",

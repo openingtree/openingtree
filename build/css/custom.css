@@ -1,0 +1,70 @@
+.nav-tabs .nav-link {
+    cursor: pointer;
+  }
+.settingButton:hover  {
+    background-color: #dcdcdc;
+}
+
+.pgnloadersection {
+    margin-top:10px;
+    margin-left:10px;
+    color:#555555;
+}
+
+.navMove {
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+
+.navSection {
+    padding:0px;
+}
+.navCol {
+    padding-left:0px;
+    padding-right:0px;
+}
+
+.borderRadius {
+    border-radius:0.25rem;
+}
+
+.selectedMove {
+    background-color:rgba(173, 216, 230,0.4);
+}
+
+.navCol:hover  {
+    background-color: #dcdcdc;
+    cursor: pointer;
+}
+
+.moveRow:hover  {
+    background-color: #dcdcdc;
+    cursor: pointer;
+}
+
+
+.smallCol {
+    width: 2rem;
+}
+
+.whiteMove {
+    background-color: #fff;
+    box-shadow: 0 -5px 7px rgba(0,0,0,0.1) inset;
+    color:#4d4d4d;
+}
+.grayMove {
+    background-color: #a0a0a0;
+    box-shadow: 0 5px 7px rgba(255,255,255,0.2) inset;
+    color:#fff
+}
+.blackMove {
+    background-color: #555;
+    box-shadow: 0 5px 7px rgba(255,255,255,0.2) inset;
+    color:#ddd;
+}
+
+.mainContainer {
+    margin-top:15px;
+}

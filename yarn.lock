@@ -1475,9 +1475,9 @@ chardet@^0.4.0:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/chardet/-/chardet-0.4.2.tgz#b5473b33dc97c424e5d98dc87d55d4d8a29c8bf2"
 
-"chess-eco-codes@git+https://git@github.com/kevinludwig/chess-eco-codes.git":
+"chess-eco-codes@git+https://git@github.com/vjuneja/chess-eco-codes.git":
   version "0.0.0"
-  resolved "git+https://git@github.com/kevinludwig/chess-eco-codes.git#d5dee0e1af0dc0da5bdb318d3720b42cd4b1c611"
+  resolved "git+https://git@github.com/vjuneja/chess-eco-codes.git#9470cc52674ae7e62a13d70142e1e2960b91a915"
 
 chess-tools@^0.3.0:
   version "0.3.0"
