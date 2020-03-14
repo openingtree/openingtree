@@ -1,6 +1,8 @@
-import { Container, Row, Col, Progress } from "reactstrap"
+import {Progress } from "reactstrap"
 import React from 'react'
 import { Table, TableRow, TableHead, TableBody, TableCell } from '@material-ui/core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 export default class MovesList extends React.Component {
     constructor(props) {
@@ -14,6 +16,10 @@ export default class MovesList extends React.Component {
     }
 
     render(){
+        if(!this.props.movesToShow) {
+            return <div className = "infoMessage" >No moves to show. Please enter a lichess user name in the 
+                <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
+        }
         return <Table>  
             <TableHead>            
             <TableRow>

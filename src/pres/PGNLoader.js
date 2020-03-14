@@ -1,6 +1,8 @@
 import React from 'react'
 import PGNReader from '../app/PGNReader'
 import {Button} from 'reactstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faList } from '@fortawesome/free-solid-svg-icons'
 
 export default class PGNLoader extends React.Component {
 
@@ -41,7 +43,18 @@ export default class PGNLoader extends React.Component {
                     <Button onClick = {this.handleChange('black')} color = {this.props.settings.playerColor === 'black'?'secondary':'link'}>Black</Button>
                   </div>
                 </div>
-                <div className="pgnloadersection">{this.props.gamesProcessed>0?`Number of games Loaded: ${this.props.gamesProcessed}`:""}</div>
+                {
+                    this.props.gamesProcessed>0?
+                    <div>
+                        <div className="pgnloadersection">
+                            {`Number of games Loaded: ${this.props.gamesProcessed}`}
+                        </div>
+                        <div onClick = {()=>this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
+                            <FontAwesomeIcon icon={faList} /> View Moves>>
+                        </div>
+                    </div>
+                        :""
+                }
 
         </div>
     }

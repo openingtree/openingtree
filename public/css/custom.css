@@ -65,6 +65,18 @@
     color:#ddd;
 }
 
+.infoMessage {
+    color:gray;
+    margin-left:10px;
+    margin-right:10px;
+    margin-top:10px;
+}
+
+.navLinkButton {
+    color:#202529;
+    cursor:pointer;
+}
+
 .mainContainer {
     margin-top:15px;
 }
