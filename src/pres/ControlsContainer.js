@@ -65,7 +65,7 @@ export default class ControlsContainer extends React.Component {
         <TabPane tabId="settings">
           <Row>
             <Col sm="6">
-            <SettingsView settings={this.props.settings} clear = {this.props.clear} reset = {this.props.reset} onChange = {this.props.settingsChange}/>
+            <SettingsView fen={this.props.fen} settings={this.props.settings} clear = {this.props.clear} reset = {this.props.reset} onChange = {this.props.settingsChange}/>
             
             </Col>
           </Row>

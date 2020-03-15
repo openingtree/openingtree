@@ -57,7 +57,7 @@ export default class MainContainer extends React.Component {
       }}
       style={{ margin: 'auto' }}
     />
-    </Col><Col lg="4"><ControlsContainer 
+    </Col><Col lg="4"><ControlsContainer fen={this.state.fen}
                 gamesProcessed={this.state.gamesProcessed} 
                 updateProcessedGames={this.updateProcessedGames.bind(this)}
                 settingsChange={this.settingsChange.bind(this)}
