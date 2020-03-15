@@ -19,7 +19,7 @@ export default class MovesList extends React.Component {
     }
 
     render(){
-        if(!this.props.movesToShow) {
+        if(!this.props.settings.playerName) {
             return <div className = "infoMessage" >No moves to show. Please enter a lichess user name in the 
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
         }
@@ -45,13 +45,16 @@ export default class MovesList extends React.Component {
                     </TableCell>
                 </TableRow>
             ):""
-        }</TableBody>
-        <TableFooter><TableRow>
-        <TableCell colSpan="3">
-            Showing moves that have been 
-            played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
-            this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
-            </TableCell></TableRow></TableFooter>
+        }</TableBody>{
+            this.props.movesToShow?
+            <TableFooter><TableRow>
+            <TableCell colSpan="3">
+                Showing moves that have been 
+                played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
+                this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
+                </TableCell></TableRow></TableFooter>
+                :""
+            }
         </Table>
     }
 }
