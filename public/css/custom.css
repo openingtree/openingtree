@@ -80,3 +80,12 @@
 .mainContainer {
     margin-top:15px;
 }
+
+.siteimage {
+    height:24px;
+}
+
+.sitelabel {
+    margin-top:0px;
+    margin-bottom:0px;
+}

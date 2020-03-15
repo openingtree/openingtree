@@ -3,6 +3,8 @@ import PGNReader from '../app/PGNReader'
 import {Button} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList } from '@fortawesome/free-solid-svg-icons'
+import { Radio,FormControlLabel,RadioGroup } from '@material-ui/core';
+import {Row, Col} from 'reactstrap'
 
 export default class PGNLoader extends React.Component {
 
@@ -10,6 +12,7 @@ export default class PGNLoader extends React.Component {
         super(props)
         this.state = {
             playerName:'',
+            site:'lichess'
         }
     }
     playerNameChange(event) {
@@ -19,10 +22,12 @@ export default class PGNLoader extends React.Component {
     }
     load() {
         this.props.clear()
-        new PGNReader().parsePGN(this.state.playerName, this.props.notify)
+        new PGNReader().parsePGN(this.state.playerName, this.state.site, this.props.notify)
         this.props.onChange("playerName", this.state.playerName)
     }
-
+    siteChange(event) {
+        this.setState({site:event.target.value})
+    }
     handleChange(playerColor){
         return (()=>{
                 this.props.onChange("playerColor", playerColor)
@@ -31,12 +36,17 @@ export default class PGNLoader extends React.Component {
     render() {
         return <div>
             <div className = "pgnloadersection">
-                Analyze games of: <br/>
+                <RadioGroup defaultValue={this.state.site} onChange={this.siteChange.bind(this)}>
+                    <FormControlLabel className = "sitelabel" value="lichess" control={<Radio color="primary"/>} label={<span><img className="siteimage" src="/lichesslogo.png"/> lichess.org</span>} />
+                    <FormControlLabel className = "sitelabel" value="chesscom" control={<Radio color="primary"/>} label={<img className="siteimage" src="/chesscomlogo.png"/>} />
+                </RadioGroup>
+            </div>
+            <div className = "pgnloadersection">
                 <input type="text" 
                         onChange= {this.playerNameChange.bind(this)} 
                         name="playerName" 
                         id="playerNameTextBox"
-                        placeholder="Lichess user name"/>
+                        placeholder={`${this.state.site==="lichess"?"lichess":"chess.com"} username`}/>
                 <button onClick = {this.load.bind(this)}>Load</button> </div>
                 <div className="pgnloadersection">playing as: 
                     <div>

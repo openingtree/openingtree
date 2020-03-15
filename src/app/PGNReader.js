@@ -4,15 +4,19 @@ import Chess from 'chess.js'
 import LichessIterator from './LichessIterator';
 
 export default class PGNReader {
-    parsePGN(playerName, notify) {
-        new LichessIterator(playerName, (result) => {
-            if(!result || !result.length) {
-                return
-            }
-            setTimeout(() => {
-                this.parsePGNTimed(result, 0, playerName, notify)
-            } ,1)
-        })
+    parsePGN(playerName, site, notify) {
+        if(site === "lichess") {
+            new LichessIterator(playerName, (result) => {
+                if(!result || !result.length) {
+                    return
+                }
+                setTimeout(() => {
+                    this.parsePGNTimed(result, 0, playerName, notify)
+                } ,1)
+            })
+        } else if(site === "chesscom") {
+            alert("not yet supported")
+        }
 
         
     }
