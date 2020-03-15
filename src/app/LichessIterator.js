@@ -9,9 +9,9 @@ export default class LichessIterator {
             showError('failed to connect to lichess.org')
         }).on('response',(response)=>{
             if(response.statusCode === 404) {
-                showError('could not find user ' + playerName)
+                showError('could not find lichess user ' + playerName)
             } else if (response.statusCode !== 200) {
-                showError('could not load games of user ' + playerName)
+                showError('could not load games of lichess user ' + playerName)
             }
         }).on('data', (data) => {
             let newBody = remainingBody + data.toString();
