@@ -5,9 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 
 export default class MovesList extends React.Component {
-    constructor(props) {
-        super(props)
-    }
 
     move(from, to) {
         return () => {
@@ -23,17 +20,19 @@ export default class MovesList extends React.Component {
             return <div className = "infoMessage" >No moves to show. Please enter a lichess user name in the 
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
         }
-        return <Table>  
-            <TableHead>            
+        return <Table>
+            <TableHead>
             <TableRow>
                 <TableCell size="small" className="smallCol"><b>Move</b></TableCell>
                 <TableCell size="small" className="smallCol"><b>Games</b></TableCell>
                 <TableCell><b>Results</b></TableCell>
             </TableRow></TableHead>  
+            {
+                (this.props.movesToShow)?
             <TableBody>
-        {
-            (this.props.movesToShow)? this.props.movesToShow.map(move => 
-                <TableRow className="moveRow" onClick={this.move(move.orig, move.dest)}>
+            {
+            this.props.movesToShow.map(move => 
+                <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                     <TableCell size="small" className="smallCol">{move.san}</TableCell>
                     <TableCell size="small" className="smallCol">{move.count}</TableCell>
                     <TableCell>
@@ -44,8 +43,10 @@ export default class MovesList extends React.Component {
                         </Progress>
                     </TableCell>
                 </TableRow>
-            ):""
-        }</TableBody>{
+            )}
+        </TableBody>
+        :<TableBody></TableBody>
+                }   {
             this.props.movesToShow?
             <TableFooter><TableRow>
             <TableCell colSpan="3">
@@ -53,7 +54,7 @@ export default class MovesList extends React.Component {
                 played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
                 this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
                 </TableCell></TableRow></TableFooter>
-                :""
+                :<TableFooter></TableFooter>
             }
         </Table>
     }

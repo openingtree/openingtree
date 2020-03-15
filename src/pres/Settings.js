@@ -5,15 +5,11 @@ import { faRetweet, faTrashAlt, faRandom, faFastBackward, faDesktop } from '@for
 import {Container, Row, Col} from 'reactstrap'
 
 export default class SettingsView extends React.Component {
-    constructor(props){
-        super(props)
-    }
-
     toggle(eventName){
         return (()=> {
             let newValue = this.props.settings[eventName] === 'white' ? 'black':'white'
             this.props.onChange(eventName, newValue)
-        }).bind(this)
+        })
     }
     analyse() {
         window.open(`https://www.lichess.org/analysis/${this.props.fen}`, '_blank');

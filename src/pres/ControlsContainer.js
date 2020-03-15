@@ -1,10 +1,10 @@
 import React from 'react'
 import PGNLoader from './PGNLoader'
 import SettingsView from './Settings'
-import { TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faList, faLightbulb, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faList, faCog } from '@fortawesome/free-solid-svg-icons'
 import MovesList from './MovesList';
 
 export default class ControlsContainer extends React.Component {

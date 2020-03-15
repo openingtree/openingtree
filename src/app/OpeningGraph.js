@@ -1,4 +1,3 @@
-import { clear } from "chessground/draw";
 
 class OpeningGraph {
     graph = new Graph()

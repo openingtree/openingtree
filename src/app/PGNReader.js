@@ -1,4 +1,3 @@
-import {parse } from './PGNParser'
 import {openingGraph} from './OpeningGraph'
 import Chess from 'chess.js'
 import LichessIterator from './LichessIterator'

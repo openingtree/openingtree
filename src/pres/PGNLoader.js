@@ -30,14 +30,14 @@ export default class PGNLoader extends React.Component {
     handleChange(playerColor){
         return (()=>{
                 this.props.onChange("playerColor", playerColor)
-        }).bind(this)
+        })
     }
     render() {
         return <div>
             <div className = "pgnloadersection">
-                <RadioGroup defaultValue={this.state.site} onChange={this.siteChange.bind(this)}>
-                    <FormControlLabel className = "sitelabel" value="lichess" control={<Radio color="primary"/>} label={<span><img className="siteimage" src="/lichesslogo.png"/> lichess.org</span>} />
-                    <FormControlLabel className = "sitelabel" value="chesscom" control={<Radio color="primary"/>} label={<img className="siteimage" src="/chesscomlogo.png"/>} />
+                <RadioGroup defaultValue="lichess" onChange={this.siteChange.bind(this)}>
+                    <FormControlLabel className = "sitelabel" value="lichess" control={<Radio color="primary"/>} label={<span><img alt="lichess" className="siteimage" src="/lichesslogo.png"/> lichess.org</span>} />
+                    <FormControlLabel className = "sitelabel" value="chesscom" control={<Radio color="primary"/>} label={<img alt="chess.com" className="siteimage" src="/chesscomlogo.png"/>} />
                 </RadioGroup>
             </div>
             <div className = "pgnloadersection">

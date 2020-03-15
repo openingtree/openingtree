@@ -37,6 +37,7 @@ export default class MainContainer extends React.Component {
 
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
+    let snackBarOpen = this.state.errorMessage?true:false
     return <div> 
         <GlobalHeader/>
         <Container className="mainContainer">
@@ -72,7 +73,7 @@ export default class MainContainer extends React.Component {
                 showError={this.showError.bind(this)}
                 /></Col>
     </Row></Container>
-    <Snackbar anchorOrigin={{ vertical:'top', horizontal:"center" }} open={this.state.errorMessage} autoHideDuration={6000} onClose={this.closeError.bind(this)}>
+    <Snackbar anchorOrigin={{ vertical:'top', horizontal:"center" }} open={snackBarOpen} autoHideDuration={6000} onClose={this.closeError.bind(this)}>
     <Alert onClose={this.closeError.bind(this)} severity="warning">
       {this.state.errorMessage}
     </Alert>
