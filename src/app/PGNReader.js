@@ -10,7 +10,7 @@ export default class PGNReader {
                 return
             }
             setTimeout(() => {
-                this.parsePGNTimed(result, 0, playerName, notify)
+                this.parsePGNTimed(result, 0, playerName, notify, showError)
             } ,1)
         }
         if(site === "lichess") {
@@ -22,26 +22,30 @@ export default class PGNReader {
         
     }
 
-    parsePGNTimed(pgnArray, index,  playerName, notify) {
+    parsePGNTimed(pgnArray, index,  playerName, notify, showError) {
         if(index>= pgnArray.length) {
             return
         }
         var pgn = pgnArray[index]
         let playerColor = (pgn.headers.White.toLowerCase() === playerName.toLowerCase()) ? "w" : "b"
         let chess = new Chess()
-        pgn.moves.forEach(element => {
-            let fen = chess.fen()
-            let move = chess.move(element.move)
-            if(!move){
-                console.log(move)
-            }
-            if(move.color === playerColor) {
-                openingGraph.addMoveForFen(fen, move, pgn.result)
-            } else {
-                openingGraph.addMoveAgainstFen(fen,move, pgn.result)
-            }
-        })
-        setTimeout(()=>{this.parsePGNTimed(pgnArray, index+1, playerName, notify)},1)
-        notify(1, openingGraph)
+        if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
+            pgn.moves.forEach(element => {
+                let fen = chess.fen()
+                let move = chess.move(element.move)
+                if(!move){
+                    console.log('failed to load game ' + pgn)
+                    showError("Failed to load game")
+                    return
+                }
+                if(move.color === playerColor) {
+                    openingGraph.addMoveForFen(fen, move, pgn.result)
+                } else {
+                    openingGraph.addMoveAgainstFen(fen,move, pgn.result)
+                }
+            })
+            notify(1, openingGraph)
+        }
+        setTimeout(()=>{this.parsePGNTimed(pgnArray, index+1, playerName, notify, showError)},1)
     }
 }

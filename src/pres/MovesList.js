@@ -27,11 +27,9 @@ export default class MovesList extends React.Component {
                 <TableCell size="small" className="smallCol"><b>Games</b></TableCell>
                 <TableCell><b>Results</b></TableCell>
             </TableRow></TableHead>  
-            {
-                (this.props.movesToShow)?
             <TableBody>
             {
-            this.props.movesToShow.map(move => 
+            this.props.movesToShow?this.props.movesToShow.map(move => 
                 <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                     <TableCell size="small" className="smallCol">{move.san}</TableCell>
                     <TableCell size="small" className="smallCol">{move.count}</TableCell>
@@ -43,10 +41,9 @@ export default class MovesList extends React.Component {
                         </Progress>
                     </TableCell>
                 </TableRow>
-            )}
+            ):null}
         </TableBody>
-        :<TableBody></TableBody>
-                }   {
+          {
             this.props.movesToShow?
             <TableFooter><TableRow>
             <TableCell colSpan="3">
