@@ -13,7 +13,7 @@ export default class PGNReader {
                 setTimeout(() => {
                     this.parsePGNTimed(result, 0, playerName, notify)
                 } ,1)
-            })
+            }, showError)
         } else if(site === "chesscom") {
             showError("Chess.com is not yet supported")
         }

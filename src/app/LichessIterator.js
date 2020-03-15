@@ -3,9 +3,17 @@ import { parse }  from './PGNParser'
 
 export default class LichessIterator {
 
-    constructor(playerName, ready) {
+    constructor(playerName, ready, showError) {
         let remainingBody = ''
-        request.get(`https://lichess.org/api/games/user/${encodeURIComponent(playerName)}`, { json: false }).on('data', (data) => {
+        request.get(`https://lichess.org/api/games/user/${encodeURIComponent(playerName)}`, { json: false }).on('error', (error)=> {
+            showError('failed to connect to lichess.org')
+        }).on('response',(response)=>{
+            if(response.statusCode === 404) {
+                showError('could not find user ' + playerName)
+            } else if (response.statusCode !== 200) {
+                showError('could not load games of user ' + playerName)
+            }
+        }).on('data', (data) => {
             let newBody = remainingBody + data.toString();
             let lastValidPGN = newBody.lastIndexOf("\n\n\n")
             let body = newBody.slice(0, lastValidPGN).trim()
