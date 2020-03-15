@@ -11,6 +11,7 @@
     "bootstrap": "^4.4.1",
     "chess-eco-codes": "git+https://git@github.com/vjuneja/chess-eco-codes.git",
     "chess-tools": "^0.3.0",
+    "chess-web-api": "^1.0.6",
     "chess.js": "^0.10.2",
     "react": "^16.12.0",
     "react-chessground": "^1.0.0",
