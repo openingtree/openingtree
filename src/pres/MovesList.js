@@ -1,6 +1,6 @@
 import {Progress } from "reactstrap"
 import React from 'react'
-import { Table, TableRow, TableHead, TableBody, TableCell } from '@material-ui/core';
+import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 
@@ -43,6 +43,10 @@ export default class MovesList extends React.Component {
                 </TableRow>
             ):""
         }</TableBody>
+        <TableFooter><TableRow>
+        <TableCell colSpan="3">
+            Showing moves that have been played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor}.
+            </TableCell></TableRow></TableFooter>
         </Table>
     }
 }

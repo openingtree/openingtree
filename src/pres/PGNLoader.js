@@ -20,6 +20,7 @@ export default class PGNLoader extends React.Component {
     load() {
         this.props.clear()
         new PGNReader().parsePGN(this.state.playerName, this.props.notify)
+        this.props.onChange("playerName", this.state.playerName)
     }
 
     handleChange(playerColor){

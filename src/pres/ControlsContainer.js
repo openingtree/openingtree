@@ -60,7 +60,13 @@ export default class ControlsContainer extends React.Component {
             <PGNLoader switchToMovesTab={this.switchToMovesTab.bind(this)} clear = {this.props.clear} gamesProcessed = {this.props.gamesProcessed} settings = {this.props.settings} onChange = {this.props.settingsChange} notify = {this.props.updateProcessedGames}/>
             </TabPane>
         <TabPane tabId="moves">
-            <MovesList switchToUserTab={this.switchToUserTab.bind(this)} movesToShow={this.props.movesToShow} onMove={this.props.onMove}/>
+            <MovesList 
+              switchToUserTab={this.switchToUserTab.bind(this)} 
+              movesToShow={this.props.movesToShow} 
+              onMove={this.props.onMove}
+              settings={this.props.settings}
+              turnColor={this.props.turnColor}
+              />
         </TabPane>
         <TabPane tabId="settings">
           <Row>

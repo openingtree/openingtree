@@ -20,8 +20,8 @@ export default class MainContainer extends React.Component {
         lastMove: null,
         gamesProcessed:0,
         openingGraph:openingGraph,
-        playerName:'',
         settings:{
+          playerName:'',
           orientation:'white',
           playerColor:'white'
         }
@@ -66,6 +66,7 @@ export default class MainContainer extends React.Component {
                 clear={this.clear.bind(this)}
                 movesToShow={this.movesToShow()}
                 onMove={this.onMove.bind(this)}
+                turnColor={this.turnColor()}
                 /></Col>
     </Row></Container>
     </div>
