@@ -8,6 +8,8 @@ import GlobalHeader from './GlobalHeader'
 import {Container, Row, Col} from 'reactstrap'
 import ControlsContainer from './ControlsContainer'
 import {addStateManagement} from './StateManagement'
+import {Snackbar} from '@material-ui/core'
+import Alert from '@material-ui/lab/Alert';
 
 export default class MainContainer extends React.Component {
   
@@ -24,13 +26,13 @@ export default class MainContainer extends React.Component {
           playerName:'',
           orientation:'white',
           playerColor:'white'
-        }
+        },
+        errorMessage:''
       }
     this.forBrushes = ['paleGrey', 'paleGreen', 'green']
     this.againstBrushes = ['paleRed', 'paleRed', 'red']
   }
 
- 
 
 
   render() {
@@ -67,8 +69,14 @@ export default class MainContainer extends React.Component {
                 movesToShow={this.movesToShow()}
                 onMove={this.onMove.bind(this)}
                 turnColor={this.turnColor()}
+                showError={this.showError.bind(this)}
                 /></Col>
     </Row></Container>
+    <Snackbar anchorOrigin={{ vertical:'top', horizontal:"center" }} open={this.state.errorMessage} autoHideDuration={6000} onClose={this.closeError.bind(this)}>
+    <Alert onClose={this.closeError.bind(this)} severity="warning">
+      {this.state.errorMessage}
+    </Alert>
+  </Snackbar>
     </div>
   }
 }

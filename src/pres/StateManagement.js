@@ -107,6 +107,13 @@ function settingsChange(name, value) {
         'settings':settings
     })
 }
+function showError(message) {
+    this.setState({errorMessage:message})
+  }
+
+function closeError() {
+    this.setState({errorMessage:''})
+  }
 
 function addStateManagement(obj){
     obj.orientation  = orientation
@@ -124,6 +131,8 @@ function addStateManagement(obj){
     obj.brushes = brushes
     obj.moveToShape = moveToShape
     obj.movesToShow = movesToShow
+    obj.showError = showError
+    obj.closeError = closeError
 }
 
 export {addStateManagement}

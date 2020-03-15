@@ -4,7 +4,7 @@ import Chess from 'chess.js'
 import LichessIterator from './LichessIterator';
 
 export default class PGNReader {
-    parsePGN(playerName, site, notify) {
+    parsePGN(playerName, site, notify, showError) {
         if(site === "lichess") {
             new LichessIterator(playerName, (result) => {
                 if(!result || !result.length) {
@@ -15,7 +15,7 @@ export default class PGNReader {
                 } ,1)
             })
         } else if(site === "chesscom") {
-            alert("not yet supported")
+            showError("Chess.com is not yet supported")
         }
 
         

@@ -4,7 +4,6 @@ import {Button} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList } from '@fortawesome/free-solid-svg-icons'
 import { Radio,FormControlLabel,RadioGroup } from '@material-ui/core';
-import {Row, Col} from 'reactstrap'
 
 export default class PGNLoader extends React.Component {
 
@@ -22,7 +21,7 @@ export default class PGNLoader extends React.Component {
     }
     load() {
         this.props.clear()
-        new PGNReader().parsePGN(this.state.playerName, this.state.site, this.props.notify)
+        new PGNReader().parsePGN(this.state.playerName, this.state.site, this.props.notify, this.props.showError)
         this.props.onChange("playerName", this.state.playerName)
     }
     siteChange(event) {
