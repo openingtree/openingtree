@@ -14,6 +14,9 @@ export default class MovesList extends React.Component {
             this.props.onMove(from, to)
         }
     }
+    changePlayerColor() {
+        this.props.settingsChange('playerColor', this.props.settings.playerColor === "white"? "black":"white")
+    }
 
     render(){
         if(!this.props.movesToShow) {
@@ -45,7 +48,9 @@ export default class MovesList extends React.Component {
         }</TableBody>
         <TableFooter><TableRow>
         <TableCell colSpan="3">
-            Showing moves that have been played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor}.
+            Showing moves that have been 
+            played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
+            this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
             </TableCell></TableRow></TableFooter>
         </Table>
     }

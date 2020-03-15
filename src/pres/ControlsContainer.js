@@ -66,6 +66,7 @@ export default class ControlsContainer extends React.Component {
               onMove={this.props.onMove}
               settings={this.props.settings}
               turnColor={this.props.turnColor}
+              settingsChange={this.props.settingsChange}
               />
         </TabPane>
         <TabPane tabId="settings">
