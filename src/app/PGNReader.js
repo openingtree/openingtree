@@ -4,7 +4,7 @@ import LichessIterator from './LichessIterator'
 import ChessComIterator from './ChessComIterator'
 
 export default class PGNReader {
-    parsePGN(playerName, site, notify, showError) {
+    parsePGN(playerName, site, notify, showError, stopDownloading) {
         this.continueProcessingGames = true
         let handleResponse = (result) => {
             if(!result || !result.length) {
@@ -16,9 +16,9 @@ export default class PGNReader {
             return this.continueProcessingGames
         }
         if(site === "lichess") {
-            new LichessIterator(playerName, handleResponse, showError)
+            new LichessIterator(playerName, handleResponse, showError, stopDownloading)
         } else if(site === "chesscom") {
-            new ChessComIterator(playerName, handleResponse, showError)
+            new ChessComIterator(playerName, handleResponse, showError, stopDownloading)
         }
 
         
@@ -48,8 +48,6 @@ export default class PGNReader {
             })
             this.continueProcessingGames = notify(1, openingGraph)
         }
-        if(this.continueProcessingGames) {
             setTimeout(()=>{this.parsePGNTimed(pgnArray, index+1, playerName, notify, showError)},1)
-        }
     }
 }

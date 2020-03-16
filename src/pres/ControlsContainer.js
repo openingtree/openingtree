@@ -64,7 +64,10 @@ export default class ControlsContainer extends React.Component {
               settings = {this.props.settings} 
               onChange = {this.props.settingsChange} 
               notify = {this.props.updateProcessedGames}
-              showError = {this.props.showError}/>
+              showError = {this.props.showError}
+              setDownloading = {this.props.setDownloading}
+              isDownloading = {this.props.isDownloading}
+              />
             </TabPane>
         <TabPane tabId="moves">
             <MovesList 

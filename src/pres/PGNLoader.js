@@ -21,8 +21,12 @@ export default class PGNLoader extends React.Component {
     }
     load() {
         this.props.clear()
-        new PGNReader().parsePGN(this.state.playerName, this.state.site, this.props.notify, this.props.showError)
+        new PGNReader().parsePGN(this.state.playerName, this.state.site, this.props.notify, this.showError, this.stopDownloading.bind(this))
+        this.props.setDownloading(true)
         this.props.onChange("playerName", this.state.playerName)
+    }
+    stopDownloading() {
+        this.props.setDownloading(false)
     }
     siteChange(event) {
         this.setState({site:event.target.value})
@@ -57,7 +61,7 @@ export default class PGNLoader extends React.Component {
                     this.props.gamesProcessed>0?
                     <div>
                         <div className="pgnloadersection">
-                            {`Number of games Loaded: ${this.props.gamesProcessed}`}
+                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<a href="#" onClick={this.stopDownloading.bind(this)}>stop</a>]</span>:""}
                         </div>
                         <div onClick = {()=>this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
                             <FontAwesomeIcon icon={faList} /> View Moves>>

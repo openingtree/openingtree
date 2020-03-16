@@ -27,7 +27,8 @@ export default class MainContainer extends React.Component {
           orientation:'white',
           playerColor:'white'
         },
-        errorMessage:''
+        errorMessage:'',
+        downloadingGames:false
       }
     this.forBrushes = ['paleGrey', 'paleGreen', 'green']
     this.againstBrushes = ['paleRed', 'paleRed', 'red']
@@ -71,6 +72,8 @@ export default class MainContainer extends React.Component {
                 onMove={this.onMove.bind(this)}
                 turnColor={this.turnColor()}
                 showError={this.showError.bind(this)}
+                setDownloading={this.setDownloading.bind(this)}
+                isDownloading={this.state.downloadingGames}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'top', horizontal:"center" }} open={snackBarOpen} autoHideDuration={6000} onClose={this.closeError.bind(this)}>

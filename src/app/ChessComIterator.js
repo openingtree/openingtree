@@ -4,16 +4,22 @@ import request from 'request'
 
 export default class ChessComIterator {
 
-    constructor(playerName, ready, showError) {
+    constructor(playerName, ready, showError, stopDownloading) {
         let chessAPI = new ChessWebAPI({
             queue: true,
         });
-
+        let pendingRequests = 0;
         let parseGames= (archiveResponse)=>{
             let continueProcessing = ready(archiveResponse.body.games.filter(game=>game.rules==="chess").map(game=>parse(game.pgn)[0]))
             if(!continueProcessing) {
+                //cancel all pending requests
                 while(chessAPI.dequeue()){}
             }
+            pendingRequests--
+            if(pendingRequests<=0) {
+                stopDownloading()
+            }
+
         }
 
         let fetchAllGames = function(responseBody) {
@@ -21,6 +27,7 @@ export default class ChessComIterator {
                 let components=archiveUrl.split('/')
                 let year=components[components.length-2]
                 let month=components[components.length-1]
+                pendingRequests++
                 chessAPI.dispatch(chessAPI.getPlayerCompleteMonthlyArchives, parseGames, [playerName, year, month]);
             })
         }

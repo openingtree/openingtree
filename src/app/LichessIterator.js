@@ -3,7 +3,7 @@ import { parse }  from './PGNParser'
 
 export default class LichessIterator {
 
-    constructor(playerName, ready, showError) {
+    constructor(playerName, ready, showError, stopDownloading) {
         let remainingBody = ''
         let requestObject = request.get(`https://lichess.org/api/games/user/${encodeURIComponent(playerName)}`, { json: false }).on('error', (error)=> {
             showError('failed to connect to lichess.org')
@@ -42,6 +42,8 @@ export default class LichessIterator {
             if(!continueProcessing) {
                 requestObject.abort()
             }
+        }).on('end', () => {
+            stopDownloading()
         })
     }
 }

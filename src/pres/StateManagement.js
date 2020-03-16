@@ -52,10 +52,8 @@ function updateProcessedGames(n, openingGraph) {
     gamesProcessed: this.state.gamesProcessed+n,
     openingGraph: openingGraph
     })
-    if(this.state.gamesProcessed+n>2500) {
-        return false
-    }
-    return true
+    
+    return this.state.downloadingGames
 }
 function moveToShape(move) {
     return {
@@ -113,11 +111,15 @@ function settingsChange(name, value) {
 }
 function showError(message) {
     this.setState({errorMessage:message})
-  }
+}
 
 function closeError() {
     this.setState({errorMessage:''})
-  }
+}
+
+function setDownloading(val) {
+    this.setState({downloadingGames:val})
+}
 
 function addStateManagement(obj){
     obj.orientation  = orientation
@@ -137,6 +139,7 @@ function addStateManagement(obj){
     obj.movesToShow = movesToShow
     obj.showError = showError
     obj.closeError = closeError
+    obj.setDownloading = setDownloading
 }
 
 export {addStateManagement}
