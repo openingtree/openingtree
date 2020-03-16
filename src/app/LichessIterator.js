@@ -5,7 +5,7 @@ export default class LichessIterator {
 
     constructor(playerName, ready, showError) {
         let remainingBody = ''
-        request.get(`https://lichess.org/api/games/user/${encodeURIComponent(playerName)}`, { json: false }).on('error', (error)=> {
+        let requestObject = request.get(`https://lichess.org/api/games/user/${encodeURIComponent(playerName)}`, { json: false }).on('error', (error)=> {
             showError('failed to connect to lichess.org')
         }).on('response',(response)=>{
             if(response.statusCode === 404) {
@@ -31,13 +31,17 @@ export default class LichessIterator {
                 }
             })
 
-            ready(parsedPGNs.filter((pgn)=>{
+            let continueProcessing = ready(parsedPGNs.filter((pgn)=>{
                 if(!pgn) {
                     return false
                 }
                 return pgn.headers.Variant === "Standard" &&
                     (pgn.headers.Black.toLowerCase() === playerName.toLowerCase() || pgn.headers.White.toLowerCase() === playerName.toLowerCase())
             }))
+
+            if(!continueProcessing) {
+                requestObject.abort()
+            }
         })
     }
 }

@@ -5,13 +5,15 @@ import ChessComIterator from './ChessComIterator'
 
 export default class PGNReader {
     parsePGN(playerName, site, notify, showError) {
+        this.continueProcessingGames = true
         let handleResponse = (result) => {
             if(!result || !result.length) {
-                return
+                return this.continueProcessingGames
             }
             setTimeout(() => {
                 this.parsePGNTimed(result, 0, playerName, notify, showError)
             } ,1)
+            return this.continueProcessingGames
         }
         if(site === "lichess") {
             new LichessIterator(playerName, handleResponse, showError)
@@ -44,8 +46,10 @@ export default class PGNReader {
                     openingGraph.addMoveAgainstFen(fen,move, pgn.result)
                 }
             })
-            notify(1, openingGraph)
+            this.continueProcessingGames = notify(1, openingGraph)
         }
-        setTimeout(()=>{this.parsePGNTimed(pgnArray, index+1, playerName, notify, showError)},1)
+        if(this.continueProcessingGames) {
+            setTimeout(()=>{this.parsePGNTimed(pgnArray, index+1, playerName, notify, showError)},1)
+        }
     }
 }

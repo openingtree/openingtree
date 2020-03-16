@@ -52,6 +52,10 @@ function updateProcessedGames(n, openingGraph) {
     gamesProcessed: this.state.gamesProcessed+n,
     openingGraph: openingGraph
     })
+    if(this.state.gamesProcessed+n>2500) {
+        return false
+    }
+    return true
 }
 function moveToShape(move) {
     return {

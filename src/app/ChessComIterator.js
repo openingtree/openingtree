@@ -10,7 +10,10 @@ export default class ChessComIterator {
         });
 
         let parseGames= (archiveResponse)=>{
-            ready(archiveResponse.body.games.filter(game=>game.rules==="chess").map(game=>parse(game.pgn)[0]))
+            let continueProcessing = ready(archiveResponse.body.games.filter(game=>game.rules==="chess").map(game=>parse(game.pgn)[0]))
+            if(!continueProcessing) {
+                while(chessAPI.dequeue()){}
+            }
         }
 
         let fetchAllGames = function(responseBody) {
