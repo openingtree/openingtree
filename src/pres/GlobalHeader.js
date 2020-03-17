@@ -79,7 +79,8 @@ const GlobalHeader = (props) => {
         <ListGroupItem tag="a" href="https://github.com/niklasf/eco" target="_blank" action>Eco</ListGroupItem>
         <ListGroupItem tag="a" href="https://FreeLogoDesign.org" target="_blank" action>Free logo design</ListGroupItem>
         <ListGroupItem tag="a" href="https://github.com/kevinludwig/pgn-parser" target="_blank" action>PGN Parser</ListGroupItem>
-        
+        <ListGroupItem tag="a" href="https://www.reddit.com/r/chess" target="_blank" action>r/chess</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.reddit.com/r/anarchychess" target="_blank" action>r/anarchychess</ListGroupItem>
         </ListGroup>
         <ModalFooter>
           <Button color="secondary" onClick={toggleModal}>Done</Button>
