@@ -7,19 +7,26 @@ import {
   NavbarToggler,
   Collapse,
   Nav,
-  NavItem,
-  NavLink,
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  ListGroup,
+  ListGroupItem
 } from 'reactstrap'
 
 const GlobalHeader = (props) => {
   const [isOpen, setIsOpen] = useState(false)
-
+  const [modal, setModal] = useState(false);
+  
   const toggle = () => setIsOpen(!isOpen)
+  const toggleModal = () => setModal(!modal)
+  
   const launch = (url) => {
     return () => {
       window.open(url, "_blank")
@@ -39,7 +46,7 @@ const GlobalHeader = (props) => {
                 More
               </DropdownToggle>
               <DropdownMenu right>
-                <DropdownItem>
+                <DropdownItem onClick={toggleModal}>
                   Acknowledgements
                 </DropdownItem>
                 <DropdownItem onClick={launch("mailto:openingtreechess@gmail.com")}>
@@ -62,6 +69,22 @@ const GlobalHeader = (props) => {
             </UncontrolledDropdown>
         </Collapse>
       </Navbar>
+      <Modal isOpen={modal} toggle={toggleModal}>
+        <ModalHeader toggle={toggleModal}>Acknowledgements</ModalHeader>
+        <ListGroup className="acknowledgement">
+        <ListGroupItem tag="a" href="https://lichess.org/api" target="_blank" action>Lichess API</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.chess.com/club/chess-com-developer-community" target="_blank" action>Chess.com API</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/ruilisi/react-chessground" target="_blank" action>ChessGround</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/jhlywa/chess.js" target="_blank" action>Chess.js</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/niklasf/eco" target="_blank" action>Eco</ListGroupItem>
+        <ListGroupItem tag="a" href="https://FreeLogoDesign.org" target="_blank" action>Free logo design</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/kevinludwig/pgn-parser" target="_blank" action>PGN Parser</ListGroupItem>
+        
+        </ListGroup>
+        <ModalFooter>
+          <Button color="secondary" onClick={toggleModal}>Done</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   )
 }

@@ -93,3 +93,7 @@
 .bootNavColor {
     color:rgba(0,0,0,0.5)
 }
+
+.acknowledgement{
+    line-height: 0.80;
+}
