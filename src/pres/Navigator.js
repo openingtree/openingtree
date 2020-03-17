@@ -52,6 +52,7 @@ export default class Navigator extends React.Component {
         let opening = ChessEcoCodes(this.openingManager.fen())
         if (opening) {
             this.opening = opening.name
+            this.openingCode = opening.code
         }
         if(!this.openingManager.pgnListSoFar()) {
             return <div></div>
@@ -60,7 +61,7 @@ export default class Navigator extends React.Component {
             <Row>
             <Col lg="6" className="navSection"><Button color="" className= "settingButton" onClick= {this.previous.bind(this)}><FontAwesomeIcon icon={faStepBackward} /> prev</Button> </Col>
             <Col lg="6" className="navSection"><Button color="" className= "settingButton" onClick = {this.next.bind(this)}>next <FontAwesomeIcon icon={faStepForward} /></Button></Col></Row>
-            <Row>{this.opening}</Row>
+            <Row>{this.openingCode}: {this.opening}</Row>
             {
                 this.openingManager.pgnListSoFar().map((move, index)=>
                     <Row key={`${move.moveNumber}`} onClick={this.moveTo(index).bind(this)} className={`navCol ${this.openingManager.currentMove() === index? 'selectedMove':''}`}>
