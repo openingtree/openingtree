@@ -4,6 +4,15 @@ class OpeningGraph {
     clear() {
         this.graph = new Graph()
     }
+    addGameResultOnFen(fen, gameResult) {
+        var currNode = this.graph.nodes.get(fen)
+        if(!currNode) {
+            currNode = new GraphNode()
+            currNode.fen = fen
+            this.graph.nodes.set(fen, currNode)
+        }
+        currNode.gameResults.push(gameResult)
+    }
     addMoveForFen(fen, move, result) {
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
@@ -68,6 +77,13 @@ class OpeningGraph {
         currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
         
         currNode.playedAgainst = movesPlayedAgainst
+    }
+    gameResultsForFen(fen) {
+        var currNode = this.graph.nodes.get(fen)
+        if(currNode) {
+            return currNode.gameResults
+        }
+        return null
     }
     movesForFen(fen) {
         var currNode = this.graph.nodes.get(fen)
@@ -143,6 +159,7 @@ class GraphNode {
     playedBy = new Map()
     playedAgainstMax = 0
     playedAgainst = new Map()
+    gameResults = []
 //    engineAnalyses = []
 //    filters = {}
     properties = {}

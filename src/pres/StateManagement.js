@@ -82,6 +82,10 @@ function movesToShow() {
     return moves?moves.sort((a,b)=>b.count-a.count):moves
 }
 
+function gameResults() {
+    return this.state.openingGraph.gameResultsForFen(this.chess.fen())
+}
+
 function fillArray(arr, len) {
     for (var i = arr.length; i < len; i++) {
         arr.push({'orig':'i'+i, 'dest':'i'+(i+1), brush:this.brushes()[0]});
@@ -137,6 +141,7 @@ function addStateManagement(obj){
     obj.brushes = brushes
     obj.moveToShape = moveToShape
     obj.movesToShow = movesToShow
+    obj.gameResults = gameResults
     obj.showError = showError
     obj.closeError = closeError
     obj.setDownloading = setDownloading

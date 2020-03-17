@@ -69,6 +69,7 @@ export default class MainContainer extends React.Component {
                 reset={this.reset.bind(this)}
                 clear={this.clear.bind(this)}
                 movesToShow={this.movesToShow()}
+                gameResults={this.gameResults()}
                 onMove={this.onMove.bind(this)}
                 turnColor={this.turnColor()}
                 showError={this.showError.bind(this)}

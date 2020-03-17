@@ -73,6 +73,7 @@ export default class ControlsContainer extends React.Component {
             <MovesList 
               switchToUserTab={this.switchToUserTab.bind(this)} 
               movesToShow={this.props.movesToShow} 
+              gameResults={this.props.gameResults}
               onMove={this.props.onMove}
               settings={this.props.settings}
               turnColor={this.props.turnColor}

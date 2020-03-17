@@ -30,8 +30,8 @@ export default class PGNReader {
         }
         var pgn = pgnArray[index]
         let playerColor = (pgn.headers.White.toLowerCase() === playerName.toLowerCase()) ? "w" : "b"
-        let chess = new Chess()
         if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
+            let chess = new Chess()
             pgn.moves.forEach(element => {
                 let fen = chess.fen()
                 let move = chess.move(element.move)
@@ -46,8 +46,23 @@ export default class PGNReader {
                     openingGraph.addMoveAgainstFen(fen,move, pgn.result)
                 }
             })
+            let fen = chess.fen()
+            openingGraph.addGameResultOnFen(fen, this.gameResult(pgn))
             this.continueProcessingGames = notify(1, openingGraph)
         }
             setTimeout(()=>{this.parsePGNTimed(pgnArray, index+1, playerName, notify, showError)},1)
+    }
+
+    gameResult(pgn) {
+        let result = pgn.headers.Result
+        let white = pgn.headers.White
+        let black = pgn.headers.Black
+        let url = pgn.headers.Link || pgn.headers.Site
+        return {
+            result:result,
+            white:white,
+            black:black,
+            url:url
+        }
     }
 }
