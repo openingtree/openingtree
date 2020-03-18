@@ -13,7 +13,6 @@ import {
   DropdownItem,
   Modal,
   ModalHeader,
-  ModalBody,
   ModalFooter,
   Button,
   ListGroup,
