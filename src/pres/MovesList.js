@@ -26,7 +26,7 @@ export default class MovesList extends React.Component {
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
         }
     return <div>{(this.props.gameResults && this.props.gameResults.length>0)?this.resultsTable():null}
-                {(this.props.movesToShow && this.props.movesToShow.length>0)?this.movesTable():null}</div>
+                {this.movesTable()}</div>
     }
     resultsTable() {
         return <Table>
@@ -43,13 +43,17 @@ export default class MovesList extends React.Component {
         </Table>
     }
     movesTable() {
+        let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)
         return <Table>
+            {hasMoves?
         <TableHead>
         <TableRow>
             <TableCell size="small" className="smallCol"><b>Move</b></TableCell>
             <TableCell size="small" className="smallCol"><b>Games</b></TableCell>
             <TableCell><b>Results</b></TableCell>
         </TableRow></TableHead>  
+        :null}
+        {hasMoves?
         <TableBody>
         {
         this.props.movesToShow.map(move => 
@@ -66,16 +70,20 @@ export default class MovesList extends React.Component {
             </TableRow>
         )}
     </TableBody>
-      {
-        this.props.movesToShow?
+    :null}
         <TableFooter><TableRow>
-        <TableCell colSpan="3">
+        {
+        hasMoves?
+            <TableCell colSpan="3">
             Showing moves that have been 
             played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
             this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
-            </TableCell></TableRow></TableFooter>
-            :<TableFooter></TableFooter>
-        }
+            </TableCell>:
+            <TableCell colSpan="3">
+            No moves found in this position played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
+            this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
+            </TableCell>
+        }</TableRow></TableFooter>
     </Table>
     }
 }
