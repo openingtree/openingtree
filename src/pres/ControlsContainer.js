@@ -51,7 +51,7 @@ export default class ControlsContainer extends React.Component {
             className={classnames({ active: this.state.activeTab === 'settings' })}
             onClick={() => { this.toggle('settings'); }}
           >
-            <FontAwesomeIcon icon={faCog} /> Settings
+            <FontAwesomeIcon icon={faCog} /> Controls
           </NavLink>
         </NavItem>
       </Nav>

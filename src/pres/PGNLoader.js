@@ -21,7 +21,7 @@ export default class PGNLoader extends React.Component {
     }
     load() {
         this.props.clear()
-        new PGNReader().parsePGN(this.state.playerName, this.state.site, this.props.notify, this.showError, this.stopDownloading.bind(this))
+        new PGNReader().parsePGN(this.state.playerName, this.state.site, this.props.notify, this.props.showError, this.stopDownloading.bind(this))
         this.props.setDownloading(true)
         this.props.onChange("playerName", this.state.playerName)
     }
