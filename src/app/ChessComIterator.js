@@ -10,7 +10,17 @@ export default class ChessComIterator {
         });
         let pendingRequests = 0;
         let parseGames= (archiveResponse)=>{
-            let continueProcessing = ready(archiveResponse.body.games.filter(game=>game.rules==="chess").map(game=>parse(game.pgn)[0]))
+            let continueProcessing = ready(archiveResponse.body.games.filter(
+                game=>game.rules==="chess").map(
+                    game=> {
+                        try {
+                            return parse(game.pgn)[0]
+                        } catch (e) {
+                            console.log("failed to parse pgn", game)
+                            console.log(e)
+                            return null
+                        }
+                    }).filter(game=> game !== null))
             if(!continueProcessing) {
                 //cancel all pending requests
                 while(chessAPI.dequeue()){}
