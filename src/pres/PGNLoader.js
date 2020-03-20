@@ -1,8 +1,8 @@
 import React from 'react'
 import PGNReader from '../app/PGNReader'
-import {Button} from 'reactstrap'
+import {Button, Collapse, Card, CardBody} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList } from '@fortawesome/free-solid-svg-icons'
+import { faList, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import { Radio,FormControlLabel,RadioGroup } from '@material-ui/core';
 
 export default class PGNLoader extends React.Component {
@@ -12,8 +12,35 @@ export default class PGNLoader extends React.Component {
         this.state = {
             playerName:'',
             site:'lichess',
-            playerColor:this.props.settings.playerColor
+            playerColor:this.props.settings.playerColor,
+            isAdvancedFiltersOpen:false,
+            ultraBullet:true,
+            bullet:true,
+            blitz:true,
+            rapid:true,
+            classical:true,
+            correspondence:true,
+
+            fromDate:'1970/01',
+            toDate:'2100/12',
+            maxGames:10000,
+            rated:'all'
         }
+      
+    }
+    toggleRated() {
+        if(this.state.rated === 'all') {
+            this.setState({rated:'rated'})
+        } else if (this.state.rated === 'rated') {
+            this.setState({rated:'casual'})
+        } else {
+            this.setState({rated:'all'})
+        }
+    }
+    toggleAdvancedFilters(){
+        this.setState({
+            isAdvancedFiltersOpen:!this.state.isAdvancedFiltersOpen
+        })
     }
     playerNameChange(event) {
         this.setState({
@@ -48,12 +75,18 @@ export default class PGNLoader extends React.Component {
                     <FormControlLabel className = "sitelabel" value="chesscom" control={<Radio color="primary"/>} label={<img alt="chess.com" className="siteimage" src="/chesscomlogo.png"/>} />
                 </RadioGroup>
             </div>
-            <div className="pgnloadersection">Games played as: 
+            <div  className="pgnloadersection">Games played as: 
                 <div>
                 <Button onClick = {this.handleChange('white')} color = {this.state.playerColor === 'white'?'secondary':'link'}>White</Button>
                 <Button onClick = {this.handleChange('black')} color = {this.state.playerColor === 'black'?'secondary':'link'}>Black</Button>
                 </div>
             </div>
+    <div className="pgnloadersection"><a href="#" onClick ={this.toggleAdvancedFilters.bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen?faCaretUp:faCaretDown}/></a>
+            <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
+            <Card>
+                {this.getFilters(this.state.site)}
+            </Card>
+            </Collapse></div>
             <div className = "pgnloadersection">
                 <input type="text" 
                         onChange= {this.playerNameChange.bind(this)} 
@@ -74,6 +107,41 @@ export default class PGNLoader extends React.Component {
                         :""
                 }
 
+        </div>
+    }
+
+    ratedLabel() {
+        if(this.state.rated === 'all') {
+            return "Rated and casual"
+        } else if (this.state.rated === 'rated') {
+            return "Rated only"
+        } else if (this.state.rated === 'casual') {
+            return "Casual only"
+        }
+    }
+    
+    selectedTimeControls() {
+        return "All time controls"
+    }
+    whenPlayed() {
+        return "Anytime"
+    }
+    downloadLimit () {
+        return "No limit"
+    }
+
+    getFilters(site){
+        return <div>
+            {this.subSectionComponent('Rated', this.ratedLabel(), this.toggleRated.bind(this))}
+            {this.subSectionComponent('Time control', this.selectedTimeControls(), this.toggleRated.bind(this))}
+            {this.subSectionComponent('When played', this.whenPlayed(), this.toggleRated.bind(this))}
+            {this.subSectionComponent('Download limit', this.downloadLimit(), this.toggleRated.bind(this))}
+      </div>
+    }
+
+    subSectionComponent(title, label, changeCallback) {
+        return <div className="pgnloadersection">{title}: <span className="smallText">[<a href="#" onClick={changeCallback}>change</a>]</span>
+        <div><b>{label}</b></div>
         </div>
     }
 }
