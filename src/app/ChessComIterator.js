@@ -4,14 +4,14 @@ import request from 'request'
 
 export default class ChessComIterator {
 
-    constructor(playerName, ready, showError, stopDownloading) {
+    constructor(playerName, playerColor, ready, showError, stopDownloading) {
         let chessAPI = new ChessWebAPI({
             queue: true,
         });
         let pendingRequests = 0;
         let parseGames= (archiveResponse)=>{
             let continueProcessing = ready(archiveResponse.body.games.filter(
-                game=>game.rules==="chess").map(
+                game=>game.rules==="chess" && game[playerColor].username === playerName).map(
                     game=> {
                         try {
                             return parse(game.pgn)[0]

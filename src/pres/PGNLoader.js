@@ -22,10 +22,10 @@ export default class PGNLoader extends React.Component {
     }
     load() {
         this.props.clear()
-        new PGNReader().parsePGN(this.state.playerName, this.state.site, this.props.notify, this.props.showError, this.stopDownloading.bind(this))
-        this.props.setDownloading(true)
         this.props.onChange("playerName", this.state.playerName)
         this.props.onChange("playerColor", this.state.playerColor)
+        new PGNReader().parsePGN(this.state.playerName, this.state.playerColor, this.state.site, this.props.notify, this.props.showError, this.stopDownloading.bind(this))
+        this.props.setDownloading(true)
     }
     stopDownloading() {
         this.props.setDownloading(false)
@@ -48,6 +48,12 @@ export default class PGNLoader extends React.Component {
                     <FormControlLabel className = "sitelabel" value="chesscom" control={<Radio color="primary"/>} label={<img alt="chess.com" className="siteimage" src="/chesscomlogo.png"/>} />
                 </RadioGroup>
             </div>
+            <div className="pgnloadersection">Games played as: 
+                <div>
+                <Button onClick = {this.handleChange('white')} color = {this.state.playerColor === 'white'?'secondary':'link'}>White</Button>
+                <Button onClick = {this.handleChange('black')} color = {this.state.playerColor === 'black'?'secondary':'link'}>Black</Button>
+                </div>
+            </div>
             <div className = "pgnloadersection">
                 <input type="text" 
                         onChange= {this.playerNameChange.bind(this)} 
@@ -55,12 +61,6 @@ export default class PGNLoader extends React.Component {
                         id="playerNameTextBox"
                         placeholder={`${this.state.site==="lichess"?"lichess":"chess.com"} username`}/>
                 <button onClick = {this.load.bind(this)}>Load</button> </div>
-                <div className="pgnloadersection">playing as: 
-                    <div>
-                    <Button onClick = {this.handleChange('white')} color = {this.state.playerColor === 'white'?'secondary':'link'}>White</Button>
-                    <Button onClick = {this.handleChange('black')} color = {this.state.playerColor === 'black'?'secondary':'link'}>Black</Button>
-                  </div>
-                </div>
                 {
                     this.props.gamesProcessed>0?
                     <div>

@@ -3,9 +3,9 @@ import { parse }  from './PGNParser'
 
 export default class LichessIterator {
 
-    constructor(playerName, ready, showError, stopDownloading) {
+    constructor(playerName, playerColor, ready, showError, stopDownloading) {
         let remainingBody = ''
-        let requestObject = request.get(`https://lichess.org/api/games/user/${encodeURIComponent(playerName)}`, { json: false }).on('error', (error)=> {
+        let requestObject = request.get(`https://lichess.org/api/games/user/${encodeURIComponent(playerName)}?color=${playerColor}`, { json: false }).on('error', (error)=> {
             showError('failed to connect to lichess.org')
         }).on('response',(response)=>{
             if(response.statusCode === 404) {
