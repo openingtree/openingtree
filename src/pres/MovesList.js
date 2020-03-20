@@ -18,7 +18,7 @@ export default class MovesList extends React.Component {
     }
     render(){
         if(!this.props.settings.playerName) {
-            return <div className = "infoMessage" >No moves to show. Please enter a lichess user name in the 
+            return <div className = "infoMessage" >No moves to show. Please enter a lichess or chess.com user name in the 
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
         }
     return <div>{(this.props.gameResults && this.props.gameResults.length>0)?this.resultsTable():null}
