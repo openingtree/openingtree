@@ -16,10 +16,6 @@ export default class MovesList extends React.Component {
             window.open(url, '_blank');
         }
     }
-    changePlayerColor() {
-        this.props.settingsChange('playerColor', this.props.settings.playerColor === "white"? "black":"white")
-    }
-
     render(){
         if(!this.props.settings.playerName) {
             return <div className = "infoMessage" >No moves to show. Please enter a lichess user name in the 
@@ -77,11 +73,11 @@ export default class MovesList extends React.Component {
             <TableCell colSpan="3">
             Showing moves that have been 
             played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
-            this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
+            this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
             </TableCell>:
             <TableCell colSpan="3">
             No moves found in this position played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
-            this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
+            this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
             </TableCell>
         }</TableRow></TableFooter>
     </Table>

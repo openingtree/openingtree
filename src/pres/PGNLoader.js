@@ -11,7 +11,8 @@ export default class PGNLoader extends React.Component {
         super(props)
         this.state = {
             playerName:'',
-            site:'lichess'
+            site:'lichess',
+            playerColor:this.props.settings.playerColor
         }
     }
     playerNameChange(event) {
@@ -24,6 +25,7 @@ export default class PGNLoader extends React.Component {
         new PGNReader().parsePGN(this.state.playerName, this.state.site, this.props.notify, this.props.showError, this.stopDownloading.bind(this))
         this.props.setDownloading(true)
         this.props.onChange("playerName", this.state.playerName)
+        this.props.onChange("playerColor", this.state.playerColor)
     }
     stopDownloading() {
         this.props.setDownloading(false)
@@ -33,7 +35,9 @@ export default class PGNLoader extends React.Component {
     }
     handleChange(playerColor){
         return (()=>{
-                this.props.onChange("playerColor", playerColor)
+            this.setState({
+                playerColor:playerColor
+            })
         })
     }
     render() {
@@ -53,8 +57,8 @@ export default class PGNLoader extends React.Component {
                 <button onClick = {this.load.bind(this)}>Load</button> </div>
                 <div className="pgnloadersection">playing as: 
                     <div>
-                    <Button onClick = {this.handleChange('white')} color = {this.props.settings.playerColor === 'white'?'secondary':'link'}>White</Button>
-                    <Button onClick = {this.handleChange('black')} color = {this.props.settings.playerColor === 'black'?'secondary':'link'}>Black</Button>
+                    <Button onClick = {this.handleChange('white')} color = {this.state.playerColor === 'white'?'secondary':'link'}>White</Button>
+                    <Button onClick = {this.handleChange('black')} color = {this.state.playerColor === 'black'?'secondary':'link'}>Black</Button>
                   </div>
                 </div>
                 {
