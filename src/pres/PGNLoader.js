@@ -13,7 +13,10 @@ export default class PGNLoader extends React.Component {
             playerName:'',
             site:'lichess',
             playerColor:this.props.settings.playerColor,
+
             isAdvancedFiltersOpen:false,
+            currentlyOpenAdvancedFilter:'',
+
             ultraBullet:true,
             bullet:true,
             blitz:true,
@@ -37,20 +40,38 @@ export default class PGNLoader extends React.Component {
             this.setState({rated:'all'})
         }
     }
-    toggleAdvancedFilters(){
-        this.setState({
-            isAdvancedFiltersOpen:!this.state.isAdvancedFiltersOpen
-        })
+    toggleState(property) { 
+        return () => {
+            let newState = {}
+            newState[property] = !this.state[property]
+            this.setState(newState)
+        }
     }
+    setCurrentlyOpenAdvancedFilter(filterName) {
+        return () => {
+            if(this.state.currentlyOpenAdvancedFilter === filterName) {
+                //close if already open
+                filterName = ''
+            }
+            this.setState({currentlyOpenAdvancedFilter:filterName})
+        }
+    }
+
     playerNameChange(event) {
         this.setState({
             playerName:event.target.value
         })
     }
+    playerColorChange(playerColor) {
+        return () =>
+            this.setState({playerColor:playerColor})
+    }
     load() {
         this.props.clear()
+        // set the player name and color in the global state
         this.props.onChange("playerName", this.state.playerName)
         this.props.onChange("playerColor", this.state.playerColor)
+        this.setState({isAdvancedFiltersOpen:false})
         new PGNReader().parsePGN(this.state.playerName, this.state.playerColor, this.state.site, this.props.notify, this.props.showError, this.stopDownloading.bind(this))
         this.props.setDownloading(true)
     }
@@ -60,13 +81,57 @@ export default class PGNLoader extends React.Component {
     siteChange(event) {
         this.setState({site:event.target.value})
     }
-    handleChange(playerColor){
-        return (()=>{
-            this.setState({
-                playerColor:playerColor
-            })
-        })
+
+
+    ratedLabel() {
+        if(this.state.rated === 'all') {
+            return "Rated and casual"
+        } else if (this.state.rated === 'rated') {
+            return "Rated only"
+        } else if (this.state.rated === 'casual') {
+            return "Casual only"
+        }
     }
+    
+    selectedTimeControls() {
+        return "All time controls"
+    }
+    whenPlayed() {
+        return "Anytime"
+    }
+    downloadLimit () {
+        return "No limit"
+    }
+
+    getFilters(site){
+        
+        return <div>
+            {this.subSectionComponent('Rated', this.ratedLabel(), this.toggleRated.bind(this))}
+            {this.subSectionComponent('Time control', this.selectedTimeControls(), 
+                    this.setCurrentlyOpenAdvancedFilter('timeControl').bind(this),
+                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'timeControl'}>
+                    Test
+                </Collapse>
+            )}
+            {this.subSectionComponent('When played', this.whenPlayed(), 
+                this.setCurrentlyOpenAdvancedFilter('whenPlayed').bind(this),
+                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
+                    Test1
+                </Collapse>)}
+            {this.subSectionComponent('Download limit', this.downloadLimit(), 
+                this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
+                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'downloadLimit'}>
+                    Test2
+                </Collapse>)}
+      </div>
+    }
+
+    subSectionComponent(title, label, changeCallback, children) {
+        return <div className="pgnloadersection">{title}: <span className="smallText">[<a href="#" onClick={changeCallback}>change</a>]</span>
+        <div><b>{label}</b></div>{children}
+        </div>
+    }
+
     render() {
         return <div>
             <div className = "pgnloadersection">
@@ -77,11 +142,11 @@ export default class PGNLoader extends React.Component {
             </div>
             <div  className="pgnloadersection">Games played as: 
                 <div>
-                <Button onClick = {this.handleChange('white')} color = {this.state.playerColor === 'white'?'secondary':'link'}>White</Button>
-                <Button onClick = {this.handleChange('black')} color = {this.state.playerColor === 'black'?'secondary':'link'}>Black</Button>
+                <Button onClick = {this.playerColorChange('white')} color = {this.state.playerColor === 'white'?'secondary':'link'}>White</Button>
+                <Button onClick = {this.playerColorChange('black')} color = {this.state.playerColor === 'black'?'secondary':'link'}>Black</Button>
                 </div>
             </div>
-    <div className="pgnloadersection"><a href="#" onClick ={this.toggleAdvancedFilters.bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen?faCaretUp:faCaretDown}/></a>
+    <div className="pgnloadersection"><a href="#" onClick ={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen?faCaretUp:faCaretDown}/></a>
             <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
             <Card>
                 {this.getFilters(this.state.site)}
@@ -110,38 +175,4 @@ export default class PGNLoader extends React.Component {
         </div>
     }
 
-    ratedLabel() {
-        if(this.state.rated === 'all') {
-            return "Rated and casual"
-        } else if (this.state.rated === 'rated') {
-            return "Rated only"
-        } else if (this.state.rated === 'casual') {
-            return "Casual only"
-        }
-    }
-    
-    selectedTimeControls() {
-        return "All time controls"
-    }
-    whenPlayed() {
-        return "Anytime"
-    }
-    downloadLimit () {
-        return "No limit"
-    }
-
-    getFilters(site){
-        return <div>
-            {this.subSectionComponent('Rated', this.ratedLabel(), this.toggleRated.bind(this))}
-            {this.subSectionComponent('Time control', this.selectedTimeControls(), this.toggleRated.bind(this))}
-            {this.subSectionComponent('When played', this.whenPlayed(), this.toggleRated.bind(this))}
-            {this.subSectionComponent('Download limit', this.downloadLimit(), this.toggleRated.bind(this))}
-      </div>
-    }
-
-    subSectionComponent(title, label, changeCallback) {
-        return <div className="pgnloadersection">{title}: <span className="smallText">[<a href="#" onClick={changeCallback}>change</a>]</span>
-        <div><b>{label}</b></div>
-        </div>
-    }
 }
