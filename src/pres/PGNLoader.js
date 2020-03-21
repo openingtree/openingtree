@@ -1,9 +1,11 @@
 import React from 'react'
 import PGNReader from '../app/PGNReader'
-import {Button, Collapse, Card, CardBody} from 'reactstrap'
+import {Button, Collapse, Card, Container, Row, Col} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import { Radio,FormControlLabel,RadioGroup } from '@material-ui/core';
+import AdvancedFilters from './AdvancedFilters'
+import {createSubObjectWithProperties} from '../app/util'
 
 export default class PGNLoader extends React.Component {
 
@@ -15,14 +17,14 @@ export default class PGNLoader extends React.Component {
             playerColor:this.props.settings.playerColor,
 
             isAdvancedFiltersOpen:false,
-            currentlyOpenAdvancedFilter:'',
 
-            ultraBullet:true,
+            ultrabullet:true,
             bullet:true,
             blitz:true,
             rapid:true,
             classical:true,
             correspondence:true,
+            daily:true,
 
             fromDate:'1970/01',
             toDate:'2100/12',
@@ -45,15 +47,6 @@ export default class PGNLoader extends React.Component {
             let newState = {}
             newState[property] = !this.state[property]
             this.setState(newState)
-        }
-    }
-    setCurrentlyOpenAdvancedFilter(filterName) {
-        return () => {
-            if(this.state.currentlyOpenAdvancedFilter === filterName) {
-                //close if already open
-                filterName = ''
-            }
-            this.setState({currentlyOpenAdvancedFilter:filterName})
         }
     }
 
@@ -82,57 +75,14 @@ export default class PGNLoader extends React.Component {
         this.setState({site:event.target.value})
     }
 
-
-    ratedLabel() {
-        if(this.state.rated === 'all') {
-            return "Rated and casual"
-        } else if (this.state.rated === 'rated') {
-            return "Rated only"
-        } else if (this.state.rated === 'casual') {
-            return "Casual only"
-        }
-    }
-    
-    selectedTimeControls() {
-        return "All time controls"
-    }
-    whenPlayed() {
-        return "Anytime"
-    }
-    downloadLimit () {
-        return "No limit"
+    handleTimeControlChange(event) {
+        this.setState({ ...this.state, [event.target.name]: event.target.checked });
     }
 
-    getFilters(site){
-        
-        return <div>
-            {this.subSectionComponent('Rated', this.ratedLabel(), this.toggleRated.bind(this))}
-            {this.subSectionComponent('Time control', this.selectedTimeControls(), 
-                    this.setCurrentlyOpenAdvancedFilter('timeControl').bind(this),
-                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'timeControl'}>
-                    Test
-                </Collapse>
-            )}
-            {this.subSectionComponent('When played', this.whenPlayed(), 
-                this.setCurrentlyOpenAdvancedFilter('whenPlayed').bind(this),
-                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
-                    Test1
-                </Collapse>)}
-            {this.subSectionComponent('Download limit', this.downloadLimit(), 
-                this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
-                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'downloadLimit'}>
-                    Test2
-                </Collapse>)}
-      </div>
-    }
-
-    subSectionComponent(title, label, changeCallback, children) {
-        return <div className="pgnloadersection">{title}: <span className="smallText">[<a href="#" onClick={changeCallback}>change</a>]</span>
-        <div><b>{label}</b></div>{children}
-        </div>
-    }
 
     render() {
+        let selectedTimeControls = createSubObjectWithProperties(this.state, 
+            ['ultrabullet', 'bullet', 'blitz', 'rapid', 'classical','correspondence', 'daily'])
         return <div>
             <div className = "pgnloadersection">
                 <RadioGroup defaultValue="lichess" onChange={this.siteChange.bind(this)}>
@@ -149,7 +99,13 @@ export default class PGNLoader extends React.Component {
     <div className="pgnloadersection"><a href="#" onClick ={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen?faCaretUp:faCaretDown}/></a>
             <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
             <Card>
-                {this.getFilters(this.state.site)}
+                <AdvancedFilters 
+                    site={this.state.site} 
+                    rated={this.state.rated}
+                    toggleRated={this.toggleRated.bind(this)}
+                    handleTimeControlChange={this.handleTimeControlChange.bind(this)}
+                    selectedTimeControls={selectedTimeControls}
+                />
             </Card>
             </Collapse></div>
             <div className = "pgnloadersection">
