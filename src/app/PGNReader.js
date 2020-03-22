@@ -5,7 +5,7 @@ import ChessComIterator from './ChessComIterator'
 import * as Constants from './Constants'
 
 export default class PGNReader {
-    parsePGN(playerName, playerColor, site, notify, showError, stopDownloading) {
+    parsePGN(playerName, playerColor, site, advancedFilters, notify, showError, stopDownloading) {
         this.continueProcessingGames = true
         let handleResponse = (result) => {
             if(!result || !result.length) {
@@ -17,9 +17,9 @@ export default class PGNReader {
             return this.continueProcessingGames
         }
         if(site === Constants.SITE_LICHESS) {
-            new LichessIterator(playerName, playerColor, handleResponse, showError, stopDownloading)
+            new LichessIterator(playerName, playerColor, advancedFilters, handleResponse, showError, stopDownloading)
         } else if(site === Constants.SITE_CHESS_DOT_COM) {
-            new ChessComIterator(playerName, playerColor, handleResponse, showError, stopDownloading)
+            new ChessComIterator(playerName, playerColor, advancedFilters, handleResponse, showError, stopDownloading)
         }
 
         

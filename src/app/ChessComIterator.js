@@ -4,7 +4,7 @@ import request from 'request'
 
 export default class ChessComIterator {
 
-    constructor(playerName, playerColor, ready, showError, stopDownloading) {
+    constructor(playerName, playerColor, advancedFilters, ready, showError, stopDownloading) {
         let chessAPI = new ChessWebAPI({
             queue: true,
         });

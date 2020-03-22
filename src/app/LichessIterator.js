@@ -3,10 +3,16 @@ import { parse }  from './PGNParser'
 
 export default class LichessIterator {
 
-    constructor(playerName, playerColor, ready, showError, stopDownloading) {
+    constructor(playerName, playerColor, advancedFilters, ready, showError, stopDownloading) {
         let remainingBody = ''
-        let requestObject = request.get(`https://lichess.org/api/games/user/${encodeURIComponent(playerName)}?color=${playerColor}`, { json: false }).on('error', (error)=> {
-            showError('failed to connect to lichess.org')
+        let lichessBaseURL = `https://lichess.org/api/games/user/`
+        let playerNameFilter = `${encodeURIComponent(playerName)}?`
+        let colorFilter = `color=${playerColor}`
+        let ratedFilter = `${advancedFilters.rated==="all"?"":`&rated=${advancedFilters.rated==="rated"?"true":"false"}`}`
+        let requestObject = request.get(
+            lichessBaseURL+playerNameFilter+colorFilter+ratedFilter, 
+            { json: false }).on('error', (error)=> {
+                showError('failed to connect to lichess.org')
         }).on('response',(response)=>{
             if(response.statusCode === 404) {
                 showError('could not find lichess user ' + playerName)

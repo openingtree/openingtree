@@ -19,8 +19,7 @@ export default class PGNLoader extends React.Component {
             isAdvancedFiltersOpen:false,
             fromDate:'1970/01',
             toDate:'2100/12',
-            maxGames:10000,
-            rated:'all'
+            maxGames:10000
         }
         this.state[Constants.TIME_CONTROL_ULTRA_BULLET] = true
         this.state[Constants.TIME_CONTROL_BULLET] = true
@@ -29,7 +28,7 @@ export default class PGNLoader extends React.Component {
         this.state[Constants.TIME_CONTROL_CLASSICAL] = true
         this.state[Constants.TIME_CONTROL_CORRESPONDENCE] = true
         this.state[Constants.TIME_CONTROL_DAILY] = true
-      
+        this.state[Constants.FILTER_NAME_RATED] = "all"
     }
     toggleRated() {
         if(this.state.rated === 'all') {
@@ -65,7 +64,8 @@ export default class PGNLoader extends React.Component {
         this.setState({isAdvancedFiltersOpen:false})
         new PGNReader().parsePGN(this.state.playerName, 
             this.state.playerColor, 
-            this.state.site, 
+            this.state.site,
+            this.advancedFilters(),
             this.props.notify, 
             this.props.showError, 
             this.stopDownloading.bind(this))
@@ -81,14 +81,15 @@ export default class PGNLoader extends React.Component {
     handleTimeControlChange(event) {
         this.setState({ ...this.state, [event.target.name]: event.target.checked });
     }
-
-
-    render() {
-        let advancedFilters = createSubObjectWithProperties(this.state, 
+    advancedFilters() {
+        return createSubObjectWithProperties(this.state, 
             [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
                 Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
                 Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
                 Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED])
+    }
+
+    render() {
         return <div>
             <div className = "pgnloadersection">
                 <RadioGroup defaultValue={Constants.SITE_LICHESS} onChange={this.siteChange.bind(this)}>
@@ -109,7 +110,7 @@ export default class PGNLoader extends React.Component {
                     site={this.state.site} 
                     toggleRated={this.toggleRated.bind(this)}
                     handleTimeControlChange={this.handleTimeControlChange.bind(this)}
-                    advancedFilters={advancedFilters}
+                    advancedFilters={this.advancedFilters()}
                 />
             </Card>
             </Collapse></div>
