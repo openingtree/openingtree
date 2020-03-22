@@ -38,12 +38,12 @@ export default class AdvancedFilters extends React.Component {
             {this.subSectionComponent('When played', getWhenPlayedLabel(), 
                 this.setCurrentlyOpenAdvancedFilter('whenPlayed').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
-                    Test1
+                    Work in progress
                 </Collapse>)}
             {this.subSectionComponent('Download limit', getDownloadLimitLabel(), 
                 this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'downloadLimit'}>
-                    Test2
+                    Maybe work in progress
                 </Collapse>)}
       </div>
     }
