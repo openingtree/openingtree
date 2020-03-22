@@ -1,11 +1,12 @@
 import React from 'react'
 import PGNReader from '../app/PGNReader'
-import {Button, Collapse, Card, Container, Row, Col} from 'reactstrap'
+import {Button, Collapse, Card} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import { Radio,FormControlLabel,RadioGroup } from '@material-ui/core';
 import AdvancedFilters from './AdvancedFilters'
 import {createSubObjectWithProperties} from '../app/util'
+import * as Constants from '../app/Constants'
 
 export default class PGNLoader extends React.Component {
 
@@ -15,22 +16,19 @@ export default class PGNLoader extends React.Component {
             playerName:'',
             site:'lichess',
             playerColor:this.props.settings.playerColor,
-
             isAdvancedFiltersOpen:false,
-
-            ultrabullet:true,
-            bullet:true,
-            blitz:true,
-            rapid:true,
-            classical:true,
-            correspondence:true,
-            daily:true,
-
             fromDate:'1970/01',
             toDate:'2100/12',
             maxGames:10000,
             rated:'all'
         }
+        this.state[Constants.TIME_CONTROL_ULTRA_BULLET] = true
+        this.state[Constants.TIME_CONTROL_BULLET] = true
+        this.state[Constants.TIME_CONTROL_BLITZ] = true
+        this.state[Constants.TIME_CONTROL_RAPID] = true
+        this.state[Constants.TIME_CONTROL_CLASSICAL] = true
+        this.state[Constants.TIME_CONTROL_CORRESPONDENCE] = true
+        this.state[Constants.TIME_CONTROL_DAILY] = true
       
     }
     toggleRated() {
@@ -82,12 +80,15 @@ export default class PGNLoader extends React.Component {
 
     render() {
         let selectedTimeControls = createSubObjectWithProperties(this.state, 
-            ['ultrabullet', 'bullet', 'blitz', 'rapid', 'classical','correspondence', 'daily'])
+            [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
+                Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
+                Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
+                Constants.TIME_CONTROL_CLASSICAL])
         return <div>
             <div className = "pgnloadersection">
-                <RadioGroup defaultValue="lichess" onChange={this.siteChange.bind(this)}>
-                    <FormControlLabel className = "sitelabel" value="lichess" control={<Radio color="primary"/>} label={<span><img alt="lichess" className="siteimage" src="/lichesslogo.png"/> lichess.org</span>} />
-                    <FormControlLabel className = "sitelabel" value="chesscom" control={<Radio color="primary"/>} label={<img alt="chess.com" className="siteimage" src="/chesscomlogo.png"/>} />
+                <RadioGroup defaultValue={Constants.SITE_LICHESS} onChange={this.siteChange.bind(this)}>
+                    <FormControlLabel className = "sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary"/>} label={<span><img alt="lichess" className="siteimage" src="/lichesslogo.png"/> lichess.org</span>} />
+                    <FormControlLabel className = "sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary"/>} label={<img alt="chess.com" className="siteimage" src="/chesscomlogo.png"/>} />
                 </RadioGroup>
             </div>
             <div  className="pgnloadersection">Games played as: 
@@ -113,7 +114,7 @@ export default class PGNLoader extends React.Component {
                         onChange= {this.playerNameChange.bind(this)} 
                         name="playerName" 
                         id="playerNameTextBox"
-                        placeholder={`${this.state.site==="lichess"?"lichess":"chess.com"} username`}/>
+                        placeholder={`${this.state.site===Constants.SITE_LICHESS?"lichess":"chess.com"} username`}/>
                 <button onClick = {this.load.bind(this)}>Load</button> </div>
                 {
                     this.props.gamesProcessed>0?

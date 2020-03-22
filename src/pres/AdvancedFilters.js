@@ -1,12 +1,10 @@
-import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react'
-import PGNReader from '../app/PGNReader'
-import {Button, Collapse, Card, Container, Row, Col} from 'reactstrap'
-import { Radio,FormControlLabel,RadioGroup } from '@material-ui/core';
+import {Collapse, Container, Row, Col} from 'reactstrap'
+import { FormControlLabel } from '@material-ui/core';
+import * as Constants from '../app/Constants'
 
 export default class AdvancedFilters extends React.Component {
     constructor(props) {
@@ -60,6 +58,7 @@ export default class AdvancedFilters extends React.Component {
     selectedTimeControls() {
         return "All time controls"
     }
+
     whenPlayed() {
         return "Anytime"
     }
@@ -70,19 +69,19 @@ export default class AdvancedFilters extends React.Component {
         let firstRow = null, middleRow = null, lastRow = null
         let colWidth = null
         if(site === 'lichess') {
-            firstRow = [{name:'bullet', label:'Bullet'},
-                        {name:'ultrabullet', label:'Ultrabullet'}]
-            middleRow = [{name:'blitz', label:'Blitz'},
-                        {name:'classical', label:'Classical'}]
-            lastRow = [{name:'rapid', label:'Rapid'},
-                        {name:'correspondence', label:'Correspondence'}]
+            firstRow = [{name:Constants.TIME_CONTROL_BULLET, label:'Bullet'},
+                        {name:Constants.TIME_CONTROL_ULTRA_BULLET, label:'Ultrabullet'}]
+            middleRow = [{name:Constants.TIME_CONTROL_BLITZ, label:'Blitz'},
+                        {name:Constants.TIME_CONTROL_CLASSICAL, label:'Classical'}]
+            lastRow = [{name:Constants.TIME_CONTROL_RAPID, label:'Rapid'},
+                        {name:Constants.TIME_CONTROL_CORRESPONDENCE, label:'Correspondence'}]
             colWidth = '4'
                     
         } else {
-            firstRow = [{name:'bullet', label:'Bullet'},
-                        {name:'blitz', label:'Blitz'}]
-            lastRow = [{name:'rapid', label:'Rapid'},
-                        {name:'daily', label:'Daily'}]
+            firstRow = [{name:Constants.TIME_CONTROL_BULLET, label:'Bullet'},
+                        {name:Constants.TIME_CONTROL_BLITZ, label:'Blitz'}]
+            lastRow = [{name:Constants.TIME_CONTROL_RAPID, label:'Rapid'},
+                        {name:Constants.TIME_CONTROL_DAILY, label:'Daily'}]
             colWidth = '6'
         }
         return <FormControl><FormGroup><Container>

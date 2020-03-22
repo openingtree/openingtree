@@ -1,0 +1,10 @@
+export const TIME_CONTROL_ULTRA_BULLET = "ultraBullet"
+export const TIME_CONTROL_BULLET = "bullet"
+export const TIME_CONTROL_BLITZ = "blitz"
+export const TIME_CONTROL_RAPID = "rapid"
+export const TIME_CONTROL_CLASSICAL = "classical"
+export const TIME_CONTROL_CORRESPONDENCE = "correspondence"
+export const TIME_CONTROL_DAILY = "daily"
+
+export const SITE_LICHESS = "lichess"
+export const SITE_CHESS_DOT_COM = "chesscom"

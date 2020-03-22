@@ -2,6 +2,7 @@ import {openingGraph} from './OpeningGraph'
 import Chess from 'chess.js'
 import LichessIterator from './LichessIterator'
 import ChessComIterator from './ChessComIterator'
+import * as Constants from './Constants'
 
 export default class PGNReader {
     parsePGN(playerName, playerColor, site, notify, showError, stopDownloading) {
@@ -15,9 +16,9 @@ export default class PGNReader {
             } ,1)
             return this.continueProcessingGames
         }
-        if(site === "lichess") {
+        if(site === Constants.SITE_LICHESS) {
             new LichessIterator(playerName, playerColor, handleResponse, showError, stopDownloading)
-        } else if(site === "chesscom") {
+        } else if(site === Constants.SITE_CHESS_DOT_COM) {
             new ChessComIterator(playerName, playerColor, handleResponse, showError, stopDownloading)
         }
 
