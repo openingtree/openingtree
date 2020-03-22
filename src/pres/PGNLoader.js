@@ -63,7 +63,12 @@ export default class PGNLoader extends React.Component {
         this.props.onChange("playerName", this.state.playerName)
         this.props.onChange("playerColor", this.state.playerColor)
         this.setState({isAdvancedFiltersOpen:false})
-        new PGNReader().parsePGN(this.state.playerName, this.state.playerColor, this.state.site, this.props.notify, this.props.showError, this.stopDownloading.bind(this))
+        new PGNReader().parsePGN(this.state.playerName, 
+            this.state.playerColor, 
+            this.state.site, 
+            this.props.notify, 
+            this.props.showError, 
+            this.stopDownloading.bind(this))
         this.props.setDownloading(true)
     }
     stopDownloading() {
@@ -79,11 +84,11 @@ export default class PGNLoader extends React.Component {
 
 
     render() {
-        let selectedTimeControls = createSubObjectWithProperties(this.state, 
+        let advancedFilters = createSubObjectWithProperties(this.state, 
             [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
                 Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
                 Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
-                Constants.TIME_CONTROL_CLASSICAL])
+                Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED])
         return <div>
             <div className = "pgnloadersection">
                 <RadioGroup defaultValue={Constants.SITE_LICHESS} onChange={this.siteChange.bind(this)}>
@@ -102,10 +107,9 @@ export default class PGNLoader extends React.Component {
             <Card>
                 <AdvancedFilters 
                     site={this.state.site} 
-                    rated={this.state.rated}
                     toggleRated={this.toggleRated.bind(this)}
                     handleTimeControlChange={this.handleTimeControlChange.bind(this)}
-                    selectedTimeControls={selectedTimeControls}
+                    advancedFilters={advancedFilters}
                 />
             </Card>
             </Collapse></div>

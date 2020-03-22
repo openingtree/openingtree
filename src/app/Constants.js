@@ -5,6 +5,7 @@ export const TIME_CONTROL_RAPID = "rapid"
 export const TIME_CONTROL_CLASSICAL = "classical"
 export const TIME_CONTROL_CORRESPONDENCE = "correspondence"
 export const TIME_CONTROL_DAILY = "daily"
+export const FILTER_NAME_RATED = "rated"
 
 export const SITE_LICHESS = "lichess"
 export const SITE_CHESS_DOT_COM = "chesscom"

@@ -13,7 +13,6 @@ export default class AdvancedFilters extends React.Component {
         super(props)
         this.state = {
             currentlyOpenAdvancedFilter:'',
-
         }
     }
     setCurrentlyOpenAdvancedFilter(filterName) {
@@ -28,8 +27,8 @@ export default class AdvancedFilters extends React.Component {
 
     getFilters(site){
         return <div>
-            {this.subSectionComponent('Rated', getRatedLabel(this.props.rated), this.props.toggleRated)}
-            {this.subSectionComponent('Time control', getTimeControlLabel(this.props.site, this.props.selectedTimeControls), 
+            {this.subSectionComponent('Rated', getRatedLabel(this.props.advancedFilters.rated), this.props.toggleRated)}
+            {this.subSectionComponent('Time control', getTimeControlLabel(this.props.site, this.props.advancedFilters), 
                     this.setCurrentlyOpenAdvancedFilter('timeControl').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'timeControl'}>
                     {this.getTimeControlFilters(site, 4)}
@@ -87,7 +86,7 @@ export default class AdvancedFilters extends React.Component {
             <Col sm={firstColumnWidth}>
                 
             <FormControlLabel className = "nomargin"
-                control={<Checkbox checked={this.props.selectedTimeControls[control]} color="primary" 
+                control={<Checkbox checked={this.props.advancedFilters[control]} color="primary" 
                 onChange={this.props.handleTimeControlChange} name={control} />}
                 label={Common.TIME_CONTROL_LABELS[control]}
           /></Col>)}</Row>
