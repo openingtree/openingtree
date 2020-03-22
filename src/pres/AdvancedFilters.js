@@ -5,6 +5,8 @@ import React from 'react'
 import {Collapse, Container, Row, Col} from 'reactstrap'
 import { FormControlLabel } from '@material-ui/core';
 import * as Constants from '../app/Constants'
+import {getTimeControlLabel} from './FilterLabels'
+import * as Common from '../app/Common'
 
 export default class AdvancedFilters extends React.Component {
     constructor(props) {
@@ -27,7 +29,7 @@ export default class AdvancedFilters extends React.Component {
     getFilters(site){
         return <div>
             {this.subSectionComponent('Rated', this.ratedLabel(), this.props.toggleRated)}
-            {this.subSectionComponent('Time control', this.selectedTimeControls(), 
+            {this.subSectionComponent('Time control', getTimeControlLabel(this.props.site, this.props.selectedTimeControls), 
                     this.setCurrentlyOpenAdvancedFilter('timeControl').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'timeControl'}>
                     {this.getTimeControlFilters(site, 4)}
@@ -55,9 +57,7 @@ export default class AdvancedFilters extends React.Component {
         }
     }
     
-    selectedTimeControls() {
-        return "All time controls"
-    }
+    
 
     whenPlayed() {
         return "Anytime"
@@ -69,19 +69,19 @@ export default class AdvancedFilters extends React.Component {
         let firstRow = null, middleRow = null, lastRow = null
         let colWidth = null
         if(site === 'lichess') {
-            firstRow = [{name:Constants.TIME_CONTROL_BULLET, label:'Bullet'},
-                        {name:Constants.TIME_CONTROL_ULTRA_BULLET, label:'Ultrabullet'}]
-            middleRow = [{name:Constants.TIME_CONTROL_BLITZ, label:'Blitz'},
-                        {name:Constants.TIME_CONTROL_CLASSICAL, label:'Classical'}]
-            lastRow = [{name:Constants.TIME_CONTROL_RAPID, label:'Rapid'},
-                        {name:Constants.TIME_CONTROL_CORRESPONDENCE, label:'Correspondence'}]
+            firstRow = [Constants.TIME_CONTROL_BULLET,
+                        Constants.TIME_CONTROL_ULTRA_BULLET]
+            middleRow = [Constants.TIME_CONTROL_BLITZ,
+                        Constants.TIME_CONTROL_CLASSICAL]
+            lastRow = [Constants.TIME_CONTROL_RAPID,
+                        Constants.TIME_CONTROL_CORRESPONDENCE]
             colWidth = '4'
                     
         } else {
-            firstRow = [{name:Constants.TIME_CONTROL_BULLET, label:'Bullet'},
-                        {name:Constants.TIME_CONTROL_BLITZ, label:'Blitz'}]
-            lastRow = [{name:Constants.TIME_CONTROL_RAPID, label:'Rapid'},
-                        {name:Constants.TIME_CONTROL_DAILY, label:'Daily'}]
+            firstRow = [Constants.TIME_CONTROL_BULLET,
+                        Constants.TIME_CONTROL_BLITZ]
+            lastRow = [Constants.TIME_CONTROL_RAPID, 
+                        Constants.TIME_CONTROL_DAILY]
             colWidth = '6'
         }
         return <FormControl><FormGroup><Container>
@@ -105,9 +105,9 @@ export default class AdvancedFilters extends React.Component {
             <Col sm={firstColumnWidth}>
                 
             <FormControlLabel className = "nomargin"
-                control={<Checkbox checked={this.props.selectedTimeControls[control.name]} color="primary" 
-                onChange={this.props.handleTimeControlChange} name={control.name} />}
-                label={control.label}
+                control={<Checkbox checked={this.props.selectedTimeControls[control]} color="primary" 
+                onChange={this.props.handleTimeControlChange} name={control} />}
+                label={Common.TIME_CONTROL_LABELS[control]}
           /></Col>)}</Row>
     }
 
