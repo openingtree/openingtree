@@ -1,5 +1,6 @@
 import * as Constants from '../app/Constants'
 import * as Common from '../app/Common'
+import {getTimeControlsArray} from '../app/util'
 
 let timeClasses = [
     {
@@ -75,12 +76,6 @@ export function timeControlLabel(site, timeControlState) {
     }
 
     return lichessTimeControlLabel(selectedTimeControls, unselectedTimeControls)
-}
-
-function getTimeControlsArray(site,timeControlState, selected) {
-    let allTimeControls = site === Constants.SITE_LICHESS ? 
-        Common.LICHESS_TIME_CONTROLS : Common.CHESS_DOT_COM_TIME_CONTROLS
-    return allTimeControls.filter((timeControl)=>!!timeControlState[timeControl] === selected)
 }
 
 function lichessTimeControlLabel(selectedTimeControls, unselectedTimeControls) {

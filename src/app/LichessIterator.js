@@ -1,16 +1,21 @@
 import request from 'request'
 import { parse }  from './PGNParser'
+import {getTimeControlsArray} from './util'
+import * as Constants from './Constants'
 
 export default class LichessIterator {
 
     constructor(playerName, playerColor, advancedFilters, ready, showError, stopDownloading) {
         let remainingBody = ''
         let lichessBaseURL = `https://lichess.org/api/games/user/`
-        let playerNameFilter = `${encodeURIComponent(playerName)}?`
-        let colorFilter = `color=${playerColor}`
+        let playerNameFilter = encodeURIComponent(playerName)
+        let colorFilter = `?color=${playerColor}`
         let ratedFilter = `${advancedFilters.rated==="all"?"":`&rated=${advancedFilters.rated==="rated"?"true":"false"}`}`
+        let selectedTimeControls = getTimeControlsArray(Constants.SITE_LICHESS, advancedFilters, true)
+        let perfFilter = selectedTimeControls.length === 0 || selectedTimeControls.length === 6?
+                "" : `&perfType=${selectedTimeControls.join(",")}`
         let requestObject = request.get(
-            lichessBaseURL+playerNameFilter+colorFilter+ratedFilter, 
+            lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter, 
             { json: false }).on('error', (error)=> {
                 showError('failed to connect to lichess.org')
         }).on('response',(response)=>{
