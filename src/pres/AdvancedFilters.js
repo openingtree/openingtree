@@ -5,7 +5,7 @@ import React from 'react'
 import {Collapse, Container, Row, Col} from 'reactstrap'
 import { FormControlLabel } from '@material-ui/core';
 import * as Constants from '../app/Constants'
-import {getTimeControlLabel} from './FilterLabels'
+import {getTimeControlLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel} from './FilterLabels'
 import * as Common from '../app/Common'
 
 export default class AdvancedFilters extends React.Component {
@@ -28,42 +28,24 @@ export default class AdvancedFilters extends React.Component {
 
     getFilters(site){
         return <div>
-            {this.subSectionComponent('Rated', this.ratedLabel(), this.props.toggleRated)}
+            {this.subSectionComponent('Rated', getRatedLabel(this.props.rated), this.props.toggleRated)}
             {this.subSectionComponent('Time control', getTimeControlLabel(this.props.site, this.props.selectedTimeControls), 
                     this.setCurrentlyOpenAdvancedFilter('timeControl').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'timeControl'}>
                     {this.getTimeControlFilters(site, 4)}
                 </Collapse>
             )}
-            {this.subSectionComponent('When played', this.whenPlayed(), 
+            {this.subSectionComponent('When played', getWhenPlayedLabel(), 
                 this.setCurrentlyOpenAdvancedFilter('whenPlayed').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
                     Test1
                 </Collapse>)}
-            {this.subSectionComponent('Download limit', this.downloadLimit(), 
+            {this.subSectionComponent('Download limit', getDownloadLimitLabel(), 
                 this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'downloadLimit'}>
                     Test2
                 </Collapse>)}
       </div>
-    }
-    ratedLabel() {
-        if(this.props.rated === 'all') {
-            return "Rated and casual"
-        } else if (this.props.rated === 'rated') {
-            return "Rated only"
-        } else if (this.props.rated === 'casual') {
-            return "Casual only"
-        }
-    }
-    
-    
-
-    whenPlayed() {
-        return "Anytime"
-    }
-    downloadLimit () {
-        return "No limit"
     }
     getTimeControlFilters(site){
         let firstRow = null, middleRow = null, lastRow = null
