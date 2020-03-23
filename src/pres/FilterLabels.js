@@ -15,7 +15,7 @@ export function getRatedLabel(rated) {
 }
 
 export function getWhenPlayedLabel(timeframe, timeframeSteps) {
-    return getSelectedTimeFrameData(timeframe, timeframeSteps)
+    return getSelectedTimeFrameData(timeframe, timeframeSteps).label
 }
 export function getDownloadLimitLabel(downloadLimit) {
     return downloadLimit>= Constants.MAX_DOWNLOAD_LIMIT?"No limit":`${downloadLimit} games`

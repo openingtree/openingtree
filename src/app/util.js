@@ -19,15 +19,14 @@ let monthLabels = [
 ]
 export function getTimeframeSteps() {
     let steps = [{
-        year:1970,
+        year:2007,
         value:0
     }]
     let value = 1;
     let startYear = 2010
     let currentYear = new Date().getFullYear()
     let currentMonth = new Date().getMonth()
-    while(startYear < currentYear) {
-        console.log("adding year")
+    while(startYear < currentYear-1) {
         steps.push({
             toLongLabel:`${monthLabels[11]} ${startYear}`,
             fromLongLabel:`${monthLabels[0]} ${startYear}`,
@@ -38,7 +37,6 @@ export function getTimeframeSteps() {
         value++
     }
     for(let i=11;i>0;i--) {
-        console.log("adding month")
 
         let month = (currentMonth+12-i)%12
         let year = month<currentMonth?currentYear:currentYear-1
@@ -66,19 +64,59 @@ export function getSelectedTimeFrameData(timeframe, timeframeSteps) {
     let toTimeframe = timeframeSteps[toIndex]
     
     if(fromIndex === timeframeSteps.length-1 && toIndex === timeframeSteps.length-1) {
-        return "Current month"
+        let currentDate = new Date()
+        return {
+            label:"Current month",
+            fromMonth:currentDate.getMonth(),
+            frmYear:currentDate.getYear(),
+            fromTimeStamp:getTimeStampInfoFor(currentDate.getMonth(), currentDate.getYear(), "min")
+        }
     }
     if(fromIndex === 0 && toIndex === 0) {
-        return "Anytime"
+        return {label:"Anytime"}
     }
     if(fromIndex === 0 && toIndex === timeframeSteps.length-1) {
-        return "Anytime"
+        return {label:"Anytime"}
     }
     if(toIndex === timeframeSteps.length-1) {
-        return `Since ${fromTimeframe.fromLongLabel}`
+        let month = fromTimeframe.month ? fromTimeframe.month : 0
+        return {
+            label:`Since ${fromTimeframe.fromLongLabel}`,
+            fromYear: fromTimeframe.year,
+            fromMonth: month,
+            fromTimeStamp: getTimeStampInfoFor(month, fromTimeframe.year, "min")
+        }
     }
     if(fromIndex === 0) {
-        return `Until ${toTimeframe.toLongLabel}`
+        let month = toTimeframe.month ? toTimeframe.month : 11
+        return {
+            label:`Until ${toTimeframe.toLongLabel}`,
+            toYear: toTimeframe.year,
+            toMonth: month,
+            toTimeStamp: getTimeStampInfoFor(month, toTimeframe.year, "max")
+        }
     }
-    return `From ${fromTimeframe.fromLongLabel} to ${toTimeframe.toLongLabel}`
+    let fromMonth = fromTimeframe.month ? fromTimeframe.month : 0
+    let toMonth = toTimeframe.month ? toTimeframe.month : 11
+    return {
+        label:`From ${fromTimeframe.fromLongLabel} to ${toTimeframe.toLongLabel}`,
+        fromYear: fromTimeframe.year,
+        fromMonth: fromMonth,
+        fromTimeStamp: getTimeStampInfoFor(fromMonth, fromTimeframe.year, "min"),
+        toYear: toTimeframe.year,
+        toMonth: toMonth,
+        toTimeStamp: getTimeStampInfoFor(toMonth, toTimeframe.year, "max")
+    }
+}
+
+function getTimeStampInfoFor(month, year, minOrMax) {
+    if(minOrMax === "min") {
+        return new Date(year, month).getTime()
+    } else {
+        return new Date(year,month,getDaysInMonth(year, month)).getTime()
+    }
+}
+
+function getDaysInMonth(year,month) {
+    return new Date(year, month + 1, 0).getDate();
 }
