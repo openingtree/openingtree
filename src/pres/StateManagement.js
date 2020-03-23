@@ -47,13 +47,15 @@ function navigateTo(fen, previousMove){
     this.setState({fen:fen, lastMove:previousMove})
 
 }
-function updateProcessedGames(n, openingGraph) {
+function updateProcessedGames(downloadLimit, n, openingGraph) {
+    let totalGamesProcessed = this.state.gamesProcessed+n
     this.setState({
-    gamesProcessed: this.state.gamesProcessed+n,
-    openingGraph: openingGraph
+    gamesProcessed: totalGamesProcessed,
+    openingGraph: openingGraph,
+    downloadingGames: totalGamesProcessed<downloadLimit?this.state.downloadingGames:false
     })
     
-    return this.state.downloadingGames
+    return totalGamesProcessed < downloadLimit && this.state.downloadingGames
 }
 function moveToShape(move) {
     return {

@@ -12,7 +12,7 @@ export default class PGNReader {
                 return this.continueProcessingGames
             }
             setTimeout(() => {
-                this.parsePGNTimed(result, playerColor, 0, playerName, notify, showError)
+                this.parsePGNTimed(result, advancedFilters, playerColor, 0, playerName, notify, showError)
             } ,1)
             return this.continueProcessingGames
         }
@@ -25,7 +25,7 @@ export default class PGNReader {
         
     }
 
-    parsePGNTimed(pgnArray, playerColor, index,  playerName, notify, showError) {
+    parsePGNTimed(pgnArray, advancedFilters, playerColor, index,  playerName, notify, showError) {
         if(index>= pgnArray.length) {
             return
         }
@@ -49,9 +49,9 @@ export default class PGNReader {
             })
             let fen = chess.fen()
             openingGraph.addGameResultOnFen(fen, this.gameResult(pgn))
-            this.continueProcessingGames = notify(1, openingGraph)
+            this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, openingGraph)
         }
-            setTimeout(()=>{this.parsePGNTimed(pgnArray, playerColor, index+1, playerName, notify, showError)},1)
+            setTimeout(()=>{this.parsePGNTimed(pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError)},1)
     }
 
     gameResult(pgn) {
