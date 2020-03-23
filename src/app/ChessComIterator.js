@@ -17,7 +17,15 @@ export default class ChessComIterator {
                     if(game.rules!=="chess" || game[playerColor].username !== playerName) {
                         return false
                     }
-        
+                    let ratedMode = advancedFilters[Constants.FILTER_NAME_RATED]
+                    if(ratedMode === 'rated' && !game.rated) {
+                        return false
+                    } else if (ratedMode === 'casual' && game.rated) {
+                        return false
+                    }
+                    if(!advancedFilters[game.time_class]) {
+                        return false
+                    }
                     return true 
                 }).map(
                     game=> {
@@ -71,7 +79,9 @@ export default class ChessComIterator {
                     pendingRequests++
                     chessAPI.dispatch(chessAPI.getPlayerCompleteMonthlyArchives, parseGames, [playerName, year, month]);
                 }
-                showError('Could not find games for chess.com user '+playerName)
+                if(pendingRequests === 0) {
+                    showError('Could not find games for chess.com user '+playerName)
+                }
             })
         }
 

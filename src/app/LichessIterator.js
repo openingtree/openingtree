@@ -10,7 +10,7 @@ export default class LichessIterator {
         let lichessBaseURL = `https://lichess.org/api/games/user/`
         let playerNameFilter = encodeURIComponent(playerName)
         let colorFilter = `?color=${playerColor}`
-        let ratedFilter = `${advancedFilters.rated==="all"?"":`&rated=${advancedFilters.rated==="rated"?"true":"false"}`}`
+        let ratedFilter = `${advancedFilters[Constants.FILTER_NAME_RATED]==="all"?"":`&rated=${advancedFilters[Constants.FILTER_NAME_RATED]==="rated"?"true":"false"}`}`
         let selectedTimeFrameData = getSelectedTimeFrameData(advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME], getTimeframeSteps())
         let timeSinceFilter = `${selectedTimeFrameData.fromTimeStamp?`&since=${selectedTimeFrameData.fromTimeStamp}`:""}`
         let timeUntilFilter = `${selectedTimeFrameData.toTimeStamp?`&until=${selectedTimeFrameData.toTimeStamp}`:""}`
