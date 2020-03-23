@@ -15,13 +15,11 @@ export default class PGNLoader extends React.Component {
             playerName:'',
             site:'lichess',
             playerColor:this.props.settings.playerColor,
-            isAdvancedFiltersOpen:false,
-            fromDate:'1970/01',
-            toDate:'2100/12',
-            maxGames:10000
+            isAdvancedFiltersOpen:false
         }
         this.timeframeSteps = getTimeframeSteps()
         this.state[Constants.FILTER_NAME_SELECTED_TIMEFRAME] = [0,this.timeframeSteps.length-1]
+        this.state[Constants.FILTER_NAME_DOWNLOAD_LIMIT] = Constants.MAX_DOWNLOAD_LIMIT
         this.state[Constants.TIME_CONTROL_ULTRA_BULLET] = true
         this.state[Constants.TIME_CONTROL_BULLET] = true
         this.state[Constants.TIME_CONTROL_BLITZ] = true
@@ -85,6 +83,9 @@ export default class PGNLoader extends React.Component {
     handleTimeframeChange(event, newValue) {
         this.setState({ [Constants.FILTER_NAME_SELECTED_TIMEFRAME]: newValue });
     }
+    handleDownloadLimitChange(event, newValue) {
+        this.setState({ [Constants.FILTER_NAME_DOWNLOAD_LIMIT]: newValue });
+    }
 
     advancedFilters() {
         return createSubObjectWithProperties(this.state, 
@@ -92,7 +93,7 @@ export default class PGNLoader extends React.Component {
                 Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
                 Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
                 Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED, 
-                Constants.FILTER_NAME_SELECTED_TIMEFRAME])
+                Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT])
     }
 
     render() {
@@ -118,6 +119,7 @@ export default class PGNLoader extends React.Component {
                     handleTimeControlChange={this.handleTimeControlChange.bind(this)}
                     handleTimeframeChange={this.handleTimeframeChange.bind(this)}
                     timeframeSteps={this.timeframeSteps}
+                    handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
                     advancedFilters={this.advancedFilters()}
                 />
             </Card>

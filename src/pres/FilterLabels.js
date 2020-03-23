@@ -1,5 +1,6 @@
 import {timeControlLabel} from './TimeControlLabels'
 import {getSelectedTimeFrameData} from '../app/util'
+import * as Constants from '../app/Constants'
 
 export const getTimeControlLabel = timeControlLabel
 
@@ -16,6 +17,6 @@ export function getRatedLabel(rated) {
 export function getWhenPlayedLabel(timeframe, timeframeSteps) {
     return getSelectedTimeFrameData(timeframe, timeframeSteps)
 }
-export function getDownloadLimitLabel() {
-    return "No limit"
+export function getDownloadLimitLabel(downloadLimit) {
+    return downloadLimit>= Constants.MAX_DOWNLOAD_LIMIT?"No limit":`${downloadLimit} games`
 }

@@ -14,7 +14,7 @@ export default class AdvancedFilters extends React.Component {
         this.state = {
             currentlyOpenAdvancedFilter:'',
         }
-        this.marks=[
+        this.timeframeMarks=[
             {
                 value:0,
                 label:"Big bang"
@@ -22,7 +22,15 @@ export default class AdvancedFilters extends React.Component {
                 value:props.timeframeSteps.length-1,
                 label:"Now"
             }]
-
+            this.downloadLimitMarks=[
+                {
+                    value:0,
+                    label:"0"
+                }, {
+                    value:Constants.MAX_DOWNLOAD_LIMIT,
+                    label:`No limit`
+                }]
+    
     }
     setCurrentlyOpenAdvancedFilter(filterName) {
         return () => {
@@ -48,12 +56,25 @@ export default class AdvancedFilters extends React.Component {
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
                     {this.getTimeFrameFilters()}
                 </Collapse>)}
-            {this.subSectionComponent('Download limit', getDownloadLimitLabel(), 
+            {this.subSectionComponent('Download limit', getDownloadLimitLabel(this.props.advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT]), 
                 this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'downloadLimit'}>
-                    Maybe work in progress
+                    {this.getDownloadLimitFilters()}
                 </Collapse>)}
       </div>
+    }
+
+    getDownloadLimitFilters() {
+        return <Slider className = "sliderCustom"
+            value={this.props.advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT]}
+            onChange={this.props.handleDownloadLimitChange}
+            valueLabelDisplay="auto"
+            valueLabelFormat={(val)=>val>=Constants.MAX_DOWNLOAD_LIMIT?"All":val}
+            step={100}
+            min={0}
+            marks={this.downloadLimitMarks}
+            max={Constants.MAX_DOWNLOAD_LIMIT}
+        />
     }
 
     getTimeFrameFilters() {
@@ -63,7 +84,7 @@ export default class AdvancedFilters extends React.Component {
             valueLabelDisplay="off"
             valueLabelFormat={(val)=>this.props.timeframeSteps[val].label}
             step={1}
-            marks={this.marks}
+            marks={this.timeframeMarks}
             min={0}
             max={this.props.timeframeSteps.length-1}
         />
