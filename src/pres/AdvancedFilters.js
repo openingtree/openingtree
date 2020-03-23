@@ -3,7 +3,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react'
 import {Collapse, Container, Row, Col} from 'reactstrap'
-import { FormControlLabel } from '@material-ui/core';
+import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../app/Constants'
 import {getTimeControlLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel} from './FilterLabels'
 import * as Common from '../app/Common'
@@ -14,6 +14,15 @@ export default class AdvancedFilters extends React.Component {
         this.state = {
             currentlyOpenAdvancedFilter:'',
         }
+        this.marks=[
+            {
+                value:0,
+                label:"Big bang"
+            }, {
+                value:props.timeframeSteps.length-1,
+                label:"Now"
+            }]
+
     }
     setCurrentlyOpenAdvancedFilter(filterName) {
         return () => {
@@ -34,10 +43,10 @@ export default class AdvancedFilters extends React.Component {
                     {this.getTimeControlFilters(site, 4)}
                 </Collapse>
             )}
-            {this.subSectionComponent('When played', getWhenPlayedLabel(), 
+            {this.subSectionComponent('When played', getWhenPlayedLabel(this.props.advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME], this.props.timeframeSteps), 
                 this.setCurrentlyOpenAdvancedFilter('whenPlayed').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
-                    Work in progress
+                    {this.getTimeFrameFilters()}
                 </Collapse>)}
             {this.subSectionComponent('Download limit', getDownloadLimitLabel(), 
                 this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
@@ -46,6 +55,20 @@ export default class AdvancedFilters extends React.Component {
                 </Collapse>)}
       </div>
     }
+
+    getTimeFrameFilters() {
+        return <Slider className = "sliderCustom"
+            value={this.props.advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME]}
+            onChange={this.props.handleTimeframeChange}
+            valueLabelDisplay="off"
+            valueLabelFormat={(val)=>this.props.timeframeSteps[val].label}
+            step={1}
+            marks={this.marks}
+            min={0}
+            max={this.props.timeframeSteps.length-1}
+        />
+    }
+
     getTimeControlFilters(site){
         let firstRow = null, middleRow = null, lastRow = null
         let colWidth = null

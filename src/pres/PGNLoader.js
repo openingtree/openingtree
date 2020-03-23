@@ -5,9 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import { Radio,FormControlLabel,RadioGroup } from '@material-ui/core';
 import AdvancedFilters from './AdvancedFilters'
-import {createSubObjectWithProperties} from '../app/util'
+import {createSubObjectWithProperties, getTimeframeSteps} from '../app/util'
 import * as Constants from '../app/Constants'
-
 export default class PGNLoader extends React.Component {
 
     constructor(props){
@@ -21,6 +20,8 @@ export default class PGNLoader extends React.Component {
             toDate:'2100/12',
             maxGames:10000
         }
+        this.timeframeSteps = getTimeframeSteps()
+        this.state[Constants.FILTER_NAME_SELECTED_TIMEFRAME] = [0,this.timeframeSteps.length-1]
         this.state[Constants.TIME_CONTROL_ULTRA_BULLET] = true
         this.state[Constants.TIME_CONTROL_BULLET] = true
         this.state[Constants.TIME_CONTROL_BLITZ] = true
@@ -79,14 +80,19 @@ export default class PGNLoader extends React.Component {
     }
 
     handleTimeControlChange(event) {
-        this.setState({ ...this.state, [event.target.name]: event.target.checked });
+        this.setState({[event.target.name]: event.target.checked });
     }
+    handleTimeframeChange(event, newValue) {
+        this.setState({ [Constants.FILTER_NAME_SELECTED_TIMEFRAME]: newValue });
+    }
+
     advancedFilters() {
         return createSubObjectWithProperties(this.state, 
             [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
                 Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
                 Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
-                Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED])
+                Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED, 
+                Constants.FILTER_NAME_SELECTED_TIMEFRAME])
     }
 
     render() {
@@ -110,6 +116,8 @@ export default class PGNLoader extends React.Component {
                     site={this.state.site} 
                     toggleRated={this.toggleRated.bind(this)}
                     handleTimeControlChange={this.handleTimeControlChange.bind(this)}
+                    handleTimeframeChange={this.handleTimeframeChange.bind(this)}
+                    timeframeSteps={this.timeframeSteps}
                     advancedFilters={this.advancedFilters()}
                 />
             </Card>
