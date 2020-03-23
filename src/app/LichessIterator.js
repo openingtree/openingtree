@@ -1,6 +1,6 @@
 import request from 'request'
 import { parse }  from './PGNParser'
-import {getTimeControlsArray} from './util'
+import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData} from './util'
 import * as Constants from './Constants'
 
 export default class LichessIterator {
@@ -11,11 +11,14 @@ export default class LichessIterator {
         let playerNameFilter = encodeURIComponent(playerName)
         let colorFilter = `?color=${playerColor}`
         let ratedFilter = `${advancedFilters.rated==="all"?"":`&rated=${advancedFilters.rated==="rated"?"true":"false"}`}`
+        let selectedTimeFrameData = getSelectedTimeFrameData(advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME], getTimeframeSteps())
+        let timeSinceFilter = `${selectedTimeFrameData.fromTimeStamp?`&since=${selectedTimeFrameData.fromTimeStamp}`:""}`
+        let timeUntilFilter = `${selectedTimeFrameData.toTimeStamp?`&until=${selectedTimeFrameData.toTimeStamp}`:""}`
         let selectedTimeControls = getTimeControlsArray(Constants.SITE_LICHESS, advancedFilters, true)
         let perfFilter = selectedTimeControls.length === 0 || selectedTimeControls.length === 6?
                 "" : `&perfType=${selectedTimeControls.join(",")}`
         let requestObject = request.get(
-            lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter, 
+            lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter, 
             { json: false }).on('error', (error)=> {
                 showError('failed to connect to lichess.org')
         }).on('response',(response)=>{
