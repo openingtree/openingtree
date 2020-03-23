@@ -19,8 +19,6 @@ let monthLabels = [
 ]
 export function getTimeframeSteps() {
     let steps = [{
-        label:"Any",
-        month:0,
         year:1970,
         value:0
     }]

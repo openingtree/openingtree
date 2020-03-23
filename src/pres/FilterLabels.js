@@ -17,8 +17,12 @@ export function getWhenPlayedLabel(timeframe, timeframeSteps) {
     let toIndex = timeframe[1]
     let fromTimeframe = timeframeSteps[fromIndex]
     let toTimeframe = timeframeSteps[toIndex]
+    
     if(fromIndex === timeframeSteps.length-1 && toIndex === timeframeSteps.length-1) {
         return "Current month"
+    }
+    if(fromIndex === 0 && toIndex === 0) {
+        return "Anytime"
     }
     if(fromIndex === 0 && toIndex === timeframeSteps.length-1) {
         return "Anytime"
