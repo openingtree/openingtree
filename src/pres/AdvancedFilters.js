@@ -36,7 +36,7 @@ export default class AdvancedFilters extends React.Component {
 
     getFilters(site){
         return <div>
-            {this.subSectionComponent('Rated', getRatedLabel(this.props.advancedFilters.rated), this.props.toggleRated)}
+            {this.subSectionComponent('Mode', getRatedLabel(this.props.advancedFilters.rated), this.props.toggleRated)}
             {this.subSectionComponent('Time control', getTimeControlLabel(this.props.site, this.props.advancedFilters), 
                     this.setCurrentlyOpenAdvancedFilter('timeControl').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'timeControl'}>
