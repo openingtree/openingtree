@@ -79,10 +79,10 @@ export default class ChessComIterator {
                     pendingRequests++
                     chessAPI.dispatch(chessAPI.getPlayerCompleteMonthlyArchives, parseGames, [playerName, year, month]);
                 }
-                if(pendingRequests === 0) {
-                    showError('Could not find games for chess.com user '+playerName)
-                }
             })
+            if(pendingRequests === 0) {
+                showError('Could not find games for chess.com user '+playerName)
+            }
         }
 
         request(`https://api.chess.com/pub/player/${playerName}/games/archives`, function (error, response, body) {
