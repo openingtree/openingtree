@@ -132,7 +132,7 @@ export default class PGNLoader extends React.Component {
                         placeholder={`${this.state.site===Constants.SITE_LICHESS?"lichess":"chess.com"} username`}/>
                 <button onClick = {this.load.bind(this)}>Load</button> </div>
                 {
-                    this.props.gamesProcessed>0?
+                    this.props.gamesProcessed>0 || this.props.isDownloading?
                     <div>
                         <div className="pgnloadersection">
                             {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<a href="#" onClick={this.stopDownloading.bind(this)}>stop</a>]</span>:""}
