@@ -12,7 +12,8 @@ export default class MovesList extends React.Component {
         }
     }
     launch(url) {
-        return () => {
+        return (e) => {
+            e.stopPropagation()
             window.open(url, '_blank');
         }
     }
@@ -76,7 +77,7 @@ export default class MovesList extends React.Component {
             <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell colSpan = "2">
-                            {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon onClick ={this.launch(move.sampleResult.url)} icon={faExternalLinkAlt}/>}
+        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon onClick ={this.launch(move.sampleResult.url)} icon={faExternalLinkAlt}/>}
                 </TableCell>
             </TableRow>
             }
