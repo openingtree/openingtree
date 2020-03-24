@@ -8,6 +8,14 @@ export function createSubObjectWithProperties(mainObject, properties) {
     });
     return subObject
 }
+export function simplifiedFen(fen) {
+    let fenComponents = fen.split(' ')
+    if(fenComponents.length <=4) {
+        return fen
+    }
+    //exclude move and halfMove components
+    return `${fenComponents[0]} ${fenComponents[1]} ${fenComponents[2]}`
+}
 
 export function getTimeControlsArray(site,timeControlState, selected) {
     let allTimeControls = site === Constants.SITE_LICHESS ? 

@@ -1,10 +1,12 @@
+import {simplifiedFen} from './util'
 
 class OpeningGraph {
     graph = new Graph()
     clear() {
         this.graph = new Graph()
     }
-    addGameResultOnFen(fen, gameResult) {
+    addGameResultOnFen(fullFen, gameResult) {
+        let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
             currNode = new GraphNode()
@@ -13,7 +15,8 @@ class OpeningGraph {
         }
         currNode.gameResults.push(gameResult)
     }
-    addMoveForFen(fen, move, result) {
+    addMoveForFen(fullFen, move, result) {
+        let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
             currNode = new GraphNode()
@@ -47,7 +50,9 @@ class OpeningGraph {
 
         
     }
-    addMoveAgainstFen(fen, move, result) {
+    addMoveAgainstFen(fullFen, move, result) {
+        let fen = simplifiedFen(fullFen)
+
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
             currNode = new GraphNode()
@@ -78,14 +83,18 @@ class OpeningGraph {
         
         currNode.playedAgainst = movesPlayedAgainst
     }
-    gameResultsForFen(fen) {
+    gameResultsForFen(fullFen) {
+        let fen = simplifiedFen(fullFen)
+
         var currNode = this.graph.nodes.get(fen)
         if(currNode) {
             return currNode.gameResults
         }
         return null
     }
-    movesForFen(fen) {
+    movesForFen(fullFen) {
+        let fen = simplifiedFen(fullFen)
+
         var currNode = this.graph.nodes.get(fen)
         if(currNode) {
             return Array.from(currNode.playedBy.entries()).map((entry)=> {
@@ -104,7 +113,8 @@ class OpeningGraph {
         }        
         return null
     }
-    movesAgainstFen(fen) {
+    movesAgainstFen(fullFen) {
+        let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
         if(currNode) {
             return Array.from(currNode.playedAgainst.entries()).map((entry)=> {
