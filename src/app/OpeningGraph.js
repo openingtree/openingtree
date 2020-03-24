@@ -15,7 +15,7 @@ class OpeningGraph {
         }
         currNode.gameResults.push(gameResult)
     }
-    addMoveForFen(fullFen, move, result) {
+    addMoveForFen(fullFen, move, resultObject) {
         let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
@@ -32,9 +32,9 @@ class OpeningGraph {
         }
 
         let whiteWin = 0, blackWin = 0, draw = 0
-        if(result === '1-0') {
+        if(resultObject.result === '1-0') {
             whiteWin = 1
-        } else if (result === '0-1') {
+        } else if (resultObject.result === '0-1') {
             blackWin = 1
         } else {
             draw = 1
@@ -50,7 +50,7 @@ class OpeningGraph {
 
         
     }
-    addMoveAgainstFen(fullFen, move, result) {
+    addMoveAgainstFen(fullFen, move, resultObject) {
         let fen = simplifiedFen(fullFen)
 
         var currNode = this.graph.nodes.get(fen)
@@ -67,9 +67,9 @@ class OpeningGraph {
             movesPlayedAgainst.set(move.san, movePlayedAgainst)
         }
         let whiteWin = 0, blackWin = 0, draw = 0
-        if(result === '1-0') {
+        if(resultObject.result === '1-0') {
             whiteWin = 1
-        } else if (result === '0-1') {
+        } else if (resultObject.result === '0-1') {
             blackWin = 1
         } else {
             draw = 1

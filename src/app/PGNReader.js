@@ -33,6 +33,8 @@ export default class PGNReader {
         let gamePlayerColor = (pgn.headers.White.toLowerCase() === playerName.toLowerCase()) ? "w" : "b"
         if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
             let chess = new Chess()
+            let resultObject = this.gameResult(pgn)
+
             pgn.moves.forEach(element => {
                 let fen = chess.fen()
                 let move = chess.move(element.move)
@@ -42,28 +44,26 @@ export default class PGNReader {
                     return
                 }
                 if(move.color === gamePlayerColor) {
-                    openingGraph.addMoveForFen(fen, move, pgn.result)
+                    openingGraph.addMoveForFen(fen, move, resultObject)
                 } else {
-                    openingGraph.addMoveAgainstFen(fen,move, pgn.result)
+                    openingGraph.addMoveAgainstFen(fen,move, resultObject)
                 }
             })
             let fen = chess.fen()
-            openingGraph.addGameResultOnFen(fen, this.gameResult(pgn))
+            openingGraph.addGameResultOnFen(fen, resultObject)
             this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, openingGraph)
         }
             setTimeout(()=>{this.parsePGNTimed(pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError)},1)
     }
 
     gameResult(pgn) {
-        let result = pgn.headers.Result
-        let white = pgn.headers.White
-        let black = pgn.headers.Black
-        let url = pgn.headers.Link || pgn.headers.Site
         return {
-            result:result,
-            white:white,
-            black:black,
-            url:url
+            result:pgn.result,
+            white:pgn.headers.White,
+            black:pgn.headers.Black,
+            whiteElo:pgn.headers.WhiteElo,
+            blackElo:pgn.headers.BlackElo,
+            url:pgn.headers.Link || pgn.headers.Site
         }
     }
 }

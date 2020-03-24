@@ -28,15 +28,20 @@ export default class MovesList extends React.Component {
         return <Table>
             <TableBody>
                 {
-                this.props.gameResults.map(result => 
-                    <TableRow className="moveRow" key = {`${result.url}`} onClick={this.launch(result.url)}>
+                this.props.gameResults.map(result => {
+                    let whitePlayer = this.player(result.white, result.whiteElo)
+                    let blackPlayer = this.player(result.black, result.blackElo)
+                    return <TableRow className="moveRow" key = {`${result.url}`} onClick={this.launch(result.url)}>
                         <TableCell>
-                            {result.result==="1-0"?<b>{result.white}</b>:result.white} {result.result} {result.result === "0-1"?<b>{result.black}</b>:result.black}
+                            {result.result==="1-0"?<b>{whitePlayer}</b>:whitePlayer} {result.result} {result.result === "0-1"?<b>{blackPlayer}</b>:blackPlayer}
                         </TableCell>
                     </TableRow>
-                )}
+                })}
             </TableBody>
         </Table>
+    }
+    player(name, elo) {
+        return `${name} (${elo})`
     }
     movesTable() {
         let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)
