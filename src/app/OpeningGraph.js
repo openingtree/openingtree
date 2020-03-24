@@ -43,7 +43,8 @@ class OpeningGraph {
         movePlayedBy.blackWins += blackWin
         movePlayedBy.whiteWins += whiteWin
         movePlayedBy.draws += draw
-        
+        movePlayedBy.sampleResult = resultObject
+
         currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.count)
         
         currNode.playedBy = movesPlayedBy
@@ -78,6 +79,7 @@ class OpeningGraph {
         movePlayedAgainst.blackWins += blackWin
         movePlayedAgainst.whiteWins += whiteWin
         movePlayedAgainst.draws += draw
+        movePlayedAgainst.sampleResult = resultObject
         
         currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
         
@@ -107,7 +109,8 @@ class OpeningGraph {
                     whiteWins:gMove.whiteWins,
                     blackWins:gMove.blackWins,
                     draws:gMove.draws,
-                    san:gMove.move.san
+                    san:gMove.move.san,
+                    sampleResult:gMove.sampleResult
                 }
             })
         }        
@@ -127,7 +130,8 @@ class OpeningGraph {
                     whiteWins:gMove.whiteWins,
                     blackWins:gMove.blackWins,
                     draws:gMove.draws,
-                    san:gMove.move.san
+                    san:gMove.move.san,
+                    sampleResult:gMove.sampleResult
                 }
             })
         }        
@@ -182,6 +186,7 @@ class GraphMove {
     blackWins = 0
     whiteWins = 0
     draws = 0
+    sampleResult = null
 }
 
 /*class EngineAnalysis {

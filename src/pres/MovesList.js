@@ -2,7 +2,7 @@ import {Progress } from "reactstrap"
 import React from 'react'
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 
 export default class MovesList extends React.Component {
 
@@ -41,7 +41,7 @@ export default class MovesList extends React.Component {
         </Table>
     }
     player(name, elo) {
-        return `${name} (${elo})`
+        return `${name}(${elo})`
     }
     movesTable() {
         let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)
@@ -57,8 +57,12 @@ export default class MovesList extends React.Component {
         {hasMoves?
         <TableBody>
         {
-        this.props.movesToShow.map(move => 
-            <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
+        this.props.movesToShow.map(move => {
+            let sampleResultWhite = this.player(move.sampleResult.white, move.sampleResult.whiteElo)
+            let sampleResultBlack = this.player(move.sampleResult.black, move.sampleResult.blackElo)
+            let sampleResult = move.sampleResult.result
+            
+            return move.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell size="small" className="smallCol">{move.count}</TableCell>
                 <TableCell>
@@ -68,7 +72,14 @@ export default class MovesList extends React.Component {
                         <Progress bar className="blackMove" value={`${move.blackWins/move.count*100}`}>{move.blackWins/move.count>0.1?move.blackWins:''}</Progress>
                     </Progress>
                 </TableCell>
+            </TableRow>:
+            <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
+                <TableCell size="small" className="smallCol">{move.san}</TableCell>
+                <TableCell colSpan = "2">
+                            {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon onClick ={this.launch(move.sampleResult.url)} icon={faExternalLinkAlt}/>}
+                </TableCell>
             </TableRow>
+            }
         )}
     </TableBody>
     :null}
