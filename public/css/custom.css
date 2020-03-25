@@ -133,8 +133,7 @@
 }
 
 .performanceHeader {
-    padding-top:15px;
-    padding-bottom:15px;
+    background-color:#f7f7f7;
 }
 
 .lowOpacity {

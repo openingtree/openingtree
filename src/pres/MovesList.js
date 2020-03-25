@@ -61,6 +61,10 @@ export default class MovesList extends React.Component {
     player(name, elo) {
         return `${name}(${elo})`
     }
+    eatClicks(e) {
+        e.stopPropagation()
+    }
+
     movesTable() {
         let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)
         return <Table>
@@ -94,8 +98,12 @@ export default class MovesList extends React.Component {
                 <TableCell size="small" className="smallCol">
                     {move.count} <FontAwesomeIcon className="lowOpacity" id={`performancePopover${moveIndex}`} icon={faInfoCircle} onClick ={this.togglePerformancePopover(moveIndex)}/>
                     <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
-                        <PopoverHeader className="performanceHeader">Performance Rating: {performanceDetails.performanceRating}</PopoverHeader>
-                        <Table>
+                        <Table onClick={this.eatClicks}>
+                            <TableHead className="performanceRatingRow performanceHeader"><TableRow>
+                                <TableCell className="performanceRatingRow"><b>Performance rating</b></TableCell>
+                                <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
+                                </TableRow></TableHead>
+                            <TableBody>
                             <TableRow className="performanceRatingRow">
                                 <TableCell className="performanceRatingRow">Avg opponent rating</TableCell>
                                 <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
@@ -107,7 +115,8 @@ export default class MovesList extends React.Component {
                             <TableRow className="performanceRatingRow">
                                 <TableCell className="performanceRatingRow">Rating points change</TableCell>
                                 <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
-                            </TableRow>
+                            </TableRow></TableBody>
+                            <TableFooter><TableRow><TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank">FIDE regulations</a></TableCell></TableRow></TableFooter>
                         </Table>
                     </Popover>
                 </TableCell>
