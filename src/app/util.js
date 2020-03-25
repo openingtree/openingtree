@@ -133,12 +133,13 @@ export function getPerformanceDetails(totalElo, white, draws, black, playerColor
     let totalGames = white + draws + black
     let averageElo = Math.round(totalElo/totalGames)
     let playerWins = playerColor==='white'?white:black
-    let winPercentage = `${Math.round(playerWins*100/totalGames)}`
-    let ratingChange = Common.DP_TABLE[winPercentage]
+    let score = playerWins+(draws/2)
+    let scorePercentage = Math.round(score*100/totalGames)
+    let ratingChange = Common.DP_TABLE[scorePercentage]
     return {
         performanceRating:averageElo+ratingChange,
         averageElo: averageElo,
-        winPercentage:`${winPercentage}%`,
+        score:`${score.toFixed(1)}/${totalGames}`,
         ratingChange:`${ratingChange===0?'':(ratingChange>0?'+':'-')}${Math.abs(ratingChange)}`
     }
 }

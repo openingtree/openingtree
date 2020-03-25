@@ -92,23 +92,23 @@ export default class MovesList extends React.Component {
             return move.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san} </TableCell>
                 <TableCell size="small" className="smallCol">
-                    {move.count} <FontAwesomeIcon id={`performancePopover${moveIndex}`} icon={faInfoCircle} onClick ={this.togglePerformancePopover(moveIndex)}/>
-                    <Popover trigger="hover" placement="bottom" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
+                    {move.count} <FontAwesomeIcon className="lowOpacity" id={`performancePopover${moveIndex}`} icon={faInfoCircle} onClick ={this.togglePerformancePopover(moveIndex)}/>
+                    <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
                         <PopoverHeader className="performanceHeader">Performance Rating: {performanceDetails.performanceRating}</PopoverHeader>
-                        <PopoverBody><Table>
+                        <Table>
                             <TableRow className="performanceRatingRow">
                                 <TableCell className="performanceRatingRow">Avg opponent rating</TableCell>
                                 <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
                             </TableRow>
                             <TableRow className="performanceRatingRow">
-                                <TableCell className="performanceRatingRow">Win percentage</TableCell>
-                                <TableCell className="performanceRatingRow">{performanceDetails.winPercentage}</TableCell>
+                                <TableCell className="performanceRatingRow">Score</TableCell>
+                                <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
                             </TableRow>
                             <TableRow className="performanceRatingRow">
                                 <TableCell className="performanceRatingRow">Rating points change</TableCell>
                                 <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
                             </TableRow>
-                        </Table></PopoverBody>
+                        </Table>
                     </Popover>
                 </TableCell>
                 <TableCell>
