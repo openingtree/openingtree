@@ -110,7 +110,7 @@ export default class PGNLoader extends React.Component {
                 <Button onClick = {this.playerColorChange('black')} color = {this.state.playerColor === 'black'?'secondary':'link'}>Black</Button>
                 </div>
             </div>
-    <div className="pgnloadersection"><a href="#" onClick ={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen?faCaretUp:faCaretDown}/></a>
+    <div className="pgnloadersection"><span className="linkStyle" onClick ={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen?faCaretUp:faCaretDown}/></span>
             <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
             <Card>
                 <AdvancedFilters 
@@ -135,7 +135,7 @@ export default class PGNLoader extends React.Component {
                     this.props.gamesProcessed>0 || this.props.isDownloading?
                     <div>
                         <div className="pgnloadersection">
-                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<a href="#" onClick={this.stopDownloading.bind(this)}>stop</a>]</span>:""}
+                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloading.bind(this)}>stop</span>]</span>:""}
                         </div>
                         <div onClick = {()=>this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
                             <FontAwesomeIcon icon={faList} /> View Moves>>

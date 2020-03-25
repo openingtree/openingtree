@@ -139,3 +139,9 @@
 .lowOpacity {
     opacity: 0.6;
 }
+
+.linkStyle{
+    cursor:pointer;
+    color:#007bff;
+    text-decoration:none;
+}

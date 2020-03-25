@@ -137,7 +137,7 @@ export default class AdvancedFilters extends React.Component {
     }
 
     subSectionComponent(title, label, changeCallback, children) {
-        return <div className="pgnloadersection">{title}: <span className="smallText">[<a href="#" onClick={changeCallback}>change</a>]</span>
+        return <div className="pgnloadersection">{title}: <span className="smallText">[<span className="linkStyle" onClick={changeCallback}>change</span>]</span>
         <div><b>{label}</b></div>{children}
         </div>
     }
