@@ -15,7 +15,7 @@ class OpeningGraph {
         }
         currNode.gameResults.push(gameResult)
     }
-    addMoveForFen(fullFen, move, resultObject) {
+    addMoveForFen(fullFen, move, resultObject, playerColor) {
         let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
@@ -31,7 +31,7 @@ class OpeningGraph {
             movesPlayedBy.set(move.san, movePlayedBy)
         }
 
-        let whiteWin = 0, blackWin = 0, draw = 0
+        let whiteWin = 0, blackWin = 0, draw = 0, opponentElo = 0
         if(resultObject.result === '1-0') {
             whiteWin = 1
         } else if (resultObject.result === '0-1') {
@@ -39,11 +39,19 @@ class OpeningGraph {
         } else {
             draw = 1
         }
+
+        if(playerColor === 'white') {
+            opponentElo = resultObject.blackElo
+        } else {
+            opponentElo = resultObject.whiteElo
+        }
+
         movePlayedBy.count += 1
         movePlayedBy.blackWins += blackWin
         movePlayedBy.whiteWins += whiteWin
         movePlayedBy.draws += draw
         movePlayedBy.sampleResult = resultObject
+        movePlayedBy.totalOpponentElo += parseInt(opponentElo)
 
         currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.count)
         
@@ -51,7 +59,7 @@ class OpeningGraph {
 
         
     }
-    addMoveAgainstFen(fullFen, move, resultObject) {
+    addMoveAgainstFen(fullFen, move, resultObject, playerColor) {
         let fen = simplifiedFen(fullFen)
 
         var currNode = this.graph.nodes.get(fen)
@@ -67,7 +75,7 @@ class OpeningGraph {
             movePlayedAgainst.move = move
             movesPlayedAgainst.set(move.san, movePlayedAgainst)
         }
-        let whiteWin = 0, blackWin = 0, draw = 0
+        let whiteWin = 0, blackWin = 0, draw = 0, opponentElo=0
         if(resultObject.result === '1-0') {
             whiteWin = 1
         } else if (resultObject.result === '0-1') {
@@ -75,12 +83,19 @@ class OpeningGraph {
         } else {
             draw = 1
         }
+
+        if(playerColor === 'white') {
+            opponentElo = resultObject.blackElo
+        } else {
+            opponentElo = resultObject.whiteElo
+        }
         movePlayedAgainst.count += 1
         movePlayedAgainst.blackWins += blackWin
         movePlayedAgainst.whiteWins += whiteWin
         movePlayedAgainst.draws += draw
         movePlayedAgainst.sampleResult = resultObject
-        
+        movePlayedAgainst.totalOpponentElo += parseInt(opponentElo)
+
         currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
         
         currNode.playedAgainst = movesPlayedAgainst
@@ -110,7 +125,8 @@ class OpeningGraph {
                     blackWins:gMove.blackWins,
                     draws:gMove.draws,
                     san:gMove.move.san,
-                    sampleResult:gMove.sampleResult
+                    sampleResult:gMove.sampleResult,
+                    totalOpponentElo:gMove.totalOpponentElo
                 }
             })
         }        
@@ -131,7 +147,8 @@ class OpeningGraph {
                     blackWins:gMove.blackWins,
                     draws:gMove.draws,
                     san:gMove.move.san,
-                    sampleResult:gMove.sampleResult
+                    sampleResult:gMove.sampleResult,
+                    totalOpponentElo:gMove.totalOpponentElo
                 }
             })
         }        
@@ -187,6 +204,7 @@ class GraphMove {
     whiteWins = 0
     draws = 0
     sampleResult = null
+    totalOpponentElo = 0
 }
 
 /*class EngineAnalysis {

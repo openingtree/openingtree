@@ -128,3 +128,17 @@ function getTimeStampInfoFor(month, year, minOrMax) {
 function getDaysInMonth(year,month) {
     return new Date(year, month + 1, 0).getDate();
 }
+
+export function getPerformanceDetails(totalElo, white, draws, black, playerColor) {
+    let totalGames = white + draws + black
+    let averageElo = Math.round(totalElo/totalGames)
+    let playerWins = playerColor==='white'?white:black
+    let winPercentage = `${Math.round(playerWins*100/totalGames)}`
+    let ratingChange = Common.DP_TABLE[winPercentage]
+    return {
+        performanceRating:averageElo+ratingChange,
+        averageElo: averageElo,
+        winPercentage:`${winPercentage}%`,
+        ratingChange:`${ratingChange===0?'':(ratingChange>0?'+':'-')}${Math.abs(ratingChange)}`
+    }
+}

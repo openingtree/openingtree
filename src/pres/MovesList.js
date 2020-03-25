@@ -1,10 +1,17 @@
-import {Progress } from "reactstrap"
+import {Progress, PopoverBody, PopoverHeader, Popover } from "reactstrap"
 import React from 'react'
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faExternalLinkAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import {getPerformanceDetails} from '../app/util'
 
 export default class MovesList extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            openPerformanceIndex: null
+        }
+    }
 
     move(from, to) {
         return () => {
@@ -15,6 +22,16 @@ export default class MovesList extends React.Component {
         return (e) => {
             e.stopPropagation()
             window.open(url, '_blank');
+        }
+    }
+    togglePerformancePopover(moveIndex) {
+        return (e) => {
+            if(this.state.openPerformanceIndex !== null) {
+                this.setState({openPerformanceIndex:null})
+            } else {
+                this.setState({openPerformanceIndex: moveIndex})
+            }
+            e.stopPropagation()
         }
     }
     render(){
@@ -58,14 +75,42 @@ export default class MovesList extends React.Component {
         {hasMoves?
         <TableBody>
         {
-        this.props.movesToShow.map(move => {
+        this.props.movesToShow.map((move, moveIndex) => {
             let sampleResultWhite = this.player(move.sampleResult.white, move.sampleResult.whiteElo)
             let sampleResultBlack = this.player(move.sampleResult.black, move.sampleResult.blackElo)
             let sampleResult = move.sampleResult.result
-            
+            let performancePopoverOpen = false
+            let performanceDetails = {}
+            if(performancePopoverOpen !== null) {
+                performancePopoverOpen = this.state.openPerformanceIndex === moveIndex
+            }
+            if(performancePopoverOpen) {
+                let openMove = this.props.movesToShow[moveIndex]
+                performanceDetails = getPerformanceDetails(openMove.totalOpponentElo, openMove.whiteWins, openMove.draws, openMove.blackWins, this.props.settings.playerColor)
+            } 
+
             return move.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
-                <TableCell size="small" className="smallCol">{move.san}</TableCell>
-                <TableCell size="small" className="smallCol">{move.count}</TableCell>
+                <TableCell size="small" className="smallCol">{move.san} </TableCell>
+                <TableCell size="small" className="smallCol">
+                    {move.count} <FontAwesomeIcon id={`performancePopover${moveIndex}`} icon={faInfoCircle} onClick ={this.togglePerformancePopover(moveIndex)}/>
+                    <Popover trigger="hover" placement="bottom" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
+                        <PopoverHeader className="performanceHeader">Performance Rating: {performanceDetails.performanceRating}</PopoverHeader>
+                        <PopoverBody><Table>
+                            <TableRow className="performanceRatingRow">
+                                <TableCell className="performanceRatingRow">Avg opponent rating</TableCell>
+                                <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
+                            </TableRow>
+                            <TableRow className="performanceRatingRow">
+                                <TableCell className="performanceRatingRow">Win percentage</TableCell>
+                                <TableCell className="performanceRatingRow">{performanceDetails.winPercentage}</TableCell>
+                            </TableRow>
+                            <TableRow className="performanceRatingRow">
+                                <TableCell className="performanceRatingRow">Rating points change</TableCell>
+                                <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
+                            </TableRow>
+                        </Table></PopoverBody>
+                    </Popover>
+                </TableCell>
                 <TableCell>
                     <Progress className = "border" multi>
                         <Progress bar className="whiteMove" value={`${move.whiteWins/move.count*100}`}>{move.whiteWins/move.count>0.1?move.whiteWins:''}</Progress>

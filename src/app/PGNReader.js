@@ -44,9 +44,9 @@ export default class PGNReader {
                     return
                 }
                 if(move.color === gamePlayerColor) {
-                    openingGraph.addMoveForFen(fen, move, resultObject)
+                    openingGraph.addMoveForFen(fen, move, resultObject, playerColor)
                 } else {
-                    openingGraph.addMoveAgainstFen(fen,move, resultObject)
+                    openingGraph.addMoveAgainstFen(fen,move, resultObject, playerColor)
                 }
             })
             let fen = chess.fen()
