@@ -122,3 +122,17 @@
     width:50%;
     margin-left:30px;
 }
+
+.pointerExternalLink {
+    cursor: context-menu;
+}
+
+.performanceRatingRow {
+    padding-top:10px;
+    padding-bottom:10px;
+}
+
+.performanceHeader {
+    padding-top:15px;
+    padding-bottom:15px;
+}
