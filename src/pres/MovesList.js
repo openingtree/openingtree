@@ -2,7 +2,7 @@ import {Progress } from "reactstrap"
 import React from 'react'
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 
 export default class MovesList extends React.Component {
 
@@ -12,17 +12,14 @@ export default class MovesList extends React.Component {
         }
     }
     launch(url) {
-        return () => {
+        return (e) => {
+            e.stopPropagation()
             window.open(url, '_blank');
         }
     }
-    changePlayerColor() {
-        this.props.settingsChange('playerColor', this.props.settings.playerColor === "white"? "black":"white")
-    }
-
     render(){
         if(!this.props.settings.playerName) {
-            return <div className = "infoMessage" >No moves to show. Please enter a lichess user name in the 
+            return <div className = "infoMessage" >No moves to show. Please enter a lichess or chess.com user name in the 
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
         }
     return <div>{(this.props.gameResults && this.props.gameResults.length>0)?this.resultsTable():null}
@@ -32,15 +29,20 @@ export default class MovesList extends React.Component {
         return <Table>
             <TableBody>
                 {
-                this.props.gameResults.map(result => 
-                    <TableRow className="moveRow" key = {`${result.url}`} onClick={this.launch(result.url)}>
+                this.props.gameResults.map(result => {
+                    let whitePlayer = this.player(result.white, result.whiteElo)
+                    let blackPlayer = this.player(result.black, result.blackElo)
+                    return <TableRow className="moveRow" key = {`${result.url}`} onClick={this.launch(result.url)}>
                         <TableCell>
-                            {result.result==="1-0"?<b>{result.white}</b>:result.white} {result.result} {result.result === "0-1"?<b>{result.black}</b>:result.black}
+                            {result.result==="1-0"?<b>{whitePlayer}</b>:whitePlayer} {result.result} {result.result === "0-1"?<b>{blackPlayer}</b>:blackPlayer}
                         </TableCell>
                     </TableRow>
-                )}
+                })}
             </TableBody>
         </Table>
+    }
+    player(name, elo) {
+        return `${name}(${elo})`
     }
     movesTable() {
         let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)
@@ -56,8 +58,12 @@ export default class MovesList extends React.Component {
         {hasMoves?
         <TableBody>
         {
-        this.props.movesToShow.map(move => 
-            <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
+        this.props.movesToShow.map(move => {
+            let sampleResultWhite = this.player(move.sampleResult.white, move.sampleResult.whiteElo)
+            let sampleResultBlack = this.player(move.sampleResult.black, move.sampleResult.blackElo)
+            let sampleResult = move.sampleResult.result
+            
+            return move.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell size="small" className="smallCol">{move.count}</TableCell>
                 <TableCell>
@@ -67,7 +73,14 @@ export default class MovesList extends React.Component {
                         <Progress bar className="blackMove" value={`${move.blackWins/move.count*100}`}>{move.blackWins/move.count>0.1?move.blackWins:''}</Progress>
                     </Progress>
                 </TableCell>
+            </TableRow>:
+            <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
+                <TableCell size="small" className="smallCol">{move.san}</TableCell>
+                <TableCell colSpan = "2">
+        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(move.sampleResult.url)} icon={faExternalLinkAlt}/>}
+                </TableCell>
             </TableRow>
+            }
         )}
     </TableBody>
     :null}
@@ -77,11 +90,11 @@ export default class MovesList extends React.Component {
             <TableCell colSpan="3">
             Showing moves that have been 
             played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
-            this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
+            this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
             </TableCell>:
             <TableCell colSpan="3">
             No moves found in this position played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
-            this position. <b>{this.props.settings.playerName}</b> is playing as {this.props.settings.playerColor} [<a onClick={this.changePlayerColor.bind(this)} href="#">change</a>].
+            this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
             </TableCell>
         }</TableRow></TableFooter>
     </Table>

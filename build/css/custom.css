@@ -98,5 +98,27 @@
     line-height: 0.80;
 }
 .greyText {
-    color:grey
+    color:grey;
+}
+
+.smallText {
+    font-size:0.75rem;
+}
+.nomargin {
+    margin:0px
+}
+.topNegativeMargin {
+    margin-top:-10px;
+}
+.bottomNegativeMargin {
+    margin-bottom:-10px;
+}
+.topBottomNegativeMargin {
+    margin-top:-10px;
+    margin-bottom:-10px;
+}
+
+.sliderCustom {
+    width:50%;
+    margin-left:30px;
 }

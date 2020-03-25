@@ -1,10 +1,12 @@
+import {simplifiedFen} from './util'
 
 class OpeningGraph {
     graph = new Graph()
     clear() {
         this.graph = new Graph()
     }
-    addGameResultOnFen(fen, gameResult) {
+    addGameResultOnFen(fullFen, gameResult) {
+        let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
             currNode = new GraphNode()
@@ -13,7 +15,8 @@ class OpeningGraph {
         }
         currNode.gameResults.push(gameResult)
     }
-    addMoveForFen(fen, move, result) {
+    addMoveForFen(fullFen, move, resultObject) {
+        let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
             currNode = new GraphNode()
@@ -29,9 +32,9 @@ class OpeningGraph {
         }
 
         let whiteWin = 0, blackWin = 0, draw = 0
-        if(result === '1-0') {
+        if(resultObject.result === '1-0') {
             whiteWin = 1
-        } else if (result === '0-1') {
+        } else if (resultObject.result === '0-1') {
             blackWin = 1
         } else {
             draw = 1
@@ -40,14 +43,17 @@ class OpeningGraph {
         movePlayedBy.blackWins += blackWin
         movePlayedBy.whiteWins += whiteWin
         movePlayedBy.draws += draw
-        
+        movePlayedBy.sampleResult = resultObject
+
         currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.count)
         
         currNode.playedBy = movesPlayedBy
 
         
     }
-    addMoveAgainstFen(fen, move, result) {
+    addMoveAgainstFen(fullFen, move, resultObject) {
+        let fen = simplifiedFen(fullFen)
+
         var currNode = this.graph.nodes.get(fen)
         if(!currNode) {
             currNode = new GraphNode()
@@ -62,9 +68,9 @@ class OpeningGraph {
             movesPlayedAgainst.set(move.san, movePlayedAgainst)
         }
         let whiteWin = 0, blackWin = 0, draw = 0
-        if(result === '1-0') {
+        if(resultObject.result === '1-0') {
             whiteWin = 1
-        } else if (result === '0-1') {
+        } else if (resultObject.result === '0-1') {
             blackWin = 1
         } else {
             draw = 1
@@ -73,19 +79,24 @@ class OpeningGraph {
         movePlayedAgainst.blackWins += blackWin
         movePlayedAgainst.whiteWins += whiteWin
         movePlayedAgainst.draws += draw
+        movePlayedAgainst.sampleResult = resultObject
         
         currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
         
         currNode.playedAgainst = movesPlayedAgainst
     }
-    gameResultsForFen(fen) {
+    gameResultsForFen(fullFen) {
+        let fen = simplifiedFen(fullFen)
+
         var currNode = this.graph.nodes.get(fen)
         if(currNode) {
             return currNode.gameResults
         }
         return null
     }
-    movesForFen(fen) {
+    movesForFen(fullFen) {
+        let fen = simplifiedFen(fullFen)
+
         var currNode = this.graph.nodes.get(fen)
         if(currNode) {
             return Array.from(currNode.playedBy.entries()).map((entry)=> {
@@ -98,13 +109,15 @@ class OpeningGraph {
                     whiteWins:gMove.whiteWins,
                     blackWins:gMove.blackWins,
                     draws:gMove.draws,
-                    san:gMove.move.san
+                    san:gMove.move.san,
+                    sampleResult:gMove.sampleResult
                 }
             })
         }        
         return null
     }
-    movesAgainstFen(fen) {
+    movesAgainstFen(fullFen) {
+        let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
         if(currNode) {
             return Array.from(currNode.playedAgainst.entries()).map((entry)=> {
@@ -117,7 +130,8 @@ class OpeningGraph {
                     whiteWins:gMove.whiteWins,
                     blackWins:gMove.blackWins,
                     draws:gMove.draws,
-                    san:gMove.move.san
+                    san:gMove.move.san,
+                    sampleResult:gMove.sampleResult
                 }
             })
         }        
@@ -172,6 +186,7 @@ class GraphMove {
     blackWins = 0
     whiteWins = 0
     draws = 0
+    sampleResult = null
 }
 
 /*class EngineAnalysis {
