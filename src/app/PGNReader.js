@@ -26,7 +26,7 @@ export default class PGNReader {
     }
 
     parsePGNTimed(pgnArray, advancedFilters, playerColor, index,  playerName, notify, showError) {
-        if(index>= pgnArray.length) {
+        if(index>= pgnArray.length || !this.continueProcessingGames) {
             return
         }
         var pgn = pgnArray[index]
