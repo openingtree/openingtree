@@ -2,6 +2,7 @@ import request from 'request'
 import { parse }  from './PGNParser'
 import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData, isOpponentEloInSelectedRange} from './util'
 import * as Constants from './Constants'
+import {trackEvent} from './Analytics'
 
 export default class LichessIterator {
 
@@ -41,6 +42,7 @@ export default class LichessIterator {
                 } catch (e) {
                     console.log("failed to parse pgn", pgnString)
                     console.log(e)
+                    trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedLichess", playerName)
                     return null
                 }
             })

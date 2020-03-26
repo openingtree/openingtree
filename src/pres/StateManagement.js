@@ -125,6 +125,7 @@ function settingsChange(name, value) {
 }
 function showError(message) {
     this.setState({errorMessage:message})
+    trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown",message)
 }
 
 function closeError() {
