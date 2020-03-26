@@ -7,6 +7,8 @@ import { Radio,FormControlLabel,RadioGroup } from '@material-ui/core';
 import AdvancedFilters from './AdvancedFilters'
 import {createSubObjectWithProperties, getTimeframeSteps} from '../app/util'
 import * as Constants from '../app/Constants'
+import {trackEvent} from '../app/Analytics'
+
 export default class PGNLoader extends React.Component {
 
     constructor(props){
@@ -38,12 +40,14 @@ export default class PGNLoader extends React.Component {
         } else {
             this.setState({rated:'all'})
         }
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "AdvancedFilterChange", "rated")
     }
     toggleState(property) { 
         return () => {
             let newState = {}
             newState[property] = !this.state[property]
             this.setState(newState)
+            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ToggleAdvancedFilters", this.state.site)
         }
     }
 
@@ -70,12 +74,15 @@ export default class PGNLoader extends React.Component {
             this.props.showError, 
             this.stopDownloading.bind(this))
         this.props.setDownloading(true)
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Load", this.state.site, this.state.playerColor==='white'?1:0)
     }
     stopDownloading() {
         this.props.setDownloading(false)
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "StopDownloading", this.state.site)
     }
     siteChange(event) {
         this.setState({site:event.target.value})
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ChangeSite", this.state.site)
     }
 
     handleTimeControlChange(event) {

@@ -7,6 +7,7 @@ import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../app/Constants'
 import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel} from './FilterLabels'
 import * as Common from '../app/Common'
+import {trackEvent} from '../app/Analytics'
 
 export default class AdvancedFilters extends React.Component {
     constructor(props) {
@@ -47,6 +48,7 @@ export default class AdvancedFilters extends React.Component {
                 filterName = ''
             }
             this.setState({currentlyOpenAdvancedFilter:filterName})
+            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "AdvancedFilterChange", filterName)
         }
     }
 
