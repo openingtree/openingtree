@@ -4,6 +4,8 @@ import OpeningManager from '../app/OpeningManager'
 import {Container, Row, Col, Button} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStepForward, faStepBackward } from '@fortawesome/free-solid-svg-icons'
+import * as Constants from '../app/Constants'
+import {trackEvent} from '../app/Analytics'
 
 export default class Navigator extends React.Component {
     
@@ -32,12 +34,14 @@ export default class Navigator extends React.Component {
         let newState = this.openingManager.moveBack()
         this.props.onChange(newState.fen, newState.move)
         this.setState({currentMove:this.openingManager.currentMove()})
+        trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "Previous")
     }
 
     next() {
         let newState = this.openingManager.moveForward()
         this.props.onChange(newState.fen, newState.move)
         this.setState({currentMove:this.openingManager.currentMove()})
+        trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "Next")
     }
 
     moveTo(index) {
@@ -45,6 +49,7 @@ export default class Navigator extends React.Component {
             let newState = this.openingManager.moveTo(index*2+1)
             this.props.onChange(newState.fen, newState.move)
             this.setState({currentMove:this.openingManager.currentMove()})
+            trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "move", null, index)
         }
     }
 

@@ -7,6 +7,7 @@ import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../app/Constants'
 import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel} from './FilterLabels'
 import * as Common from '../app/Common'
+import {trackEvent} from '../app/Analytics'
 
 export default class AdvancedFilters extends React.Component {
     constructor(props) {
@@ -47,6 +48,7 @@ export default class AdvancedFilters extends React.Component {
                 filterName = ''
             }
             this.setState({currentlyOpenAdvancedFilter:filterName})
+            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "AdvancedFilterChange", filterName)
         }
     }
 
@@ -151,7 +153,7 @@ export default class AdvancedFilters extends React.Component {
         } 
         return <Row className={clsName}>
             {controls.map((control) => 
-            <Col sm={firstColumnWidth}>
+            <Col sm={firstColumnWidth} key={`ctrl${control}`}>
                 
             <FormControlLabel className = "nomargin"
                 control={<Checkbox checked={this.props.advancedFilters[control]} color="primary" 

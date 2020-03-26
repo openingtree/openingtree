@@ -52,7 +52,7 @@ export default class MainContainer extends React.Component {
       
       lastMove={lastMoveArray}
       fen={this.state.fen}
-      onMove={this.onMove.bind(this)}
+      onMove={this.onMoveAction.bind(this)}
       drawable ={{
         enabled: true,
         visible: true,

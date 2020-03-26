@@ -3,6 +3,7 @@ import { parse }  from './PGNParser'
 import request from 'request'
 import * as Constants from './Constants'
 import {isOpponentEloInSelectedRange, getTimeframeSteps, getSelectedTimeFrameData} from './util'
+import {trackEvent} from './Analytics'
 
 export default class ChessComIterator {
 
@@ -38,6 +39,7 @@ export default class ChessComIterator {
                         } catch (e) {
                             console.log("failed to parse pgn", game)
                             console.log(e)
+                            trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedChessCom", playerName)
                             return null
                         }
                     }).filter(game=> game !== null))

@@ -1,4 +1,6 @@
 import Chess from 'chess.js'
+import * as Constants from '../app/Constants'
+import {trackEvent} from '../app/Analytics'
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -40,6 +42,12 @@ function onMove(from, to) {
     const chess = this.chess
     let move = chess.move({ from, to, promotion: 'q'})
     this.setState({ fen: chess.fen(), lastMove: move})
+}
+
+
+function onMoveAction(from, to) {
+    this.onMove(from,to)
+    trackEvent(Constants.EVENT_CATEGORY_CHESSBOARD, "Move")
 }
 
 function navigateTo(fen, previousMove){
@@ -117,6 +125,7 @@ function settingsChange(name, value) {
 }
 function showError(message) {
     this.setState({errorMessage:message})
+    trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown",message)
 }
 
 function closeError() {
@@ -132,6 +141,7 @@ function addStateManagement(obj){
     obj.turnColor = turnColor
     obj.calcMovable = calcMovable
     obj.onMove = onMove
+    obj.onMoveAction = onMoveAction
     obj.autoShapes = autoShapes
     obj.updateProcessedGames = updateProcessedGames
     obj.settingsChange = settingsChange

@@ -14,3 +14,10 @@ export const SITE_LICHESS = "lichess"
 export const SITE_CHESS_DOT_COM = "chesscom"
 export const MAX_DOWNLOAD_LIMIT = 2000
 export const MAX_ELO_RATING = 3000
+
+export const EVENT_CATEGORY_PGN_LOADER = "loader"
+export const EVENT_CATEGORY_MOVES_LIST = "moves"
+export const EVENT_CATEGORY_CONTROLS = "controls"
+export const EVENT_CATEGORY_NAVIGATOR = "navigator"
+export const EVENT_CATEGORY_CHESSBOARD = "chessboard"
+export const EVENT_CATEGORY_ERROR = "error"

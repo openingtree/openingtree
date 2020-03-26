@@ -4,6 +4,8 @@ import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faExternalLinkAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import {getPerformanceDetails} from '../app/util'
+import * as Constants from '../app/Constants'
+import {trackEvent} from '../app/Analytics'
 
 export default class MovesList extends React.Component {
     constructor(props) {
@@ -16,12 +18,15 @@ export default class MovesList extends React.Component {
     move(from, to) {
         return () => {
             this.props.onMove(from, to)
+            trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "MoveClicked")
         }
     }
     launch(url) {
         return (e) => {
             e.stopPropagation()
             window.open(url, '_blank');
+            trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "ViewGameExternal")
+
         }
     }
     togglePerformancePopover(moveIndex) {
