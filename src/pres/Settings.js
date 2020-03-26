@@ -22,9 +22,6 @@ export default class SettingsView extends React.Component {
                         <Button className="settingButton" onClick = {this.toggle('orientation')} color=""><h3><FontAwesomeIcon icon={faRetweet} /></h3> Flip board</Button>
                     </Col>
                     <Col sm="6">
-                        <Button className="settingButton" onClick = {this.toggle('playerColor')} color=""><h3><FontAwesomeIcon icon={faRandom} /></h3> Player color</Button>
-                    </Col>
-                    <Col sm="6">
                         <Button className="settingButton" onClick = {this.props.clear} color=""><h3><FontAwesomeIcon icon={faTrashAlt} /></h3> Clear games</Button>
                     </Col>
                     <Col sm="6">

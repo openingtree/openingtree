@@ -2,36 +2,39 @@ import {openingGraph} from './OpeningGraph'
 import Chess from 'chess.js'
 import LichessIterator from './LichessIterator'
 import ChessComIterator from './ChessComIterator'
+import * as Constants from './Constants'
 
 export default class PGNReader {
-    parsePGN(playerName, site, notify, showError, stopDownloading) {
+    parsePGN(playerName, playerColor, site, advancedFilters, notify, showError, stopDownloading) {
         this.continueProcessingGames = true
         let handleResponse = (result) => {
             if(!result || !result.length) {
                 return this.continueProcessingGames
             }
             setTimeout(() => {
-                this.parsePGNTimed(result, 0, playerName, notify, showError)
+                this.parsePGNTimed(result, advancedFilters, playerColor, 0, playerName, notify, showError)
             } ,1)
             return this.continueProcessingGames
         }
-        if(site === "lichess") {
-            new LichessIterator(playerName, handleResponse, showError, stopDownloading)
-        } else if(site === "chesscom") {
-            new ChessComIterator(playerName, handleResponse, showError, stopDownloading)
+        if(site === Constants.SITE_LICHESS) {
+            new LichessIterator(playerName, playerColor, advancedFilters, handleResponse, showError, stopDownloading)
+        } else if(site === Constants.SITE_CHESS_DOT_COM) {
+            new ChessComIterator(playerName, playerColor, advancedFilters, handleResponse, showError, stopDownloading)
         }
 
         
     }
 
-    parsePGNTimed(pgnArray, index,  playerName, notify, showError) {
+    parsePGNTimed(pgnArray, advancedFilters, playerColor, index,  playerName, notify, showError) {
         if(index>= pgnArray.length) {
             return
         }
         var pgn = pgnArray[index]
-        let playerColor = (pgn.headers.White.toLowerCase() === playerName.toLowerCase()) ? "w" : "b"
+        let gamePlayerColor = (pgn.headers.White.toLowerCase() === playerName.toLowerCase()) ? "w" : "b"
         if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
             let chess = new Chess()
+            let resultObject = this.gameResult(pgn)
+
             pgn.moves.forEach(element => {
                 let fen = chess.fen()
                 let move = chess.move(element.move)
@@ -40,29 +43,27 @@ export default class PGNReader {
                     showError("Failed to load game")
                     return
                 }
-                if(move.color === playerColor) {
-                    openingGraph.addMoveForFen(fen, move, pgn.result)
+                if(move.color === gamePlayerColor) {
+                    openingGraph.addMoveForFen(fen, move, resultObject, playerColor)
                 } else {
-                    openingGraph.addMoveAgainstFen(fen,move, pgn.result)
+                    openingGraph.addMoveAgainstFen(fen,move, resultObject, playerColor)
                 }
             })
             let fen = chess.fen()
-            openingGraph.addGameResultOnFen(fen, this.gameResult(pgn))
-            this.continueProcessingGames = notify(1, openingGraph)
+            openingGraph.addGameResultOnFen(fen, resultObject)
+            this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, openingGraph)
         }
-            setTimeout(()=>{this.parsePGNTimed(pgnArray, index+1, playerName, notify, showError)},1)
+            setTimeout(()=>{this.parsePGNTimed(pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError)},1)
     }
 
     gameResult(pgn) {
-        let result = pgn.headers.Result
-        let white = pgn.headers.White
-        let black = pgn.headers.Black
-        let url = pgn.headers.Link || pgn.headers.Site
         return {
-            result:result,
-            white:white,
-            black:black,
-            url:url
+            result:pgn.result,
+            white:pgn.headers.White,
+            black:pgn.headers.Black,
+            whiteElo:pgn.headers.WhiteElo,
+            blackElo:pgn.headers.BlackElo,
+            url:pgn.headers.Link || pgn.headers.Site
         }
     }
 }

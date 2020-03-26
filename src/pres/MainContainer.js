@@ -42,11 +42,10 @@ export default class MainContainer extends React.Component {
     return <div> 
         <GlobalHeader/>
         <Container className="mainContainer">
-          <Row><Col lg="2"><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
+          <Row><Col lg={{order:0, size:2}} xs={{order:2}}><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
     </Col><Col lg="6"><Chessground
       width={512}
       height={512}
-      n={this.state.n}
       orientation={this.orientation()}
       turnColor={this.turnColor()}
       movable={this.calcMovable()}
