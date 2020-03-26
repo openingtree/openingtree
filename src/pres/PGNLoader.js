@@ -78,6 +78,9 @@ export default class PGNLoader extends React.Component {
     }
     stopDownloading() {
         this.props.setDownloading(false)
+    }
+    stopDownloadingAction() {
+        this.stopDownloading()
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "StopDownloading", this.state.site)
     }
     siteChange(event) {
@@ -148,7 +151,7 @@ export default class PGNLoader extends React.Component {
                     this.props.gamesProcessed>0 || this.props.isDownloading?
                     <div>
                         <div className="pgnloadersection">
-                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloading.bind(this)}>stop</span>]</span>:""}
+                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}>stop</span>]</span>:""}
                         </div>
                         <div onClick = {()=>this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
                             <FontAwesomeIcon icon={faList} /> View Moves>>
