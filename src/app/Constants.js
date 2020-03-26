@@ -18,3 +18,4 @@ export const MAX_ELO_RATING = 3000
 export const EVENT_CATEGORY_PGN_LOADER = "loader"
 export const EVENT_CATEGORY_MOVES_LIST = "moves"
 export const EVENT_CATEGORY_CONTROLS = "controls"
+export const EVENT_CATEGORY_NAVIGATOR = "navigator"
