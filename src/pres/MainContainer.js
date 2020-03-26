@@ -46,7 +46,6 @@ export default class MainContainer extends React.Component {
     </Col><Col lg="6"><Chessground
       width={512}
       height={512}
-      n={this.state.n}
       orientation={this.orientation()}
       turnColor={this.turnColor()}
       movable={this.calcMovable()}
