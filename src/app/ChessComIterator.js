@@ -14,7 +14,7 @@ export default class ChessComIterator {
         let parseGames= (archiveResponse)=>{
             let continueProcessing = ready(archiveResponse.body.games.filter(
                 game=>{
-                    if(game.rules!=="chess" || game[playerColor].username !== playerName) {
+                    if(game.rules!=="chess" || game[playerColor].username.toLowerCase() !== playerName.toLowerCase()) {
                         return false
                     }
                     let ratedMode = advancedFilters[Constants.FILTER_NAME_RATED]
