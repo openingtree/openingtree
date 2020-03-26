@@ -17,6 +17,18 @@ export function getRatedLabel(rated) {
 export function getWhenPlayedLabel(timeframe, timeframeSteps) {
     return getSelectedTimeFrameData(timeframe, timeframeSteps).label
 }
+
+export function getELORangeLabel(selectedEloRange) {
+    if(selectedEloRange[0] === 0 && selectedEloRange[1]===Constants.MAX_ELO_RATING) {
+        return "All elo ratings"
+    } else if (selectedEloRange[0] === 0) {
+        return `Below ${selectedEloRange[1]}`
+    } else if (selectedEloRange[1] === Constants.MAX_ELO_RATING) {
+        return `Above ${selectedEloRange[0]}`
+    } else {
+        return `Between ${selectedEloRange[0]} and ${selectedEloRange[1]}`
+    }
+}
 export function getDownloadLimitLabel(downloadLimit) {
     return downloadLimit>= Constants.MAX_DOWNLOAD_LIMIT?"No limit":`${downloadLimit} games`
 }

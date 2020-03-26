@@ -28,6 +28,7 @@ export default class PGNLoader extends React.Component {
         this.state[Constants.TIME_CONTROL_CORRESPONDENCE] = true
         this.state[Constants.TIME_CONTROL_DAILY] = true
         this.state[Constants.FILTER_NAME_RATED] = "all"
+        this.state[Constants.FILTER_NAME_ELO_RANGE] = [0,Constants.MAX_ELO_RATING]
     }
     toggleRated() {
         if(this.state.rated === 'all') {
@@ -83,6 +84,9 @@ export default class PGNLoader extends React.Component {
     handleTimeframeChange(event, newValue) {
         this.setState({ [Constants.FILTER_NAME_SELECTED_TIMEFRAME]: newValue });
     }
+    handleEloRangeChange(event, newValue) {
+        this.setState({ [Constants.FILTER_NAME_ELO_RANGE]: newValue });
+    }
     handleDownloadLimitChange(event, newValue) {
         this.setState({ [Constants.FILTER_NAME_DOWNLOAD_LIMIT]: newValue });
     }
@@ -93,7 +97,8 @@ export default class PGNLoader extends React.Component {
                 Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
                 Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
                 Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED, 
-                Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT])
+                Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT,
+                Constants.FILTER_NAME_ELO_RANGE])
     }
 
     render() {
@@ -118,6 +123,7 @@ export default class PGNLoader extends React.Component {
                     toggleRated={this.toggleRated.bind(this)}
                     handleTimeControlChange={this.handleTimeControlChange.bind(this)}
                     handleTimeframeChange={this.handleTimeframeChange.bind(this)}
+                    handleEloRangeChange={this.handleEloRangeChange.bind(this)}
                     timeframeSteps={this.timeframeSteps}
                     handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
                     advancedFilters={this.advancedFilters()}

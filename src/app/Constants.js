@@ -8,7 +8,9 @@ export const TIME_CONTROL_DAILY = "daily"
 export const FILTER_NAME_RATED = "rated"
 export const FILTER_NAME_SELECTED_TIMEFRAME = "selectedTimeframe"
 export const FILTER_NAME_DOWNLOAD_LIMIT = "downloadLimit"
+export const FILTER_NAME_ELO_RANGE = "eloRange"
 
 export const SITE_LICHESS = "lichess"
 export const SITE_CHESS_DOT_COM = "chesscom"
 export const MAX_DOWNLOAD_LIMIT = 10000
+export const MAX_ELO_RATING = 3000
