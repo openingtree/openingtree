@@ -1,6 +1,6 @@
 import request from 'request'
 import { parse }  from './PGNParser'
-import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData} from './util'
+import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData, isOpponentEloInSelectedRange} from './util'
 import * as Constants from './Constants'
 
 export default class LichessIterator {
@@ -46,11 +46,14 @@ export default class LichessIterator {
             })
 
             let continueProcessing = ready(parsedPGNs.filter((pgn)=>{
-                if(!pgn) {
+                if(!pgn || pgn.headers.Variant !== "Standard") {
                     return false
                 }
-                return pgn.headers.Variant === "Standard" &&
-                    (pgn.headers.Black.toLowerCase() === playerName.toLowerCase() || pgn.headers.White.toLowerCase() === playerName.toLowerCase())
+                let opponentElo = playerColor === 'white'?pgn.headers.BlackElo:pgn.headers.WhiteElo
+                if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
+                    return false
+                }
+                return true
             }))
 
             if(!continueProcessing) {
