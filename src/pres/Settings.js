@@ -1,7 +1,7 @@
 import React from 'react'
 import {Button} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faRetweet, faTrashAlt, faRandom, faFastBackward, faDesktop } from '@fortawesome/free-solid-svg-icons'
+import { faRetweet, faTrashAlt, faFastBackward, faDesktop } from '@fortawesome/free-solid-svg-icons'
 import {Container, Row, Col} from 'reactstrap'
 
 export default class SettingsView extends React.Component {

@@ -2,7 +2,7 @@ import ChessWebAPI from 'chess-web-api'
 import { parse }  from './PGNParser'
 import request from 'request'
 import * as Constants from './Constants'
-import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData} from './util'
+import {isOpponentEloInSelectedRange, getTimeframeSteps, getSelectedTimeFrameData} from './util'
 
 export default class ChessComIterator {
 
@@ -24,6 +24,10 @@ export default class ChessComIterator {
                         return false
                     }
                     if(!advancedFilters[game.time_class]) {
+                        return false
+                    }
+                    let opponentElo = playerColor === 'white'?game.black.rating:game.white.rating
+                    if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
                         return false
                     }
                     return true 

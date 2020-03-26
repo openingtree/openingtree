@@ -1,4 +1,4 @@
-import {Progress, PopoverBody, PopoverHeader, Popover } from "reactstrap"
+import {Progress, Popover } from "reactstrap"
 import React from 'react'
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -116,7 +116,7 @@ export default class MovesList extends React.Component {
                                 <TableCell className="performanceRatingRow">Rating points change</TableCell>
                                 <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
                             </TableRow></TableBody>
-                            <TableFooter><TableRow><TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank">FIDE regulations</a></TableCell></TableRow></TableFooter>
+                            <TableFooter><TableRow><TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></TableCell></TableRow></TableFooter>
                         </Table>
                     </Popover>
                 </TableCell>
