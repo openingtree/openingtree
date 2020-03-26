@@ -57,8 +57,10 @@ export default class PGNLoader extends React.Component {
         })
     }
     playerColorChange(playerColor) {
-        return () =>
+        return () => {
             this.setState({playerColor:playerColor})
+            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ColorChange", playerColor)
+        }
     }
     load() {
         this.props.clear()

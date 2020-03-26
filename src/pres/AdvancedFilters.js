@@ -153,7 +153,7 @@ export default class AdvancedFilters extends React.Component {
         } 
         return <Row className={clsName}>
             {controls.map((control) => 
-            <Col sm={firstColumnWidth}>
+            <Col sm={firstColumnWidth} key={`ctrl${control}`}>
                 
             <FormControlLabel className = "nomargin"
                 control={<Checkbox checked={this.props.advancedFilters[control]} color="primary" 
