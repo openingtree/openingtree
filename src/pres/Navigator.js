@@ -21,10 +21,10 @@ export default class Navigator extends React.Component {
     keyHandler(e){
         switch(e.keyCode) {
           case 37:
-            this.previous("keyboard")
+            this.previous(e, "keyboard")
           break
           case 39:
-            this.next("keyboard")
+            this.next(e, "keyboard")
             break
         }
       }
@@ -42,14 +42,14 @@ export default class Navigator extends React.Component {
         return true
     }
 
-    previous(device) {
+    previous(e, device) {
         let newState = this.openingManager.moveBack()
         this.props.onChange(newState.fen, newState.move)
         this.setState({currentMove:this.openingManager.currentMove()})
         trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "Previous", device?device:"mouse")
     }
 
-    next(device) {
+    next(e, device) {
         let newState = this.openingManager.moveForward()
         this.props.onChange(newState.fen, newState.move)
         this.setState({currentMove:this.openingManager.currentMove()})

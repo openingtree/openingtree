@@ -154,7 +154,7 @@ export default class PGNLoader extends React.Component {
                     this.state.isGamesSubsectionOpen?
                     <div>
                         <div className="pgnloadersection">
-                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}><img src="./spinner.gif" height="15"/>stop</span>]</span>:""}
+                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}><img alt="loading spinner" src="./spinner.gif" height="15"/>stop</span>]</span>:""}
                         </div>
                         <div onClick = {()=>this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
                             <FontAwesomeIcon icon={faList} /> View Moves>>
