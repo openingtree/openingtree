@@ -17,7 +17,8 @@ export default class PGNLoader extends React.Component {
             playerName:'',
             site:'lichess',
             playerColor:this.props.settings.playerColor,
-            isAdvancedFiltersOpen:false
+            isAdvancedFiltersOpen:false,
+            isGamesSubsectionOpen:false
         }
         this.timeframeSteps = getTimeframeSteps()
         this.state[Constants.FILTER_NAME_SELECTED_TIMEFRAME] = [0,this.timeframeSteps.length-1]
@@ -67,7 +68,7 @@ export default class PGNLoader extends React.Component {
         // set the player name and color in the global state
         this.props.onChange("playerName", this.state.playerName)
         this.props.onChange("playerColor", this.state.playerColor)
-        this.setState({isAdvancedFiltersOpen:false})
+        this.setState({isAdvancedFiltersOpen:false,isGamesSubsectionOpen:true})
         new PGNReader().parsePGN(this.state.playerName, 
             this.state.playerColor, 
             this.state.site,
@@ -150,7 +151,7 @@ export default class PGNLoader extends React.Component {
                         placeholder={`${this.state.site===Constants.SITE_LICHESS?"lichess":"chess.com"} username`}/>
                 <button onClick = {this.load.bind(this)}>Load</button> </div>
                 {
-                    this.props.gamesProcessed>0 || this.props.isDownloading?
+                    this.state.isGamesSubsectionOpen?
                     <div>
                         <div className="pgnloadersection">
                             {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}>stop</span>]</span>:""}
