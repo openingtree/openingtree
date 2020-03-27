@@ -14,13 +14,25 @@ export default class Navigator extends React.Component {
         this.openingManager = new OpeningManager()
         this.state = {
             currentMove:0,
-          }        
+          }      
+          window.addEventListener("keydown",this.keyHandler.bind(this))
+  
     }
-
+    keyHandler(e){
+        switch(e.keyCode) {
+          case 37:
+            this.previous()
+          break
+          case 39:
+            this.next()
+            break
+        }
+      }
+    
     shouldComponentUpdate(newProps) {
         //console.log(newProps)
         if(newProps.fen !== this.openingManager.fen()) {
-            if(newProps.move.from === "ab1") {
+            if(newProps.move === null) {
                 this.openingManager = new OpeningManager()
                 return true
             }
