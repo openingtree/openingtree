@@ -118,8 +118,8 @@ export default class PGNLoader extends React.Component {
         return <div>
             <div className = "pgnloadersection">
                 <RadioGroup defaultValue={Constants.SITE_LICHESS} onChange={this.siteChange.bind(this)}>
-                    <FormControlLabel className = "sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary"/>} label={<span><img alt="lichess" className="siteimage" src="/lichesslogo.png"/> lichess.org</span>} />
-                    <FormControlLabel className = "sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary"/>} label={<img alt="chess.com" className="siteimage" src="/chesscomlogo.png"/>} />
+                    <FormControlLabel className = "sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary"/>} label={<span><img alt="lichess" className="siteimage" src="./lichesslogo.png"/> lichess.org</span>} />
+                    <FormControlLabel className = "sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary"/>} label={<img alt="chess.com" className="siteimage" src="./chesscomlogo.png"/>} />
                 </RadioGroup>
             </div>
             <div  className="pgnloadersection">Games played as: 
@@ -154,7 +154,7 @@ export default class PGNLoader extends React.Component {
                     this.state.isGamesSubsectionOpen?
                     <div>
                         <div className="pgnloadersection">
-                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}>stop</span>]</span>:""}
+                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}><img src="./spinner.gif" height="15"/>stop</span>]</span>:""}
                         </div>
                         <div onClick = {()=>this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
                             <FontAwesomeIcon icon={faList} /> View Moves>>
