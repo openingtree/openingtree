@@ -103,11 +103,9 @@ function fillArray(arr, len) {
     return arr;
 }
 
-
-
 function reset() {
     this.chess = new Chess()
-    this.setState({fen: this.chess.fen(), lastMove:{from:'ab1',to:'ab2', san:''}})
+    this.setState({fen: this.chess.fen(), lastMove:null})
 }
 
 function clear() {
