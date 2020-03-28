@@ -5,30 +5,46 @@ import ChessComIterator from './ChessComIterator'
 import * as Constants from './Constants'
 
 export default class PGNReader {
+    constructor() {
+        this.totalGames = 0;
+        this.pendingGames = 0;
+        this.pendingDownloads = true;
+    }
     parsePGN(playerName, playerColor, site, advancedFilters, notify, showError, stopDownloading) {
         this.continueProcessingGames = true
-        let handleResponse = (result) => {
-            if(!result || !result.length) {
+        let handleResponse = (result, pendingDownloads) => {
+            if(!result) {
                 return this.continueProcessingGames
             }
+            this.totalGames += result.length
+            this.pendingGames += result.length
+            this.pendingDownloads = pendingDownloads
             setTimeout(() => {
-                this.parsePGNTimed(result, advancedFilters, playerColor, 0, playerName, notify, showError)
+                this.parsePGNTimed(result, advancedFilters, playerColor, 0, playerName, notify, showError, stopDownloading)
             } ,1)
             return this.continueProcessingGames
         }
         if(site === Constants.SITE_LICHESS) {
-            new LichessIterator(playerName, playerColor, advancedFilters, handleResponse, showError, stopDownloading)
+            new LichessIterator(playerName, playerColor, advancedFilters, handleResponse, showError)
         } else if(site === Constants.SITE_CHESS_DOT_COM) {
-            new ChessComIterator(playerName, playerColor, advancedFilters, handleResponse, showError, stopDownloading)
+            new ChessComIterator(playerName, playerColor, advancedFilters, handleResponse, showError)
         }
 
         
     }
 
-    parsePGNTimed(pgnArray, advancedFilters, playerColor, index,  playerName, notify, showError) {
+    parsePGNTimed(pgnArray, advancedFilters, playerColor, index,  playerName, notify, showError, stopDownloading) {
+        if(index< pgnArray.length) {
+            this.pendingGames--
+        }
+        if(!this.pendingDownloads && this.pendingGames <= 0) {
+            stopDownloading()
+        }
+
         if(index>= pgnArray.length || !this.continueProcessingGames) {
             return
         }
+
         var pgn = pgnArray[index]
         let gamePlayerColor = (pgn.headers.White.toLowerCase() === playerName.toLowerCase()) ? "w" : "b"
         if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
@@ -53,7 +69,7 @@ export default class PGNReader {
             openingGraph.addGameResultOnFen(fen, resultObject)
             this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, openingGraph)
         }
-            setTimeout(()=>{this.parsePGNTimed(pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError)},1)
+            setTimeout(()=>{this.parsePGNTimed(pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError, stopDownloading)},1)
     }
 
     gameResult(pgn) {

@@ -7,12 +7,13 @@ import {trackEvent} from './Analytics'
 
 export default class ChessComIterator {
 
-    constructor(playerName, playerColor, advancedFilters, ready, showError, stopDownloading) {
+    constructor(playerName, playerColor, advancedFilters, ready, showError) {
         let chessAPI = new ChessWebAPI({
             queue: true,
         });
         let pendingRequests = 0;
         let parseGames= (archiveResponse)=>{
+            pendingRequests--
             let continueProcessing = ready(archiveResponse.body.games.filter(
                 game=>{
                     if(game.rules!=="chess" || game[playerColor].username.toLowerCase() !== playerName.toLowerCase()) {
@@ -42,16 +43,13 @@ export default class ChessComIterator {
                             trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedChessCom", playerName)
                             return null
                         }
-                    }).filter(game=> game !== null))
+                    }).filter(game=> game !== null), pendingRequests>0)
             if(!continueProcessing) {
                 //cancel all pending requests
                 while(chessAPI.dequeue()){}
+                pendingRequests = 0
+                ready([],false)
             }
-            pendingRequests--
-            if(pendingRequests<=0) {
-                stopDownloading()
-            }
-
         }
         let shouldFetchGamesFromArchive = (archiveMonth,archiveYear, selectedTimeFrameData) => {
             let fromYear = selectedTimeFrameData.fromYear || 1970

@@ -6,7 +6,7 @@ import {trackEvent} from './Analytics'
 
 export default class LichessIterator {
 
-    constructor(playerName, playerColor, advancedFilters, ready, showError, stopDownloading) {
+    constructor(playerName, playerColor, advancedFilters, ready, showError) {
         let remainingBody = ''
         let lichessBaseURL = `https://lichess.org/api/games/user/`
         let playerNameFilter = encodeURIComponent(playerName)
@@ -56,13 +56,13 @@ export default class LichessIterator {
                     return false
                 }
                 return true
-            }))
+            }), true)
 
             if(!continueProcessing) {
                 requestObject.abort()
             }
         }).on('end', () => {
-            stopDownloading()
+            ready([], false)
         })
     }
 }
