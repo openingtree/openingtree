@@ -5,8 +5,9 @@ import React from 'react'
 import {Collapse, Container, Row, Col} from 'reactstrap'
 import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../app/Constants'
-import {getTimeControlLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel} from './FilterLabels'
+import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel} from './FilterLabels'
 import * as Common from '../app/Common'
+import {trackEvent} from '../app/Analytics'
 
 export default class AdvancedFilters extends React.Component {
     constructor(props) {
@@ -22,14 +23,22 @@ export default class AdvancedFilters extends React.Component {
                 value:props.timeframeSteps.length-1,
                 label:"Now"
             }]
-            this.downloadLimitMarks=[
-                {
-                    value:0,
-                    label:"0"
-                }, {
-                    value:Constants.MAX_DOWNLOAD_LIMIT,
-                    label:`No limit`
-                }]
+        this.downloadLimitMarks=[
+            {
+                value:0,
+                label:"0"
+            }, {
+                value:Constants.MAX_DOWNLOAD_LIMIT,
+                label:`No limit`
+            }]
+        this.eloRangeMarks=[
+            {
+                value:0,
+                label:"0"
+            }, {
+                value:Constants.MAX_ELO_RATING,
+                label:`No limit`
+            }]
     
     }
     setCurrentlyOpenAdvancedFilter(filterName) {
@@ -39,6 +48,7 @@ export default class AdvancedFilters extends React.Component {
                 filterName = ''
             }
             this.setState({currentlyOpenAdvancedFilter:filterName})
+            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "AdvancedFilterChange", filterName)
         }
     }
 
@@ -55,6 +65,11 @@ export default class AdvancedFilters extends React.Component {
                 this.setCurrentlyOpenAdvancedFilter('whenPlayed').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
                     {this.getTimeFrameFilters()}
+                </Collapse>)}
+            {this.subSectionComponent('Opponent elo range', getELORangeLabel(this.props.advancedFilters[Constants.FILTER_NAME_ELO_RANGE]), 
+                this.setCurrentlyOpenAdvancedFilter('eloRange').bind(this),
+                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'eloRange'}>
+                    {this.getEloRangeFilters()}
                 </Collapse>)}
             {this.subSectionComponent('Download limit', getDownloadLimitLabel(this.props.advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT]), 
                 this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
@@ -87,6 +102,17 @@ export default class AdvancedFilters extends React.Component {
             marks={this.timeframeMarks}
             min={0}
             max={this.props.timeframeSteps.length-1}
+        />
+    }
+
+    getEloRangeFilters() {
+        return <Slider className = "sliderCustom"
+            value={this.props.advancedFilters[Constants.FILTER_NAME_ELO_RANGE]}
+            onChange={this.props.handleEloRangeChange}
+            valueLabelDisplay="off"
+            marks={this.eloRangeMarks}
+            min={0}
+            max={Constants.MAX_ELO_RATING}
         />
     }
 
@@ -127,7 +153,7 @@ export default class AdvancedFilters extends React.Component {
         } 
         return <Row className={clsName}>
             {controls.map((control) => 
-            <Col sm={firstColumnWidth}>
+            <Col sm={firstColumnWidth} key={`ctrl${control}`}>
                 
             <FormControlLabel className = "nomargin"
                 control={<Checkbox checked={this.props.advancedFilters[control]} color="primary" 

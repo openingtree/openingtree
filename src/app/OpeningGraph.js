@@ -1,7 +1,9 @@
 import {simplifiedFen} from './util'
 
 class OpeningGraph {
-    graph = new Graph()
+    constructor() {
+        this.graph=new Graph()
+    }
     clear() {
         this.graph = new Graph()
     }

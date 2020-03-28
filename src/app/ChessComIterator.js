@@ -2,19 +2,21 @@ import ChessWebAPI from 'chess-web-api'
 import { parse }  from './PGNParser'
 import request from 'request'
 import * as Constants from './Constants'
-import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData} from './util'
+import {isOpponentEloInSelectedRange, getTimeframeSteps, getSelectedTimeFrameData} from './util'
+import {trackEvent} from './Analytics'
 
 export default class ChessComIterator {
 
-    constructor(playerName, playerColor, advancedFilters, ready, showError, stopDownloading) {
+    constructor(playerName, playerColor, advancedFilters, ready, showError) {
         let chessAPI = new ChessWebAPI({
             queue: true,
         });
         let pendingRequests = 0;
         let parseGames= (archiveResponse)=>{
+            pendingRequests--
             let continueProcessing = ready(archiveResponse.body.games.filter(
                 game=>{
-                    if(game.rules!=="chess" || game[playerColor].username !== playerName) {
+                    if(game.rules!=="chess" || game[playerColor].username.toLowerCase() !== playerName.toLowerCase()) {
                         return false
                     }
                     let ratedMode = advancedFilters[Constants.FILTER_NAME_RATED]
@@ -26,6 +28,10 @@ export default class ChessComIterator {
                     if(!advancedFilters[game.time_class]) {
                         return false
                     }
+                    let opponentElo = playerColor === 'white'?game.black.rating:game.white.rating
+                    if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
+                        return false
+                    }
                     return true 
                 }).map(
                     game=> {
@@ -34,18 +40,16 @@ export default class ChessComIterator {
                         } catch (e) {
                             console.log("failed to parse pgn", game)
                             console.log(e)
+                            trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedChessCom", playerName)
                             return null
                         }
-                    }).filter(game=> game !== null))
+                    }).filter(game=> game !== null), pendingRequests>0)
             if(!continueProcessing) {
                 //cancel all pending requests
                 while(chessAPI.dequeue()){}
+                pendingRequests = 0
+                ready([],false)
             }
-            pendingRequests--
-            if(pendingRequests<=0) {
-                stopDownloading()
-            }
-
         }
         let shouldFetchGamesFromArchive = (archiveMonth,archiveYear, selectedTimeFrameData) => {
             let fromYear = selectedTimeFrameData.fromYear || 1970

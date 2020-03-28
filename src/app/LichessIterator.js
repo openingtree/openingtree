@@ -1,11 +1,12 @@
 import request from 'request'
 import { parse }  from './PGNParser'
-import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData} from './util'
+import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData, isOpponentEloInSelectedRange} from './util'
 import * as Constants from './Constants'
+import {trackEvent} from './Analytics'
 
 export default class LichessIterator {
 
-    constructor(playerName, playerColor, advancedFilters, ready, showError, stopDownloading) {
+    constructor(playerName, playerColor, advancedFilters, ready, showError) {
         let remainingBody = ''
         let lichessBaseURL = `https://lichess.org/api/games/user/`
         let playerNameFilter = encodeURIComponent(playerName)
@@ -41,23 +42,27 @@ export default class LichessIterator {
                 } catch (e) {
                     console.log("failed to parse pgn", pgnString)
                     console.log(e)
+                    trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedLichess", playerName)
                     return null
                 }
             })
 
             let continueProcessing = ready(parsedPGNs.filter((pgn)=>{
-                if(!pgn) {
+                if(!pgn || pgn.headers.Variant !== "Standard") {
                     return false
                 }
-                return pgn.headers.Variant === "Standard" &&
-                    (pgn.headers.Black.toLowerCase() === playerName.toLowerCase() || pgn.headers.White.toLowerCase() === playerName.toLowerCase())
-            }))
+                let opponentElo = playerColor === 'white'?pgn.headers.BlackElo:pgn.headers.WhiteElo
+                if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
+                    return false
+                }
+                return true
+            }), true)
 
             if(!continueProcessing) {
                 requestObject.abort()
             }
         }).on('end', () => {
-            stopDownloading()
+            ready([], false)
         })
     }
 }

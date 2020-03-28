@@ -143,3 +143,10 @@ export function getPerformanceDetails(totalElo, white, draws, black, playerColor
         ratingChange:`${ratingChange===0?'':(ratingChange>0?'+':'-')}${Math.abs(ratingChange)}`
     }
 }
+
+export function isOpponentEloInSelectedRange(elo, range) {
+    if(range[1]===Constants.MAX_ELO_RATING) {
+        return elo>=range[0]
+    }
+    return elo<=range[1] && elo>=range[0]
+}
