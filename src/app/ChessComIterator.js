@@ -40,7 +40,7 @@ export default class ChessComIterator {
                         } catch (e) {
                             console.log("failed to parse pgn", game)
                             console.log(e)
-                            trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedChessCom", playerName)
+                            trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedChessCom", `${playerName}:${playerColor}`)
                             return null
                         }
                     }).filter(game=> game !== null), pendingRequests>0)

@@ -121,9 +121,10 @@ function settingsChange(name, value) {
         'settings':settings
     })
 }
-function showError(message) {
+function showError(message, trackingLabel) {
     this.setState({errorMessage:message})
-    trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown",message)
+    trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown",
+        trackingLabel?trackingLabel:message)
 }
 
 function closeError() {

@@ -56,7 +56,7 @@ export default class PGNReader {
                 let move = chess.move(element.move)
                 if(!move){
                     console.log('failed to load game ' + pgn)
-                    showError("Failed to load game")
+                    showError("Failed to load game", `${playerName}:${playerColor}`)
                     return
                 }
                 if(move.color === gamePlayerColor) {
