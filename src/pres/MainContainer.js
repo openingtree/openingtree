@@ -33,19 +33,29 @@ export default class MainContainer extends React.Component {
     this.forBrushes = ['paleGrey', 'paleGreen', 'green']
     this.againstBrushes = ['paleRed', 'paleRed', 'red']
   }
+  getChessboardWidth(){
+    if (window.innerWidth<=768) {
+      return "95vw"
+    } else if ((window.innerWidth<=1024)) {
+      return "40vw"
+    } else {
+      return "512px"
+    }
 
+  }
 
 
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     let snackBarOpen = this.state.errorMessage?true:false
-    return <div> 
+    let chessboardWidth = this.getChessboardWidth()
+    return <div className="rootView"> 
         <GlobalHeader/>
         <Container className="mainContainer">
           <Row><Col lg={{order:0, size:2}} xs={{order:2}}><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
     </Col><Col lg="6"><Chessground
-      width={512}
-      height={512}
+      height={chessboardWidth}
+      width={chessboardWidth}
       orientation={this.orientation()}
       turnColor={this.turnColor()}
       movable={this.calcMovable()}
