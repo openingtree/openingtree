@@ -49,7 +49,7 @@ export default class MainContainer extends React.Component {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     let snackBarOpen = this.state.errorMessage?true:false
     let chessboardWidth = this.getChessboardWidth()
-    return <div> 
+    return <div className="rootView"> 
         <GlobalHeader/>
         <Container className="mainContainer">
           <Row><Col lg={{order:0, size:2}} xs={{order:2}}><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
