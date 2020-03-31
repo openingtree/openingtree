@@ -100,8 +100,8 @@ export default class MovesList extends React.Component {
 
             return move.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san} </TableCell>
-                <TableCell size="small" className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
-                    {move.count} <FontAwesomeIcon className="lowOpacity" id={`performancePopover${moveIndex}`} icon={faInfoCircle}/>
+                <TableCell size="small" id={`performancePopover${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
+                    {move.count} <FontAwesomeIcon className="lowOpacity" icon={faInfoCircle}/>
                     <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
                         <Table onClick={this.eatClicks}>
                             <TableHead className="performanceRatingRow performanceHeader"><TableRow>
