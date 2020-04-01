@@ -34,10 +34,12 @@ export default class MainContainer extends React.Component {
     this.againstBrushes = ['paleRed', 'paleRed', 'red']
   }
   getChessboardWidth(){
+    // have to manually set the width to pixels instead of "vw" value
+    // this is because chessground component does not behave well with "vw" values
     if (window.innerWidth<=768) {
-      return "95vw"
+      return `${Math.round(window.innerWidth*95/100)}px` //95vw
     } else if ((window.innerWidth<=1024)) {
-      return "40vw"
+      return `${Math.round(window.innerWidth*40/100)}px` // 40vw
     } else {
       return "512px"
     }
