@@ -51,7 +51,7 @@ const GlobalHeader = (props) => {
                 <DropdownItem onClick={launch("mailto:openingtreechess@gmail.com")}>
                   Feedback
                 </DropdownItem>
-                <DropdownItem onClick={launch("https://www.reddit.com/message/compose/?to=QuickDrawMcGraw__")}>
+                <DropdownItem onClick={launch("https://www.reddit.com/message/compose/?to=opening_tree")}>
                   Message me on reddit
                 </DropdownItem>
                 <DropdownItem divider />

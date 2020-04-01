@@ -149,3 +149,8 @@
 .rootView {
     margin-bottom:60px
 }
+@media screen and (max-width: 767px) {
+    .paddingTop {
+        padding-top:15px
+    }
+}
