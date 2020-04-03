@@ -8,46 +8,35 @@ class OpeningGraph {
         this.graph = new Graph()
     }
     addGameResultOnFen(fullFen, gameResult) {
-        let fen = simplifiedFen(fullFen)
-        var currNode = this.graph.nodes.get(fen)
-        if(!currNode) {
-            currNode = new GraphNode()
-            currNode.fen = fen
-            this.graph.nodes.set(fen, currNode)
-        }
+        var currNode = this.getNodeFromGraph(fullFen)
         currNode.gameResults.push(gameResult)
     }
     addMoveForFen(fullFen, move, resultObject, playerColor) {
-        let fen = simplifiedFen(fullFen)
-        var currNode = this.graph.nodes.get(fen)
-        if(!currNode) {
-            currNode = new GraphNode()
-            currNode.fen = fen
-            this.graph.nodes.set(fen, currNode)
-        }
+        var currNode = this.getNodeFromGraph(fullFen)
         var movesPlayedBy = currNode.playedBy
         var movePlayedBy = this.updateDetailsOnNode(movesPlayedBy, move, resultObject, playerColor)
         currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.count)
         currNode.playedBy = movesPlayedBy
-
-        
     }
-    addMoveAgainstFen(fullFen, move, resultObject, playerColor) {
-        let fen = simplifiedFen(fullFen)
 
-        var currNode = this.graph.nodes.get(fen)
-        if(!currNode) {
-            currNode = new GraphNode()
-            currNode.fen = fen
-            this.graph.nodes.set(fen, currNode)
-        }
+    addMoveAgainstFen(fullFen, move, resultObject, playerColor) {
+        var currNode = this.getNodeFromGraph(fullFen)
         var movesPlayedAgainst = currNode.playedAgainst
         var movePlayedAgainst = this.updateDetailsOnNode(movesPlayedAgainst, move, resultObject, playerColor)
 
         currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
         currNode.playedAgainst = movesPlayedAgainst
     }
-
+    getNodeFromGraph(fullFen) {
+        let fen = simplifiedFen(fullFen)
+        var currNode = this.graph.nodes.get(fen)
+        if(!currNode) {
+            currNode = new GraphNode()
+            currNode.fen = fen
+            this.graph.nodes.set(fen, currNode)
+        }
+        return currNode
+    }
     updateDetailsOnNode(movesPlayedNode, move, resultObject, playerColor){
         var movePlayed = movesPlayedNode.get(move.san)
         if(!movePlayed) {
@@ -55,11 +44,13 @@ class OpeningGraph {
             movePlayed.move = move
             movesPlayedNode.set(move.san, movePlayed)
         }
-        let whiteWin = 0, blackWin = 0, draw = 0, opponentElo=0
+        let whiteWin = 0, blackWin = 0, draw = 0, opponentElo=0, resultInt = 0;
         if(resultObject.result === '1-0') {
             whiteWin = 1
+            resultInt = playerColor === 'white'? 1 : -1
         } else if (resultObject.result === '0-1') {
             blackWin = 1
+            resultInt = playerColor === 'black'? 1 : -1
         } else {
             draw = 1
         }
@@ -144,31 +135,18 @@ class OpeningGraph {
 
 
 class Graph {
-    nodes = new Map(/*[
-        ['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', {
-                    'playedByMax' : 5,
-                    'playedBy':new Map([['e4',{'count':5,'move': {'from':'e2', to:'e4'}}]])
-        }],
-        ['rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq e3 0 1', {
-            'playedByMax' : 10,
-            'playedBy':new Map([['Nf6',{'count':3,'move': {'from':'g8', to:'f6'}}]])
-        }]
-                ]*/)
+    nodes = new Map()
     rootNode = null
 
 }
 
 class GraphNode {
     fen = ''
-    //totalCount = 0
-    //children = new Map() //map of Move to fen
     playedByMax = 0 // used to keep track of how many times the most frequent move is played for ease of calculation later
     playedBy = new Map()
     playedAgainstMax = 0
     playedAgainst = new Map()
     gameResults = []
-//    engineAnalyses = []
-//    filters = {}
     properties = {}
 }
 
@@ -183,15 +161,12 @@ class GraphMove {
         sampleResult: null,
         totalOpponentElo: 0,
         bestWin:null,
+        bestWinGame:null,
         worstLoss:null,
-        lastPlayed:null
+        worstLossGame:null,
+        lastPlayed:null,
+        lastPlayedGame:null
     }
 }
-
-/*class EngineAnalysis {
-    engineNme = ''
-    searchDepth = 0
-    evaluation = 0.0
-}*/
 
 export const openingGraph = new OpeningGraph()
