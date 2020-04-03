@@ -74,7 +74,11 @@ export default class MovesList extends React.Component {
         let performanceDetails = {}
         if(performancePopoverOpen) {
             let openMove = this.props.movesToShow[moveIndex]
-            performanceDetails = getPerformanceDetails(openMove.totalOpponentElo, openMove.whiteWins, openMove.draws, openMove.blackWins, this.props.settings.playerColor)
+            performanceDetails = getPerformanceDetails(openMove.details.totalOpponentElo, 
+                                                        openMove.whiteWins, 
+                                                        openMove.draws, 
+                                                        openMove.blackWins, 
+                                                        this.props.settings.playerColor)
         } 
 
         return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
@@ -115,9 +119,9 @@ export default class MovesList extends React.Component {
         <TableBody>
         {
         this.props.movesToShow.map((move, moveIndex) => {
-            let sampleResultWhite = this.player(move.sampleResult.white, move.sampleResult.whiteElo)
-            let sampleResultBlack = this.player(move.sampleResult.black, move.sampleResult.blackElo)
-            let sampleResult = move.sampleResult.result
+            let sampleResultWhite = this.player(move.details.sampleResult.white, move.details.sampleResult.whiteElo)
+            let sampleResultBlack = this.player(move.details.sampleResult.black, move.details.sampleResult.blackElo)
+            let sampleResult = move.details.sampleResult.result
 
             return move.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san} </TableCell>
@@ -136,7 +140,7 @@ export default class MovesList extends React.Component {
             <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell colSpan = "2">
-        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(move.sampleResult.url)} icon={faExternalLinkAlt}/>}
+        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(move.details.sampleResult.url)} icon={faExternalLinkAlt}/>}
                 </TableCell>
             </TableRow>
             }

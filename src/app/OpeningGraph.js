@@ -52,8 +52,8 @@ class OpeningGraph {
         movePlayedBy.blackWins += blackWin
         movePlayedBy.whiteWins += whiteWin
         movePlayedBy.draws += draw
-        movePlayedBy.sampleResult = resultObject
-        movePlayedBy.totalOpponentElo += parseInt(opponentElo)
+        movePlayedBy.details.sampleResult = resultObject
+        movePlayedBy.details.totalOpponentElo += parseInt(opponentElo)
 
         currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.count)
         
@@ -95,8 +95,8 @@ class OpeningGraph {
         movePlayedAgainst.blackWins += blackWin
         movePlayedAgainst.whiteWins += whiteWin
         movePlayedAgainst.draws += draw
-        movePlayedAgainst.sampleResult = resultObject
-        movePlayedAgainst.totalOpponentElo += parseInt(opponentElo)
+        movePlayedAgainst.details.sampleResult = resultObject
+        movePlayedAgainst.details.totalOpponentElo += parseInt(opponentElo)
 
         currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
         
@@ -127,8 +127,7 @@ class OpeningGraph {
                     blackWins:gMove.blackWins,
                     draws:gMove.draws,
                     san:gMove.move.san,
-                    sampleResult:gMove.sampleResult,
-                    totalOpponentElo:gMove.totalOpponentElo
+                    details:gMove.details
                 }
             })
         }        
@@ -149,8 +148,7 @@ class OpeningGraph {
                     blackWins:gMove.blackWins,
                     draws:gMove.draws,
                     san:gMove.move.san,
-                    sampleResult:gMove.sampleResult,
-                    totalOpponentElo:gMove.totalOpponentElo
+                    details:gMove.details
                 }
             })
         }        
@@ -202,11 +200,13 @@ class GraphMove {
     fen = ''
     move = {}
     count = 0
-    blackWins = 0
-    whiteWins = 0
-    draws = 0
-    sampleResult = null
-    totalOpponentElo = 0
+    blackWins= 0
+    whiteWins= 0
+    draws= 0
+    details = {
+        sampleResult: null,
+        totalOpponentElo: 0
+    }
 }
 
 /*class EngineAnalysis {
