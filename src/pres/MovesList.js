@@ -69,7 +69,37 @@ export default class MovesList extends React.Component {
     eatClicks(e) {
         e.stopPropagation()
     }
+    getPopover(moveIndex) {
+        let performancePopoverOpen = this.state.openPerformanceIndex === moveIndex
+        let performanceDetails = {}
+        if(performancePopoverOpen) {
+            let openMove = this.props.movesToShow[moveIndex]
+            performanceDetails = getPerformanceDetails(openMove.totalOpponentElo, openMove.whiteWins, openMove.draws, openMove.blackWins, this.props.settings.playerColor)
+        } 
 
+        return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
+        <Table onClick={this.eatClicks}>
+            <TableHead className="performanceRatingRow performanceHeader"><TableRow>
+                <TableCell className="performanceRatingRow"><b>Performance rating</b></TableCell>
+                <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
+                </TableRow></TableHead>
+            <TableBody>
+            <TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Avg opponent rating</TableCell>
+                <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
+            </TableRow>
+            <TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Score</TableCell>
+                <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
+            </TableRow>
+            <TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Rating points change</TableCell>
+                <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
+            </TableRow></TableBody>
+            <TableFooter><TableRow><TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></TableCell></TableRow></TableFooter>
+        </Table>
+    </Popover>
+    }
     movesTable() {
         let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)
         return <Table>
@@ -88,42 +118,12 @@ export default class MovesList extends React.Component {
             let sampleResultWhite = this.player(move.sampleResult.white, move.sampleResult.whiteElo)
             let sampleResultBlack = this.player(move.sampleResult.black, move.sampleResult.blackElo)
             let sampleResult = move.sampleResult.result
-            let performancePopoverOpen = false
-            let performanceDetails = {}
-            if(performancePopoverOpen !== null) {
-                performancePopoverOpen = this.state.openPerformanceIndex === moveIndex
-            }
-            if(performancePopoverOpen) {
-                let openMove = this.props.movesToShow[moveIndex]
-                performanceDetails = getPerformanceDetails(openMove.totalOpponentElo, openMove.whiteWins, openMove.draws, openMove.blackWins, this.props.settings.playerColor)
-            } 
 
             return move.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san} </TableCell>
                 <TableCell size="small" id={`performancePopover${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
                     {move.count} <FontAwesomeIcon className="lowOpacity" icon={faInfoCircle}/>
-                    <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
-                        <Table onClick={this.eatClicks}>
-                            <TableHead className="performanceRatingRow performanceHeader"><TableRow>
-                                <TableCell className="performanceRatingRow"><b>Performance rating</b></TableCell>
-                                <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
-                                </TableRow></TableHead>
-                            <TableBody>
-                            <TableRow className="performanceRatingRow">
-                                <TableCell className="performanceRatingRow">Avg opponent rating</TableCell>
-                                <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
-                            </TableRow>
-                            <TableRow className="performanceRatingRow">
-                                <TableCell className="performanceRatingRow">Score</TableCell>
-                                <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
-                            </TableRow>
-                            <TableRow className="performanceRatingRow">
-                                <TableCell className="performanceRatingRow">Rating points change</TableCell>
-                                <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
-                            </TableRow></TableBody>
-                            <TableFooter><TableRow><TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></TableCell></TableRow></TableFooter>
-                        </Table>
-                    </Popover>
+                    {this.getPopover(moveIndex)}
                 </TableCell>
                 <TableCell>
                     <Progress className = "border" multi>
