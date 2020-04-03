@@ -26,37 +26,8 @@ class OpeningGraph {
             this.graph.nodes.set(fen, currNode)
         }
         var movesPlayedBy = currNode.playedBy
-        var movePlayedBy = movesPlayedBy.get(move.san)
-        if(!movePlayedBy) {
-            movePlayedBy = new GraphMove()
-            movePlayedBy.move = move
-            movesPlayedBy.set(move.san, movePlayedBy)
-        }
-
-        let whiteWin = 0, blackWin = 0, draw = 0, opponentElo = 0
-        if(resultObject.result === '1-0') {
-            whiteWin = 1
-        } else if (resultObject.result === '0-1') {
-            blackWin = 1
-        } else {
-            draw = 1
-        }
-
-        if(playerColor === 'white') {
-            opponentElo = resultObject.blackElo
-        } else {
-            opponentElo = resultObject.whiteElo
-        }
-
-        movePlayedBy.count += 1
-        movePlayedBy.blackWins += blackWin
-        movePlayedBy.whiteWins += whiteWin
-        movePlayedBy.draws += draw
-        movePlayedBy.details.sampleResult = resultObject
-        movePlayedBy.details.totalOpponentElo += parseInt(opponentElo)
-
+        var movePlayedBy = this.updateDetailsOnNode(movesPlayedBy, move, resultObject, playerColor)
         currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.count)
-        
         currNode.playedBy = movesPlayedBy
 
         
@@ -71,11 +42,18 @@ class OpeningGraph {
             this.graph.nodes.set(fen, currNode)
         }
         var movesPlayedAgainst = currNode.playedAgainst
-        var movePlayedAgainst = movesPlayedAgainst.get(move.san)
-        if(!movePlayedAgainst) {
-            movePlayedAgainst = new GraphMove()
-            movePlayedAgainst.move = move
-            movesPlayedAgainst.set(move.san, movePlayedAgainst)
+        var movePlayedAgainst = this.updateDetailsOnNode(movesPlayedAgainst, move, resultObject, playerColor)
+
+        currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
+        currNode.playedAgainst = movesPlayedAgainst
+    }
+
+    updateDetailsOnNode(movesPlayedNode, move, resultObject, playerColor){
+        var movePlayed = movesPlayedNode.get(move.san)
+        if(!movePlayed) {
+            movePlayed = new GraphMove()
+            movePlayed.move = move
+            movesPlayedNode.set(move.san, movePlayed)
         }
         let whiteWin = 0, blackWin = 0, draw = 0, opponentElo=0
         if(resultObject.result === '1-0') {
@@ -91,17 +69,15 @@ class OpeningGraph {
         } else {
             opponentElo = resultObject.whiteElo
         }
-        movePlayedAgainst.count += 1
-        movePlayedAgainst.blackWins += blackWin
-        movePlayedAgainst.whiteWins += whiteWin
-        movePlayedAgainst.draws += draw
-        movePlayedAgainst.details.sampleResult = resultObject
-        movePlayedAgainst.details.totalOpponentElo += parseInt(opponentElo)
-
-        currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
-        
-        currNode.playedAgainst = movesPlayedAgainst
+        movePlayed.count += 1
+        movePlayed.blackWins += blackWin
+        movePlayed.whiteWins += whiteWin
+        movePlayed.draws += draw
+        movePlayed.details.sampleResult = resultObject
+        movePlayed.details.totalOpponentElo += parseInt(opponentElo)
+        return movePlayed
     }
+
     gameResultsForFen(fullFen) {
         let fen = simplifiedFen(fullFen)
 
@@ -205,7 +181,10 @@ class GraphMove {
     draws= 0
     details = {
         sampleResult: null,
-        totalOpponentElo: 0
+        totalOpponentElo: 0,
+        bestWin:null,
+        worstLoss:null,
+        lastPlayed:null
     }
 }
 
