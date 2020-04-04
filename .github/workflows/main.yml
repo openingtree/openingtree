@@ -28,17 +28,17 @@ jobs:
     - name: list files before
       run: ls
 
-    - name: yarn
+    - name: yarn install
       uses: Borales/actions-yarn@v2.1.0
       with:
         # Yarn command
-        cmd: yarn
+        cmd: install
 
     - name: yarn build
       uses: Borales/actions-yarn@v2.1.0
       with:
         # Yarn command
-        cmd: yarn build
+        cmd: build
 
     # Runs a single command using the runners shell
     - name: list files after
