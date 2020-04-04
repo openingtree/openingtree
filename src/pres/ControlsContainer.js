@@ -35,7 +35,7 @@ export default class ControlsContainer extends React.Component {
             className={classnames({ active: this.state.activeTab === 'user' })}
             onClick={() => { this.toggle('user'); }}
           >
-            <FontAwesomeIcon icon={faUser} /> User
+            <FontAwesomeIcon icon={faUser} /> {this.state.activeTab === 'user'?"User":""}
           </NavLink>
         </NavItem>
         <NavItem>
@@ -43,7 +43,7 @@ export default class ControlsContainer extends React.Component {
             className={classnames({ active: this.state.activeTab === 'moves' })}
             onClick={() => { this.toggle('moves'); }}
           >
-            <FontAwesomeIcon icon={faList} /> Moves
+            <FontAwesomeIcon icon={faList} /> {this.state.activeTab === 'moves'?"Moves":""}
           </NavLink>
         </NavItem>
         <NavItem>
@@ -51,7 +51,7 @@ export default class ControlsContainer extends React.Component {
             className={classnames({ active: this.state.activeTab === 'settings' })}
             onClick={() => { this.toggle('settings'); }}
           >
-            <FontAwesomeIcon icon={faCog} /> Controls
+            <FontAwesomeIcon icon={faCog} /> {this.state.activeTab === 'settings'?"Controls":""}
           </NavLink>
         </NavItem>
       </Nav>
