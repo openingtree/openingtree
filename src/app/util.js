@@ -152,5 +152,12 @@ export function isOpponentEloInSelectedRange(elo, range) {
 }
 
 export function isDateMoreRecentThan(date, than) {
+    // give priority to game which has a date
+    if(!than) {
+        return false
+    }
+    if(!date) {
+        return true
+    } 
     return new Date(date)>new Date(than)
 }

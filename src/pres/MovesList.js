@@ -128,9 +128,9 @@ export default class MovesList extends React.Component {
         <TableBody>
         {
         this.props.movesToShow.map((move, moveIndex) => {
-            let sampleResultWhite = this.player(move.details.sampleResult.white, move.details.sampleResult.whiteElo)
-            let sampleResultBlack = this.player(move.details.sampleResult.black, move.details.sampleResult.blackElo)
-            let sampleResult = move.details.sampleResult.result
+            let sampleResultWhite = this.player(move.details.lastPlayedGame.white, move.details.lastPlayedGame.whiteElo)
+            let sampleResultBlack = this.player(move.details.lastPlayedGame.black, move.details.lastPlayedGame.blackElo)
+            let sampleResult = move.details.lastPlayedGame.result
 
             return move.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san} </TableCell>
@@ -149,7 +149,7 @@ export default class MovesList extends React.Component {
             <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell colSpan = "2">
-        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(move.details.sampleResult.url)} icon={faExternalLinkAlt}/>}
+        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(move.details.lastPlayedGame.url)} icon={faExternalLinkAlt}/>}
                 </TableCell>
             </TableRow>
             }

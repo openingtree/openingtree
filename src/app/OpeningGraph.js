@@ -79,7 +79,6 @@ class OpeningGraph {
         movePlayed.blackWins += blackWin
         movePlayed.whiteWins += whiteWin
         movePlayed.draws += draw
-        movePlayed.details.sampleResult = resultObject
         movePlayed.details.totalOpponentElo += parseInt(opponentElo)
         return movePlayed
     }
@@ -173,13 +172,11 @@ class GraphMove {
     whiteWins= 0
     draws= 0
     details = {
-        sampleResult: null,
         totalOpponentElo: 0,
         bestWin:null,
         bestWinGame:null,
         worstLoss:null,
         worstLossGame:null,
-        lastPlayed:null,
         lastPlayedGame:null
     }
 }
