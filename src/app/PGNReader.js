@@ -79,7 +79,8 @@ export default class PGNReader {
             black:pgn.headers.Black,
             whiteElo:pgn.headers.WhiteElo,
             blackElo:pgn.headers.BlackElo,
-            url:pgn.headers.Link || pgn.headers.Site
+            url:pgn.headers.Link || pgn.headers.Site,
+            date:pgn.headers.Date
         }
     }
 }

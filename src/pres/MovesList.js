@@ -72,8 +72,8 @@ export default class MovesList extends React.Component {
     getPopover(moveIndex) {
         let performancePopoverOpen = this.state.openPerformanceIndex === moveIndex
         let performanceDetails = {}
+        let openMove = this.props.movesToShow[moveIndex]
         if(performancePopoverOpen) {
-            let openMove = this.props.movesToShow[moveIndex]
             performanceDetails = getPerformanceDetails(openMove.details.totalOpponentElo, 
                                                         openMove.whiteWins, 
                                                         openMove.draws, 
@@ -84,22 +84,31 @@ export default class MovesList extends React.Component {
         return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
         <Table onClick={this.eatClicks}>
             <TableHead className="performanceRatingRow performanceHeader"><TableRow>
-                <TableCell className="performanceRatingRow"><b>Performance rating</b></TableCell>
+                <TableCell className="performanceRatingRow"><b>Performance</b></TableCell>
                 <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
                 </TableRow></TableHead>
             <TableBody>
             <TableRow className="performanceRatingRow">
-                <TableCell className="performanceRatingRow">Avg opponent rating</TableCell>
+                <TableCell className="performanceRatingRow">Avg opponent</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
             </TableRow>
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Score</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
             </TableRow>
+            {openMove.details.bestWin?<TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Best win</TableCell>
+                <TableCell className="performanceRatingRow">{openMove.details.bestWin}</TableCell>
+            </TableRow>:null}
+            {openMove.details.worstLoss?<TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Worst loss</TableCell>
+                <TableCell className="performanceRatingRow">{openMove.details.worstLoss}</TableCell>
+            </TableRow>:null}
             <TableRow className="performanceRatingRow">
-                <TableCell className="performanceRatingRow">Rating points change</TableCell>
-                <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
-            </TableRow></TableBody>
+                <TableCell className="performanceRatingRow">Last played</TableCell>
+                <TableCell className="performanceRatingRow">{openMove.details.lastPlayedGame.date}</TableCell>
+            </TableRow>
+            </TableBody>
             <TableFooter><TableRow><TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></TableCell></TableRow></TableFooter>
         </Table>
     </Popover>

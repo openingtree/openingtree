@@ -150,3 +150,7 @@ export function isOpponentEloInSelectedRange(elo, range) {
     }
     return elo<=range[1] && elo>=range[0]
 }
+
+export function isDateMoreRecentThan(date, than) {
+    return new Date(date)>new Date(than)
+}

@@ -1,4 +1,4 @@
-import {simplifiedFen} from './util'
+import {simplifiedFen, isDateMoreRecentThan} from './util'
 
 class OpeningGraph {
     constructor() {
@@ -23,7 +23,6 @@ class OpeningGraph {
         var currNode = this.getNodeFromGraph(fullFen)
         var movesPlayedAgainst = currNode.playedAgainst
         var movePlayedAgainst = this.updateDetailsOnNode(movesPlayedAgainst, move, resultObject, playerColor)
-
         currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
         currNode.playedAgainst = movesPlayedAgainst
     }
@@ -59,6 +58,22 @@ class OpeningGraph {
             opponentElo = resultObject.blackElo
         } else {
             opponentElo = resultObject.whiteElo
+        }
+        if(resultInt === 1) {
+            if(!movePlayed.details.bestWin || opponentElo>movePlayed.details.bestWin) {
+                movePlayed.details.bestWin = opponentElo
+                movePlayed.details.bestWinGame = resultObject
+            }
+        }
+        if(resultInt === -1) {
+            if(!movePlayed.details.worstLoss || opponentElo<movePlayed.details.worstLoss) {
+                movePlayed.details.worstLoss = opponentElo
+                movePlayed.details.worstLossGame = resultObject
+            }
+        }
+        if(!movePlayed.details.lastPlayedGame || 
+            isDateMoreRecentThan(resultObject.date, movePlayed.details.lastPlayedGame.date)) {
+                movePlayed.details.lastPlayedGame = resultObject
         }
         movePlayed.count += 1
         movePlayed.blackWins += blackWin
