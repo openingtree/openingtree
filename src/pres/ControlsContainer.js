@@ -4,7 +4,7 @@ import SettingsView from './Settings'
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faList, faCog } from '@fortawesome/free-solid-svg-icons'
+import { faUser, faList, faCog, faChartBar } from '@fortawesome/free-solid-svg-icons'
 import MovesList from './MovesList';
 
 export default class ControlsContainer extends React.Component {
@@ -48,6 +48,14 @@ export default class ControlsContainer extends React.Component {
         </NavItem>
         <NavItem>
           <NavLink
+            className={classnames({ active: this.state.activeTab === 'report' })}
+            onClick={() => { this.toggle('report'); }}
+          >
+            <FontAwesomeIcon icon={faChartBar} /> {this.state.activeTab === 'report'?"Report":""}
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
             className={classnames({ active: this.state.activeTab === 'settings' })}
             onClick={() => { this.toggle('settings'); }}
           >
@@ -79,6 +87,9 @@ export default class ControlsContainer extends React.Component {
               turnColor={this.props.turnColor}
               settingsChange={this.props.settingsChange}
               />
+        </TabPane>
+        <TabPane tabId="report">
+
         </TabPane>
         <TabPane tabId="settings">
           <Row>
