@@ -98,15 +98,15 @@ export default class MovesList extends React.Component {
             </TableRow>
             {openMove.details.bestWin?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Best win</TableCell>
-                <TableCell className="performanceRatingRow">{openMove.details.bestWin}</TableCell>
+                <TableCell className="performanceRatingRow">{openMove.details.bestWin} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(openMove.details.bestWinGame.url)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
             {openMove.details.worstLoss?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Worst loss</TableCell>
-                <TableCell className="performanceRatingRow">{openMove.details.worstLoss}</TableCell>
+                <TableCell className="performanceRatingRow">{openMove.details.worstLoss} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(openMove.details.worstLossGame.url)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Last played</TableCell>
-                <TableCell className="performanceRatingRow">{openMove.details.lastPlayedGame.date}</TableCell>
+                <TableCell className="performanceRatingRow">{openMove.details.lastPlayedGame.date} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(openMove.details.lastPlayedGame.url)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>
             </TableBody>
             <TableFooter><TableRow><TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></TableCell></TableRow></TableFooter>
