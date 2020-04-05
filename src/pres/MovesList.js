@@ -71,7 +71,7 @@ export default class MovesList extends React.Component {
         let openMove = this.props.movesToShow[moveIndex]
 
         return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
-                <ReportControls move={openMove} isOpen = {performancePopoverOpen} launch={this.launch} settings={this.props.settings}/>
+                <ReportControls moveDetails={openMove.details} isOpen = {performancePopoverOpen} launch={this.launch} settings={this.props.settings}/>
             </Popover>
     }
     movesTable() {
