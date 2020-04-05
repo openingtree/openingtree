@@ -3,7 +3,6 @@ import React from 'react'
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faExternalLinkAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
-import {getPerformanceDetails} from '../app/util'
 import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
 import ReportControls from './ReportControls'
@@ -69,18 +68,10 @@ export default class MovesList extends React.Component {
     }
     getPopover(moveIndex) {
         let performancePopoverOpen = this.state.openPerformanceIndex === moveIndex
-        let performanceDetails = {}
         let openMove = this.props.movesToShow[moveIndex]
-        if(performancePopoverOpen) {
-            performanceDetails = getPerformanceDetails(openMove.details.totalOpponentElo, 
-                                                        openMove.whiteWins, 
-                                                        openMove.draws, 
-                                                        openMove.blackWins, 
-                                                        this.props.settings.playerColor)
-        } 
 
         return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
-                <ReportControls move={openMove} performanceDetails={performanceDetails} launch={this.launch}/>
+                <ReportControls move={openMove} isOpen = {performancePopoverOpen} launch={this.launch} settings={this.props.settings}/>
             </Popover>
     }
     movesTable() {

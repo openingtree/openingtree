@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import React from 'react'
+import {getPerformanceDetails} from '../app/util'
 
 export default class ControlsContainer extends React.Component {
     constructor(props) {
@@ -11,19 +12,28 @@ export default class ControlsContainer extends React.Component {
         e.stopPropagation()
     }
     render() {
+        let performanceDetails = {}
+        if(this.props.isOpen) {
+            performanceDetails = getPerformanceDetails(this.props.move.details.totalOpponentElo, 
+                                                        this.props.move.whiteWins, 
+                                                        this.props.move.draws, 
+                                                        this.props.move.blackWins, 
+                                                        this.props.settings.playerColor)
+        } 
+
         return <Table onClick={this.eatClicks}>
             <TableHead className="performanceRatingRow performanceHeader"><TableRow>
                 <TableCell className="performanceRatingRow"><b>Performance</b></TableCell>
-                <TableCell className="performanceRatingRow"><b>{this.props.performanceDetails.performanceRating}</b></TableCell>
+                <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
                 </TableRow></TableHead>
             <TableBody>
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Avg opponent</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.performanceDetails.averageElo}</TableCell>
+                <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
             </TableRow>
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Score</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.performanceDetails.score}</TableCell>
+                <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
             </TableRow>
             {this.props.move.details.bestWin?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Best win</TableCell>
