@@ -67,6 +67,7 @@ export default class PGNReader {
             })
             let fen = chess.fen()
             openingGraph.addGameResultOnFen(fen, resultObject)
+            openingGraph.addResultToReport(resultObject)
             this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, openingGraph)
         }
             setTimeout(()=>{this.parsePGNTimed(pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError, stopDownloading)},1)
