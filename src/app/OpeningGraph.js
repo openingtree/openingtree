@@ -47,6 +47,12 @@ class OpeningGraph {
             movePlayed.move = move
             movesPlayedNode.set(move.san, movePlayed)
         }
+        let newDetails = this.getUpdatedMoveDetails(movePlayed.details, resultObject, playerColor)
+        movePlayed.details = newDetails
+        return movePlayed
+    }
+
+    getUpdatedMoveDetails(currentMoveDetails, resultObject, playerColor) {
         let whiteWin = 0, blackWin = 0, draw = 0, opponentElo=0, resultInt = 0;
         if(resultObject.result === '1-0') {
             whiteWin = 1
@@ -64,27 +70,27 @@ class OpeningGraph {
             opponentElo = resultObject.whiteElo
         }
         if(resultInt === 1) {
-            if(!movePlayed.details.bestWin || parseInt(opponentElo)>parseInt(movePlayed.details.bestWin)) {
-                movePlayed.details.bestWin = opponentElo
-                movePlayed.details.bestWinGame = resultObject
+            if(!currentMoveDetails.bestWin || parseInt(opponentElo)>parseInt(currentMoveDetails.bestWin)) {
+                currentMoveDetails.bestWin = opponentElo
+                currentMoveDetails.bestWinGame = resultObject
             }
         }
         if(resultInt === -1) {
-            if(!movePlayed.details.worstLoss || parseInt(opponentElo)<parseInt(movePlayed.details.worstLoss)) {
-                movePlayed.details.worstLoss = opponentElo
-                movePlayed.details.worstLossGame = resultObject
+            if(!currentMoveDetails.worstLoss || parseInt(opponentElo)<parseInt(currentMoveDetails.worstLoss)) {
+                currentMoveDetails.worstLoss = opponentElo
+                currentMoveDetails.worstLossGame = resultObject
             }
         }
-        if(!movePlayed.details.lastPlayedGame || 
-            isDateMoreRecentThan(resultObject.date, movePlayed.details.lastPlayedGame.date)) {
-                movePlayed.details.lastPlayedGame = resultObject
+        if(!currentMoveDetails.lastPlayedGame || 
+            isDateMoreRecentThan(resultObject.date, currentMoveDetails.lastPlayedGame.date)) {
+                currentMoveDetails.lastPlayedGame = resultObject
         }
-        movePlayed.details.count += 1
-        movePlayed.details.blackWins += blackWin
-        movePlayed.details.whiteWins += whiteWin
-        movePlayed.details.draws += draw
-        movePlayed.details.totalOpponentElo += parseInt(opponentElo)
-        return movePlayed
+        currentMoveDetails.count += 1
+        currentMoveDetails.blackWins += blackWin
+        currentMoveDetails.whiteWins += whiteWin
+        currentMoveDetails.draws += draw
+        currentMoveDetails.totalOpponentElo += parseInt(opponentElo)
+        return currentMoveDetails
     }
 
     gameResultsForFen(fullFen) {
