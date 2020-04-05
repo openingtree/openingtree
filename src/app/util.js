@@ -139,7 +139,7 @@ export function getPerformanceDetails(totalElo, white, draws, black, playerColor
     return {
         performanceRating:averageElo+ratingChange,
         averageElo: averageElo,
-        score:`${score.toFixed(1)}/${totalGames}`,
+        score:`${Number.isInteger(score)?score:score.toFixed(1)}/${totalGames}`,
         ratingChange:`${ratingChange===0?'':(ratingChange>0?'+':'-')}${Math.abs(ratingChange)}`
     }
 }
