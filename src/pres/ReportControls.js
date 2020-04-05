@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons'
+import { faExternalLinkAlt, faUser } from '@fortawesome/free-solid-svg-icons'
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import React from 'react'
 import {getPerformanceDetails} from '../app/util'
@@ -12,6 +12,10 @@ export default class ControlsContainer extends React.Component {
         e.stopPropagation()
     }
     render() {
+        if(!this.props.moveDetails.lastPlayedGame) {
+            return <div className = "infoMessage" >No data to show. Please enter a lichess or chess.com user name in the 
+                <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
+        }
         let performanceDetails = {}
         if(this.props.isOpen) {
             performanceDetails = getPerformanceDetails(this.props.moveDetails.totalOpponentElo, 

@@ -8,6 +8,7 @@ import { faUser, faList, faCog, faChartBar } from '@fortawesome/free-solid-svg-i
 import MovesList from './MovesList';
 import {trackEvent} from '../app/Analytics'
 import * as Constants from '../app/Constants'
+import ReportControls from './ReportControls'
 
 export default class ControlsContainer extends React.Component {
     constructor(props){
@@ -101,12 +102,15 @@ export default class ControlsContainer extends React.Component {
               />
         </TabPane>
         <TabPane tabId="report">
-
+          <ReportControls moveDetails = {this.props.openingGraph.graph.rootDetails}
+            launchGame={this.launchGame} settings={this.props.settings}
+            switchToUserTab={this.switchToUserTab.bind(this)} 
+            isOpen = {this.state.activeTab === "report"}/>
         </TabPane>
         <TabPane tabId="settings">
           <Row>
             <Col sm="6">
-            <SettingsView fen={this.props.fen} settings={this.props.settings} clear = {this.props.clear} reset = {this.props.reset} onChange = {this.props.settingsChange}/>
+            <SettingsView fen={this.props.fen} settings={this.props.settings} isOpen = {true} clear = {this.props.clear} reset = {this.props.reset} onChange = {this.props.settingsChange}/>
             
             </Col>
           </Row>

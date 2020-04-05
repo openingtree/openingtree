@@ -86,6 +86,7 @@ export default class MainContainer extends React.Component {
                 showError={this.showError.bind(this)}
                 setDownloading={this.setDownloading.bind(this)}
                 isDownloading={this.state.downloadingGames}
+                openingGraph={this.state.openingGraph}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'top', horizontal:"center" }} open={snackBarOpen} autoHideDuration={6000} onClose={this.closeError.bind(this)}>
