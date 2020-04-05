@@ -21,6 +21,13 @@ export default class MovesList extends React.Component {
             trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "MoveClicked")
         }
     }
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.turnColor !== this.props.turnColor) {
+            this.setState({
+                openPerformanceIndex: null,
+            })
+        }
+    }
     togglePerformancePopover(moveIndex) {
         return (e) => {
             if(this.state.openPerformanceIndex !== null) {
