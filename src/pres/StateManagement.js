@@ -60,10 +60,13 @@ function updateProcessedGames(downloadLimit, n, openingGraph) {
     this.setState({
     gamesProcessed: totalGamesProcessed,
     openingGraph: openingGraph,
-    downloadingGames: totalGamesProcessed<downloadLimit?this.state.downloadingGames:false
+    downloadingGames: (totalGamesProcessed<downloadLimit || downloadLimit>=Constants.MAX_DOWNLOAD_LIMIT)?this.state.downloadingGames:false
     })
-    
-    return totalGamesProcessed < downloadLimit && this.state.downloadingGames
+    // continue to download games if 
+    // 1. we have not reached download limit OR
+    //    there is no download limit set (downloadLimit>MAX condition)
+    // 2. user did not hit stop button
+    return (totalGamesProcessed < downloadLimit || downloadLimit>=Constants.MAX_DOWNLOAD_LIMIT)&& this.state.downloadingGames
 }
 function moveToShape(move) {
     return {
