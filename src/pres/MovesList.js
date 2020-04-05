@@ -6,6 +6,7 @@ import { faUser, faExternalLinkAlt, faInfoCircle } from '@fortawesome/free-solid
 import {getPerformanceDetails} from '../app/util'
 import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
+import ReportControls from './ReportControls'
 
 export default class MovesList extends React.Component {
     constructor(props) {
@@ -66,9 +67,6 @@ export default class MovesList extends React.Component {
     player(name, elo) {
         return `${name}(${elo})`
     }
-    eatClicks(e) {
-        e.stopPropagation()
-    }
     getPopover(moveIndex) {
         let performancePopoverOpen = this.state.openPerformanceIndex === moveIndex
         let performanceDetails = {}
@@ -82,36 +80,8 @@ export default class MovesList extends React.Component {
         } 
 
         return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
-        <Table onClick={this.eatClicks}>
-            <TableHead className="performanceRatingRow performanceHeader"><TableRow>
-                <TableCell className="performanceRatingRow"><b>Performance</b></TableCell>
-                <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
-                </TableRow></TableHead>
-            <TableBody>
-            <TableRow className="performanceRatingRow">
-                <TableCell className="performanceRatingRow">Avg opponent</TableCell>
-                <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
-            </TableRow>
-            <TableRow className="performanceRatingRow">
-                <TableCell className="performanceRatingRow">Score</TableCell>
-                <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
-            </TableRow>
-            {openMove.details.bestWin?<TableRow className="performanceRatingRow">
-                <TableCell className="performanceRatingRow">Best win</TableCell>
-                <TableCell className="performanceRatingRow">{openMove.details.bestWin} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(openMove.details.bestWinGame.url)} icon={faExternalLinkAlt}/></TableCell>
-            </TableRow>:null}
-            {openMove.details.worstLoss?<TableRow className="performanceRatingRow">
-                <TableCell className="performanceRatingRow">Worst loss</TableCell>
-                <TableCell className="performanceRatingRow">{openMove.details.worstLoss} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(openMove.details.worstLossGame.url)} icon={faExternalLinkAlt}/></TableCell>
-            </TableRow>:null}
-            <TableRow className="performanceRatingRow">
-                <TableCell className="performanceRatingRow">Last played</TableCell>
-                <TableCell className="performanceRatingRow">{openMove.details.lastPlayedGame.date} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(openMove.details.lastPlayedGame.url)} icon={faExternalLinkAlt}/></TableCell>
-            </TableRow>
-            </TableBody>
-            <TableFooter><TableRow><TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></TableCell></TableRow></TableFooter>
-        </Table>
-    </Popover>
+                <ReportControls move={openMove} performanceDetails={performanceDetails} launch={this.launch}/>
+            </Popover>
     }
     movesTable() {
         let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)

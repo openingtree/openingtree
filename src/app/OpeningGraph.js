@@ -12,8 +12,6 @@ class OpeningGraph {
         currNode.gameResults.push(gameResult)
     }
     addResultToReport(gameResult) {
-        var currNode = this.getNodeFromGraph(fullFen)
-        currNode.gameResults.push(gameResult)
     }
 
     addMoveForFen(fullFen, move, resultObject, playerColor) {
