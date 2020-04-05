@@ -15,9 +15,9 @@ export default class ControlsContainer extends React.Component {
         let performanceDetails = {}
         if(this.props.isOpen) {
             performanceDetails = getPerformanceDetails(this.props.move.details.totalOpponentElo, 
-                                                        this.props.move.whiteWins, 
-                                                        this.props.move.draws, 
-                                                        this.props.move.blackWins, 
+                                                        this.props.move.details.whiteWins, 
+                                                        this.props.move.details.draws, 
+                                                        this.props.move.details.blackWins, 
                                                         this.props.settings.playerColor)
         } 
 

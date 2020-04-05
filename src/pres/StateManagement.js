@@ -89,7 +89,7 @@ function movesToShow() {
     } else {
         moves = this.state.openingGraph.movesAgainstFen(this.chess.fen())
     } 
-    return moves?moves.sort((a,b)=>b.count-a.count):moves
+    return moves?moves.sort((a,b)=>b.details.count-a.details.count):moves
 }
 
 function gameResults() {

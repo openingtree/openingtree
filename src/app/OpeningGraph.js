@@ -12,13 +12,14 @@ class OpeningGraph {
         currNode.gameResults.push(gameResult)
     }
     addResultToReport(gameResult) {
+        var rootNode = this.getNodeFromGraph('')
     }
 
     addMoveForFen(fullFen, move, resultObject, playerColor) {
         var currNode = this.getNodeFromGraph(fullFen)
         var movesPlayedBy = currNode.playedBy
         var movePlayedBy = this.updateDetailsOnNode(movesPlayedBy, move, resultObject, playerColor)
-        currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.count)
+        currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.details.count)
         currNode.playedBy = movesPlayedBy
     }
 
@@ -26,7 +27,7 @@ class OpeningGraph {
         var currNode = this.getNodeFromGraph(fullFen)
         var movesPlayedAgainst = currNode.playedAgainst
         var movePlayedAgainst = this.updateDetailsOnNode(movesPlayedAgainst, move, resultObject, playerColor)
-        currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.count)
+        currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.details.count)
         currNode.playedAgainst = movesPlayedAgainst
     }
     getNodeFromGraph(fullFen) {
@@ -78,10 +79,10 @@ class OpeningGraph {
             isDateMoreRecentThan(resultObject.date, movePlayed.details.lastPlayedGame.date)) {
                 movePlayed.details.lastPlayedGame = resultObject
         }
-        movePlayed.count += 1
-        movePlayed.blackWins += blackWin
-        movePlayed.whiteWins += whiteWin
-        movePlayed.draws += draw
+        movePlayed.details.count += 1
+        movePlayed.details.blackWins += blackWin
+        movePlayed.details.whiteWins += whiteWin
+        movePlayed.details.draws += draw
         movePlayed.details.totalOpponentElo += parseInt(opponentElo)
         return movePlayed
     }
@@ -105,11 +106,7 @@ class OpeningGraph {
                 return {
                     orig:gMove.move.from,
                     dest:gMove.move.to,
-                    level:this.levelFor(gMove.count, currNode.playedByMax),
-                    count:gMove.count,
-                    whiteWins:gMove.whiteWins,
-                    blackWins:gMove.blackWins,
-                    draws:gMove.draws,
+                    level:this.levelFor(gMove.details.count, currNode.playedByMax),
                     san:gMove.move.san,
                     details:gMove.details
                 }
@@ -126,11 +123,7 @@ class OpeningGraph {
                 return {
                     orig:gMove.move.from,
                     dest:gMove.move.to,
-                    level:this.levelFor(gMove.count, currNode.playedAgainstMax),
-                    count:gMove.count,
-                    whiteWins:gMove.whiteWins,
-                    blackWins:gMove.blackWins,
-                    draws:gMove.draws,
+                    level:this.levelFor(gMove.details.count, currNode.playedAgainstMax),
                     san:gMove.move.san,
                     details:gMove.details
                 }
@@ -170,11 +163,11 @@ class GraphNode {
 class GraphMove {
     fen = ''
     move = {}
-    count = 0
-    blackWins= 0
-    whiteWins= 0
-    draws= 0
     details = {
+        count: 0,
+        blackWins: 0,
+        whiteWins: 0,
+        draws: 0,
         totalOpponentElo: 0,
         bestWin:null,
         bestWinGame:null,
