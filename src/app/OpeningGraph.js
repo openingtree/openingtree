@@ -60,13 +60,13 @@ class OpeningGraph {
             opponentElo = resultObject.whiteElo
         }
         if(resultInt === 1) {
-            if(!movePlayed.details.bestWin || opponentElo>movePlayed.details.bestWin) {
+            if(!movePlayed.details.bestWin || parseInt(opponentElo)>parseInt(movePlayed.details.bestWin)) {
                 movePlayed.details.bestWin = opponentElo
                 movePlayed.details.bestWinGame = resultObject
             }
         }
         if(resultInt === -1) {
-            if(!movePlayed.details.worstLoss || opponentElo<movePlayed.details.worstLoss) {
+            if(!movePlayed.details.worstLoss || parseInt(opponentElo)<parseInt(movePlayed.details.worstLoss)) {
                 movePlayed.details.worstLoss = opponentElo
                 movePlayed.details.worstLossGame = resultObject
             }
