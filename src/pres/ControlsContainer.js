@@ -6,15 +6,26 @@ import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faList, faCog, faChartBar } from '@fortawesome/free-solid-svg-icons'
 import MovesList from './MovesList';
+import {trackEvent} from '../app/Analytics'
+import * as Constants from '../app/Constants'
 
 export default class ControlsContainer extends React.Component {
     constructor(props){
-        super(props)
-        this.state = {
-            activeTab:'user',
-            
-          }
+      super(props)
+      this.state = {
+          activeTab:'user',
       }
+    }
+
+    launchGame(url) {
+        return (e) => {
+            e.stopPropagation()
+            window.open(url, '_blank');
+            trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "ViewGameExternal")
+
+        }
+    }
+
     toggle(tab) {
         if(this.state.activeTab !== tab) {
             this.setState({activeTab:tab})
@@ -86,6 +97,7 @@ export default class ControlsContainer extends React.Component {
               settings={this.props.settings}
               turnColor={this.props.turnColor}
               settingsChange={this.props.settingsChange}
+              launchGame = {this.launchGame}
               />
         </TabPane>
         <TabPane tabId="report">

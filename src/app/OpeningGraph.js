@@ -11,8 +11,8 @@ class OpeningGraph {
         var currNode = this.getNodeFromGraph(fullFen)
         currNode.gameResults.push(gameResult)
     }
-    addResultToReport(gameResult) {
-        var rootNode = this.getNodeFromGraph('')
+    addResultToReport(gameResult, playerColor) {
+        this.graph.rootDetails = this.getUpdatedMoveDetails(this.graph.rootDetails, gameResult, playerColor)
     }
 
     addMoveForFen(fullFen, move, resultObject, playerColor) {
@@ -152,7 +152,7 @@ class OpeningGraph {
 
 class Graph {
     nodes = new Map()
-    rootNode = null
+    rootDetails = emptyDetails()
 
 }
 
@@ -169,7 +169,11 @@ class GraphNode {
 class GraphMove {
     fen = ''
     move = {}
-    details = {
+    details = emptyDetails()
+}
+
+function emptyDetails() {
+    return {
         count: 0,
         blackWins: 0,
         whiteWins: 0,

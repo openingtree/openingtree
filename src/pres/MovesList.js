@@ -21,14 +21,6 @@ export default class MovesList extends React.Component {
             trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "MoveClicked")
         }
     }
-    launch(url) {
-        return (e) => {
-            e.stopPropagation()
-            window.open(url, '_blank');
-            trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "ViewGameExternal")
-
-        }
-    }
     togglePerformancePopover(moveIndex) {
         return (e) => {
             if(this.state.openPerformanceIndex !== null) {
@@ -54,7 +46,7 @@ export default class MovesList extends React.Component {
                 this.props.gameResults.map(result => {
                     let whitePlayer = this.player(result.white, result.whiteElo)
                     let blackPlayer = this.player(result.black, result.blackElo)
-                    return <TableRow className="moveRow" key = {`${result.url}`} onClick={this.launch(result.url)}>
+                    return <TableRow className="moveRow" key = {`${result.url}`} onClick={this.props.launchGame(result.url)}>
                         <TableCell>
                             {result.result==="1-0"?<b>{whitePlayer}</b>:whitePlayer} {result.result} {result.result === "0-1"?<b>{blackPlayer}</b>:blackPlayer}
                         </TableCell>
@@ -71,7 +63,7 @@ export default class MovesList extends React.Component {
         let openMove = this.props.movesToShow[moveIndex]
 
         return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
-                <ReportControls moveDetails={openMove.details} isOpen = {performancePopoverOpen} launch={this.launch} settings={this.props.settings}/>
+                <ReportControls moveDetails={openMove.details} isOpen = {performancePopoverOpen} launchGame={this.props.launchGame} settings={this.props.settings}/>
             </Popover>
     }
     movesTable() {
@@ -110,7 +102,7 @@ export default class MovesList extends React.Component {
             <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell colSpan = "2">
-        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.launch(move.details.lastPlayedGame.url)} icon={faExternalLinkAlt}/>}
+        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame.url)} icon={faExternalLinkAlt}/>}
                 </TableCell>
             </TableRow>
             }
