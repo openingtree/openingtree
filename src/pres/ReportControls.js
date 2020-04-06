@@ -33,13 +33,14 @@ export default class ControlsContainer extends React.Component {
                     multiline
                     label="fen"
                     rowsMax="2"
-                    value={simplifiedFen(this.props.fen)}
+                    value={this.props.fen} 
                     inputProps={{
                         style: {fontSize: 12},
                         spellCheck: false,
                       }} 
                       variant="outlined"
                     className="fenField"
+                    margin="dense"
                     /></div>
             }
             <Table onClick={this.eatClicks}>
