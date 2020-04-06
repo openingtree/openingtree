@@ -39,15 +39,17 @@ export default class ControlsContainer extends React.Component {
                 <TableCell className="performanceRatingRow">Score</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
             </TableRow>
+            {this.props.simplifiedView?null:
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Rating change</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
             </TableRow>
-            {this.props.moveDetails.bestWin?<TableRow className="performanceRatingRow">
+            }
+            {!this.props.simplifiedView && this.props.moveDetails.bestWin?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Best win</TableCell>
                 <TableCell className="performanceRatingRow">{this.props.moveDetails.bestWin} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.bestWinGame.url)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
-            {this.props.moveDetails.worstLoss?<TableRow className="performanceRatingRow">
+            {!this.props.simplifiedView && this.props.moveDetails.worstLoss?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Worst loss</TableCell>
                 <TableCell className="performanceRatingRow">{this.props.moveDetails.worstLoss} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.worstLossGame.url)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
@@ -56,7 +58,13 @@ export default class ControlsContainer extends React.Component {
                 <TableCell className="performanceRatingRow">{this.props.moveDetails.lastPlayedGame.date} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.lastPlayedGame.url)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>
             </TableBody>
-            <TableFooter><TableRow><TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></TableCell></TableRow></TableFooter>
+            {this.props.simplifiedView?null:
+            <TableFooter>
+                <TableRow>
+                    <TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></TableCell>
+                </TableRow>
+            </TableFooter>
+            }
         </Table>
     }
 }
