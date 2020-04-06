@@ -52,18 +52,15 @@ export default class PGNReader {
             let resultObject = this.gameResult(pgn)
 
             pgn.moves.forEach(element => {
-                let fen = chess.fen()
+                let sourceFen = chess.fen()
                 let move = chess.move(element.move)
+                let targetFen = chess.fen()
                 if(!move){
                     console.log('failed to load game ' + pgn)
                     showError("Failed to load game", `${playerName}:${playerColor}`)
                     return
                 }
-                if(move.color === gamePlayerColor) {
-                    openingGraph.addMoveForFen(fen, move, resultObject, playerColor)
-                } else {
-                    openingGraph.addMoveAgainstFen(fen,move, resultObject, playerColor)
-                }
+                openingGraph.addMoveForFen(sourceFen, targetFen, move, resultObject, playerColor)
             })
             let fen = chess.fen()
             openingGraph.addGameResultOnFen(fen, resultObject)

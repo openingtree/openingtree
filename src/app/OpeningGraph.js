@@ -15,21 +15,17 @@ class OpeningGraph {
         this.graph.rootDetails = this.getUpdatedMoveDetails(this.graph.rootDetails, gameResult, playerColor)
     }
 
-    addMoveForFen(fullFen, move, resultObject, playerColor) {
-        var currNode = this.getNodeFromGraph(fullFen)
-        var movesPlayedBy = currNode.playedBy
-        var movePlayedBy = this.updateDetailsOnNode(movesPlayedBy, move, resultObject, playerColor)
-        currNode.playedByMax = Math.max(currNode.playedByMax, movePlayedBy.details.count)
-        currNode.playedBy = movesPlayedBy
+    addMoveForFen(fullSourceFen, fullTargetFen, move, resultObject, playerColor) {
+        var targetNode = this.getNodeFromGraph(fullTargetFen)
+        let newDetails = this.getUpdatedMoveDetails(targetNode.details, resultObject, playerColor)
+        targetNode.details = newDetails
+
+        var currNode = this.getNodeFromGraph(fullSourceFen)
+        var movePlayedBy = this.createOrGetMoveNode(currNode.playedBy, move, fullTargetFen)
+        currNode.playedByMax = Math.max(currNode.playedByMax, targetNode.details.count)
+        currNode.playedBy = movePlayedBy
     }
 
-    addMoveAgainstFen(fullFen, move, resultObject, playerColor) {
-        var currNode = this.getNodeFromGraph(fullFen)
-        var movesPlayedAgainst = currNode.playedAgainst
-        var movePlayedAgainst = this.updateDetailsOnNode(movesPlayedAgainst, move, resultObject, playerColor)
-        currNode.playedAgainstMax = Math.max(currNode.playedAgainstMax, movePlayedAgainst.details.count)
-        currNode.playedAgainst = movesPlayedAgainst
-    }
     getNodeFromGraph(fullFen) {
         let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
@@ -40,16 +36,16 @@ class OpeningGraph {
         }
         return currNode
     }
-    updateDetailsOnNode(movesPlayedNode, move, resultObject, playerColor){
+    createOrGetMoveNode(movesPlayedNode, move, fullTargetFen){
         var movePlayed = movesPlayedNode.get(move.san)
+
         if(!movePlayed) {
             movePlayed = new GraphMove()
             movePlayed.move = move
+            movePlayed.fen = simplifiedFen(fullTargetFen)
             movesPlayedNode.set(move.san, movePlayed)
         }
-        let newDetails = this.getUpdatedMoveDetails(movePlayed.details, resultObject, playerColor)
-        movePlayed.details = newDetails
-        return movePlayed
+        return movesPlayedNode
     }
 
     getUpdatedMoveDetails(currentMoveDetails, resultObject, playerColor) {
@@ -109,34 +105,19 @@ class OpeningGraph {
         if(currNode) {
             return Array.from(currNode.playedBy.entries()).map((entry)=> {
                 let gMove = entry[1]
+                let targetNode = this.graph.nodes.get(gMove.fen)
                 return {
                     orig:gMove.move.from,
                     dest:gMove.move.to,
-                    level:this.levelFor(gMove.details.count, currNode.playedByMax),
+                    level:this.levelFor(targetNode.details.count, currNode.playedByMax),
                     san:gMove.move.san,
-                    details:gMove.details
+                    details:targetNode.details
                 }
             })
         }        
         return null
     }
-    movesAgainstFen(fullFen) {
-        let fen = simplifiedFen(fullFen)
-        var currNode = this.graph.nodes.get(fen)
-        if(currNode) {
-            return Array.from(currNode.playedAgainst.entries()).map((entry)=> {
-                let gMove = entry[1]
-                return {
-                    orig:gMove.move.from,
-                    dest:gMove.move.to,
-                    level:this.levelFor(gMove.details.count, currNode.playedAgainstMax),
-                    san:gMove.move.san,
-                    details:gMove.details
-                }
-            })
-        }        
-        return null
-    }
+
     levelFor(moveCount, maxCount){
         if(maxCount <= 0 ||moveCount/maxCount > 0.8) {
             return 2
@@ -160,16 +141,14 @@ class GraphNode {
     fen = ''
     playedByMax = 0 // used to keep track of how many times the most frequent move is played for ease of calculation later
     playedBy = new Map()
-    playedAgainstMax = 0
-    playedAgainst = new Map()
     gameResults = []
     properties = {}
+    details = emptyDetails()
 }
 
 class GraphMove {
     fen = ''
     move = {}
-    details = emptyDetails()
 }
 
 function emptyDetails() {
