@@ -22,6 +22,7 @@ export default class LichessIterator {
             lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter, 
             { json: false }).on('error', (error)=> {
                 showError('failed to connect to lichess.org')
+                ready([], false)
         }).on('response',(response)=>{
             if(response.statusCode === 404) {
                 showError('could not find lichess user ' + playerName)
