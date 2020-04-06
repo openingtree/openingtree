@@ -1,6 +1,7 @@
+import * as Constants from './Constants'
 
 export default class OpeningManager {
-    plys = [{pgn:'', fen:'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', move:null}]
+    plys = [{pgn:'', fen:Constants.ROOT_FEN, move:null}]
     currentIndex = 0
     addPly(fen,move) {
         if(this.currentIndex<this.plys.length-1 && this.plys[this.currentIndex+1].move.san === move.san) {
