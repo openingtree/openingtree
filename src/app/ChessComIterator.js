@@ -86,16 +86,20 @@ export default class ChessComIterator {
             })
             if(pendingRequests === 0) {
                 showError('Could not find games for chess.com user '+playerName)
+                ready([], false)
             }
         }
 
         request(`https://api.chess.com/pub/player/${playerName}/games/archives`, function (error, response, body) {
             if(error) {
                 showError('Could not connect to chess.com')
+                ready([], false)
             } else if(response.statusCode === 404) {
                 showError('Could not find chess.com user '+playerName)
+                ready([], false)
             } else if (response.statusCode !== 200) {
                 showError('Could not load games for chess.com user '+playerName)
+                ready([], false)
             } else {
                 if(response.body) {
                     try{
@@ -103,6 +107,7 @@ export default class ChessComIterator {
                         fetchAllGames(jsonBody)
                     }catch(e) {
                         showError('Could not find games for chess.com user '+playerName)
+                        ready([], false)
                     }
                 }
             }
