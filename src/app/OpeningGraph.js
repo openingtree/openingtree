@@ -1,4 +1,5 @@
 import {simplifiedFen, isDateMoreRecentThan} from './util'
+import * as Constants from './Constants'
 
 class OpeningGraph {
     constructor() {
@@ -7,12 +8,18 @@ class OpeningGraph {
     clear() {
         this.graph = new Graph()
     }
-    addGameResultOnFen(fullFen, gameResult) {
+    addGameResultOnFen(fullFen, resultObject) {
         var currNode = this.getNodeFromGraph(fullFen)
-        currNode.gameResults.push(gameResult)
+        currNode.gameResults.push(resultObject)
     }
-    addResultToReport(gameResult, playerColor) {
-        this.graph.rootDetails = this.getUpdatedMoveDetails(this.graph.rootDetails, gameResult, playerColor)
+    addResultToRoot(resultObject, playerColor) {
+        var targetNode = this.getNodeFromGraph(Constants.ROOT_FEN)
+        let newDetails = this.getUpdatedMoveDetails(targetNode.details, resultObject, playerColor)
+        targetNode.details = newDetails
+    }
+
+    getDetailsForFen(fullFen) {
+        return this.getNodeFromGraph(simplifiedFen(fullFen)).details
     }
 
     addMoveForFen(fullSourceFen, fullTargetFen, move, resultObject, playerColor) {
@@ -133,8 +140,6 @@ class OpeningGraph {
 
 class Graph {
     nodes = new Map()
-    rootDetails = emptyDetails()
-
 }
 
 class GraphNode {

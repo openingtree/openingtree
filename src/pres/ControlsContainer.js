@@ -102,7 +102,7 @@ export default class ControlsContainer extends React.Component {
               />
         </TabPane>
         <TabPane tabId="report">
-          <ReportControls moveDetails = {this.props.openingGraph.graph.rootDetails}
+          <ReportControls moveDetails = {this.props.openingGraph.getDetailsForFen(Constants.ROOT_FEN)}
             launchGame={this.launchGame} settings={this.props.settings}
             switchToUserTab={this.switchToUserTab.bind(this)} 
             isOpen = {this.state.activeTab === "report"}/>
