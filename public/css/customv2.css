@@ -154,3 +154,10 @@
         padding-top:15px
     }
 }
+.fenField {
+    width:100%;
+    font-size:10px;
+}
+.fenDiv {
+    padding-top:10px;
+}

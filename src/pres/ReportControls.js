@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExternalLinkAlt, faUser } from '@fortawesome/free-solid-svg-icons'
-import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
+import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter, TextField } from '@material-ui/core';
 import React from 'react'
-import {getPerformanceDetails} from '../app/util'
+import {getPerformanceDetails, simplifiedFen} from '../app/util'
 
 export default class ControlsContainer extends React.Component {
     constructor(props) {
@@ -25,8 +25,25 @@ export default class ControlsContainer extends React.Component {
                                                         this.props.settings.playerColor)
         } 
 
-        return <Table onClick={this.eatClicks}>
-            <TableHead className="performanceRatingRow performanceHeader"><TableRow>
+        return <div>
+            {this.props.simplifiedView?null:
+                <div className="fenDiv">
+                <TextField
+                    id="fenField"
+                    multiline
+                    label="fen"
+                    rowsMax="2"
+                    value={simplifiedFen(this.props.fen)}
+                    inputProps={{
+                        style: {fontSize: 12},
+                        spellCheck: false,
+                      }} 
+                      variant="outlined"
+                    className="fenField"
+                    /></div>
+            }
+            <Table onClick={this.eatClicks}>
+            <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}><TableRow>
                 <TableCell className="performanceRatingRow"><b>Performance</b></TableCell>
                 <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
                 </TableRow></TableHead>
@@ -65,6 +82,6 @@ export default class ControlsContainer extends React.Component {
                 </TableRow>
             </TableFooter>
             }
-        </Table>
+        </Table></div>
     }
 }
