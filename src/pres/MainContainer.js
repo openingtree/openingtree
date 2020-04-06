@@ -27,7 +27,7 @@ export default class MainContainer extends React.Component {
           orientation:'white',
           playerColor:'white'
         },
-        errorMessage:'',
+        message:'',
         downloadingGames:false
       }
     this.forBrushes = ['paleGrey', 'paleGreen', 'green']
@@ -49,7 +49,7 @@ export default class MainContainer extends React.Component {
 
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
-    let snackBarOpen = this.state.errorMessage?true:false
+    let snackBarOpen = this.state.message?true:false
     let chessboardWidth = this.getChessboardWidth()
     return <div className="rootView"> 
         <GlobalHeader/>
@@ -84,16 +84,17 @@ export default class MainContainer extends React.Component {
                 onMove={this.onMove.bind(this)}
                 turnColor={this.turnColor()}
                 showError={this.showError.bind(this)}
+                showInfo={this.showInfo.bind(this)}
                 setDownloading={this.setDownloading.bind(this)}
                 isDownloading={this.state.downloadingGames}
                 openingGraph={this.state.openingGraph}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'top', horizontal:"center" }} open={snackBarOpen} autoHideDuration={6000} onClose={this.closeError.bind(this)}>
-    <Alert onClose={this.closeError.bind(this)} severity="warning">
-      {this.state.errorMessage}
+    <Alert onClose={this.closeError.bind(this)} severity={this.state.messageSeverity}>
+      {this.state.message}
     </Alert>
-  </Snackbar>
+    </Snackbar>
     </div>
   }
 }
