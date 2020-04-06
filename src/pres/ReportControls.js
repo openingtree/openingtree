@@ -39,6 +39,10 @@ export default class ControlsContainer extends React.Component {
                 <TableCell className="performanceRatingRow">Score</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
             </TableRow>
+            <TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Rating change</TableCell>
+                <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
+            </TableRow>
             {this.props.moveDetails.bestWin?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Best win</TableCell>
                 <TableCell className="performanceRatingRow">{this.props.moveDetails.bestWin} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.bestWinGame.url)} icon={faExternalLinkAlt}/></TableCell>
