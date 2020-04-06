@@ -86,12 +86,7 @@ function autoShapes() {
 }
 
 function movesToShow() {
-    var moves
-    if (this.turnColor() === this.playerColor()) {
-        moves = this.state.openingGraph.movesForFen(this.chess.fen())
-    } else {
-        moves = this.state.openingGraph.movesAgainstFen(this.chess.fen())
-    } 
+    var moves = this.state.openingGraph.movesForFen(this.chess.fen())
     return moves?moves.sort((a,b)=>b.details.count-a.details.count):moves
 }
 
