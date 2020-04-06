@@ -11,6 +11,23 @@ export default class ControlsContainer extends React.Component {
     eatClicks(e) {
         e.stopPropagation()
     }
+
+    copyFen() {
+        /* Get the text field */
+        var copyText = document.getElementById("fenField");
+      
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+      
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+      
+        /* Alert the copied text */
+        this.props.showInfo("FEN copied");
+      }
+
+      
     render() {
         if(!this.props.moveDetails.lastPlayedGame) {
             return <div className = "infoMessage" >No data to show. Please enter a lichess or chess.com user name in the 
@@ -31,7 +48,7 @@ export default class ControlsContainer extends React.Component {
                 <TextField
                     id="fenField"
                     multiline
-                    label="fen"
+                    label="FEN"
                     rowsMax="2"
                     value={this.props.fen} 
                     inputProps={{
@@ -41,6 +58,7 @@ export default class ControlsContainer extends React.Component {
                       variant="outlined"
                     className="fenField"
                     margin="dense"
+                    onClick = {this.copyFen.bind(this)}
                     /></div>
             }
             <Table onClick={this.eatClicks}>

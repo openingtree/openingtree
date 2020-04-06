@@ -120,13 +120,20 @@ function settingsChange(name, value) {
     })
 }
 function showError(message, trackingLabel) {
-    this.setState({errorMessage:message})
+    this.setState({message:message, severity:"warning"})
     trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown",
         trackingLabel?trackingLabel:message)
 }
 
+function showInfo(message, trackingLabel) {
+    this.setState({message:message, severity:"info"})
+    trackEvent(Constants.EVENT_CATEGORY_ERROR,"infoShown",
+        trackingLabel?trackingLabel:message)
+}
+
+
 function closeError() {
-    this.setState({errorMessage:''})
+    this.setState({message:''})
 }
 
 function setDownloading(val) {
@@ -152,6 +159,7 @@ function addStateManagement(obj){
     obj.movesToShow = movesToShow
     obj.gameResults = gameResults
     obj.showError = showError
+    obj.showInfo = showInfo
     obj.closeError = closeError
     obj.setDownloading = setDownloading
 }
