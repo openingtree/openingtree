@@ -25,13 +25,34 @@ export default class ControlsContainer extends React.Component {
       
         /* Alert the copied text */
         this.props.showInfo("FEN copied");
-      }
+    }
+
+    getFenField() {
+        return this.props.simplifiedView?null:
+            <div className="fenDiv">
+            <TextField
+                id="fenField"
+                multiline
+                label="FEN"
+                rowsMax="2"
+                value={this.props.fen} 
+                inputProps={{
+                    style: {fontSize: 12},
+                    spellCheck: false,
+                  }} 
+                  variant="outlined"
+                className="fenField"
+                margin="dense"
+                onClick = {this.copyFen.bind(this)}
+                /></div>
+    }
 
       
     render() {
         if(!this.props.moveDetails.lastPlayedGame) {
-            return <div className = "infoMessage" >No data to show. Please enter a lichess or chess.com user name in the 
+            return <div>{this.getFenField()}<div className = "infoMessage" >No data to show. Please enter a lichess or chess.com user name in the 
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
+                </div>
         }
         let performanceDetails = {}
         if(this.props.isOpen) {
@@ -43,24 +64,7 @@ export default class ControlsContainer extends React.Component {
         } 
 
         return <div>
-            {this.props.simplifiedView?null:
-                <div className="fenDiv">
-                <TextField
-                    id="fenField"
-                    multiline
-                    label="FEN"
-                    rowsMax="2"
-                    value={this.props.fen} 
-                    inputProps={{
-                        style: {fontSize: 12},
-                        spellCheck: false,
-                      }} 
-                      variant="outlined"
-                    className="fenField"
-                    margin="dense"
-                    onClick = {this.copyFen.bind(this)}
-                    /></div>
-            }
+            {this.getFenField()}
             <Table onClick={this.eatClicks}>
             <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}><TableRow>
                 <TableCell className="performanceRatingRow"><b>Performance</b></TableCell>
