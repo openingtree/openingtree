@@ -30,6 +30,7 @@ export default class ControlsContainer extends React.Component {
     toggle(tab) {
         if(this.state.activeTab !== tab) {
             this.setState({activeTab:tab})
+            trackEvent(Constants.EVENT_CATEGORY_CONTROLS,`activeTab:${tab}`)
         }
     }
     switchToUserTab() {
