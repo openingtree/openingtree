@@ -30,8 +30,11 @@ export default class MainContainer extends React.Component {
         message:'',
         downloadingGames:false
       }
+    this.chessboardWidth = this.getChessboardWidth()
+
     this.forBrushes = ['paleGrey', 'paleGreen', 'green']
     this.againstBrushes = ['paleRed', 'paleRed', 'red']
+
   }
   getChessboardWidth(){
     // have to manually set the width to pixels instead of "vw" value
@@ -50,14 +53,13 @@ export default class MainContainer extends React.Component {
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     let snackBarOpen = this.state.message?true:false
-    let chessboardWidth = this.getChessboardWidth()
     return <div className="rootView"> 
         <GlobalHeader/>
         <Container className="mainContainer">
           <Row><Col lg={{order:0, size:2}} xs={{order:2}}><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
     </Col><Col lg="6"><Chessground
-      height={chessboardWidth}
-      width={chessboardWidth}
+      height={this.chessboardWidth}
+      width={this.chessboardWidth}
       orientation={this.orientation()}
       turnColor={this.turnColor()}
       movable={this.calcMovable()}
