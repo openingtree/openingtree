@@ -18,6 +18,37 @@
  * Computer analysis button should go to the right fen
  * Opening names should change
  
+## Load
+ * Enter `DrNykterstein` for lichess and `hikaru` for chess.com and click load
+ * Click stop mid download and make sure it works
+ * Try both white and black
+ * Try advanced filters and make sure fewer games are being downloaded
+ * Stop button should disappear after games are done downloading
+ * Make sure moves tab link on user tab works
+
+## Move
+ * Make sure moves are being shown on on moves tab
+ * all moves should be shown
+ * click on moves should make moves on chessboard
+ * moving on chessboard should make changes to moves tab
+ * make a move on chessboard that is not in the list
+ * make sure lines with single results show results of games
+ * External links to game should work
+ * Game result should show at the end. Clicking on that should go to game results
+ * Info message at the bottom of moves tab should show the right message
+ 
+ 
+## Report
+ * 
+
+## Errors
+ * Turn off wifi and click load
+ * Enter random username and click load
+ * Enter a username with 0 games played
+ * Turn off wifi mid download
+ * Try chess.com user `TheZahlen`. console log should show one game fails parsing should not break entire UI
+ * Try `alireza2003` console log should show one game fails parsing should not break entire UI
+ 
 ## Tracking
 Make sure tracking events are logged for the following
  * Tab changes
