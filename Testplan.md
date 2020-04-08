@@ -7,6 +7,7 @@
  * Copy fen to make sure it copies to clipboard
  * Flip board
  * Computer analysis should go to lichess with starting position
+ * More dropdown in heaer should work and all links working
 
 ## Navigator
  * Make moves on the chessboard
@@ -39,7 +40,18 @@
  
  
 ## Report
- * 
+ * Make sure mouseover on moves should show performance rating
+ * Values on popover should make sense
+ * External link to game should works
+ * Full report in report tab should show report of current state
+ * external links should work
+ * Clear games control should work
+ 
+ ## Mobile
+ * Change size of browser window to make sure UI looks ok
+ * Open on mobile browser
+ * change orientation
+ * Make sure performance overlay works
 
 ## Errors
  * Turn off wifi and click load
@@ -60,4 +72,6 @@ Make sure tracking events are logged for the following
  * Left/right arrow keys
  * Navigation keys
  * moves clicked
+ * Errors
+ * External links
  
