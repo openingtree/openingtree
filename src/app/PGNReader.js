@@ -3,6 +3,8 @@ import Chess from 'chess.js'
 import LichessIterator from './LichessIterator'
 import ChessComIterator from './ChessComIterator'
 import * as Constants from './Constants'
+import streamsaver from 'streamsaver'
+import {Readable} from 'stream'
 
 export default class PGNReader {
     constructor() {
@@ -10,8 +12,20 @@ export default class PGNReader {
         this.pendingGames = 0;
         this.pendingDownloads = true;
     }
-    parsePGN(playerName, playerColor, site, advancedFilters, notify, showError, stopDownloading) {
+
+    fetchPGNFromSite(playerName, playerColor, site, shouldDownloadToFile, advancedFilters, notify, showError, stopDownloading) {
         this.continueProcessingGames = true
+        let fileStream =  streamsaver.createWriteStream(`${playerName}-${playerColor}.txt`)
+        let fileWriter = fileStream.getWriter()
+        let encoder = new TextEncoder()
+        let downloadResponse = (result, pendingDownloads) => {
+            fileWriter.write(encoder.encode(JSON.stringify(result))).then(()=>{
+                if(!pendingDownloads) {
+                    fileWriter.close()
+                }
+            })
+            return true
+        }
         let handleResponse = (result, pendingDownloads) => {
             if(!result) {
                 return this.continueProcessingGames
@@ -19,15 +33,18 @@ export default class PGNReader {
             this.totalGames += result.length
             this.pendingGames += result.length
             this.pendingDownloads = pendingDownloads
+            
+
             setTimeout(() => {
                 this.parsePGNTimed(result, advancedFilters, playerColor, 0, playerName, notify, showError, stopDownloading)
             } ,1)
             return this.continueProcessingGames
         }
+        let processor = shouldDownloadToFile? downloadResponse: handleResponse
         if(site === Constants.SITE_LICHESS) {
-            new LichessIterator(playerName, playerColor, advancedFilters, handleResponse, showError)
+            new LichessIterator(playerName, playerColor, advancedFilters, processor, showError)
         } else if(site === Constants.SITE_CHESS_DOT_COM) {
-            new ChessComIterator(playerName, playerColor, advancedFilters, handleResponse, showError)
+            new ChessComIterator(playerName, playerColor, advancedFilters, processor, showError)
         }
 
         
@@ -46,7 +63,6 @@ export default class PGNReader {
         }
 
         var pgn = pgnArray[index]
-        let gamePlayerColor = (pgn.headers.White.toLowerCase() === playerName.toLowerCase()) ? "w" : "b"
         if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
             let chess = new Chess()
             let resultObject = this.gameResult(pgn)
