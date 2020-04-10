@@ -63,15 +63,30 @@ export default class PGNLoader extends React.Component {
             trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ColorChange", playerColor)
         }
     }
+
+    download() {
+        new PGNReader().fetchPGNFromSite(this.state.playerName, 
+            this.state.playerColor, 
+            this.state.site,
+            true,
+            this.advancedFilters(),
+            this.props.notify, 
+            this.props.showError, 
+            this.stopDownloading.bind(this))
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Download", this.state.site, this.state.playerColor==='white'?1:0)
+
+    }
+
     load() {
         this.props.clear()
         // set the player name and color in the global state
         this.props.onChange("playerName", this.state.playerName)
         this.props.onChange("playerColor", this.state.playerColor)
         this.setState({isAdvancedFiltersOpen:false,isGamesSubsectionOpen:true})
-        new PGNReader().parsePGN(this.state.playerName, 
+        new PGNReader().fetchPGNFromSite(this.state.playerName, 
             this.state.playerColor, 
             this.state.site,
+            false,
             this.advancedFilters(),
             this.props.notify, 
             this.props.showError, 
@@ -149,7 +164,7 @@ export default class PGNLoader extends React.Component {
                         name="playerName" 
                         id="playerNameTextBox"
                         placeholder={`${this.state.site===Constants.SITE_LICHESS?"lichess":"chess.com"} username`}/>
-                <button onClick = {this.load.bind(this)}>Load</button> </div>
+                </div><div><button onClick = {this.load.bind(this)}>Analyze</button><button onClick = {this.download.bind(this)}>Download</button>  </div>
                 {
                     this.state.isGamesSubsectionOpen?
                     <div>

@@ -19,7 +19,8 @@
     "react-ga": "^2.7.0",
     "react-scripts": "3.4.0",
     "reactstrap": "^8.4.1",
-    "request": "^2.85.0"
+    "request": "^2.85.0",
+    "streamsaver": "^2.0.4"
   },
   "scripts": {
     "start": "react-scripts start",
