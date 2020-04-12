@@ -4,7 +4,6 @@ import LichessIterator from './LichessIterator'
 import ChessComIterator from './ChessComIterator'
 import * as Constants from './Constants'
 import streamsaver from 'streamsaver'
-import {Readable} from 'stream'
 
 export default class PGNReader {
     constructor() {
@@ -13,13 +12,20 @@ export default class PGNReader {
         this.pendingDownloads = true;
     }
 
+    getPgnString(game){
+        return `${Object.entries(game.headers).map(header=>`[${header[0]} "${header[1]}"]`).join("\n")}
+                \n${game.moves.map((moveObject, index)=>{
+                    return `${index%2!==0?'':index/2+1+"."} ${moveObject.move}`
+                }).join(' ')} ${game.result}\n\n\n`
+    }
+
     fetchPGNFromSite(playerName, playerColor, site, shouldDownloadToFile, advancedFilters, notify, showError, stopDownloading) {
         this.continueProcessingGames = true
-        let fileStream =  streamsaver.createWriteStream(`${playerName}-${playerColor}.txt`)
+        let fileStream =  streamsaver.createWriteStream(`${playerName}-${playerColor}.pgn`)
         let fileWriter = fileStream.getWriter()
         let encoder = new TextEncoder()
         let downloadResponse = (result, pendingDownloads) => {
-            fileWriter.write(encoder.encode(JSON.stringify(result))).then(()=>{
+            fileWriter.write(encoder.encode(result.map(game=>this.getPgnString(game)).join(""))).then(()=>{
                 if(!pendingDownloads) {
                     fileWriter.close()
                 }
