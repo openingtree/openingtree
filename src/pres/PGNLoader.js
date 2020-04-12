@@ -141,6 +141,12 @@ export default class PGNLoader extends React.Component {
                     <FormControlLabel className = "sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary"/>} label={<img alt="chess.com" className="siteimage" src="./chesscomlogo.png"/>} />
                 </RadioGroup>
             </div>
+            <div className = "pgnloadersection">
+                <TextField 
+                    className="playernameField" name="playerName" id="playerNameTextBox" variant="outlined"
+                    margin="dense" onChange= {this.playerNameChange.bind(this)} 
+                    label={`${this.state.site===Constants.SITE_LICHESS?"lichess":"chess.com"} username`}/>
+            </div>
             <div  className="pgnloadersection">Games played as: 
                 <div>
                 <Button onClick = {this.playerColorChange('white')} color = {this.state.playerColor === 'white'?'secondary':'link'}>White</Button>
@@ -162,42 +168,36 @@ export default class PGNLoader extends React.Component {
                 />
             </Card>
             </Collapse></div>
-            <div className = "pgnloadersection">
-            <TextField 
-                className="playernameField" name="playerName" id="playerNameTextBox" variant="outlined"
-                margin="dense" onChange= {this.playerNameChange.bind(this)} 
-                label={`${this.state.site===Constants.SITE_LICHESS?"lichess":"chess.com"} username`}/>
-                </div>
-                    <div className = "pgnloadersection"><MaterialUIButton
-                        onClick = {this.load.bind(this)}
-                        variant="contained"
-                        color="primary"
-                        startIcon={<Equalizer/>}
-                        className="mainButton" disableElevation
-                    >
-                        Analyze games
-                    </MaterialUIButton></div>
-                    <div className = "pgnloadersection"><MaterialUIButton
-                        onClick = {this.download.bind(this)}
-                        variant="contained"
-                        color="default"
-                        startIcon={<GetApp/>}
-                        className="mainButton" disableElevation
-                    >
-                        Export as PGN
-                    </MaterialUIButton></div>
-                {
-                    this.state.isGamesSubsectionOpen?
-                    <div>
-                        <div className="pgnloadersection">
-                            {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}><img alt="loading spinner" src="./spinner.gif" height="15"/>stop</span>]</span>:""}
-                        </div>
-                        <div onClick = {()=>this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
-                            <FontAwesomeIcon icon={faList} /> View Moves>>
-                        </div>
+            <div className = "pgnloadersection"><MaterialUIButton
+                onClick = {this.load.bind(this)}
+                variant="contained"
+                color="primary"
+                startIcon={<Equalizer/>}
+                className="mainButton" disableElevation
+            >
+                Analyze games
+            </MaterialUIButton></div>
+            <div className = "pgnloadersection"><MaterialUIButton
+                onClick = {this.download.bind(this)}
+                variant="contained"
+                color="default"
+                startIcon={<GetApp/>}
+                className="mainButton" disableElevation
+            >
+                Export as PGN
+            </MaterialUIButton></div>
+            {
+                this.state.isGamesSubsectionOpen?
+                <div>
+                    <div className="pgnloadersection">
+                        {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading?<span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}><img alt="loading spinner" src="./spinner.gif" height="15"/>stop</span>]</span>:""}
                     </div>
-                        :""
-                }
+                    <div onClick = {()=>this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
+                        <FontAwesomeIcon icon={faList} /> View Moves>>
+                    </div>
+                </div>
+                    :""
+            }
 
         </div>
     }
