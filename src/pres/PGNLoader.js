@@ -1,6 +1,7 @@
 import React from 'react'
 import PGNReader from '../app/PGNReader'
 import {Button, Collapse, Card} from 'reactstrap'
+import {Button as MaterialUIButton, TextField} from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
 import { Radio,FormControlLabel,RadioGroup } from '@material-ui/core';
@@ -8,6 +9,9 @@ import AdvancedFilters from './AdvancedFilters'
 import {createSubObjectWithProperties, getTimeframeSteps} from '../app/util'
 import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
+import GetApp from '@material-ui/icons/GetApp';
+import Equalizer from '@material-ui/icons/Equalizer';
+
 
 export default class PGNLoader extends React.Component {
 
@@ -159,12 +163,29 @@ export default class PGNLoader extends React.Component {
             </Card>
             </Collapse></div>
             <div className = "pgnloadersection">
-                <input type="text" 
-                        onChange= {this.playerNameChange.bind(this)} 
-                        name="playerName" 
-                        id="playerNameTextBox"
-                        placeholder={`${this.state.site===Constants.SITE_LICHESS?"lichess":"chess.com"} username`}/>
-                </div><div><button onClick = {this.load.bind(this)}>Analyze</button><button onClick = {this.download.bind(this)}>Download</button>  </div>
+            <TextField 
+                className="playernameField" name="playerName" id="playerNameTextBox" variant="outlined"
+                margin="dense" onChange= {this.playerNameChange.bind(this)} 
+                label={`${this.state.site===Constants.SITE_LICHESS?"lichess":"chess.com"} username`}/>
+                </div>
+                    <div className = "pgnloadersection"><MaterialUIButton
+                        onClick = {this.load.bind(this)}
+                        variant="contained"
+                        color="primary"
+                        startIcon={<Equalizer/>}
+                        className="mainButton" disableElevation
+                    >
+                        Analyze games
+                    </MaterialUIButton></div>
+                    <div className = "pgnloadersection"><MaterialUIButton
+                        onClick = {this.download.bind(this)}
+                        variant="contained"
+                        color="default"
+                        startIcon={<GetApp/>}
+                        className="mainButton" disableElevation
+                    >
+                        Export as PGN
+                    </MaterialUIButton></div>
                 {
                     this.state.isGamesSubsectionOpen?
                     <div>
