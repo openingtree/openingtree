@@ -38,7 +38,13 @@
  * Game result should show at the end. Clicking on that should go to game results
  * Info message at the bottom of moves tab should show the right message
  
- 
+## Download
+ * Click Export as PGN button. File should download and be openable using scid
+ * Filters should work when downloading files
+ * Clicking on export and analyze together should do both
+ * leaving the page should gracefully stop download
+ * Download should work on all browsers. IOS mobile has an open bug and is not supported
+
 ## Report
  * Make sure mouseover on moves should show performance rating
  * Values on popover should make sense
@@ -60,6 +66,7 @@
  * Turn off wifi mid download
  * Try chess.com user `TheZahlen`. console log should show one game fails parsing should not break entire UI
  * Try `alireza2003` console log should show one game fails parsing should not break entire UI
+ * Try clicking load and export button without entering a username. Error message should show
  
 ## Tracking
 Make sure tracking events are logged for the following
@@ -74,4 +81,5 @@ Make sure tracking events are logged for the following
  * moves clicked
  * Errors
  * External links
+ * Export as pgn
  
