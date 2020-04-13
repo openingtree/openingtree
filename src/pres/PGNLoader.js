@@ -37,6 +37,22 @@ export default class PGNLoader extends React.Component {
         this.state[Constants.FILTER_NAME_RATED] = "all"
         this.state[Constants.FILTER_NAME_ELO_RANGE] = [0,Constants.MAX_ELO_RATING]
     }
+
+    unload = ()=>{
+        if(this.pgnReader) {
+            this.pgnReader.stopDownloading()
+        }
+    }
+    componentDidMount() {
+        window.addEventListener("beforeunload", this.unload);
+    }
+      
+    componentWillUnmount() {
+        window.removeEventListener("beforeunload", this.unload);
+    }
+      
+
+
     toggleRated() {
         if(this.state.rated === 'all') {
             this.setState({rated:'rated'})
@@ -68,19 +84,24 @@ export default class PGNLoader extends React.Component {
         }
     }
 
+    readPgn(shouldDownloadToFile){
+        this.pgnReader = new PGNReader()
+        this.pgnReader.fetchPGNFromSite(this.state.playerName, 
+            this.state.playerColor, 
+            this.state.site,
+            shouldDownloadToFile,
+            this.advancedFilters(),
+            this.props.notify, 
+            this.props.showError, 
+            this.stopDownloading.bind(this))
+    }
+
     download() {
         if(!this.state.playerName) {
             this.props.showError("Please enter a username")
             return
         }
-        new PGNReader().fetchPGNFromSite(this.state.playerName, 
-            this.state.playerColor, 
-            this.state.site,
-            true,
-            this.advancedFilters(),
-            this.props.notify, 
-            this.props.showError, 
-            this.stopDownloading.bind(this))
+        this.readPgn(true)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Download", this.state.site, this.state.playerColor==='white'?1:0)
 
     }
@@ -95,14 +116,7 @@ export default class PGNLoader extends React.Component {
         this.props.onChange("playerName", this.state.playerName)
         this.props.onChange("playerColor", this.state.playerColor)
         this.setState({isAdvancedFiltersOpen:false,isGamesSubsectionOpen:true})
-        new PGNReader().fetchPGNFromSite(this.state.playerName, 
-            this.state.playerColor, 
-            this.state.site,
-            false,
-            this.advancedFilters(),
-            this.props.notify, 
-            this.props.showError, 
-            this.stopDownloading.bind(this))
+        this.readPgn(false)
         this.props.setDownloading(true)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Load", this.state.site, this.state.playerColor==='white'?1:0)
     }
