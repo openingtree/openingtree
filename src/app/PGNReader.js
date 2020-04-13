@@ -10,6 +10,15 @@ export default class PGNReader {
         this.totalGames = 0;
         this.pendingGames = 0;
         this.pendingDownloads = true;
+        streamsaver.mitm = "download/download-mitm.html"
+        this.fileWriter = null
+    }
+
+    stopDownloading() {
+        if(this.fileWriter) {
+            this.fileWriter.close()
+            this.fileWriter = null
+        }
     }
 
     getPgnString(game){
@@ -21,13 +30,15 @@ export default class PGNReader {
 
     fetchPGNFromSite(playerName, playerColor, site, shouldDownloadToFile, advancedFilters, notify, showError, stopDownloading) {
         this.continueProcessingGames = true
-        let fileStream =  streamsaver.createWriteStream(`${playerName}-${playerColor}.pgn`)
-        let fileWriter = fileStream.getWriter()
+        if(shouldDownloadToFile) {
+            let fileStream =  streamsaver.createWriteStream(`${playerName}-${playerColor}.pgn`)
+            this.fileWriter = fileStream.getWriter()
+        }
         let encoder = new TextEncoder()
         let downloadResponse = (result, pendingDownloads) => {
-            fileWriter.write(encoder.encode(result.map(game=>this.getPgnString(game)).join(""))).then(()=>{
+            this.fileWriter.write(encoder.encode(result.map(game=>this.getPgnString(game)).join(""))).then(()=>{
                 if(!pendingDownloads) {
-                    fileWriter.close()
+                    this.stopDownloading()
                 }
             })
             return true
