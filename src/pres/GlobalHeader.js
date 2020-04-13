@@ -76,6 +76,7 @@ const GlobalHeader = (props) => {
         <ListGroupItem tag="a" href="https://github.com/ruilisi/react-chessground" target="_blank" action>ChessGround</ListGroupItem>
         <ListGroupItem tag="a" href="https://github.com/jhlywa/chess.js" target="_blank" action>Chess.js</ListGroupItem>
         <ListGroupItem tag="a" href="https://github.com/niklasf/eco" target="_blank" action>Eco</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/jimmywarting/StreamSaver.js" target="_blank" action>StreamSaver.js</ListGroupItem>
         <ListGroupItem tag="a" href="https://www.freelogodesign.org" target="_blank" action>Free logo design</ListGroupItem>
         <ListGroupItem tag="a" href="https://github.com/kevinludwig/pgn-parser" target="_blank" action>PGN Parser</ListGroupItem>
         <ListGroupItem tag="a" href="https://www.reddit.com/r/chess" target="_blank" action>r/chess</ListGroupItem>
