@@ -69,6 +69,10 @@ export default class PGNLoader extends React.Component {
     }
 
     download() {
+        if(!this.state.playerName) {
+            this.props.showError("Please enter a username")
+            return
+        }
         new PGNReader().fetchPGNFromSite(this.state.playerName, 
             this.state.playerColor, 
             this.state.site,
@@ -82,6 +86,10 @@ export default class PGNLoader extends React.Component {
     }
 
     load() {
+        if(!this.state.playerName) {
+            this.props.showError("Please enter a username")
+            return
+        }
         this.props.clear()
         // set the player name and color in the global state
         this.props.onChange("playerName", this.state.playerName)
