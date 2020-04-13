@@ -126,7 +126,7 @@ function showError(message, trackingLabel) {
 }
 
 function showInfo(message, trackingLabel) {
-    this.setState({message:message, messageSeverity:"info"})
+    this.setState({message:message, messageSeverity:"success"})
     trackEvent(Constants.EVENT_CATEGORY_ERROR,"infoShown",
         trackingLabel?trackingLabel:message)
 }
