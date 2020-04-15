@@ -1,5 +1,5 @@
 import React from 'react'
-import PGNReader from '../app/PGNReader'
+import PGNReader from '../../app/PGNReader'
 import { Button, Collapse, Card } from 'reactstrap'
 import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -7,9 +7,9 @@ import { faList, faCaretDown, faCaretUp, faChevronDown} from '@fortawesome/free-
 import { faCircle} from '@fortawesome/free-regular-svg-icons'
 import { Radio, FormControlLabel, RadioGroup } from '@material-ui/core';
 import AdvancedFilters from './AdvancedFilters'
-import { createSubObjectWithProperties, getTimeframeSteps } from '../app/util'
-import * as Constants from '../app/Constants'
-import { trackEvent } from '../app/Analytics'
+import { createSubObjectWithProperties, getTimeframeSteps } from '../../app/util'
+import * as Constants from '../../app/Constants'
+import { trackEvent } from '../../app/Analytics'
 import GetApp from '@material-ui/icons/GetApp';
 import Equalizer from '@material-ui/icons/Equalizer';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';

@@ -4,10 +4,10 @@ import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react'
 import {Collapse, Container, Row, Col} from 'reactstrap'
 import { FormControlLabel,Slider } from '@material-ui/core';
-import * as Constants from '../app/Constants'
+import * as Constants from '../../app/Constants'
 import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel} from './FilterLabels'
-import * as Common from '../app/Common'
-import {trackEvent} from '../app/Analytics'
+import * as Common from '../../app/Common'
+import {trackEvent} from '../../app/Analytics'
 
 export default class AdvancedFilters extends React.Component {
     constructor(props) {

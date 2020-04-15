@@ -1,6 +1,6 @@
 import {timeControlLabel} from './TimeControlLabels'
-import {getSelectedTimeFrameData} from '../app/util'
-import * as Constants from '../app/Constants'
+import {getSelectedTimeFrameData} from '../../app/util'
+import * as Constants from '../../app/Constants'
 
 export const getTimeControlLabel = timeControlLabel
 
