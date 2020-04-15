@@ -1,6 +1,6 @@
-import * as Constants from '../app/Constants'
-import * as Common from '../app/Common'
-import {getTimeControlsArray} from '../app/util'
+import * as Constants from '../../app/Constants'
+import * as Common from '../../app/Common'
+import {getTimeControlsArray} from '../../app/util'
 
 let timeClasses = [
     {

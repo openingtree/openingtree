@@ -1,5 +1,5 @@
 import React from 'react'
-import PGNLoader from './PGNLoader'
+import PGNLoader from './loader/PGNLoader'
 import SettingsView from './Settings'
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
 import classnames from 'classnames';
