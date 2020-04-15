@@ -7,7 +7,6 @@
 
 .pgnloadersection {
     margin-top:10px;
-    margin-left:10px;
     color:#555555;
 }
 
@@ -168,4 +167,8 @@
 
 .mainButton {
     width:75%
+}
+
+.MuiExpansionPanelDetails-root {
+    display: block;
 }
