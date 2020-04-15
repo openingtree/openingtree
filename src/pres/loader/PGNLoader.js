@@ -4,7 +4,6 @@ import { Button, Collapse, Card } from 'reactstrap'
 import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faCaretDown, faCaretUp, faChevronDown} from '@fortawesome/free-solid-svg-icons'
-import { faCircle} from '@fortawesome/free-regular-svg-icons'
 import { Radio, FormControlLabel, RadioGroup } from '@material-ui/core';
 import AdvancedFilters from './AdvancedFilters'
 import { createSubObjectWithProperties, getTimeframeSteps } from '../../app/util'
@@ -12,32 +11,12 @@ import * as Constants from '../../app/Constants'
 import { trackEvent } from '../../app/Analytics'
 import GetApp from '@material-ui/icons/GetApp';
 import Equalizer from '@material-ui/icons/Equalizer';
-import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
-import { withStyles } from '@material-ui/core/styles';
-
-
-const ExpansionPanel = withStyles({
-    root: {
-        border: '1px solid rgba(0, 0, 0, .125)',
-        boxShadow: 'none',
-        '&:not(:last-child)': {
-            borderBottom: 0,
-        },
-        '&:before': {
-            display: 'none',
-        },
-        '&$expanded': {
-            margin: 'auto',
-        },
-    },
-    expanded: {},
-})(MuiExpansionPanel);
-
+import {ExpansionPanel} from './Common'
 
 export default class PGNLoader extends React.Component {
 
