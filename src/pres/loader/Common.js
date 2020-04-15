@@ -1,5 +1,6 @@
 import { withStyles } from '@material-ui/core/styles';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import React from 'react'
 
 export const ExpansionPanel = withStyles({
     root: {
@@ -18,3 +19,6 @@ export const ExpansionPanel = withStyles({
     expanded: {},
 })(MuiExpansionPanel);
 
+export function getNumberIcon(n) {
+    return <img className = 'lowOpacity' src={`/images/styled-${n}.png`} height={24}/>
+}

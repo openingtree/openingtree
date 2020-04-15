@@ -4,7 +4,6 @@ import { Button, Collapse, Card } from 'reactstrap'
 import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faList, faCaretDown, faCaretUp, faChevronDown} from '@fortawesome/free-solid-svg-icons'
-import { Radio, FormControlLabel, RadioGroup } from '@material-ui/core';
 import AdvancedFilters from './AdvancedFilters'
 import { createSubObjectWithProperties, getTimeframeSteps } from '../../app/util'
 import * as Constants from '../../app/Constants'
@@ -15,8 +14,9 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import {ExpansionPanel,getNumberIcon} from './Common'
 import Divider from '@material-ui/core/Divider';
-import {ExpansionPanel} from './Common'
+import Source from './Source'
 
 export default class PGNLoader extends React.Component {
 
@@ -156,9 +156,7 @@ export default class PGNLoader extends React.Component {
         };
     }
 
-    getNumberIcon(n) {
-        return <img className = 'lowOpacity' src={`/images/styled-${n}.png`} height={24}/>
-    }
+
     advancedFilters() {
         return createSubObjectWithProperties(this.state,
             [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
@@ -169,40 +167,15 @@ export default class PGNLoader extends React.Component {
             Constants.FILTER_NAME_ELO_RANGE])
     }
 
-    getSourceOption(source) {
-        if (source === Constants.SITE_LICHESS) {
-            return <span><img alt="lichess" className="siteimage" src="./lichesslogo.png" /> lichess.org</span>
-        } else if (source === Constants.SITE_CHESS_DOT_COM) {
-            return <img alt="chess.com" className="siteimage" src="./chesscomlogo.png" />
-        }
-        return <span>{this.getNumberIcon(1)} Select a source</span>
-    }
-
     render() {
         return <div><div className="pgnloadersection">
-            <ExpansionPanel
-                expanded={this.state.expandedPanel === 'source'}
-                onChange={this.handleExpansionChange('source').bind(this)}>
-                <ExpansionPanelSummary
-                    expandIcon={<ExpandMoreIcon />}
-                    aria-controls="panel1c-content"
-                    id="panel1c-header"
-                >
-                    <div>
-                        {this.getSourceOption(this.state.site)}
-                    </div>
-                </ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <RadioGroup onChange={this.siteChange.bind(this)}>
-                        <FormControlLabel className="sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_LICHESS)} />
-                        <FormControlLabel className="sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_CHESS_DOT_COM)} />
-                    </RadioGroup>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>
+            <Source expandedPanel={this.state.expandedPanel}
+                handleExpansionChange={this.handleExpansionChange('source').bind(this)}
+                site={this.state.site} siteChange={this.siteChange.bind(this)}/>
             <ExpansionPanel expanded={this.state.expandedPanel === 'user'}
                 onChange={this.handleExpansionChange('user').bind(this)} 
                 disabled={this.state.site===''}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{this.getNumberIcon(2)} Select player</span></ExpansionPanelSummary>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{getNumberIcon(2)} Select player</span></ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <div>
                         <TextField
@@ -221,7 +194,7 @@ export default class PGNLoader extends React.Component {
             <ExpansionPanel expanded={this.state.expandedPanel === 'filters'}
                 onChange={this.handleExpansionChange('filters').bind(this)}
                 disabled={this.state.site===''}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{this.getNumberIcon(3)} Color and filters</span></ExpansionPanelSummary>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{getNumberIcon(3)} Color and filters</span></ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <div className="pgnloadersection">
                         <div>
