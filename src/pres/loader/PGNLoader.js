@@ -1,9 +1,9 @@
 import React from 'react'
 import PGNReader from '../../app/PGNReader'
 import { Button, Collapse, Card } from 'reactstrap'
-import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faCaretDown, faCaretUp, faChevronDown} from '@fortawesome/free-solid-svg-icons'
+import { Button as MaterialUIButton } from '@material-ui/core'
+import { faList, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons'
 import AdvancedFilters from './AdvancedFilters'
 import { createSubObjectWithProperties, getTimeframeSteps } from '../../app/util'
 import * as Constants from '../../app/Constants'
@@ -12,11 +12,10 @@ import GetApp from '@material-ui/icons/GetApp';
 import Equalizer from '@material-ui/icons/Equalizer';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {ExpansionPanel,getNumberIcon} from './Common'
-import Divider from '@material-ui/core/Divider';
 import Source from './Source'
+import User from './User'
 
 export default class PGNLoader extends React.Component {
 
@@ -78,10 +77,12 @@ export default class PGNLoader extends React.Component {
         }
     }
 
-    playerNameChange(event) {
+    playerNameChange(playerName) {
         this.setState({
-            playerName: event.target.value
+            playerName: playerName,
+            expandedPanel:'filters'
         })
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "PlayerNameSaved")
     }
     playerColorChange(playerColor) {
         return () => {
@@ -172,25 +173,9 @@ export default class PGNLoader extends React.Component {
             <Source expandedPanel={this.state.expandedPanel}
                 handleExpansionChange={this.handleExpansionChange('source').bind(this)}
                 site={this.state.site} siteChange={this.siteChange.bind(this)}/>
-            <ExpansionPanel expanded={this.state.expandedPanel === 'user'}
-                onChange={this.handleExpansionChange('user').bind(this)} 
-                disabled={this.state.site===''}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{getNumberIcon(2)} Select player</span></ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <div>
-                        <TextField
-                            className="playernameField" name="playerName" id="playerNameTextBox" variant="outlined"
-                            margin="dense" onChange={this.playerNameChange.bind(this)}
-                            label={`${this.state.site === Constants.SITE_LICHESS ? "lichess" : "chess.com"} username`} />
-                    </div>
-                </ExpansionPanelDetails>
-                <Divider />
-                <ExpansionPanelActions>
-                    <MaterialUIButton size="small">Random</MaterialUIButton>
-                    <MaterialUIButton size="small" color="primary">
-                        Save
-          </MaterialUIButton>
-                </ExpansionPanelActions></ExpansionPanel>
+            <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
+                handleExpansionChange={this.handleExpansionChange('user').bind(this)}
+                site={this.state.site} playerNameChange={this.playerNameChange.bind(this)}/>
             <ExpansionPanel expanded={this.state.expandedPanel === 'filters'}
                 onChange={this.handleExpansionChange('filters').bind(this)}
                 disabled={this.state.site===''}>
