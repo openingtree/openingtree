@@ -3,7 +3,8 @@ import PGNReader from '../app/PGNReader'
 import { Button, Collapse, Card } from 'reactstrap'
 import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faList, faCaretDown, faCaretUp } from '@fortawesome/free-solid-svg-icons'
+import { faList, faCaretDown, faCaretUp, faChevronDown} from '@fortawesome/free-solid-svg-icons'
+import { faCircle} from '@fortawesome/free-regular-svg-icons'
 import { Radio, FormControlLabel, RadioGroup } from '@material-ui/core';
 import AdvancedFilters from './AdvancedFilters'
 import { createSubObjectWithProperties, getTimeframeSteps } from '../app/util'
@@ -154,7 +155,7 @@ export default class PGNLoader extends React.Component {
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "StopDownloading", this.state.site)
     }
     siteChange(event) {
-        this.setState({ site: event.target.value })
+        this.setState({ site: event.target.value, expandedPanel:'user'})
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ChangeSite", this.state.site)
     }
 
@@ -175,6 +176,10 @@ export default class PGNLoader extends React.Component {
             this.setState({ expandedPanel: newExpanded ? panel : false });
         };
     }
+
+    getNumberIcon(n) {
+        return <img src={`/images/circled-${n}-100.png`} height={24}/>
+    }
     advancedFilters() {
         return createSubObjectWithProperties(this.state,
             [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
@@ -191,7 +196,7 @@ export default class PGNLoader extends React.Component {
         } else if (source === Constants.SITE_CHESS_DOT_COM) {
             return <img alt="chess.com" className="siteimage" src="./chesscomlogo.png" />
         }
-        return "Select a source"
+        return <span>{this.getNumberIcon(1)} Select a source</span>
     }
 
     render() {
@@ -216,8 +221,9 @@ export default class PGNLoader extends React.Component {
                 </ExpansionPanelDetails>
             </ExpansionPanel>
             <ExpansionPanel expanded={this.state.expandedPanel === 'user'}
-                onChange={this.handleExpansionChange('user').bind(this)}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>Username</ExpansionPanelSummary>
+                onChange={this.handleExpansionChange('user').bind(this)} 
+                disabled={this.state.site===''}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{this.getNumberIcon(2)} Enter username</span></ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <div>
                         <TextField
@@ -228,14 +234,15 @@ export default class PGNLoader extends React.Component {
                 </ExpansionPanelDetails>
                 <Divider />
                 <ExpansionPanelActions>
-                    <MaterialUIButton size="small">Cancel</MaterialUIButton>
+                    <MaterialUIButton size="small">Random</MaterialUIButton>
                     <MaterialUIButton size="small" color="primary">
                         Save
           </MaterialUIButton>
                 </ExpansionPanelActions></ExpansionPanel>
             <ExpansionPanel expanded={this.state.expandedPanel === 'filters'}
-                onChange={this.handleExpansionChange('filters').bind(this)}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>Color and filters</ExpansionPanelSummary>
+                onChange={this.handleExpansionChange('filters').bind(this)}
+                disabled={this.state.site===''}>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{this.getNumberIcon(3)} Color and filters</span></ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <div className="pgnloadersection">
                         <div>
@@ -260,7 +267,7 @@ export default class PGNLoader extends React.Component {
                         </Collapse></div></ExpansionPanelDetails>
 
             </ExpansionPanel></div>
-
+            <div style={this.state.site===''?{display:`none`}:{}}>
             <div className="pgnloadersection"><MaterialUIButton
                 onClick={this.load.bind(this)}
                 variant="contained"
@@ -291,7 +298,7 @@ export default class PGNLoader extends React.Component {
                     </div>
                     : ""
             }
-
+        </div>
         </div>
     }
 
