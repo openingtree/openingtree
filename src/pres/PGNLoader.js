@@ -178,7 +178,7 @@ export default class PGNLoader extends React.Component {
     }
 
     getNumberIcon(n) {
-        return <img src={`/images/circled-${n}-100.png`} height={24}/>
+        return <img className = 'lowOpacity' src={`/images/styled-${n}.png`} height={24}/>
     }
     advancedFilters() {
         return createSubObjectWithProperties(this.state,
@@ -223,7 +223,7 @@ export default class PGNLoader extends React.Component {
             <ExpansionPanel expanded={this.state.expandedPanel === 'user'}
                 onChange={this.handleExpansionChange('user').bind(this)} 
                 disabled={this.state.site===''}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{this.getNumberIcon(2)} Enter username</span></ExpansionPanelSummary>
+                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{this.getNumberIcon(2)} Select player</span></ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <div>
                         <TextField
