@@ -9,7 +9,7 @@ import * as Constants from '../app/Constants'
 export default class SettingsView extends React.Component {
     toggle(eventName){
         return (()=> {
-            let newValue = this.props.settings[eventName] === 'white' ? 'black':'white'
+            let newValue = this.props.settings[eventName] === Constants.PLAYER_COLOR_WHITE ? Constants.PLAYER_COLOR_BLACK:Constants.PLAYER_COLOR_WHITE
             this.props.onChange(eventName, newValue)
             trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "ChangeOrientation")
         })

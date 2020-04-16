@@ -10,6 +10,7 @@ import ControlsContainer from './ControlsContainer'
 import {addStateManagement} from './StateManagement'
 import {Snackbar} from '@material-ui/core'
 import Alert from '@material-ui/lab/Alert';
+import * as Constants from '../app/Constants'
 
 export default class MainContainer extends React.Component {
   
@@ -24,8 +25,8 @@ export default class MainContainer extends React.Component {
         openingGraph:openingGraph,
         settings:{
           playerName:'',
-          orientation:'white',
-          playerColor:'white'
+          orientation:Constants.PLAYER_COLOR_WHITE,
+          playerColor:Constants.PLAYER_COLOR_WHITE
         },
         message:'',
         downloadingGames:false

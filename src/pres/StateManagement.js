@@ -7,7 +7,7 @@ function turnColor() {
 }
 
 function fullTurnName(shortName) {
-    return shortName === 'w' ? 'white' : 'black'
+    return shortName === 'w' ? Constants.PLAYER_COLOR_WHITE : Constants.PLAYER_COLOR_BLACK
 }
 
 function playerColor() {

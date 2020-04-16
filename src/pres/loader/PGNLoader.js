@@ -94,7 +94,7 @@ export default class PGNLoader extends React.Component {
             return
         }
         this.readPgn(true)
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Download", this.state.site, this.state.playerColor === 'white' ? 1 : 0)
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Download", this.state.site, this.state.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
 
     }
 
@@ -110,7 +110,7 @@ export default class PGNLoader extends React.Component {
         this.props.onChange("playerColor", this.state.playerColor)
         this.readPgn(false)
         this.props.setDownloading(true)
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Load", this.state.site, this.state.playerColor === 'white' ? 1 : 0)
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Load", this.state.site, this.state.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
     }
     stopDownloading() {
         this.props.setDownloading(false)

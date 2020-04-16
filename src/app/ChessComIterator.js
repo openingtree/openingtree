@@ -28,7 +28,7 @@ export default class ChessComIterator {
                     if(!advancedFilters[game.time_class]) {
                         return false
                     }
-                    let opponentElo = playerColor === 'white'?game.black.rating:game.white.rating
+                    let opponentElo = playerColor === Constants.PLAYER_COLOR_WHITE?game.black.rating:game.white.rating
                     if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
                         return false
                     }
