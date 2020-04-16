@@ -8,13 +8,13 @@ import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
 
 export default class Source extends React.Component {
-    getSourceOption(source) {
+    getSourceOption(source, addNumber) {
         if (source === Constants.SITE_LICHESS) {
-            return <span><img alt="lichess" className="siteimage" src="./lichesslogo.png" /> lichess.org</span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null} <img alt="lichess" className="siteimage" src="./lichesslogo.png" /> lichess.org</span>
         } else if (source === Constants.SITE_CHESS_DOT_COM) {
-            return <img alt="chess.com" className="siteimage" src="./chesscomlogo.png" />
+            return <span>{addNumber?getNumberIcon('done', addNumber):null} <img alt="chess.com" className="siteimage" src="./chesscomlogo.png" /></span>
         }
-        return <span>{getNumberIcon(1)} Select a source</span>
+        return <span>{getNumberIcon(1, addNumber)} Select a source</span>
     }
 
     render() {
@@ -27,7 +27,7 @@ export default class Source extends React.Component {
                 id="panel1c-header"
             >
                 <div>
-                    {this.getSourceOption(this.props.site)}
+                    {this.getSourceOption(this.props.site, true)}
                 </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>

@@ -28,7 +28,7 @@ export default class User extends React.Component {
     }
     getSummary() {
         if(this.props.playerName) {
-            return <span>Username: <b>{this.props.playerName}</b></span>
+            return <span>{getNumberIcon('done')} User: <b>{this.props.playerName}</b></span>
         }
         return <span>{getNumberIcon(2)} Select player</span>
     }
