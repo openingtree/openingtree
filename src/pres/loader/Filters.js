@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
-import { Button, Collapse, Card } from 'reactstrap'
+import { Button, Collapse } from 'reactstrap'
 import { trackEvent } from '../../app/Analytics'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'
@@ -82,7 +82,6 @@ export default class User extends React.Component {
                 </div>
                 <div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
                     <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
-                        <Card>
                             <AdvancedFilters
                                 site={this.props.site}
                                 toggleRated={this.toggleRated.bind(this)}
@@ -93,7 +92,6 @@ export default class User extends React.Component {
                                 handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
                                 advancedFilters={advancedFilters(this.state)}
                             />
-                        </Card>
                     </Collapse></div></ExpansionPanelDetails>
                     <Divider />
                 <ExpansionPanelActions>
