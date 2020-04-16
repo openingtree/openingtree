@@ -22,9 +22,11 @@ export default class User extends React.Component {
         this.state = {
             playerColor: this.props.playerColor,
             isAdvancedFiltersOpen: false,
+            filtersSet:false,
         }
         this.timeframeSteps=this.props.timeframeSteps
         Object.assign(this.state, this.props.advancedFilters)
+        this.defaultAdvancedFilters = this.props.advancedFilters
     }
 
     toggleRated() {
@@ -65,14 +67,21 @@ export default class User extends React.Component {
     }
 
     setFilters(){
+        this.setState({filtersSet:true})
         this.props.filtersChange(this.state)
     }
+    getSummary() {
+        if(this.state.filtersSet) {
+            return <span>{getNumberIcon('done')} Color:<b>{this.state.playerColor}</b></span>
 
+        }
+        return <span>{getNumberIcon(3)} Color and filters</span>
+    }
     render(){
         return <ExpansionPanel expanded={this.props.expandedPanel === 'filters'}
             onChange={this.props.handleExpansionChange}
-            disabled={this.props.expandedPanel!=='filters'}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{getNumberIcon(3)} Color and filters</span></ExpansionPanelSummary>
+            disabled={!this.state.filtersSet && this.props.expandedPanel!=='filters'}>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <div className="pgnloadersection">
                     <div>

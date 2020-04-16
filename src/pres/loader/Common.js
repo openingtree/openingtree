@@ -22,7 +22,7 @@ export const ExpansionPanel = withStyles({
 })(MuiExpansionPanel);
 
 export function getNumberIcon(n) {
-    return <img className = 'lowOpacity' src={`/images/styled-${n}.png`} height={24}/>
+    return <img className = 'lowOpacity styledNumbers' src={`/images/styled-${n}.png`} height={24}/>
 }
 
 export function advancedFilters(state) {
