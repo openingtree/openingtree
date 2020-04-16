@@ -56,6 +56,15 @@ export default class PGNLoader extends React.Component {
         window.removeEventListener("beforeunload", this.unload);
     }
 
+    advancedFilters() {
+        return createSubObjectWithProperties(this.state,
+            [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
+            Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
+            Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
+            Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
+            Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT,
+            Constants.FILTER_NAME_ELO_RANGE])
+    }
 
 
 
@@ -64,6 +73,8 @@ export default class PGNLoader extends React.Component {
             playerName: playerName,
             expandedPanel:'filters'
         })
+        // set the player name in the global state
+        this.props.onChange("playerName", this.state.playerName)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "PlayerNameSaved")
     }
 
@@ -73,7 +84,7 @@ export default class PGNLoader extends React.Component {
             this.state.playerColor,
             this.state.site,
             shouldDownloadToFile,
-            this.advancedFilters(),
+            this.advancedFilters(this.state),
             this.props.notify,
             this.props.showError,
             this.stopDownloading.bind(this))
@@ -100,10 +111,7 @@ export default class PGNLoader extends React.Component {
             return
         }
         this.props.clear()
-        // set the player name and color in the global state
-        this.props.onChange("playerName", this.state.playerName)
-        this.props.onChange("playerColor", this.state.playerColor)
-        this.setState({ isAdvancedFiltersOpen: false, isGamesSubsectionOpen: true })
+        this.setState({ isGamesSubsectionOpen: true })
         this.readPgn(false)
         this.props.setDownloading(true)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Load", this.state.site, this.state.playerColor === 'white' ? 1 : 0)
@@ -120,7 +128,11 @@ export default class PGNLoader extends React.Component {
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ChangeSite", this.state.site)
     }
 
-
+    filtersChange(filters) {
+        this.setState(filters)
+        this.props.onChange("playerColor", filters.playerColor)
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "FitlersSaved", this.state.site)
+    }
 
     render() {
         return <div><div className="pgnloadersection">
@@ -132,7 +144,8 @@ export default class PGNLoader extends React.Component {
                 site={this.state.site} playerNameChange={this.playerNameChange.bind(this)}/>
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.props.settings.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
-                site={this.state.site}/>
+                site={this.state.site} advancedFilters={this.advancedFilters()}
+                timeframeSteps={this.timeframeSteps} filtersChange={this.filtersChange.bind(this)}/>
             </div>
             <div style={this.state.site===''?{display:`none`}:{}}>
             <div className="pgnloadersection"><MaterialUIButton
