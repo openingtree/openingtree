@@ -10,11 +10,11 @@ import * as Constants from '../../app/Constants'
 export default class Source extends React.Component {
     getSourceOption(source, addNumber) {
         if (source === Constants.SITE_LICHESS) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null} <img alt="lichess" className="siteimage" src="./lichesslogo.png" /> lichess.org</span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<img alt="lichess" className="siteimage" src="./lichesslogo.png" /> lichess.org</span>
         } else if (source === Constants.SITE_CHESS_DOT_COM) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null} <img alt="chess.com" className="siteimage" src="./chesscomlogo.png" /></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<img alt="chess.com" className="siteimage" src="./chesscomlogo.png" /></span>
         }
-        return <span>{getNumberIcon(1, addNumber)} Select a source</span>
+        return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }
 
     render() {
