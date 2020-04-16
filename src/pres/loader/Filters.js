@@ -72,10 +72,21 @@ export default class User extends React.Component {
     }
     getSummary() {
         if(this.state.filtersSet) {
-            return <span>{getNumberIcon('done')} Color: <b>{this.props.playerColor}</b></span>
+        return <span>
+            {getNumberIcon('done')} 
+            Color: <b>{this.props.playerColor===Constants.PLAYER_COLOR_WHITE?"White":"Black"} </b>
+            {this.areAdvancedFiltersApplied()?<span className="smallText">(Filters applied)</span>:null}</span>
 
         }
         return <span>{getNumberIcon(3)} Color and filters</span>
+    }
+    areAdvancedFiltersApplied(){
+        for (let [key, value] of Object.entries(this.defaultAdvancedFilters)) {
+            if(this.props.advancedFilters[key] !== value) {
+                return true
+            } 
+        }
+        return false
     }
     render(){
         return <ExpansionPanel expanded={this.props.expandedPanel === 'filters'}
