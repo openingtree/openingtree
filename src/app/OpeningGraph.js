@@ -59,15 +59,15 @@ class OpeningGraph {
         let whiteWin = 0, blackWin = 0, draw = 0, opponentElo=0, resultInt = 0;
         if(resultObject.result === '1-0') {
             whiteWin = 1
-            resultInt = playerColor === 'white'? 1 : -1
+            resultInt = playerColor === Constants.PLAYER_COLOR_WHITE? 1 : -1
         } else if (resultObject.result === '0-1') {
             blackWin = 1
-            resultInt = playerColor === 'black'? 1 : -1
+            resultInt = playerColor === Constants.PLAYER_COLOR_BLACK? 1 : -1
         } else {
             draw = 1
         }
 
-        if(playerColor === 'white') {
+        if(playerColor === Constants.PLAYER_COLOR_WHITE) {
             opponentElo = resultObject.blackElo
         } else {
             opponentElo = resultObject.whiteElo

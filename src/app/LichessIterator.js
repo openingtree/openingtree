@@ -52,7 +52,7 @@ export default class LichessIterator {
                 if(!pgn || pgn.headers.Variant !== "Standard") {
                     return false
                 }
-                let opponentElo = playerColor === 'white'?pgn.headers.BlackElo:pgn.headers.WhiteElo
+                let opponentElo = playerColor === Constants.PLAYER_COLOR_WHITE?pgn.headers.BlackElo:pgn.headers.WhiteElo
                 if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
                     return false
                 }

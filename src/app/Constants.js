@@ -23,3 +23,6 @@ export const EVENT_CATEGORY_CHESSBOARD = "chessboard"
 export const EVENT_CATEGORY_ERROR = "error"
 
 export const ROOT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+
+export const PLAYER_COLOR_WHITE = 'white'
+export const PLAYER_COLOR_BLACK = 'black'

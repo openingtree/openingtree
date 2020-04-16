@@ -85,8 +85,8 @@ export default class User extends React.Component {
             <ExpansionPanelDetails>
                 <div className="pgnloadersection">
                     <div>
-                        <Button onClick={this.playerColorChange('white')} color={this.state.playerColor === 'white' ? 'secondary' : 'link'}>White</Button>
-                        <Button onClick={this.playerColorChange('black')} color={this.state.playerColor === 'black' ? 'secondary' : 'link'}>Black</Button>
+                        <Button onClick={this.playerColorChange(Constants.PLAYER_COLOR_WHITE)} color={this.state.playerColor === Constants.PLAYER_COLOR_WHITE ? 'secondary' : 'link'}>White</Button>
+                        <Button onClick={this.playerColorChange(Constants.PLAYER_COLOR_BLACK)} color={this.state.playerColor === Constants.PLAYER_COLOR_BLACK ? 'secondary' : 'link'}>Black</Button>
                     </div>
                 </div>
                 <div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
