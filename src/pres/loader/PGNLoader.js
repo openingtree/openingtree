@@ -1,6 +1,5 @@
 import React from 'react'
 import PGNReader from '../../app/PGNReader'
-import { Button, Collapse, Card } from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'
 import { faList, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons'
@@ -16,6 +15,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {ExpansionPanel,getNumberIcon} from './Common'
 import Source from './Source'
 import User from './User'
+import Filters from './Filters'
 
 export default class PGNLoader extends React.Component {
 
@@ -58,24 +58,6 @@ export default class PGNLoader extends React.Component {
 
 
 
-    toggleRated() {
-        if (this.state.rated === 'all') {
-            this.setState({ rated: 'rated' })
-        } else if (this.state.rated === 'rated') {
-            this.setState({ rated: 'casual' })
-        } else {
-            this.setState({ rated: 'all' })
-        }
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "AdvancedFilterChange", "rated")
-    }
-    toggleState(property) {
-        return () => {
-            let newState = {}
-            newState[property] = !this.state[property]
-            this.setState(newState)
-            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ToggleAdvancedFilters", this.state.site)
-        }
-    }
 
     playerNameChange(playerName) {
         this.setState({
@@ -83,12 +65,6 @@ export default class PGNLoader extends React.Component {
             expandedPanel:'filters'
         })
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "PlayerNameSaved")
-    }
-    playerColorChange(playerColor) {
-        return () => {
-            this.setState({ playerColor: playerColor })
-            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ColorChange", playerColor)
-        }
     }
 
     readPgn(shouldDownloadToFile) {
@@ -101,6 +77,11 @@ export default class PGNLoader extends React.Component {
             this.props.notify,
             this.props.showError,
             this.stopDownloading.bind(this))
+    }
+    handleExpansionChange(panel) {
+        return (event, newExpanded) => {
+            this.setState({ expandedPanel: newExpanded ? panel : false });
+        };
     }
 
     download() {
@@ -139,34 +120,7 @@ export default class PGNLoader extends React.Component {
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ChangeSite", this.state.site)
     }
 
-    handleTimeControlChange(event) {
-        this.setState({ [event.target.name]: event.target.checked });
-    }
-    handleTimeframeChange(event, newValue) {
-        this.setState({ [Constants.FILTER_NAME_SELECTED_TIMEFRAME]: newValue });
-    }
-    handleEloRangeChange(event, newValue) {
-        this.setState({ [Constants.FILTER_NAME_ELO_RANGE]: newValue });
-    }
-    handleDownloadLimitChange(event, newValue) {
-        this.setState({ [Constants.FILTER_NAME_DOWNLOAD_LIMIT]: newValue });
-    }
-    handleExpansionChange(panel) {
-        return (event, newExpanded) => {
-            this.setState({ expandedPanel: newExpanded ? panel : false });
-        };
-    }
 
-
-    advancedFilters() {
-        return createSubObjectWithProperties(this.state,
-            [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
-            Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
-            Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
-            Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
-            Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT,
-            Constants.FILTER_NAME_ELO_RANGE])
-    }
 
     render() {
         return <div><div className="pgnloadersection">
@@ -176,34 +130,10 @@ export default class PGNLoader extends React.Component {
             <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)}
                 site={this.state.site} playerNameChange={this.playerNameChange.bind(this)}/>
-            <ExpansionPanel expanded={this.state.expandedPanel === 'filters'}
-                onChange={this.handleExpansionChange('filters').bind(this)}
-                disabled={this.state.site===''}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{getNumberIcon(3)} Color and filters</span></ExpansionPanelSummary>
-                <ExpansionPanelDetails>
-                    <div className="pgnloadersection">
-                        <div>
-                            <Button onClick={this.playerColorChange('white')} color={this.state.playerColor === 'white' ? 'secondary' : 'link'}>White</Button>
-                            <Button onClick={this.playerColorChange('black')} color={this.state.playerColor === 'black' ? 'secondary' : 'link'}>Black</Button>
-                        </div>
-                    </div>
-                    <div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
-                        <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
-                            <Card>
-                                <AdvancedFilters
-                                    site={this.state.site}
-                                    toggleRated={this.toggleRated.bind(this)}
-                                    handleTimeControlChange={this.handleTimeControlChange.bind(this)}
-                                    handleTimeframeChange={this.handleTimeframeChange.bind(this)}
-                                    handleEloRangeChange={this.handleEloRangeChange.bind(this)}
-                                    timeframeSteps={this.timeframeSteps}
-                                    handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
-                                    advancedFilters={this.advancedFilters()}
-                                />
-                            </Card>
-                        </Collapse></div></ExpansionPanelDetails>
-
-            </ExpansionPanel></div>
+            <Filters expandedPanel={this.state.expandedPanel} playerColor={this.props.settings.playerColor}
+                handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
+                site={this.state.site}/>
+            </div>
             <div style={this.state.site===''?{display:`none`}:{}}>
             <div className="pgnloadersection"><MaterialUIButton
                 onClick={this.load.bind(this)}
