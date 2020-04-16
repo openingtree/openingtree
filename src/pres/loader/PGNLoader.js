@@ -2,17 +2,12 @@ import React from 'react'
 import PGNReader from '../../app/PGNReader'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'
-import { faList, faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons'
-import AdvancedFilters from './AdvancedFilters'
+import { faList} from '@fortawesome/free-solid-svg-icons'
 import { createSubObjectWithProperties, getTimeframeSteps } from '../../app/util'
 import * as Constants from '../../app/Constants'
 import { trackEvent } from '../../app/Analytics'
 import GetApp from '@material-ui/icons/GetApp';
 import Equalizer from '@material-ui/icons/Equalizer';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import {ExpansionPanel,getNumberIcon} from './Common'
 import Source from './Source'
 import User from './User'
 import Filters from './Filters'
@@ -129,7 +124,7 @@ export default class PGNLoader extends React.Component {
     }
 
     filtersChange(filters) {
-        this.setState(filters)
+        this.setState({...filters, expandedPanel:''})
         this.props.onChange("playerColor", filters.playerColor)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "FitlersSaved", this.state.site)
     }
