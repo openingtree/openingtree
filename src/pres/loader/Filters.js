@@ -13,7 +13,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'
 import { faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons'
 import AdvancedFilters from './AdvancedFilters'
-import { createSubObjectWithProperties, getTimeframeSteps } from '../../app/util'
+import {advancedFilters} from './Common'
 
 export default class User extends React.Component {
 
@@ -23,18 +23,8 @@ export default class User extends React.Component {
             playerColor: this.props.playerColor,
             isAdvancedFiltersOpen: false,
         }
-        this.timeframeSteps = getTimeframeSteps()
-        this.state[Constants.FILTER_NAME_SELECTED_TIMEFRAME] = [0, this.timeframeSteps.length - 1]
-        this.state[Constants.FILTER_NAME_DOWNLOAD_LIMIT] = Constants.MAX_DOWNLOAD_LIMIT
-        this.state[Constants.TIME_CONTROL_ULTRA_BULLET] = true
-        this.state[Constants.TIME_CONTROL_BULLET] = true
-        this.state[Constants.TIME_CONTROL_BLITZ] = true
-        this.state[Constants.TIME_CONTROL_RAPID] = true
-        this.state[Constants.TIME_CONTROL_CLASSICAL] = true
-        this.state[Constants.TIME_CONTROL_CORRESPONDENCE] = true
-        this.state[Constants.TIME_CONTROL_DAILY] = true
-        this.state[Constants.FILTER_NAME_RATED] = "all"
-        this.state[Constants.FILTER_NAME_ELO_RANGE] = [0, Constants.MAX_ELO_RATING]
+        this.timeframeSteps=this.props.timeframeSteps
+        Object.assign(this.state, this.props.advancedFilters)
     }
 
     toggleRated() {
@@ -74,15 +64,8 @@ export default class User extends React.Component {
         this.setState({ [Constants.FILTER_NAME_DOWNLOAD_LIMIT]: newValue });
     }
 
-
-    advancedFilters() {
-        return createSubObjectWithProperties(this.state,
-            [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
-            Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
-            Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
-            Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
-            Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT,
-            Constants.FILTER_NAME_ELO_RANGE])
+    setFilters(){
+        this.props.filtersChange(this.state)
     }
 
     render(){
@@ -108,11 +91,14 @@ export default class User extends React.Component {
                                 handleEloRangeChange={this.handleEloRangeChange.bind(this)}
                                 timeframeSteps={this.timeframeSteps}
                                 handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
-                                advancedFilters={this.advancedFilters()}
+                                advancedFilters={advancedFilters(this.state)}
                             />
                         </Card>
                     </Collapse></div></ExpansionPanelDetails>
-            </ExpansionPanel>
+                    <Divider />
+                <ExpansionPanelActions>
+                    <MaterialUIButton size="small" color="primary" onClick={this.setFilters.bind(this)}>Save</MaterialUIButton>
+                </ExpansionPanelActions></ExpansionPanel>
     
     }
 }

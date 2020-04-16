@@ -1,6 +1,8 @@
 import { withStyles } from '@material-ui/core/styles';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import React from 'react'
+import { createSubObjectWithProperties, getTimeframeSteps } from '../../app/util'
+import * as Constants from '../../app/Constants'
 
 export const ExpansionPanel = withStyles({
     root: {
@@ -21,4 +23,14 @@ export const ExpansionPanel = withStyles({
 
 export function getNumberIcon(n) {
     return <img className = 'lowOpacity' src={`/images/styled-${n}.png`} height={24}/>
+}
+
+export function advancedFilters(state) {
+    return createSubObjectWithProperties(state,
+        [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
+        Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
+        Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
+        Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
+        Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT,
+        Constants.FILTER_NAME_ELO_RANGE])
 }
