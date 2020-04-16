@@ -71,7 +71,7 @@ export default class User extends React.Component {
     render(){
         return <ExpansionPanel expanded={this.props.expandedPanel === 'filters'}
             onChange={this.props.handleExpansionChange}
-            disabled={this.props.site===''}>
+            disabled={this.props.expandedPanel!=='filters'}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}><span>{getNumberIcon(3)} Color and filters</span></ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <div className="pgnloadersection">
