@@ -19,12 +19,19 @@ export default class User extends React.Component {
 
     editPlayerName(event) {
         this.setState({
-            playerName: event.target.value
+            playerName: event.target.value,
+            playerNameError:''
         })
     }
 
     setPlayername() {
-        this.props.playerNameChange(this.state.playerName)
+        if(!this.state.playerName){
+            this.setState({
+                playerNameError:'Please enter a username'
+            })
+        } else {
+            this.props.playerNameChange(this.state.playerName)
+        }
     }
     getSummary() {
         if(this.props.playerName) {
@@ -43,7 +50,9 @@ export default class User extends React.Component {
                         <TextField
                             className="playernameField" name="playerName" id="playerNameTextBox" variant="outlined"
                             margin="dense" onChange={this.editPlayerName.bind(this)}
-                            label={`${this.props.site === Constants.SITE_LICHESS ? "lichess" : "chess.com"} username`} />
+                            label={`${this.props.site === Constants.SITE_LICHESS ? "lichess" : "chess.com"} username`} 
+                            helperText={this.state.playerNameError}
+                            error={this.state.playerNameError?true:false}/>
                     </div>
                 </ExpansionPanelDetails>
                 <Divider />
