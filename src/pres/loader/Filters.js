@@ -72,7 +72,7 @@ export default class User extends React.Component {
     }
     getSummary() {
         if(this.state.filtersSet) {
-            return <span>{getNumberIcon('done')} Color:<b>{this.state.playerColor}</b></span>
+            return <span>{getNumberIcon('done')} Color: <b>{this.props.playerColor}</b></span>
 
         }
         return <span>{getNumberIcon(3)} Color and filters</span>

@@ -68,8 +68,6 @@ export default class PGNLoader extends React.Component {
             playerName: playerName,
             expandedPanel:'filters'
         })
-        // set the player name in the global state
-        this.props.onChange("playerName", this.state.playerName)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "PlayerNameSaved")
     }
 
@@ -107,6 +105,9 @@ export default class PGNLoader extends React.Component {
         }
         this.props.clear()
         this.setState({ isGamesSubsectionOpen: true })
+        // set the player name and color in the global state
+        this.props.onChange("playerName", this.state.playerName)
+        this.props.onChange("playerColor", this.state.playerColor)
         this.readPgn(false)
         this.props.setDownloading(true)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Load", this.state.site, this.state.playerColor === 'white' ? 1 : 0)
@@ -125,7 +126,6 @@ export default class PGNLoader extends React.Component {
 
     filtersChange(filters) {
         this.setState({...filters, expandedPanel:''})
-        this.props.onChange("playerColor", filters.playerColor)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "FitlersSaved", this.state.site)
     }
 
@@ -137,7 +137,7 @@ export default class PGNLoader extends React.Component {
             <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)}
                 site={this.state.site} playerNameChange={this.playerNameChange.bind(this)}/>
-            <Filters expandedPanel={this.state.expandedPanel} playerColor={this.props.settings.playerColor}
+            <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
                 site={this.state.site} advancedFilters={this.advancedFilters()}
                 timeframeSteps={this.timeframeSteps} filtersChange={this.filtersChange.bind(this)}/>
