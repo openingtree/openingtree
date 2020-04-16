@@ -172,3 +172,7 @@
 .MuiExpansionPanelDetails-root {
     display: block;
 }
+
+.styledNumbers {
+    padding-right:10px
+}
