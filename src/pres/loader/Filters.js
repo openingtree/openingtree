@@ -73,7 +73,7 @@ export default class User extends React.Component {
     getSummary() {
         if(this.state.filtersSet) {
         return <span>
-            {getNumberIcon('done')} 
+            {getNumberIcon('done')}
             Color: <b>{this.props.playerColor===Constants.PLAYER_COLOR_WHITE?"White":"Black"} </b>
             {this.areAdvancedFiltersApplied()?<span className="smallText">(Filters applied)</span>:null}</span>
 
