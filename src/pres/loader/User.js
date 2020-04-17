@@ -31,7 +31,7 @@ export default class User extends React.Component {
                 playerNameError:'Please enter a username'
             })
         } else {
-            this.props.playerNameChange(this.state.playerName)
+            this.props.playerDetailsChange(this.state.playerName)
         }
     }
     getSummary() {
