@@ -26,3 +26,5 @@ export const ROOT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 
 
 export const PLAYER_COLOR_WHITE = 'white'
 export const PLAYER_COLOR_BLACK = 'black'
+
+export const LOADER_ANIMATION_DURATION_MS = 500

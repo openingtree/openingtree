@@ -8,6 +8,7 @@ import Divider from '@material-ui/core/Divider';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
+import Collapse from '@material-ui/core/Collapse';
 
 export default class User extends React.Component {
     constructor(props) {
@@ -42,6 +43,8 @@ export default class User extends React.Component {
 
     render() {
         return <ExpansionPanel expanded={this.props.expandedPanel === 'user'}
+                TransitionComponent={Collapse}
+                TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
                 onChange={this.props.handleExpansionChange} 
                 disabled={this.props.site===''}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</ExpansionPanelSummary>
