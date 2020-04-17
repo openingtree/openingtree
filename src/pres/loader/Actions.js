@@ -7,7 +7,7 @@ import PGNReader from '../../app/PGNReader'
 import { faList} from '@fortawesome/free-solid-svg-icons'
 import GetApp from '@material-ui/icons/GetApp';
 import Equalizer from '@material-ui/icons/Equalizer';
-
+import Fade from '@material-ui/core/Fade'
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -72,42 +72,48 @@ export default class Actions extends React.Component {
         this.stopDownloading()
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "StopDownloading", this.props.site)
     }
-
+    mainComponent() {
+        return <div style={{}}>
+        <div className="pgnloadersection"><MaterialUIButton
+            onClick={this.load.bind(this)}
+            variant="contained"
+            color="primary"
+            startIcon={<Equalizer />}
+            className="mainButton" disableElevation
+        >
+            Analyze games
+        </MaterialUIButton></div>
+        <div className="pgnloadersection"><MaterialUIButton
+            onClick={this.download.bind(this)}
+            variant="contained"
+            color="default"
+            startIcon={<GetApp />}
+            className="mainButton" disableElevation
+        >
+            Export as PGN
+        </MaterialUIButton></div>
+        {
+            this.state.isGamesSubsectionOpen ?
+                <div>
+                    <div className="pgnloadersection">
+                        {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading ? <span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}><img alt="loading spinner" src="./spinner.gif" height="15" />stop</span>]</span> : ""}
+                    </div>
+                    <div onClick={() => this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
+                        <FontAwesomeIcon icon={faList} /> View Moves>>
+                </div>
+                </div>
+                : ""
+        }
+        </div>
+    }
     render(){
         if(this.props.expandedPanel) {
-            return <div></div>
+            return <Fade out timeout={Constants.LOADER_ANIMATION_DURATION_MS*2}>
+            {this.mainComponent()}
+        </Fade>
         }
-        return <div>
-                <div className="pgnloadersection"><MaterialUIButton
-                    onClick={this.load.bind(this)}
-                    variant="contained"
-                    color="primary"
-                    startIcon={<Equalizer />}
-                    className="mainButton" disableElevation
-                >
-                    Analyze games
-                </MaterialUIButton></div>
-                <div className="pgnloadersection"><MaterialUIButton
-                    onClick={this.download.bind(this)}
-                    variant="contained"
-                    color="default"
-                    startIcon={<GetApp />}
-                    className="mainButton" disableElevation
-                >
-                    Export as PGN
-                </MaterialUIButton></div>
-                {
-                    this.state.isGamesSubsectionOpen ?
-                        <div>
-                            <div className="pgnloadersection">
-                                {`Games Loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading ? <span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}><img alt="loading spinner" src="./spinner.gif" height="15" />stop</span>]</span> : ""}
-                            </div>
-                            <div onClick={() => this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
-                                <FontAwesomeIcon icon={faList} /> View Moves>>
-                        </div>
-                        </div>
-                        : ""
-                }
-        </div>
+        return <Fade in timeout={Constants.LOADER_ANIMATION_DURATION_MS*3}>
+            {this.mainComponent()}
+        </Fade>
     }
 }
