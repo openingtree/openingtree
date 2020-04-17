@@ -51,7 +51,7 @@ export default class PGNLoader extends React.Component {
         };
     }
 
-    playerNameChange(playerName) {
+    playerDetailsChange(playerName) {
         this.setState({
             playerName: playerName,
             expandedPanel:'filters'
@@ -77,7 +77,7 @@ export default class PGNLoader extends React.Component {
                 site={this.state.site} siteChange={this.siteChange.bind(this)}/>
             <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)}
-                site={this.state.site} playerNameChange={this.playerNameChange.bind(this)}/>
+                site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}/>
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
                 site={this.state.site} advancedFilters={this.advancedFilters()}
