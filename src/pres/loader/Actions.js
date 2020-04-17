@@ -74,8 +74,10 @@ export default class Actions extends React.Component {
     }
 
     render(){
+        if(this.props.expandedPanel) {
+            return <div></div>
+        }
         return <div>
-                <div style={this.props.site===''?{display:`none`}:{}}>
                 <div className="pgnloadersection"><MaterialUIButton
                     onClick={this.load.bind(this)}
                     variant="contained"
@@ -106,7 +108,6 @@ export default class Actions extends React.Component {
                         </div>
                         : ""
                 }
-            </div>
         </div>
     }
 }
