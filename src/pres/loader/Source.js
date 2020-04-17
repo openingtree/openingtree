@@ -4,6 +4,7 @@ import { Radio, FormControlLabel, RadioGroup } from '@material-ui/core';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Collapse from '@material-ui/core/Collapse';
 import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
 
@@ -18,7 +19,8 @@ export default class Source extends React.Component {
     }
 
     render() {
-        return <ExpansionPanel
+        return <ExpansionPanel TransitionComponent={Collapse}
+            TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
             expanded={this.props.expandedPanel === 'source'}
             onChange={this.props.handleExpansionChange}>
             <ExpansionPanelSummary

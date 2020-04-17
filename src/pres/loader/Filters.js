@@ -14,6 +14,7 @@ import { Button as MaterialUIButton } from '@material-ui/core'
 import { faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons'
 import AdvancedFilters from './AdvancedFilters'
 import {advancedFilters} from './Common'
+import MuiCollapse from '@material-ui/core/Collapse';
 
 export default class User extends React.Component {
 
@@ -90,6 +91,8 @@ export default class User extends React.Component {
     }
     render(){
         return <ExpansionPanel expanded={this.props.expandedPanel === 'filters'}
+                    TransitionComponent={MuiCollapse}
+                    TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
             onChange={this.props.handleExpansionChange}
             disabled={!this.state.filtersSet && this.props.expandedPanel!=='filters'}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</ExpansionPanelSummary>
