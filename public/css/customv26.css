@@ -180,7 +180,10 @@
 .dropzonetext {
     font-size:16px;
     color:#767676;
-    padding:10px;
+    padding-left:10px;
+    padding-right:10px;
+    padding-top:10px;
+    padding-bottom:0px;
     margin-bottom:0px;
 }
 
@@ -191,6 +194,6 @@
 .dropzone {
     background-color:#FBFBFB;
     max-height:450px;
-    min-height:150px;
+    min-height:125px;
     overflow:hidden;
 }
