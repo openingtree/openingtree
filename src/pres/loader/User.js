@@ -9,7 +9,7 @@ import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
 import Collapse from '@material-ui/core/Collapse';
-
+import FileUpload from './Dropzone'
 export default class User extends React.Component {
     constructor(props) {
         super(props)
@@ -38,7 +38,7 @@ export default class User extends React.Component {
         if(this.props.playerName) {
             return <span>{getNumberIcon('done')}User: <b>{this.props.playerName}</b></span>
         }
-        return <span>{getNumberIcon(2)}Select player</span>
+        return <span>{getNumberIcon(2)}Player details</span>
     }
 
     render() {
@@ -50,6 +50,7 @@ export default class User extends React.Component {
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <div>
+                        <FileUpload/>
                         <TextField
                             className="playernameField" name="playerName" id="playerNameTextBox" variant="outlined"
                             margin="dense" onChange={this.editPlayerName.bind(this)}

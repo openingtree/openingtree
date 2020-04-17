@@ -176,3 +176,21 @@
 .styledNumbers {
     padding-right:10px
 }
+
+.dropzonetext {
+    font-size:16px;
+    color:#767676;
+    padding:10px;
+    margin-bottom:0px;
+}
+
+.previewChip {
+    margin-left:10px;
+}
+
+.dropzone {
+    background-color:#FBFBFB;
+    max-height:450px;
+    min-height:150px;
+    overflow:hidden;
+}
