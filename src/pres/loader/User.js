@@ -25,12 +25,23 @@ export default class User extends React.Component {
         })
     }
 
+    validateInputDetailsSet() {
+        if(this.props.site === Constants.SITE_LICHESS ||
+            this.props.site === Constants.SITE_CHESS_DOT_COM) {
+                if(!this.state.playerName){
+                    this.setState({
+                        playerNameError:'Please enter a username'
+                    })
+                    return false
+                } 
+        } else if(this.props.site === Constants.SITE_PGN_FILE) {
+            return true
+
+        }
+    }
+
     setPlayername() {
-        if(!this.state.playerName){
-            this.setState({
-                playerNameError:'Please enter a username'
-            })
-        } else {
+         if(this.validateInputDetailsSet()) {
             this.props.playerDetailsChange(this.state.playerName)
         }
     }
@@ -41,6 +52,25 @@ export default class User extends React.Component {
         return <span>{getNumberIcon(2)}Player details</span>
     }
 
+    getPlayerNameInput(label) {
+        return <TextField
+            className="playernameField" name="playerName" id="playerNameTextBox" 
+            margin="dense" onChange={this.editPlayerName.bind(this)}
+            label={label} variant="outlined"
+            helperText={this.state.playerNameError}
+            error={this.state.playerNameError?true:false}/>
+    }
+
+    getInputsToShow() {
+        if(this.props.site === Constants.SITE_PGN_FILE) {
+            return <FileUpload/>
+        } else if (this.props.site === Constants.SITE_LICHESS) {
+            return this.getPlayerNameInput('lichess username')
+        } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
+            return this.getPlayerNameInput('chess.com username')
+        }
+    }
+
     render() {
         return <ExpansionPanel expanded={this.props.expandedPanel === 'user'}
                 TransitionComponent={Collapse}
@@ -49,15 +79,7 @@ export default class User extends React.Component {
                 disabled={this.props.site===''}>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    <div>
-                        <FileUpload/>
-                        <TextField
-                            className="playernameField" name="playerName" id="playerNameTextBox" variant="outlined"
-                            margin="dense" onChange={this.editPlayerName.bind(this)}
-                            label={`${this.props.site === Constants.SITE_LICHESS ? "lichess" : "chess.com"} username`} 
-                            helperText={this.state.playerNameError}
-                            error={this.state.playerNameError?true:false}/>
-                    </div>
+                        {this.getInputsToShow()}
                 </ExpansionPanelDetails>
                 <Divider />
                 <ExpansionPanelActions>
