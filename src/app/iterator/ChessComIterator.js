@@ -1,9 +1,9 @@
 import ChessWebAPI from 'chess-web-api'
-import { parse }  from './PGNParser'
+import { parse }  from '../PGNParser'
 import request from 'request'
-import * as Constants from './Constants'
-import {isOpponentEloInSelectedRange, getTimeframeSteps, getSelectedTimeFrameData} from './util'
-import {trackEvent} from './Analytics'
+import * as Constants from '../Constants'
+import {isOpponentEloInSelectedRange, getTimeframeSteps, getSelectedTimeFrameData} from '../util'
+import {trackEvent} from '../Analytics'
 
 export default class ChessComIterator {
 

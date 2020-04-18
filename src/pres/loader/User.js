@@ -61,7 +61,7 @@ export default class User extends React.Component {
             return <span>{getNumberIcon('done')}File: <b>{this.props.files[0].name}</b></span>
         }
         if(this.props.files.length>1) {
-            return <span>{getNumberIcon('done')}{this.props.files.length} PGN files</span>
+            return <span>{getNumberIcon('done')}{this.props.files.length} PGN files uploaded</span>
         }
         return <span>{getNumberIcon(2)}Player details</span>
     }

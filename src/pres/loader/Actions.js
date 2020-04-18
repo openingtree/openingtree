@@ -38,7 +38,8 @@ export default class Actions extends React.Component {
             this.props.advancedFilters,
             this.props.notify,
             this.props.showError,
-            this.stopDownloading.bind(this))
+            this.stopDownloading.bind(this),
+            this.props.files)
     }
 
     download() {
