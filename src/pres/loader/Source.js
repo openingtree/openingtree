@@ -7,13 +7,16 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
 import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
+import Backup from '@material-ui/icons/Backup';
 
 export default class Source extends React.Component {
     getSourceOption(source, addNumber) {
         if (source === Constants.SITE_LICHESS) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<img alt="lichess" className="siteimage" src="./lichesslogo.png" /> lichess.org</span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<img alt="lichess" className="siteimage" src="./lichesslogo.png" /><span className="sourceName"> lichess.org </span></span>
         } else if (source === Constants.SITE_CHESS_DOT_COM) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<img alt="chess.com" className="siteimage" src="./chesscomlogo.png" /></span>
+        } else if (source === Constants.SITE_PGN_FILE) {
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Backup className="lowOpacity"/><span className="sourceName"> PGN file</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }
@@ -36,6 +39,7 @@ export default class Source extends React.Component {
                 <RadioGroup onChange={this.props.siteChange}>
                     <FormControlLabel className="sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_LICHESS)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_CHESS_DOT_COM)} />
+                    <FormControlLabel className="sitelabel" value={Constants.SITE_PGN_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PGN_FILE)} />
                 </RadioGroup>
             </ExpansionPanelDetails>
         </ExpansionPanel>

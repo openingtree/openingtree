@@ -197,3 +197,11 @@
     min-height:125px;
     overflow:hidden;
 }
+
+.sourceIcon {
+    opacity:0.6;
+}
+
+.sourceName {
+    vertical-align: text-top;
+}
