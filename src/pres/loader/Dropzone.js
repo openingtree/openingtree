@@ -13,7 +13,7 @@ export default class Dropzone extends React.Component{
           useChipsForPreview={true}
           previewChipProps={{className:"previewChip"}}
           dropzoneClass="dropzone"
-          filesLimit="10"
+          filesLimit={10}
           />
       )  
     }
