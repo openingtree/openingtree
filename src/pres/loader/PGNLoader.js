@@ -17,7 +17,8 @@ export default class PGNLoader extends React.Component {
             playerColor: this.props.settings.playerColor,
             isAdvancedFiltersOpen: false,
             isGamesSubsectionOpen: false,
-            expandedPanel: 'source'
+            expandedPanel: 'source',
+            files:[]
         }
         this.timeframeSteps = getTimeframeSteps()
         this.state[Constants.FILTER_NAME_SELECTED_TIMEFRAME] = [0, this.timeframeSteps.length - 1]
@@ -51,10 +52,11 @@ export default class PGNLoader extends React.Component {
         };
     }
 
-    playerDetailsChange(playerName) {
+    playerDetailsChange(playerName, files) {
         this.setState({
             playerName: playerName,
-            expandedPanel:'filters'
+            expandedPanel:'filters',
+            files:files
         })
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "PlayerNameSaved")
     }
@@ -76,7 +78,8 @@ export default class PGNLoader extends React.Component {
                 handleExpansionChange={this.handleExpansionChange('source').bind(this)}
                 site={this.state.site} siteChange={this.siteChange.bind(this)}/>
             <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
-                handleExpansionChange={this.handleExpansionChange('user').bind(this)}
+                handleExpansionChange={this.handleExpansionChange('user').bind(this)} 
+                showError={this.props.showError} files={this.state.files}
                 site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}/>
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}

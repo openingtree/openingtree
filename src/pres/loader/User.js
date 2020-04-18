@@ -9,12 +9,13 @@ import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
 import Collapse from '@material-ui/core/Collapse';
-import FileUpload from './Dropzone'
+import Dropzone from './Dropzone'
 export default class User extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            playerName:''
+            playerName:'',
+            files:[]
         }
     }
 
@@ -23,6 +24,10 @@ export default class User extends React.Component {
             playerName: event.target.value,
             playerNameError:''
         })
+    }
+
+    filesChange(files) {
+        this.setState({files:files})
     }
 
     validateInputDetailsSet() {
@@ -35,19 +40,28 @@ export default class User extends React.Component {
                     return false
                 } 
         } else if(this.props.site === Constants.SITE_PGN_FILE) {
-            return true
-
+            if(this.state.files.length===0) {
+                this.props.showError("Please upload a PGN file")
+                return false
+            }
         }
+        return true
     }
 
-    setPlayername() {
+    setPlayerDetails() {
          if(this.validateInputDetailsSet()) {
-            this.props.playerDetailsChange(this.state.playerName)
+            this.props.playerDetailsChange(this.state.playerName, this.state.files)
         }
     }
     getSummary() {
         if(this.props.playerName) {
             return <span>{getNumberIcon('done')}User: <b>{this.props.playerName}</b></span>
+        }
+        if(this.props.files.length===1) {
+            return <span>{getNumberIcon('done')}File: <b>{this.props.files[0].name}</b></span>
+        }
+        if(this.props.files.length>1) {
+            return <span>{getNumberIcon('done')}{this.props.files.length} PGN files</span>
         }
         return <span>{getNumberIcon(2)}Player details</span>
     }
@@ -63,7 +77,7 @@ export default class User extends React.Component {
 
     getInputsToShow() {
         if(this.props.site === Constants.SITE_PGN_FILE) {
-            return <FileUpload/>
+            return <Dropzone filesChange={this.filesChange.bind(this)}/>
         } else if (this.props.site === Constants.SITE_LICHESS) {
             return this.getPlayerNameInput('lichess username')
         } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
@@ -84,7 +98,7 @@ export default class User extends React.Component {
                 <Divider />
                 <ExpansionPanelActions>
                     <MaterialUIButton size="small">Random</MaterialUIButton>
-                    <MaterialUIButton size="small" color="primary" onClick={this.setPlayername.bind(this)}>Save</MaterialUIButton>
+                    <MaterialUIButton size="small" color="primary" onClick={this.setPlayerDetails.bind(this)}>Save</MaterialUIButton>
                 </ExpansionPanelActions></ExpansionPanel>
             
     }
