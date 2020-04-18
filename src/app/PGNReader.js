@@ -1,7 +1,8 @@
 import {openingGraph} from './OpeningGraph'
 import Chess from 'chess.js'
-import LichessIterator from './LichessIterator'
-import ChessComIterator from './ChessComIterator'
+import LichessIterator from './iterator/LichessIterator'
+import ChessComIterator from './iterator/ChessComIterator'
+import PGNFileIterator from './iterator/PGNFileIterator'
 import * as Constants from './Constants'
 import streamsaver from 'streamsaver'
 
@@ -28,7 +29,9 @@ export default class PGNReader {
                 }).join(' ')} ${game.result}\n\n\n`
     }
 
-    fetchPGNFromSite(playerName, playerColor, site, shouldDownloadToFile, advancedFilters, notify, showError, stopDownloading) {
+    fetchPGNFromSite(playerName, playerColor, site, 
+        shouldDownloadToFile, advancedFilters, notify, 
+        showError, stopDownloading, files) {
         this.continueProcessingGames = true
         if(shouldDownloadToFile) {
             let fileStream =  streamsaver.createWriteStream(`${playerName}-${playerColor}.pgn`)
@@ -58,10 +61,12 @@ export default class PGNReader {
             return this.continueProcessingGames
         }
         let processor = shouldDownloadToFile? downloadResponse: handleResponse
-        if(site === Constants.SITE_LICHESS) {
+        if (site === Constants.SITE_LICHESS) {
             new LichessIterator(playerName, playerColor, advancedFilters, processor, showError)
-        } else if(site === Constants.SITE_CHESS_DOT_COM) {
+        } else if (site === Constants.SITE_CHESS_DOT_COM) {
             new ChessComIterator(playerName, playerColor, advancedFilters, processor, showError)
+        } else if (site === Constants.SITE_PGN_FILE) {
+            new PGNFileIterator(playerName, files, playerColor, advancedFilters, processor, showError)
         }
 
         

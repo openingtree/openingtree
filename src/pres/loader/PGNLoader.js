@@ -86,7 +86,7 @@ export default class PGNLoader extends React.Component {
                 site={this.state.site} advancedFilters={this.advancedFilters()}
                 timeframeSteps={this.timeframeSteps} filtersChange={this.filtersChange.bind(this)}/>
             </div>
-            <Actions expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
+            <Actions expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor} files={this.props.files}
                 playerName={this.state.playerName} site={this.state.site} advancedFilters={this.advancedFilters()}
                 notify={this.props.notify} showError={this.props.showError} onChange={this.props.onChange}
                 setDownloading={this.props.setDownloading} clear={this.props.clear} isDownloading={this.props.isDownloading}
