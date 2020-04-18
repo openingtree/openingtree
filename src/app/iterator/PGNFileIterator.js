@@ -18,7 +18,7 @@ export default class LichessIterator {
                 } catch (e) {
                     console.log("failed to parse pgn", pgnString)
                     console.log(e)
-                    trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedLichess", playerName)
+                    trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedPGNFile", playerName)
                     return null
                 }
             })
