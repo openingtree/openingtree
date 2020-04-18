@@ -53,10 +53,6 @@ export default class Actions extends React.Component {
     }
 
     load() {
-        if (!this.props.playerName) {
-            this.props.showError("Please enter a username")
-            return
-        }
         this.props.clear()
         this.setState({ isGamesSubsectionOpen: true })
         // set the player name and color in the global state
@@ -109,7 +105,7 @@ export default class Actions extends React.Component {
     }
     render(){
         if(this.props.expandedPanel) {
-            return <Fade out timeout={Constants.LOADER_ANIMATION_DURATION_MS*2}>
+            return <Fade timeout={Constants.LOADER_ANIMATION_DURATION_MS*2}>
             {this.mainComponent()}
         </Fade>
         }
