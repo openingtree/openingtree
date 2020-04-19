@@ -10,6 +10,10 @@ import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
 import Collapse from '@material-ui/core/Collapse';
 import Dropzone from './Dropzone'
+import Input from '@material-ui/core/Input'
+import InputAdornment from '@material-ui/core/InputAdornment'
+import InsertLink from '@material-ui/icons/InsertLink'
+
 export default class User extends React.Component {
     constructor(props) {
         super(props)
@@ -75,6 +79,26 @@ export default class User extends React.Component {
             error={this.state.playerNameError?true:false}/>
     }
 
+    getPGNUrl(){
+        //return <input type="url" inputProps={{ 'aria-label': 'description' }} />
+        return <TextField
+            id="input-with-icon-textfield"
+            label="PGN url"
+            variant="outlined"
+            rowsMax={8}
+            className="fullWidth"
+            multiline
+            placeholder="https://example.com/sample.pgn"
+            InputProps={{
+                startAdornment: 
+                    <InputAdornment position="start">
+                    <InsertLink />
+                    </InputAdornment>
+                
+            }}
+        />
+    }
+
     getInputsToShow() {
         if(this.props.site === Constants.SITE_PGN_FILE) {
             return <Dropzone filesChange={this.filesChange.bind(this)}/>
@@ -82,6 +106,8 @@ export default class User extends React.Component {
             return this.getPlayerNameInput('lichess username')
         } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
             return this.getPlayerNameInput('chess.com username')
+        } else if (this.props.site === Constants.SITE_PGN_URL) {
+            return this.getPGNUrl()
         }
     }
 
