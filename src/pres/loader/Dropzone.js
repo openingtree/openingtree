@@ -6,14 +6,14 @@ export default class Dropzone extends React.Component{
       return (
         <DropzoneArea 
         acceptedFiles={[]}
-        dropzoneText="Drag and drop up to 10 pgn files here or click to select"
+        dropzoneText={this.props.dropzoneText}
           onChange={this.props.filesChange}
           dropzoneParagraphClass="dropzonetext"
           showFileNames={true}
           useChipsForPreview={true}
           previewChipProps={{className:"previewChip"}}
           dropzoneClass="dropzone"
-          filesLimit={10}
+          filesLimit={this.props.filesLimit}
           maxFileSize={3000000000000}
           />
       )  

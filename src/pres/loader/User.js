@@ -78,17 +78,14 @@ export default class User extends React.Component {
             helperText={this.state.playerNameError}
             error={this.state.playerNameError?true:false}/>
     }
+    getGoatDBSelection(){
 
+    }
     getPGNUrl(){
         //return <input type="url" inputProps={{ 'aria-label': 'description' }} />
-        return <TextField
-            id="input-with-icon-textfield"
-            label="PGN url"
-            variant="outlined"
-            rowsMax={8}
-            className="fullWidth"
-            multiline
-            placeholder="https://example.com/sample.pgn"
+        return <TextField id="input-with-icon-textfield" label="PGN url"
+            variant="outlined" rowsMax={8} className="fullWidth"
+            multiline placeholder="https://example.com/sample.pgn"
             InputProps={{
                 startAdornment: 
                     <InputAdornment position="start">
@@ -101,13 +98,21 @@ export default class User extends React.Component {
 
     getInputsToShow() {
         if(this.props.site === Constants.SITE_PGN_FILE) {
-            return <Dropzone filesChange={this.filesChange.bind(this)}/>
+            return <Dropzone filesChange={this.filesChange.bind(this)} filesLimit={10}
+                    dropzoneText="Drag and drop up to 10 pgn files here or click to select"
+                />
         } else if (this.props.site === Constants.SITE_LICHESS) {
             return this.getPlayerNameInput('lichess username')
         } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
             return this.getPlayerNameInput('chess.com username')
         } else if (this.props.site === Constants.SITE_PGN_URL) {
             return this.getPGNUrl()
+        } else if (this.props.site === Constants.SITE_GOAT_DB) {
+            return this.getPGNUrl()
+        } else if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
+            return <Dropzone filesChange={this.filesChange.bind(this)} filesLimit={1}
+                    dropzoneText="Drag and drop openingtree file here or click to select"
+                />
         }
     }
 
