@@ -10,9 +10,9 @@ import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
 import Collapse from '@material-ui/core/Collapse';
 import Dropzone from './Dropzone'
-import Input from '@material-ui/core/Input'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InsertLink from '@material-ui/icons/InsertLink'
+import NotableChessPlayers from './NotableChessPlayers';
 
 export default class User extends React.Component {
     constructor(props) {
@@ -79,7 +79,7 @@ export default class User extends React.Component {
             error={this.state.playerNameError?true:false}/>
     }
     getGoatDBSelection(){
-
+        return <NotableChessPlayers/>
     }
     getPGNUrl(){
         //return <input type="url" inputProps={{ 'aria-label': 'description' }} />
@@ -108,7 +108,7 @@ export default class User extends React.Component {
         } else if (this.props.site === Constants.SITE_PGN_URL) {
             return this.getPGNUrl()
         } else if (this.props.site === Constants.SITE_GOAT_DB) {
-            return this.getPGNUrl()
+            return this.getGoatDBSelection()
         } else if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
             return <Dropzone filesChange={this.filesChange.bind(this)} filesLimit={1}
                     dropzoneText="Drag and drop openingtree file here or click to select"
