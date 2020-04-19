@@ -7,6 +7,7 @@ export default class NotableChessPlayers extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
+            selectedfriends:[],
             friends: [
                 { name: 'Annie Cruz', value: 'annie.cruz', photo: 'https://randomuser.me/api/portraits/women/60.jpg' },
                 { name: 'Eli Shelton', disabled: true, value: 'eli.shelton', photo: 'https://randomuser.me/api/portraits/men/7.jpg' },
@@ -23,18 +24,34 @@ export default class NotableChessPlayers extends React.Component {
         }
     }
 
+
+
     render() {
         return <SelectSearch
         name="friends"
         multiple
         className="select-search-box select-search-box--friends select-search-box--multiple"
-        value={this.state.friends}
+        value={this.state.selectedfriends}
         onChange={this.updateFriends}
-        options={friends}
+        options={this.state.friends}
         placeholder="Search friends"
         renderOption={renderFriend}
         disabled={this.state.disabled}
         search
     />
     }
+}
+
+function renderFriend(props, option, snapshot, className) {
+    const imgStyle = {
+        borderRadius: '50%',
+        verticalAlign: 'middle',
+        marginRight: 10,
+    };
+
+    return (
+        <button {...props} className={className} type="button">
+            <span><img alt="" style={imgStyle} width="32" height="32" src={option.photo} /><span>{option.name}</span></span>
+        </button>
+    );
 }
