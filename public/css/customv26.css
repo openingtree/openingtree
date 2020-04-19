@@ -76,6 +76,10 @@
     cursor:pointer;
 }
 
+.fullWidth {
+    width:100%
+}
+
 .mainContainer {
     margin-top:15px;
 }
