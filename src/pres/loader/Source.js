@@ -8,6 +8,10 @@ import Collapse from '@material-ui/core/Collapse';
 import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
 import Backup from '@material-ui/icons/Backup';
+import Public from '@material-ui/icons/Public';
+import People from '@material-ui/icons/People';
+import Save from '@material-ui/icons/Save';
+import Divider from '@material-ui/core/Divider';
 
 export default class Source extends React.Component {
     getSourceOption(source, addNumber) {
@@ -16,7 +20,13 @@ export default class Source extends React.Component {
         } else if (source === Constants.SITE_CHESS_DOT_COM) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<img alt="chess.com" className="siteimage" src="./chesscomlogo.png" /></span>
         } else if (source === Constants.SITE_PGN_FILE) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Backup className="lowOpacity"/><span className="sourceName"> PGN file</span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Backup className="lowOpacity"/><span className="sourceName"> Upload PGN file</span></span>
+        } else if (source === Constants.SITE_PGN_URL) {
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Public className="lowOpacity"/><span className="sourceName"> Download PGN from url</span></span>
+        } else if (source === Constants.SITE_GOAT_DB) {
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<People className="lowOpacity"/><span className="sourceName"> Super-GMs database</span></span>
+        }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Opening tree save file</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }
@@ -37,10 +47,14 @@ export default class Source extends React.Component {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <RadioGroup onChange={this.props.siteChange}>
+                    <FormControlLabel className="sitelabel" value={Constants.SITE_GOAT_DB} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_GOAT_DB)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_LICHESS)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_CHESS_DOT_COM)} />
+                    <Divider/>
                     <FormControlLabel className="sitelabel" value={Constants.SITE_PGN_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PGN_FILE)} />
-                </RadioGroup>
+                    <FormControlLabel className="sitelabel" value={Constants.SITE_PGN_URL} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PGN_URL)} />
+                    <FormControlLabel className="sitelabel" value={Constants.SITE_OPENING_TREE_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_OPENING_TREE_FILE)} />
+               </RadioGroup>
             </ExpansionPanelDetails>
         </ExpansionPanel>
         

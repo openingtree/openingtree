@@ -13,6 +13,9 @@ export const FILTER_NAME_ELO_RANGE = "eloRange"
 export const SITE_LICHESS = "lichess"
 export const SITE_CHESS_DOT_COM = "chesscom"
 export const SITE_PGN_FILE = "pgnfile"
+export const SITE_PGN_URL = "pgnurl"
+export const SITE_GOAT_DB = "goatdb"
+export const SITE_OPENING_TREE_FILE = "opntfile"
 
 export const MAX_DOWNLOAD_LIMIT = 2000
 export const MAX_ELO_RATING = 3000
