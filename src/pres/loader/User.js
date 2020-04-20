@@ -28,11 +28,17 @@ export default class User extends React.Component {
     editPlayerName(event) {
         this.setState({
             playerName: event.target.value,
-            playerNameError:'',
-            pgnUrlError: ''
+            playerNameError:''
         })
     }
 
+    editPGNUrl(event) {
+        this.setState({
+            pgnUrl: event.target.value,
+            pgnUrlError: ''
+        })
+    }
+    
     filesChange(files) {
         this.setState({files:files})
     }
@@ -137,6 +143,7 @@ export default class User extends React.Component {
             multiline placeholder="https://example.com/sample.pgn"
             helperText={this.state.pgnUrlError}
             error={this.state.pgnUrlError?true:false}
+            onChange={this.editPGNUrl.bind(this)}
             InputProps={{
                 startAdornment: 
                     <InputAdornment position="start">
