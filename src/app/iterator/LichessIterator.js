@@ -8,7 +8,6 @@ import BaseUrlIterator from './BaseUrlIterator'
 export default class LichessIterator {
 
     constructor(playerName, playerColor, advancedFilters, ready, showError) {
-        let remainingBody = ''
         let lichessBaseURL = `https://lichess.org/api/games/user/`
         let playerNameFilter = encodeURIComponent(playerName)
         let colorFilter = `?color=${playerColor}`
