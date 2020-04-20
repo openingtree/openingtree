@@ -72,6 +72,10 @@ export default class ControlsContainer extends React.Component {
                 </TableRow></TableHead>
             <TableBody>
             <TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Results</TableCell>
+                <TableCell className="performanceRatingRow">{performanceDetails.results}</TableCell>
+            </TableRow>
+            <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Avg opponent</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
             </TableRow>
