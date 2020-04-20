@@ -24,9 +24,9 @@ export default class NotableChessPlayers extends React.Component {
         };
     
         return (<div>
-                <img alt="" style={imgStyle} width="40" height="40" src={option.photo} />
+                <img alt={option.name} style={imgStyle} width="40" height="40" src={option.profile.imageUrl} />
                 <div>{option.name}</div>
-                <div className="smallText">1945-2002</div>
+                <div className="smallText">{option.profile.birthYear}-{option.profile.deathYear}</div>
                 </div>);
     }
 
@@ -34,10 +34,11 @@ export default class NotableChessPlayers extends React.Component {
         if(!this.props.players) {
             return <div className="lowOpacity textCenter"><img width='25' height='25' src="./spinner.gif"/> <span >Loading players</span></div>
         }
+        let options = this.props.players.map(option=>{return {...option, value:option.name}})
         return <SelectSearch
             name="goatPlayers"
             value={this.state.selectedPlayer.value}
-            options={this.props.players}
+            options={options}
             placeholder="Select player"
             renderOption={this.renderPlayer.bind(this)}
             onChange={this.updatePlayers}
