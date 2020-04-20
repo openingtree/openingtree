@@ -214,3 +214,11 @@
     text-align: center;
 }
 
+
+.profilePicture {
+    border-radius: 50%;
+    vertical-align: middle;
+    margin-left: 10px;
+    margin-right: 3px;
+    float:left;
+};

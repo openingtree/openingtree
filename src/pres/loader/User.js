@@ -19,7 +19,9 @@ export default class User extends React.Component {
         super(props)
         this.state = {
             playerName:'',
-            files:[]
+            files:[],
+            pgnUrl:'',
+            selectedPlayer:{}
         }
     }
 
@@ -32,6 +34,13 @@ export default class User extends React.Component {
 
     filesChange(files) {
         this.setState({files:files})
+    }
+
+    notablePlayerChange(player) {
+        this.setState({
+            playerName: player.name, 
+            pgnUrl:player.pgnUrl, 
+            selectedPlayer:player})
     }
 
     validateInputDetailsSet() {
@@ -54,10 +63,21 @@ export default class User extends React.Component {
 
     setPlayerDetails() {
          if(this.validateInputDetailsSet()) {
-            this.props.playerDetailsChange(this.state.playerName, this.state.files)
+            this.props.playerDetailsChange(this.state.playerName, 
+                this.state.files, 
+                this.state.pgnUrl, 
+                this.state.selectedPlayer)
         }
     }
+    
     getSummary() {
+        if(this.props.selectedPlayer.name) {
+            return <span>
+                    {getNumberIcon('done')}
+                    {this.props.selectedPlayer.profile.title}{'\u00A0'}
+                    <b>{this.props.selectedPlayer.name}</b>
+                </span>
+        }
         if(this.props.playerName) {
             return <span>{getNumberIcon('done')}User: <b>{this.props.playerName}</b></span>
         }
@@ -79,7 +99,10 @@ export default class User extends React.Component {
             error={this.state.playerNameError?true:false}/>
     }
     getGoatDBSelection(){
-        return <NotableChessPlayers players={this.props.players}/>
+        return <NotableChessPlayers 
+            players={this.props.players} 
+            onChange={this.notablePlayerChange.bind(this)}
+            selectedPlayer={this.state.selectedPlayer}/>
     }
     getPGNUrl(){
         //return <input type="url" inputProps={{ 'aria-label': 'description' }} />
