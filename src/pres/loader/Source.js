@@ -26,7 +26,7 @@ export default class Source extends React.Component {
         } else if (source === Constants.SITE_GOAT_DB) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<People className="lowOpacity"/><span className="sourceName"> Super-GMs database</span></span>
         }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Opening tree save file</span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Openingtree save file</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }
