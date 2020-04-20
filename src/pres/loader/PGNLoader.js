@@ -18,6 +18,7 @@ export default class PGNLoader extends React.Component {
             isAdvancedFiltersOpen: false,
             isGamesSubsectionOpen: false,
             expandedPanel: 'source',
+            notablePlayers:null,
             files:[]
         }
         this.timeframeSteps = getTimeframeSteps()
@@ -63,7 +64,23 @@ export default class PGNLoader extends React.Component {
 
 
     siteChange(event) {
-        this.setState({ site: event.target.value, expandedPanel:'user'})
+        let newSite = event.target.value
+        if(newSite === Constants.SITE_GOAT_DB && !this.state.notablePlayers) {
+            setTimeout((()=>this.setState({notablePlayers:[
+                { name: 'Annie Cruz', value: 'annie.cruz', photo: 'https://randomuser.me/api/portraits/women/60.jpg' },
+                { name: 'Eli Shelton', disabled: true, value: 'eli.shelton', photo: 'https://randomuser.me/api/portraits/men/7.jpg' },
+                { name: 'Loretta Rogers', value: 'loretta.rogers', photo: 'https://randomuser.me/api/portraits/women/51.jpg' },
+                { name: 'Lloyd Fisher', value: 'lloyd.fisher', photo: 'https://randomuser.me/api/portraits/men/34.jpg' },
+                { name: 'Tiffany Gonzales', value: 'tiffany.gonzales', photo: 'https://randomuser.me/api/portraits/women/71.jpg' },
+                { name: 'Charles Hardy', value: 'charles.hardy', photo: 'https://randomuser.me/api/portraits/men/12.jpg' },
+                { name: 'Rudolf Wilson', value: 'rudolf.wilson', photo: 'https://randomuser.me/api/portraits/men/40.jpg' },
+                { name: 'Emerald Hensley', value: 'emerald.hensley', photo: 'https://randomuser.me/api/portraits/women/1.jpg' },
+                { name: 'Lorena McCoy', value: 'lorena.mccoy', photo: 'https://randomuser.me/api/portraits/women/70.jpg' },
+                { name: 'Alicia Lamb', value: 'alicia.lamb', photo: 'https://randomuser.me/api/portraits/women/22.jpg' },
+                { name: 'Maria Waters', value: 'maria.waters', photo: 'https://randomuser.me/api/portraits/women/82.jpg' },
+            ]})).bind(this), 5000)
+        }
+        this.setState({ site: newSite, expandedPanel:'user'})
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ChangeSite", this.state.site)
     }
 
@@ -79,7 +96,7 @@ export default class PGNLoader extends React.Component {
                 site={this.state.site} siteChange={this.siteChange.bind(this)}/>
             <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)} 
-                showError={this.props.showError} files={this.state.files}
+                showError={this.props.showError} files={this.state.files} players={this.state.notablePlayers}
                 site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}/>
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
