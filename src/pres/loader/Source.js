@@ -24,7 +24,7 @@ export default class Source extends React.Component {
         } else if (source === Constants.SITE_PGN_URL) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<Public className="lowOpacity"/><span className="sourceName"> Download PGN from url</span></span>
         } else if (source === Constants.SITE_GOAT_DB) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<People className="lowOpacity"/><span className="sourceName"> Super-GMs database</span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<People className="lowOpacity"/><span className="sourceName"> Notable chess players</span></span>
         }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Openingtree save file</span></span>
         }
