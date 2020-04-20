@@ -79,7 +79,7 @@ export default class User extends React.Component {
             error={this.state.playerNameError?true:false}/>
     }
     getGoatDBSelection(){
-        return <NotableChessPlayers/>
+        return <NotableChessPlayers players={this.props.players}/>
     }
     getPGNUrl(){
         //return <input type="url" inputProps={{ 'aria-label': 'description' }} />

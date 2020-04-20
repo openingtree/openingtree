@@ -9,20 +9,6 @@ export default class NotableChessPlayers extends React.Component {
         this.state = {
             selectedPlayer:{}
         }
-
-        this.players = [
-            { name: 'Annie Cruz', value: 'annie.cruz', photo: 'https://randomuser.me/api/portraits/women/60.jpg' },
-            { name: 'Eli Shelton', disabled: true, value: 'eli.shelton', photo: 'https://randomuser.me/api/portraits/men/7.jpg' },
-            { name: 'Loretta Rogers', value: 'loretta.rogers', photo: 'https://randomuser.me/api/portraits/women/51.jpg' },
-            { name: 'Lloyd Fisher', value: 'lloyd.fisher', photo: 'https://randomuser.me/api/portraits/men/34.jpg' },
-            { name: 'Tiffany Gonzales', value: 'tiffany.gonzales', photo: 'https://randomuser.me/api/portraits/women/71.jpg' },
-            { name: 'Charles Hardy', value: 'charles.hardy', photo: 'https://randomuser.me/api/portraits/men/12.jpg' },
-            { name: 'Rudolf Wilson', value: 'rudolf.wilson', photo: 'https://randomuser.me/api/portraits/men/40.jpg' },
-            { name: 'Emerald Hensley', value: 'emerald.hensley', photo: 'https://randomuser.me/api/portraits/women/1.jpg' },
-            { name: 'Lorena McCoy', value: 'lorena.mccoy', photo: 'https://randomuser.me/api/portraits/women/70.jpg' },
-            { name: 'Alicia Lamb', value: 'alicia.lamb', photo: 'https://randomuser.me/api/portraits/women/22.jpg' },
-            { name: 'Maria Waters', value: 'maria.waters', photo: 'https://randomuser.me/api/portraits/women/82.jpg' },
-        ]
     }
     updatePlayers = (value) => {
         this.setState({ selectedPlayer: value });
@@ -45,10 +31,13 @@ export default class NotableChessPlayers extends React.Component {
     }
 
     render() {
+        if(!this.props.players) {
+            return <div className="lowOpacity textCenter"><img width='25' height='25' src="./spinner.gif"/> <span >Loading players</span></div>
+        }
         return <SelectSearch
             name="goatPlayers"
             value={this.state.selectedPlayer.value}
-            options={this.players}
+            options={this.props.players}
             placeholder="Select player"
             renderOption={this.renderPlayer.bind(this)}
             onChange={this.updatePlayers}
