@@ -32,7 +32,9 @@ export default class NotableChessPlayers extends React.Component {
 
     render() {
         if(!this.props.players) {
-            return <div className="lowOpacity textCenter"><img width='25' height='25' src="./spinner.gif"/> <span >Loading players</span></div>
+            return <div className="lowOpacity textCenter"><img width='25' height='25' src="./spinner.gif"/> Loading players</div>
+        } else if(!this.props.players.length) {
+            return <div className="lowOpacity textCenter"> Could not fetch player list</div>
         }
         let options = this.props.players.map(option=>{return {...option, value:option.name}})
         return <SelectSearch

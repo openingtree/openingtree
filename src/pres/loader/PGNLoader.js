@@ -70,6 +70,7 @@ export default class PGNLoader extends React.Component {
             request.get('https://goatchess.github.io/list.json', (error, response) =>{
                 if(error) {
                     this.props.showError("Could not fetch player list. Failed to connect to DB.")
+                    this.setState({notablePlayers:[]})
                     return 
                 }
                 let notablePlayers
@@ -80,8 +81,10 @@ export default class PGNLoader extends React.Component {
                 }
                 if(!notablePlayers) {
                     this.props.showError("Failed to load player list.")
+                    this.setState({notablePlayers:[]})
+                } else {
+                    this.setState({notablePlayers:notablePlayers})
                 }
-                this.setState({notablePlayers:notablePlayers})
             })
         }
         this.setState({ site: newSite, expandedPanel:'user'})
