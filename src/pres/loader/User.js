@@ -44,7 +44,12 @@ export default class User extends React.Component {
     }
 
     validateInputDetailsSet() {
-        if(this.props.site === Constants.SITE_LICHESS ||
+        if(this.props.site === Constants.SITE_GOAT_DB){
+            if(!this.state.selectedPlayer.name){
+                this.props.showError("Please select a player")
+                return false
+            } 
+        } if(this.props.site === Constants.SITE_LICHESS ||
             this.props.site === Constants.SITE_CHESS_DOT_COM) {
                 if(!this.state.playerName){
                     this.setState({
