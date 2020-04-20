@@ -50,7 +50,7 @@ export default class Source extends React.Component {
                     <FormControlLabel className="sitelabel" value={Constants.SITE_GOAT_DB} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_GOAT_DB)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_LICHESS)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_CHESS_DOT_COM)} />
-                    <Divider/>
+                    <Divider className="dividerMargin"/>
                     <FormControlLabel className="sitelabel" value={Constants.SITE_PGN_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PGN_FILE)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_PGN_URL} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PGN_URL)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_OPENING_TREE_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_OPENING_TREE_FILE)} />

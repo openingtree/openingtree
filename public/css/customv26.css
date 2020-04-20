@@ -221,4 +221,9 @@
     margin-left: 10px;
     margin-right: 3px;
     float:left;
-};
+}
+
+.dividerMargin {
+    margin-top:5px;
+    margin-bottom:5px;
+}
