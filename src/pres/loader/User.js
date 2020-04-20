@@ -28,7 +28,8 @@ export default class User extends React.Component {
     editPlayerName(event) {
         this.setState({
             playerName: event.target.value,
-            playerNameError:''
+            playerNameError:'',
+            pgnUrlError: ''
         })
     }
 
@@ -38,8 +39,6 @@ export default class User extends React.Component {
 
     notablePlayerChange(player) {
         this.setState({
-            playerName: player.name, 
-            pgnUrl:player.pgnUrl, 
             selectedPlayer:player})
     }
 
@@ -58,8 +57,20 @@ export default class User extends React.Component {
                     return false
                 } 
         } else if(this.props.site === Constants.SITE_PGN_FILE) {
-            if(this.state.files.length===0) {
+            if(this.state.files.length === 0) {
                 this.props.showError("Please upload a PGN file")
+                return false
+            }
+        } else if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
+            if(this.state.files.length === 0) {
+                this.props.showError("Please upload an openingtree file")
+                return false
+            }
+        } else if(this.props.site === Constants.SITE_PGN_URL) {
+            if(!this.state.pgnUrl) {
+                this.setState({
+                    pgnUrlError:'Please enter a pgn url'
+                })
                 return false
             }
         }
@@ -76,21 +87,31 @@ export default class User extends React.Component {
     }
     
     getSummary() {
-        if(this.props.selectedPlayer.name) {
-            return <span>
-                    {getNumberIcon('done')}
-                    {this.props.selectedPlayer.profile.title}{'\u00A0'}
-                    <b>{this.props.selectedPlayer.name}</b>
-                </span>
-        }
-        if(this.props.playerName) {
-            return <span>{getNumberIcon('done')}User: <b>{this.props.playerName}</b></span>
-        }
-        if(this.props.files.length===1) {
-            return <span>{getNumberIcon('done')}File: <b>{this.props.files[0].name}</b></span>
-        }
-        if(this.props.files.length>1) {
-            return <span>{getNumberIcon('done')}{this.props.files.length} PGN files uploaded</span>
+        if(this.props.site === Constants.SITE_GOAT_DB){
+            if(this.props.selectedPlayer.name) {
+                return <span>
+                        {getNumberIcon('done')}
+                        {this.props.selectedPlayer.profile.title}{'\u00A0'}
+                        <b>{this.props.selectedPlayer.name}</b>
+                    </span>
+            }
+        } else if(this.props.site === Constants.SITE_LICHESS || 
+            this.props.site === Constants.SITE_CHESS_DOT_COM){
+            if(this.props.playerName) {
+                return <span>{getNumberIcon('done')}User: <b>{this.props.playerName}</b></span>
+            }
+        } else if(this.props.site === Constants.SITE_PGN_FILE || 
+            this.props.site === Constants.SITE_OPENING_TREE_FILE){
+            if(this.props.files.length===1) {
+                return <span>{getNumberIcon('done')}File: <b>{this.props.files[0].name}</b></span>
+            }
+            if(this.props.files.length>1) {
+                return <span>{getNumberIcon('done')}{this.props.files.length} PGN files uploaded</span>
+            }
+        } else if(this.props.site === Constants.SITE_PGN_URL) {
+            if(this.props.pgnUrl) {
+                return <span>{getNumberIcon('done')}{this.props.pgnUrl}</span>
+            }
         }
         return <span>{getNumberIcon(2)}Player details</span>
     }
@@ -114,6 +135,8 @@ export default class User extends React.Component {
         return <TextField id="input-with-icon-textfield" label="PGN url"
             variant="outlined" rowsMax={8} className="fullWidth"
             multiline placeholder="https://example.com/sample.pgn"
+            helperText={this.state.pgnUrlError}
+            error={this.state.pgnUrlError?true:false}
             InputProps={{
                 startAdornment: 
                     <InputAdornment position="start">
