@@ -34,6 +34,7 @@ export default class Actions extends React.Component {
         this.pgnReader.fetchPGNFromSite(this.props.playerName,
             this.props.playerColor,
             this.props.site,
+            this.props.selectedNotablePlayer,
             shouldDownloadToFile,
             this.props.advancedFilters,
             this.props.notify,

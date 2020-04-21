@@ -9,6 +9,7 @@ export default class NotablePlayerIterator {
 
     constructor(selectedPlayer, playerColor, advancedFilters, ready, showError) {
         let lowerCaseAliases = selectedPlayer.pgnAliases.map(alias=>alias.toLowerCase())
+        let playerColorHeaderName = playerColor === Constants.PLAYER_COLOR_WHITE? 'White': 'Black'
         new BaseUrlIterator(selectedPlayer.pgnUrl,
             (responseCode)=>{
                 if (responseCode !== 200) {
@@ -33,7 +34,7 @@ export default class NotablePlayerIterator {
                     if(!game) {
                         return false
                     }
-                    if(!lowerCaseAliases.includes(game[playerColor].username.toLowerCase())) {
+                    if(!lowerCaseAliases.includes(game.headers[playerColorHeaderName].toLowerCase())) {
                         return false
                     }
                     return true
@@ -43,4 +44,5 @@ export default class NotablePlayerIterator {
                 ready([], false)
             })
     }
+
 }

@@ -119,7 +119,8 @@ export default class PGNLoader extends React.Component {
                 playerName={this.state.playerName} site={this.state.site} advancedFilters={this.advancedFilters()}
                 notify={this.props.notify} showError={this.props.showError} onChange={this.props.onChange}
                 setDownloading={this.props.setDownloading} clear={this.props.clear} isDownloading={this.props.isDownloading}
-                switchToMovesTab={this.props.switchToMovesTab} gamesProcessed={this.props.gamesProcessed}/>
+                switchToMovesTab={this.props.switchToMovesTab} gamesProcessed={this.props.gamesProcessed} 
+                selectedNotablePlayer={this.state.selectedNotablePlayer}/>
 
         </div>
     }
