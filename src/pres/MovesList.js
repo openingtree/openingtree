@@ -63,7 +63,7 @@ export default class MovesList extends React.Component {
         </Table>
     }
     player(name, elo) {
-        return `${name}(${elo})`
+        return `${name}${elo?`(${elo})`:''}`
     }
     getPopover(moveIndex) {
         let performancePopoverOpen = this.state.openPerformanceIndex === moveIndex
