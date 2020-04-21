@@ -66,24 +66,25 @@ export default class ControlsContainer extends React.Component {
         return <div>
             {this.getFenField()}
             <Table onClick={this.eatClicks}>
-            <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}><TableRow>
+            {isNaN(performanceDetails.performanceRating)?null:            <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}><TableRow>
                 <TableCell className="performanceRatingRow"><b>Performance</b></TableCell>
                 <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
-                </TableRow></TableHead>
+                </TableRow></TableHead>}
             <TableBody>
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Results</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.results}</TableCell>
             </TableRow>
+            {isNaN(performanceDetails.averageElo)?null:
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Avg opponent</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
-            </TableRow>
+            </TableRow>}
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Score</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
             </TableRow>
-            {this.props.simplifiedView?null:
+            {this.props.simplifiedView || isNaN(performanceDetails.averageElo)?null:
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Rating change</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
@@ -99,7 +100,7 @@ export default class ControlsContainer extends React.Component {
             </TableRow>:null}
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Last played</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.moveDetails.lastPlayedGame.date} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.lastPlayedGame.url)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{this.removeQuestionMarksFromDate(this.props.moveDetails.lastPlayedGame.date)} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.lastPlayedGame.url)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>
             </TableBody>
             {this.props.simplifiedView?null:
@@ -110,5 +111,12 @@ export default class ControlsContainer extends React.Component {
             </TableFooter>
             }
         </Table></div>
+    }
+
+    removeQuestionMarksFromDate(date) {
+        if(date.indexOf('?') === -1) {
+            return date
+        }
+        return date.slice(0, date.indexOf('.'))
     }
 }
