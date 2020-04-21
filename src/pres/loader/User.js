@@ -157,7 +157,7 @@ export default class User extends React.Component {
     getInputsToShow() {
         if(this.props.site === Constants.SITE_PGN_FILE) {
             return <Dropzone filesChange={this.filesChange.bind(this)} filesLimit={10}
-                    dropzoneText="Drag and drop up to 10 pgn files here or click to select"
+                    dropzoneText="Drag and drop up to 10 pgn files here or click here to select files"
                 />
         } else if (this.props.site === Constants.SITE_LICHESS) {
             return this.getPlayerNameInput('lichess username')
@@ -169,7 +169,7 @@ export default class User extends React.Component {
             return this.getGoatDBSelection()
         } else if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
             return <Dropzone filesChange={this.filesChange.bind(this)} filesLimit={1}
-                    dropzoneText="Drag and drop openingtree file here or click to select"
+                    dropzoneText="Drag and drop openingtree save file here or click here to select a file"
                 />
         }
     }
