@@ -21,6 +21,7 @@ export default class NotablePlayerIterator {
             }, (pgnStringArray) => {
                 let parsedPGNs = pgnStringArray.map((pgnString)=> {
                     try {
+
                         return parse(pgnString)[0]
                     } catch (e) {
                         console.log("failed to parse pgn", pgnString)
