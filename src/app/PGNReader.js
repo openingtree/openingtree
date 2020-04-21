@@ -5,7 +5,7 @@ import ChessComIterator from './iterator/ChessComIterator'
 import PGNFileIterator from './iterator/PGNFileIterator'
 import * as Constants from './Constants'
 import streamsaver from 'streamsaver'
-import NotablePlayerIterator from './iterator/NotablePlayerInterator'
+import NotablePlayerIterator from './iterator/NotablePlayerIterator'
 
 export default class PGNReader {
     constructor() {

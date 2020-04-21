@@ -16,6 +16,7 @@
     "chess-web-api": "^1.0.6",
     "chess.js": "^0.10.2",
     "material-ui-dropzone": "^2.5.0",
+    "normalize-newline": "^3.0.0",
     "react": "^16.12.0",
     "react-chessground": "^1.0.0",
     "react-dom": "^16.12.0",
