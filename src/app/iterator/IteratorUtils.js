@@ -10,6 +10,9 @@ export function normalizePGN(pgnString) {
     // this separates games with atleast a triple \n
     let headersNormalized = dataString.replace(/\n\n+\[/g, `\n\n\n[`);
 
+    // some pgn files have the result in a separate line instead of 
+    // at the end of the moves this moves those results to the end of the moves
+    // $1 replaces the first captured group which is the result
     let resultsNormalized = headersNormalized.replace(/\s*\n+(1\-0|0\-1|1\/2\-1\/2)/g, ` $1`);
 
     return resultsNormalized
