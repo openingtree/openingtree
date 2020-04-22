@@ -1,5 +1,5 @@
 import request from 'request'
-import normalizeNewLine from 'normalize-newline'
+import {normalizePGN} from './IteratorUtils'
 
 export default class BaseUrlIterator {
 
@@ -12,14 +12,7 @@ export default class BaseUrlIterator {
             .on('response',(response)=>{
                 return responseCodeCallback(response.statusCode)
             }).on('data', (data) => {
-                // parser cannot handle \r characters
-                // normalize newlines coverts everything to \n
-                let dataString = normalizeNewLine(data.toString())
-                
-                // some pgn files dont have triple \n separating games
-                // so converting all double \n with triple \n if it happens before a [
-                // this separates games with atleast a triple \n
-                let newBody = (remainingBody + dataString).replace(/\n\n\[/g, `\n\n\n[`);
+                let newBody = normalizePGN(remainingBody + data.toString())
                 let lastValidPGN = newBody.lastIndexOf(`\n\n\n`)
                 let body = newBody.slice(0, lastValidPGN)
 
