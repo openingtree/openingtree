@@ -3,7 +3,7 @@ import {normalizePGN} from './IteratorUtils'
 
 export default class BaseUrlIterator {
 
-    constructor(url, responseCodeCallback, errorCallback, dataCallback, endCallback) {
+    constructor(url, skipPGNNormalization, responseCodeCallback, errorCallback, dataCallback, endCallback) {
         let remainingBody=''
 
         let requestObject = request.get(
@@ -12,7 +12,9 @@ export default class BaseUrlIterator {
             .on('response',(response)=>{
                 return responseCodeCallback(response.statusCode)
             }).on('data', (data) => {
-                let newBody = normalizePGN(remainingBody + data.toString())
+                let newBody = skipPGNNormalization? 
+                        remainingBody + data.toString() : 
+                        normalizePGN(remainingBody + data.toString())
                 let lastValidPGN = newBody.lastIndexOf(`\n\n\n`)
                 let body = newBody.slice(0, lastValidPGN)
 
