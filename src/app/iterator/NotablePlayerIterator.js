@@ -10,7 +10,7 @@ export default class NotablePlayerIterator {
     constructor(selectedPlayer, playerColor, advancedFilters, ready, showError) {
         let lowerCaseAliases = selectedPlayer.pgnAliases.map(alias=>alias.toLowerCase())
         let playerColorHeaderName = playerColor === Constants.PLAYER_COLOR_WHITE? 'White': 'Black'
-        new BaseUrlIterator(selectedPlayer.pgnUrl,
+        new BaseUrlIterator(selectedPlayer.pgnUrl, false, 
             (responseCode)=>{
                 if (responseCode !== 200) {
                     showError('could not load url')

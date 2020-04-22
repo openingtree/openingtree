@@ -18,7 +18,7 @@ export default class LichessIterator {
         let selectedTimeControls = getTimeControlsArray(Constants.SITE_LICHESS, advancedFilters, true)
         let perfFilter = selectedTimeControls.length === 0 || selectedTimeControls.length === 6?
                 "" : `&perfType=${selectedTimeControls.join(",")}`
-        new BaseUrlIterator(lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter,
+        new BaseUrlIterator(lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter, true,
             (responseCode)=>{
                 if(responseCode === 404) {
                     showError('could not find lichess user ' + playerName)
