@@ -53,11 +53,18 @@ export default class Actions extends React.Component {
 
     }
 
+    getPlayerName() {
+        if(this.props.site === Constants.SITE_GOAT_DB) {
+            return this.props.selectedNotablePlayer.name
+        }
+        return this.props.playerName?this.props.playerName:"player"
+    }
+
     load() {
         this.props.clear()
         this.setState({ isGamesSubsectionOpen: true })
         // set the player name and color in the global state
-        this.props.onChange("playerName", this.props.playerName?this.props.playerName:"player")
+        this.props.onChange("playerName", this.getPlayerName())
         this.props.onChange("playerColor", this.props.playerColor)
         this.readPgn(false)
         this.props.setDownloading(true)
