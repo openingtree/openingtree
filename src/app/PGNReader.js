@@ -94,7 +94,7 @@ export default class PGNReader {
 
             pgn.moves.forEach(element => {
                 let sourceFen = chess.fen()
-                let move = chess.move(element.move)
+                let move = chess.move(element.move, {sloppy: true})
                 let targetFen = chess.fen()
                 if(!move){
                     console.log('failed to load game ' + pgn)

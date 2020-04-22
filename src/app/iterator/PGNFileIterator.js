@@ -3,13 +3,14 @@ import { parse }  from '../PGNParser'
 import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData, isOpponentEloInSelectedRange} from '../util'
 import * as Constants from '../Constants'
 import {trackEvent} from '../Analytics'
+import {normalizePGN} from './IteratorUtils'
 
 export default class LichessIterator {
 
     constructor(playerName, files, playerColor, advancedFilters, ready, showError) {
         let reader = new FileReader()
         reader.onload = function(evt) {
-            let fileData = evt.target.result
+            let fileData = normalizePGN(evt.target.result);
             let pgnsArray = fileData.split("\n\n\n")
 
             let parsedPGNs = pgnsArray.map((pgnString)=> {
