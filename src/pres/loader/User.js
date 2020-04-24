@@ -49,7 +49,7 @@ export default class User extends React.Component {
     }
 
     validateInputDetailsSet() {
-        if(this.props.site === Constants.SITE_GOAT_DB){
+        if(this.props.site === Constants.SITE_PLAYER_DB){
             if(!this.state.selectedPlayer.name){
                 this.props.showError("Please select a player")
                 return false
@@ -93,7 +93,7 @@ export default class User extends React.Component {
     }
     
     getSummary() {
-        if(this.props.site === Constants.SITE_GOAT_DB){
+        if(this.props.site === Constants.SITE_PLAYER_DB){
             if(this.props.selectedPlayer.name) {
                 return <span>
                         {getNumberIcon('done')}
@@ -165,7 +165,7 @@ export default class User extends React.Component {
             return this.getPlayerNameInput('chess.com username')
         } else if (this.props.site === Constants.SITE_PGN_URL) {
             return this.getPGNUrl()
-        } else if (this.props.site === Constants.SITE_GOAT_DB) {
+        } else if (this.props.site === Constants.SITE_PLAYER_DB) {
             return this.getGoatDBSelection()
         } else if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
             return <Dropzone filesChange={this.filesChange.bind(this)} filesLimit={1}

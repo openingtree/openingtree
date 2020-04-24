@@ -70,7 +70,7 @@ export default class PGNLoader extends React.Component {
 
     siteChange(event) {
         let newSite = event.target.value
-        if(newSite === Constants.SITE_GOAT_DB && !this.state.notablePlayers) {
+        if(newSite === Constants.SITE_PLAYER_DB && !this.state.notablePlayers) {
             request.get('https://goatchess.github.io/list.json', (error, response) =>{
                 if(error) {
                     this.props.showError("Could not fetch player list. Failed to connect to DB.")

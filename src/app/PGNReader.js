@@ -68,7 +68,7 @@ export default class PGNReader {
             new ChessComIterator(playerName, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_PGN_FILE) {
             new PGNFileIterator(playerName, files, playerColor, advancedFilters, processor, showError)
-        } else if (site === Constants.SITE_GOAT_DB) {
+        } else if (site === Constants.SITE_PLAYER_DB) {
             new NotablePlayerIterator(selectedNotablePlayer, playerColor, advancedFilters, processor, showError)
         }
 
