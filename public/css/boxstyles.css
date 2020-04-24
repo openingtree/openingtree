@@ -200,4 +200,5 @@ body {
 
 .select-search-box__options {
     padding-inline-start: 0px;
+    margin-bottom:0px;
 }
