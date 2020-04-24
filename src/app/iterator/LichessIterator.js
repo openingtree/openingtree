@@ -1,4 +1,3 @@
-import request from 'request'
 import { parse }  from '../PGNParser'
 import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData, isOpponentEloInSelectedRange} from '../util'
 import * as Constants from '../Constants'
