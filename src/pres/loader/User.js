@@ -72,7 +72,7 @@ export default class User extends React.Component {
                 this.props.showError("Please upload an openingtree file")
                 return false
             }
-        } else if(this.props.site === Constants.SITE_PGN_URL) {
+        } else if(this.props.site === Constants.SITE_EVENT_DB) {
             if(!this.state.pgnUrl) {
                 this.setState({
                     pgnUrlError:'Please enter a pgn url'
@@ -114,7 +114,7 @@ export default class User extends React.Component {
             if(this.props.files.length>1) {
                 return <span>{getNumberIcon('done')}{this.props.files.length} PGN files uploaded</span>
             }
-        } else if(this.props.site === Constants.SITE_PGN_URL) {
+        } else if(this.props.site === Constants.SITE_EVENT_DB) {
             if(this.props.pgnUrl) {
                 return <span>{getNumberIcon('done')}{this.props.pgnUrl}</span>
             }
@@ -163,7 +163,7 @@ export default class User extends React.Component {
             return this.getPlayerNameInput('lichess username')
         } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
             return this.getPlayerNameInput('chess.com username')
-        } else if (this.props.site === Constants.SITE_PGN_URL) {
+        } else if (this.props.site === Constants.SITE_EVENT_DB) {
             return this.getPGNUrl()
         } else if (this.props.site === Constants.SITE_PLAYER_DB) {
             return this.getGoatDBSelection()

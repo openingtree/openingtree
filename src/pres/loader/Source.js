@@ -12,6 +12,7 @@ import Public from '@material-ui/icons/Public';
 import People from '@material-ui/icons/People';
 import Save from '@material-ui/icons/Save';
 import Divider from '@material-ui/core/Divider';
+import DateRange from '@material-ui/icons/DateRange';
 
 export default class Source extends React.Component {
     getSourceOption(source, addNumber) {
@@ -21,8 +22,8 @@ export default class Source extends React.Component {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<img alt="chess.com" className="siteimage" src="./chesscomlogo.png" /></span>
         } else if (source === Constants.SITE_PGN_FILE) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<Backup className="lowOpacity"/><span className="sourceName"> Upload PGN file</span></span>
-        } else if (source === Constants.SITE_PGN_URL) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Public className="lowOpacity"/><span className="sourceName"> Download PGN from url</span></span>
+        } else if (source === Constants.SITE_EVENT_DB) {
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<DateRange className="lowOpacity"/><span className="sourceName"> Notable chess events</span></span>
         } else if (source === Constants.SITE_PLAYER_DB) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<People className="lowOpacity"/><span className="sourceName"> Notable chess players</span></span>
         }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
@@ -47,12 +48,13 @@ export default class Source extends React.Component {
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <RadioGroup onChange={this.props.siteChange}>
-                    <FormControlLabel className="sitelabel" value={Constants.SITE_PLAYER_DB} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PLAYER_DB)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_LICHESS)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_CHESS_DOT_COM)} />
-                    <Divider className="dividerMargin"/>
-                    <FormControlLabel className="sitelabel" value={Constants.SITE_PGN_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PGN_FILE)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_OPENING_TREE_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_OPENING_TREE_FILE)} />
+                    <Divider className="dividerMargin"/>
+                    <FormControlLabel className="sitelabel" value={Constants.SITE_PLAYER_DB} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PLAYER_DB)} />
+                    <FormControlLabel className="sitelabel" value={Constants.SITE_EVENT_DB} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_EVENT_DB)} />
+                    <FormControlLabel className="sitelabel" value={Constants.SITE_PGN_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PGN_FILE)} />
                </RadioGroup>
             </ExpansionPanelDetails>
         </ExpansionPanel>
