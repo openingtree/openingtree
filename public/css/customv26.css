@@ -218,8 +218,8 @@
 .profilePicture {
     border-radius: 50%;
     vertical-align: middle;
-    margin-left: 10px;
-    margin-right: 3px;
+    margin-left: 0px;
+    margin-right: 10px;
     float:left;
 }
 
