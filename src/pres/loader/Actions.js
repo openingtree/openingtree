@@ -54,7 +54,7 @@ export default class Actions extends React.Component {
     }
 
     getPlayerName() {
-        if(this.props.site === Constants.SITE_GOAT_DB) {
+        if(this.props.site === Constants.SITE_PLAYER_DB) {
             return this.props.selectedNotablePlayer.name
         }
         return this.props.playerName?this.props.playerName:"player"
