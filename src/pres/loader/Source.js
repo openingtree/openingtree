@@ -8,7 +8,6 @@ import Collapse from '@material-ui/core/Collapse';
 import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
 import Backup from '@material-ui/icons/Backup';
-import Public from '@material-ui/icons/Public';
 import People from '@material-ui/icons/People';
 import Save from '@material-ui/icons/Save';
 import Divider from '@material-ui/core/Divider';
