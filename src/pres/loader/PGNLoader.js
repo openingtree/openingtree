@@ -20,6 +20,7 @@ export default class PGNLoader extends React.Component {
             isGamesSubsectionOpen: false,
             expandedPanel: 'source',
             notablePlayers:null,
+            notableEvents:null,
             files:[],
             pgnUrl:'',
             selectedNotablePlayer:{}
@@ -66,29 +67,38 @@ export default class PGNLoader extends React.Component {
         })
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "PlayerNameSaved")
     }
-
+    fetchGOATGames(url, callback){
+        request.get(url, (error, response) =>{
+            if(error) {
+                this.props.showError("Could not fetch player list. Failed to connect to DB.")
+                callback([])
+                return 
+            }
+            let gamesDetails
+            try{
+                gamesDetails = JSON.parse(response.body).players
+            } catch (e) {
+                console.log(e)
+            }
+            if(!gamesDetails) {
+                this.props.showError("Failed to load games.")
+                callback([])
+            } else {
+                callback(gamesDetails)
+            }
+        })
+    }
 
     siteChange(event) {
         let newSite = event.target.value
         if(newSite === Constants.SITE_PLAYER_DB && !this.state.notablePlayers) {
-            request.get('https://goatchess.github.io/list.json', (error, response) =>{
-                if(error) {
-                    this.props.showError("Could not fetch player list. Failed to connect to DB.")
-                    this.setState({notablePlayers:[]})
-                    return 
-                }
-                let notablePlayers
-                try{
-                    notablePlayers = JSON.parse(response.body).players
-                } catch (e) {
-                    console.log(e)
-                }
-                if(!notablePlayers) {
-                    this.props.showError("Failed to load player list.")
-                    this.setState({notablePlayers:[]})
-                } else {
-                    this.setState({notablePlayers:notablePlayers})
-                }
+            this.fetchGOATGames('https://goatchess.github.io/list.json', (gamesDetails)=>{
+                this.setState({notablePlayers:gamesDetails})
+            })
+        }
+        if(newSite === Constants.SITE_EVENT_DB && !this.state.notableEvents) {
+            this.fetchGOATGames('https://goatchess.github.io/list.json', (gamesDetails)=>{
+                this.setState({notableEvents:gamesDetails})
             })
         }
         this.setState({ site: newSite, expandedPanel:'user'})
@@ -108,7 +118,7 @@ export default class PGNLoader extends React.Component {
             <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)} 
                 showError={this.props.showError} files={this.state.files} players={this.state.notablePlayers}
-                site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}
+                events={this.state.notableEvents} site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}
                 pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer}/>
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}

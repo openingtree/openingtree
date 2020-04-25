@@ -12,7 +12,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Dropzone from './Dropzone'
 import InputAdornment from '@material-ui/core/InputAdornment'
 import InsertLink from '@material-ui/icons/InsertLink'
-import NotableChessPlayers from './NotableChessPlayers';
+import NotableChessGames from './NotableChessGames';
 
 export default class User extends React.Component {
     constructor(props) {
@@ -20,8 +20,8 @@ export default class User extends React.Component {
         this.state = {
             playerName:'',
             files:[],
-            pgnUrl:'',
-            selectedPlayer:{}
+            selectedPlayer:{},
+            selectedEvent:{}
         }
     }
 
@@ -32,13 +32,6 @@ export default class User extends React.Component {
         })
     }
 
-    editPGNUrl(event) {
-        this.setState({
-            pgnUrl: event.target.value,
-            pgnUrlError: ''
-        })
-    }
-    
     filesChange(files) {
         this.setState({files:files})
     }
@@ -47,14 +40,23 @@ export default class User extends React.Component {
         this.setState({
             selectedPlayer:player})
     }
+    notableEventChange(event) {
+        this.setState({
+            selectedEvent:event})
+    }
 
     validateInputDetailsSet() {
-        if(this.props.site === Constants.SITE_PLAYER_DB){
-            if(!this.state.selectedPlayer.name){
+        if(this.props.site === Constants.SITE_EVENT_DB){
+            if(!this.state.selectedEvent){
+                this.props.showError("Please select an event")
+                return false
+            } 
+        } else if(this.props.site === Constants.SITE_PLAYER_DB){
+            if(!this.state.selectedPlayer){
                 this.props.showError("Please select a player")
                 return false
             } 
-        } if(this.props.site === Constants.SITE_LICHESS ||
+        } else if(this.props.site === Constants.SITE_LICHESS ||
             this.props.site === Constants.SITE_CHESS_DOT_COM) {
                 if(!this.state.playerName){
                     this.setState({
@@ -72,14 +74,7 @@ export default class User extends React.Component {
                 this.props.showError("Please upload an openingtree file")
                 return false
             }
-        } else if(this.props.site === Constants.SITE_EVENT_DB) {
-            if(!this.state.pgnUrl) {
-                this.setState({
-                    pgnUrlError:'Please enter a pgn url'
-                })
-                return false
-            }
-        }
+        } 
         return true
     }
 
@@ -87,7 +82,7 @@ export default class User extends React.Component {
          if(this.validateInputDetailsSet()) {
             this.props.playerDetailsChange(this.state.playerName, 
                 this.state.files, 
-                this.state.pgnUrl, 
+                this.state.selectedEvent, 
                 this.state.selectedPlayer)
         }
     }
@@ -115,8 +110,8 @@ export default class User extends React.Component {
                 return <span>{getNumberIcon('done')}{this.props.files.length} PGN files uploaded</span>
             }
         } else if(this.props.site === Constants.SITE_EVENT_DB) {
-            if(this.props.pgnUrl) {
-                return <span>{getNumberIcon('done')}{this.props.pgnUrl}</span>
+            if(this.props.selectedEvent) {
+                return <span>{getNumberIcon('done')}{this.props.selectedEvent.name}</span>
             }
         }
         return <span>{getNumberIcon(2)}Player details</span>
@@ -131,27 +126,18 @@ export default class User extends React.Component {
             error={this.state.playerNameError?true:false}/>
     }
     getGoatDBSelection(){
-        return <NotableChessPlayers 
+        return <NotableChessGames 
             players={this.props.players} 
+            placeholder="Select a player"
             onChange={this.notablePlayerChange.bind(this)}
             selectedPlayer={this.state.selectedPlayer}/>
     }
-    getPGNUrl(){
-        //return <input type="url" inputProps={{ 'aria-label': 'description' }} />
-        return <TextField id="input-with-icon-textfield" label="PGN url"
-            variant="outlined" rowsMax={8} className="fullWidth"
-            multiline placeholder="https://example.com/sample.pgn"
-            helperText={this.state.pgnUrlError}
-            error={this.state.pgnUrlError?true:false}
-            onChange={this.editPGNUrl.bind(this)}
-            InputProps={{
-                startAdornment: 
-                    <InputAdornment position="start">
-                    <InsertLink />
-                    </InputAdornment>
-                
-            }}
-        />
+    getGoatDBEventSelection(){
+        return <NotableChessGames 
+            players={this.props.events} 
+            placeholder="Select an event"
+            onChange={this.notableEventChange.bind(this)}
+            selectedPlayer={this.state.selectedEvent}/>
     }
 
     getInputsToShow() {
@@ -164,7 +150,7 @@ export default class User extends React.Component {
         } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
             return this.getPlayerNameInput('chess.com username')
         } else if (this.props.site === Constants.SITE_EVENT_DB) {
-            return this.getPGNUrl()
+            return this.getGoatDBEventSelection()
         } else if (this.props.site === Constants.SITE_PLAYER_DB) {
             return this.getGoatDBSelection()
         } else if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {

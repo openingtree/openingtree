@@ -2,7 +2,7 @@ import SelectSearch from 'react-select-search';
 import React from 'react'
 
 
-export default class NotableChessPlayers extends React.Component {
+export default class NotableChessGames extends React.Component {
 
     constructor(props) {
         super(props)
@@ -30,7 +30,7 @@ export default class NotableChessPlayers extends React.Component {
             name="goatPlayers"
             value={this.props.selectedPlayer.value}
             options={options}
-            placeholder="Select player"
+            placeholder={this.props.placeholder}
             renderOption={this.renderPlayer}
             onChange={this.updatePlayers}
         />
