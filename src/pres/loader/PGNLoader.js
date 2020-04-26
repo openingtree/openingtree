@@ -22,8 +22,9 @@ export default class PGNLoader extends React.Component {
             notablePlayers:null,
             notableEvents:null,
             files:[],
-            pgnUrl:'',
+            selectedNotableEvent:{},
             selectedNotablePlayer:{}
+
         }
         this.timeframeSteps = getTimeframeSteps()
         this.state[Constants.FILTER_NAME_SELECTED_TIMEFRAME] = [0, this.timeframeSteps.length - 1]
@@ -57,13 +58,13 @@ export default class PGNLoader extends React.Component {
         };
     }
 
-    playerDetailsChange(playerName, files, pgnUrl, selectedPlayer) {
+    playerDetailsChange(playerName, files, selectedNotableEvent, selectedNotablePlayer) {
         this.setState({
             playerName: playerName,
             expandedPanel:'filters',
             files:files,
-            pgnUrl:pgnUrl,
-            selectedNotablePlayer:selectedPlayer
+            selectedNotableEvent:selectedNotableEvent,
+            selectedNotablePlayer:selectedNotablePlayer
         })
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "PlayerNameSaved")
     }
@@ -97,7 +98,7 @@ export default class PGNLoader extends React.Component {
             })
         }
         if(newSite === Constants.SITE_EVENT_DB && !this.state.notableEvents) {
-            this.fetchGOATGames('https://goatchess.github.io/list.json', (gamesDetails)=>{
+            this.fetchGOATGames('https://goatevents.github.io/list.json', (gamesDetails)=>{
                 this.setState({notableEvents:gamesDetails})
             })
         }
@@ -119,7 +120,7 @@ export default class PGNLoader extends React.Component {
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)} 
                 showError={this.props.showError} files={this.state.files} notablePlayers={this.state.notablePlayers}
                 notableEvents={this.state.notableEvents} site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}
-                pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer}/>
+                pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer} selectedEvent={this.state.selectedNotableEvent}/>
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
                 site={this.state.site} advancedFilters={this.advancedFilters()}
@@ -130,7 +131,7 @@ export default class PGNLoader extends React.Component {
                 notify={this.props.notify} showError={this.props.showError} onChange={this.props.onChange}
                 setDownloading={this.props.setDownloading} clear={this.props.clear} isDownloading={this.props.isDownloading}
                 switchToMovesTab={this.props.switchToMovesTab} gamesProcessed={this.props.gamesProcessed} 
-                selectedNotablePlayer={this.state.selectedNotablePlayer}/>
+                selectedNotablePlayer={this.state.selectedNotablePlayer} selectedNotableEvent={this.state.selectedNotableEvent}/>
 
         </div>
     }
