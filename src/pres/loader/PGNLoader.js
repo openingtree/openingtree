@@ -76,7 +76,7 @@ export default class PGNLoader extends React.Component {
             }
             let gamesDetails
             try{
-                gamesDetails = JSON.parse(response.body).players
+                gamesDetails = JSON.parse(response.body).list
             } catch (e) {
                 console.log(e)
             }
@@ -117,8 +117,8 @@ export default class PGNLoader extends React.Component {
                 site={this.state.site} siteChange={this.siteChange.bind(this)}/>
             <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)} 
-                showError={this.props.showError} files={this.state.files} players={this.state.notablePlayers}
-                events={this.state.notableEvents} site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}
+                showError={this.props.showError} files={this.state.files} notablePlayers={this.state.notablePlayers}
+                notableEvents={this.state.notableEvents} site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}
                 pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer}/>
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
