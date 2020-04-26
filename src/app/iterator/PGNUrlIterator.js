@@ -32,7 +32,7 @@ export default class PGNUrlIterator {
                     if(!game) {
                         return false
                     }
-                    if(!lowerCasePlayerNames.includes(game.headers[playerColorHeaderName].toLowerCase())) {
+                    if(lowerCasePlayerNames && !lowerCasePlayerNames.includes(game.headers[playerColorHeaderName].toLowerCase())) {
                         return false
                     }
                     return true

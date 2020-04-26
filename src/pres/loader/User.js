@@ -110,7 +110,7 @@ export default class User extends React.Component {
                 return <span>{getNumberIcon('done')}{this.props.files.length} PGN files uploaded</span>
             }
         } else if(this.props.site === Constants.SITE_EVENT_DB) {
-            if(this.props.selectedEvent) {
+            if(this.props.selectedEvent.name) {
                 return <span>{getNumberIcon('done')}{this.props.selectedEvent.name}</span>
             }
         }

@@ -31,7 +31,7 @@ export default class PGNReader {
     }
 
     fetchPGNFromSite(playerName, playerColor, site, selectedNotablePlayer,
-        shouldDownloadToFile, advancedFilters, notify, 
+        selectedNotableEvent, shouldDownloadToFile, advancedFilters, notify, 
         showError, stopDownloading, files) {
         this.continueProcessingGames = true
         if(shouldDownloadToFile) {
@@ -70,7 +70,9 @@ export default class PGNReader {
             new PGNFileIterator(playerName, files, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_PLAYER_DB) {
             new NotablePlayerIterator(selectedNotablePlayer, playerColor, advancedFilters, processor, showError)
-        }
+        } else if (site === Constants.SITE_EVENT_DB) {
+            new NotablePlayerIterator(selectedNotableEvent, playerColor, advancedFilters, processor, showError)
+        } 
 
         
     }

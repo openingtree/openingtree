@@ -35,6 +35,7 @@ export default class Actions extends React.Component {
             this.props.playerColor,
             this.props.site,
             this.props.selectedNotablePlayer,
+            this.props.selectedNotableEvent,
             shouldDownloadToFile,
             this.props.advancedFilters,
             this.props.notify,
