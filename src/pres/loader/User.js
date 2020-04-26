@@ -127,17 +127,17 @@ export default class User extends React.Component {
     }
     getGoatDBSelection(){
         return <NotableChessGames 
-            players={this.props.players} 
+            list={this.props.notablePlayers} 
             placeholder="Select a player"
             onChange={this.notablePlayerChange.bind(this)}
-            selectedPlayer={this.state.selectedPlayer}/>
+            selectedDetail={this.state.selectedPlayer}/>
     }
     getGoatDBEventSelection(){
         return <NotableChessGames 
-            players={this.props.events} 
+            list={this.props.notableEvents} 
             placeholder="Select an event"
             onChange={this.notableEventChange.bind(this)}
-            selectedPlayer={this.state.selectedEvent}/>
+            selectedDetail={this.state.selectedEvent}/>
     }
 
     getInputsToShow() {
