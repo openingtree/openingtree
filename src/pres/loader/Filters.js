@@ -105,8 +105,8 @@ export default class User extends React.Component {
                 <div className="pgnloadersection">
                     Games where <b>{SitePolicy.finalPlayerName(this.props.site, this.props.playerName, this.props.selectedNotablePlayer)}</b> is playing as:
                     <RadioGroup onChange={this.playerColorChange.bind(this)}>
-                        <FormControlLabel className="colorlabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_WHITE} label={this.state.playerColor === Constants.PLAYER_COLOR_WHITE?<b>White</b>:"White"}/>
-                        <FormControlLabel className="colorlabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_BLACK} label={this.state.playerColor === Constants.PLAYER_COLOR_BLACK?<b>Black</b>:"Black"}/>
+                        <FormControlLabel className="whitelabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_WHITE} label={this.state.playerColor === Constants.PLAYER_COLOR_WHITE?<b>White</b>:"White"}/>
+                        <FormControlLabel className="blacklabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_BLACK} label={this.state.playerColor === Constants.PLAYER_COLOR_BLACK?<b>Black</b>:"Black"}/>
                     </RadioGroup>
                 </div>
                 {SitePolicy.isAdvancedFiltersEnabled(this.props.site)?<div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>

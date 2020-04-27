@@ -92,7 +92,11 @@
     margin-top:0px;
     margin-bottom:0px;
 }
-.colorlabel {
+.whitelabel {
+    margin-top:0px;
+    margin-bottom:-5px;
+}
+.blacklabel {
     margin-top:-5px;
     margin-bottom:-5px;
 }
