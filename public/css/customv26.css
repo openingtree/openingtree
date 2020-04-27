@@ -9,6 +9,10 @@
     margin-top:10px;
     color:#555555;
 }
+.pgnloaderfirstsection {
+    margin-top:0px;
+    color:#555555;
+}
 
 .navMove {
     display:flex;
