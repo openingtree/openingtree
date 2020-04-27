@@ -102,7 +102,7 @@ export default class User extends React.Component {
             disabled={isDisabled}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary(isDisabled)}</ExpansionPanelSummary>
             <ExpansionPanelDetails>
-                <div className="pgnloadersection">
+                <div className="pgnloaderfirstsection">
                     Games where <b>{SitePolicy.finalPlayerName(this.props.site, this.props.playerName, this.props.selectedNotablePlayer)}</b> is playing as:
                     <RadioGroup onChange={this.playerColorChange.bind(this)}>
                         <FormControlLabel className="whitelabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_WHITE} label={this.state.playerColor === Constants.PLAYER_COLOR_WHITE?<b>White</b>:"White"}/>
