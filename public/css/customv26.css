@@ -92,6 +92,10 @@
     margin-top:0px;
     margin-bottom:0px;
 }
+.colorlabel {
+    margin-top:-5px;
+    margin-bottom:-5px;
+}
 
 .bootNavColor {
     color:rgba(0,0,0,0.5)

@@ -16,6 +16,7 @@ import AdvancedFilters from './AdvancedFilters'
 import {advancedFilters} from './Common'
 import MuiCollapse from '@material-ui/core/Collapse';
 import * as SitePolicy from '../../app/SitePolicy'
+import { Radio, FormControlLabel, RadioGroup } from '@material-ui/core';
 
 export default class User extends React.Component {
 
@@ -49,11 +50,10 @@ export default class User extends React.Component {
             trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ToggleAdvancedFilters", this.state.site)
         }
     }
-    playerColorChange(playerColor) {
-        return () => {
-            this.setState({ playerColor: playerColor })
-            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ColorChange", playerColor)
-        }
+    playerColorChange(event) {
+        let playerColor = event.target.value
+        this.setState({ playerColor: playerColor })
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ColorChange", playerColor)
     }
     handleTimeControlChange(event) {
         this.setState({ [event.target.name]: event.target.checked });
@@ -99,10 +99,11 @@ export default class User extends React.Component {
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <div className="pgnloadersection">
-                    <div>
-                        <Button onClick={this.playerColorChange(Constants.PLAYER_COLOR_WHITE)} color={this.state.playerColor === Constants.PLAYER_COLOR_WHITE ? 'secondary' : 'link'}>White</Button>
-                        <Button onClick={this.playerColorChange(Constants.PLAYER_COLOR_BLACK)} color={this.state.playerColor === Constants.PLAYER_COLOR_BLACK ? 'secondary' : 'link'}>Black</Button>
-                    </div>
+                    Games where {this.props.playerName} is playing as:
+                    <RadioGroup onChange={this.playerColorChange.bind(this)}>
+                        <FormControlLabel className="colorlabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_WHITE} label={this.state.playerColor === Constants.PLAYER_COLOR_WHITE?<b>White</b>:"White"}/>
+                        <FormControlLabel className="colorlabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_BLACK} label={this.state.playerColor === Constants.PLAYER_COLOR_BLACK?<b>Black</b>:"Black"}/>
+                    </RadioGroup>
                 </div>
                 {SitePolicy.hasAdvancedFiltersEnabled(this.props.site)?<div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
                     <Collapse isOpen={this.state.isAdvancedFiltersOpen}>

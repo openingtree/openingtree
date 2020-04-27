@@ -26,7 +26,7 @@ export default class MainContainer extends React.Component {
         settings:{
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,
-          playerColor:Constants.PLAYER_COLOR_WHITE
+          playerColor:''
         },
         message:'',
         downloadingGames:false
