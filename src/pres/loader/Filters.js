@@ -15,6 +15,7 @@ import { faCaretDown, faCaretUp} from '@fortawesome/free-solid-svg-icons'
 import AdvancedFilters from './AdvancedFilters'
 import {advancedFilters} from './Common'
 import MuiCollapse from '@material-ui/core/Collapse';
+import * as SitePolicy from '../../app/SitePolicy'
 
 export default class User extends React.Component {
 
@@ -103,7 +104,7 @@ export default class User extends React.Component {
                         <Button onClick={this.playerColorChange(Constants.PLAYER_COLOR_BLACK)} color={this.state.playerColor === Constants.PLAYER_COLOR_BLACK ? 'secondary' : 'link'}>Black</Button>
                     </div>
                 </div>
-                <div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
+                {SitePolicy.hasAdvancedFiltersEnabled(this.props.site)?<div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
                     <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
                             <AdvancedFilters
                                 site={this.props.site}
@@ -115,8 +116,10 @@ export default class User extends React.Component {
                                 handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
                                 advancedFilters={advancedFilters(this.state)}
                             />
-                    </Collapse></div></ExpansionPanelDetails>
-                    <Divider />
+                    </Collapse>
+                </div>:null}
+                </ExpansionPanelDetails>
+                <Divider />
                 <ExpansionPanelActions>
                     <MaterialUIButton size="small" color="primary" onClick={this.setFilters.bind(this)}>Save</MaterialUIButton>
                 </ExpansionPanelActions></ExpansionPanel>
