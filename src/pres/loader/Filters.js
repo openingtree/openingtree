@@ -95,7 +95,7 @@ export default class User extends React.Component {
                     TransitionComponent={MuiCollapse}
                     TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
             onChange={this.props.handleExpansionChange}
-            disabled={!this.state.filtersSet && this.props.expandedPanel!=='filters'}>
+            disabled={!SitePolicy.isFilterPanelEnabled(this.props.site, this.props.playerName)}>
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <div className="pgnloadersection">

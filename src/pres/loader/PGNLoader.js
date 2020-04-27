@@ -7,6 +7,7 @@ import User from './User'
 import Filters from './Filters'
 import Actions from './Actions'
 import request from 'request'
+import * as SitePolicy from '../../app/SitePolicy'
 
 export default class PGNLoader extends React.Component {
 
@@ -61,7 +62,7 @@ export default class PGNLoader extends React.Component {
     playerDetailsChange(playerName, files, selectedNotableEvent, selectedNotablePlayer) {
         this.setState({
             playerName: playerName,
-            expandedPanel:'filters',
+            expandedPanel:SitePolicy.isFilterPanelEnabled(this.state.site, playerName)?'filters':'',
             files:files,
             selectedNotableEvent:selectedNotableEvent,
             selectedNotablePlayer:selectedNotablePlayer
@@ -123,7 +124,7 @@ export default class PGNLoader extends React.Component {
                 pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer} selectedEvent={this.state.selectedNotableEvent}/>
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
-                site={this.state.site} advancedFilters={this.advancedFilters()}
+                site={this.state.site} playerName={this.state.playerName} advancedFilters={this.advancedFilters()}
                 timeframeSteps={this.timeframeSteps} filtersChange={this.filtersChange.bind(this)}/>
             </div>
             <Actions expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor} files={this.state.files}
