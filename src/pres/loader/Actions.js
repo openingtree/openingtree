@@ -5,9 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'
 import PGNReader from '../../app/PGNReader'
 import { faList} from '@fortawesome/free-solid-svg-icons'
-import GetApp from '@material-ui/icons/GetApp';
-import Equalizer from '@material-ui/icons/Equalizer';
+import GetApp from '@material-ui/icons/GetApp'
+import Equalizer from '@material-ui/icons/Equalizer'
 import Fade from '@material-ui/core/Fade'
+import * as SitePolicy from '../../app/SitePolicy'
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -58,14 +59,14 @@ export default class Actions extends React.Component {
         if(this.props.site === Constants.SITE_PLAYER_DB) {
             return this.props.selectedNotablePlayer.name
         }
-        return this.props.playerName?this.props.playerName:"player"
+        return this.props.playerName
     }
 
     load() {
         this.props.clear()
         this.setState({ isGamesSubsectionOpen: true })
         // set the player name and color in the global state
-        this.props.onChange("playerName", this.getPlayerName())
+        this.props.onChange("playerName", SitePolicy.finalPlayerName(this.props.site, this.props.playerName, this.props.selectedNotablePlayer))
         this.props.onChange("playerColor", this.props.playerColor)
         this.readPgn(false)
         this.props.setDownloading(true)

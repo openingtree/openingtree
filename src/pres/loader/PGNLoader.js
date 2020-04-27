@@ -62,7 +62,7 @@ export default class PGNLoader extends React.Component {
     playerDetailsChange(playerName, files, selectedNotableEvent, selectedNotablePlayer) {
         this.setState({
             playerName: playerName,
-            expandedPanel:SitePolicy.isFilterPanelEnabled(this.state.site, playerName)?'filters':'',
+            expandedPanel:SitePolicy.isFilterPanelEnabled(this.state.site, playerName, selectedNotablePlayer)?'filters':'',
             files:files,
             selectedNotableEvent:selectedNotableEvent,
             selectedNotablePlayer:selectedNotablePlayer
@@ -125,7 +125,8 @@ export default class PGNLoader extends React.Component {
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
                 site={this.state.site} playerName={this.state.playerName} advancedFilters={this.advancedFilters()}
-                timeframeSteps={this.timeframeSteps} filtersChange={this.filtersChange.bind(this)}/>
+                timeframeSteps={this.timeframeSteps} filtersChange={this.filtersChange.bind(this)}
+                selectedNotablePlayer={this.state.selectedNotablePlayer} />
             </div>
             <Actions expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor} files={this.state.files}
                 playerName={this.state.playerName} site={this.state.site} advancedFilters={this.advancedFilters()}
