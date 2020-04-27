@@ -7,13 +7,21 @@ export default class LichessIterator {
 
     constructor(playerName, files, playerColor, advancedFilters, ready, showError) {
         let reader = new FileReader()
+        let playerColorHeaderName = playerColor === Constants.PLAYER_COLOR_WHITE? 'White': 'Black'
+        let lowerCasePlayerName = playerName? playerName.toLowerCase() : null
         reader.onload = function(evt) {
             let fileData = normalizePGN(evt.target.result);
             let pgnsArray = fileData.split("\n\n\n")
 
             let parsedPGNs = pgnsArray.map((pgnString)=> {
                 try {
-                    return parse(pgnString)[0]
+                    let parsedPGN =  parse(pgnString)[0]
+                    let playerColorHeaderValue = parsedPGN.headers[playerColorHeaderName]
+                    if(playerName && playerColorHeaderValue && !playerColorHeaderValue.toLowerCase().includes(lowerCasePlayerName)) {
+                        // filter out games not from selected player
+                        return null
+                    }
+                    return parsedPGN
                 } catch (e) {
                     console.log("failed to parse pgn", pgnString)
                     console.log(e)
