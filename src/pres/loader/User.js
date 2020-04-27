@@ -45,6 +45,10 @@ export default class User extends React.Component {
             selectedEvent:event})
     }
 
+    componentWillReceiveProps() {
+        this.setState({playerNameError:''})
+    }
+
     validateInputDetailsSet() {
         if(this.props.site === Constants.SITE_EVENT_DB){
             if(!this.state.selectedEvent){
@@ -117,12 +121,12 @@ export default class User extends React.Component {
         return <span>{getNumberIcon(2)}Player details</span>
     }
 
-    getPlayerNameInput(label) {
+    getPlayerNameInput(label, helperText) {
         return <TextField
             className="playernameField" name="playerName" id="playerNameTextBox" 
             margin="dense" onChange={this.editPlayerName.bind(this)}
             label={label} variant="outlined"
-            helperText={this.state.playerNameError}
+            helperText={this.state.playerNameError? this.state.playerNameError:helperText}
             error={this.state.playerNameError?true:false}/>
     }
     getGoatDBSelection(){
@@ -140,11 +144,17 @@ export default class User extends React.Component {
             selectedDetail={this.state.selectedEvent}/>
     }
 
+    getPgnFIleSelection() {
+        return <div><Dropzone filesChange={this.filesChange.bind(this)} filesLimit={10}
+        dropzoneText="Drag and drop up to 10 pgn files here or click here to select files"
+                />
+                {this.getPlayerNameInput('player name in PGN', 'Leave blank to load all games')}
+                </div>
+    }
+
     getInputsToShow() {
         if(this.props.site === Constants.SITE_PGN_FILE) {
-            return <Dropzone filesChange={this.filesChange.bind(this)} filesLimit={10}
-                    dropzoneText="Drag and drop up to 10 pgn files here or click here to select files"
-                />
+            return this.getPgnFIleSelection()
         } else if (this.props.site === Constants.SITE_LICHESS) {
             return this.getPlayerNameInput('lichess username')
         } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
