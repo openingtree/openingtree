@@ -54,7 +54,10 @@ export default class User extends React.Component {
         let playerColor = event.target.value
         this.setState({ playerColor: playerColor })
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ColorChange", playerColor)
-    }
+        if(!SitePolicy.isAdvancedFiltersEnabled(this.props.site)) {
+            setImmediate(this.setFilters.bind(this))
+        }
+}
     handleTimeControlChange(event) {
         this.setState({ [event.target.name]: event.target.checked });
     }
@@ -72,12 +75,12 @@ export default class User extends React.Component {
         this.setState({filtersSet:true})
         this.props.filtersChange(this.state)
     }
-    getSummary() {
-        if(this.state.filtersSet) {
-        return <span>
-            {getNumberIcon('done')}
-            Color: <b>{this.props.playerColor===Constants.PLAYER_COLOR_WHITE?"White":"Black"} </b>
-            {this.areAdvancedFiltersApplied()?<span className="smallText">(Filters applied)</span>:null}</span>
+    getSummary(isDisabled) {
+        if(this.state.filtersSet && !isDisabled) {
+            return <span>
+                {getNumberIcon('done')}
+                Color: <b>{this.props.playerColor===Constants.PLAYER_COLOR_WHITE?"White":"Black"} </b>
+                {this.areAdvancedFiltersApplied()?<span className="smallText">(Filters applied)</span>:null}</span>
 
         }
         return <span>{getNumberIcon(3)} Color and filters</span>
@@ -91,21 +94,22 @@ export default class User extends React.Component {
         return false
     }
     render(){
+        let isDisabled = !SitePolicy.isFilterPanelEnabled(this.props.site, this.props.playerName, this.props.selectedNotablePlayer)
         return <ExpansionPanel expanded={this.props.expandedPanel === 'filters'}
                     TransitionComponent={MuiCollapse}
                     TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
             onChange={this.props.handleExpansionChange}
-            disabled={!SitePolicy.isFilterPanelEnabled(this.props.site, this.props.playerName)}>
-            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</ExpansionPanelSummary>
+            disabled={isDisabled}>
+            <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary(isDisabled)}</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <div className="pgnloadersection">
-                    Games where {this.props.playerName} is playing as:
+                    Games where <b>{SitePolicy.finalPlayerName(this.props.site, this.props.playerName, this.props.selectedNotablePlayer)}</b> is playing as:
                     <RadioGroup onChange={this.playerColorChange.bind(this)}>
                         <FormControlLabel className="colorlabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_WHITE} label={this.state.playerColor === Constants.PLAYER_COLOR_WHITE?<b>White</b>:"White"}/>
                         <FormControlLabel className="colorlabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_BLACK} label={this.state.playerColor === Constants.PLAYER_COLOR_BLACK?<b>Black</b>:"Black"}/>
                     </RadioGroup>
                 </div>
-                {SitePolicy.hasAdvancedFiltersEnabled(this.props.site)?<div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
+                {SitePolicy.isAdvancedFiltersEnabled(this.props.site)?<div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
                     <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
                             <AdvancedFilters
                                 site={this.props.site}
