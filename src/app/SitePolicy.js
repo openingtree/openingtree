@@ -13,3 +13,13 @@ export function isFilterPanelEnabled(source, playerName) {
     }
     return !!playerName
 }
+
+export function exportFileName(source, playerName, playerColor, selectedEvent) {
+    if(source === Constants.SITE_EVENT_DB) {
+        return `${selectedEvent.name}.pgn`
+    }
+    if(playerName) {
+        return `${playerName}${playerColor?"-"+playerColor:""}.png`
+    }
+    return "openingtree-exportedgames.pgn"
+}

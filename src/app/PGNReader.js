@@ -6,6 +6,7 @@ import PGNFileIterator from './iterator/PGNFileIterator'
 import * as Constants from './Constants'
 import streamsaver from 'streamsaver'
 import NotablePlayerIterator from './iterator/NotablePlayerIterator'
+import * as SitePolicy from './SitePolicy'
 
 export default class PGNReader {
     constructor() {
@@ -35,7 +36,7 @@ export default class PGNReader {
         showError, stopDownloading, files) {
         this.continueProcessingGames = true
         if(shouldDownloadToFile) {
-            let fileStream =  streamsaver.createWriteStream(`${playerName}-${playerColor}.pgn`)
+            let fileStream =  streamsaver.createWriteStream(SitePolicy.exportFileName(site, playerName, playerColor, selectedNotableEvent))
             this.fileWriter = fileStream.getWriter()
         }
         let encoder = new TextEncoder()
