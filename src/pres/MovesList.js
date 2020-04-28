@@ -53,7 +53,7 @@ export default class MovesList extends React.Component {
                 this.props.gameResults.map(result => {
                     let whitePlayer = this.player(result.white, result.whiteElo)
                     let blackPlayer = this.player(result.black, result.blackElo)
-                    return <TableRow className="moveRow" key = {`${result.url}`} onClick={this.props.launchGame(result.url)}>
+                    return <TableRow className="moveRow" key = {`${result.url}`} onClick={this.props.launchGame(result)}>
                         <TableCell>
                             {result.result==="1-0"?<b>{whitePlayer}</b>:whitePlayer} {result.result} {result.result === "0-1"?<b>{blackPlayer}</b>:blackPlayer}
                         </TableCell>
@@ -109,7 +109,7 @@ export default class MovesList extends React.Component {
             <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell colSpan = "2">
-        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame.url)} icon={faExternalLinkAlt}/>}
+        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame)} icon={faExternalLinkAlt}/>}
                 </TableCell>
             </TableRow>
             }
