@@ -46,10 +46,6 @@ export default class Actions extends React.Component {
     }
 
     download() {
-        if (!this.props.playerName) {
-            this.props.showError("Please enter a username")
-            return
-        }
         this.readPgn(true)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Download", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
 
