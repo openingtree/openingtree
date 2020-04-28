@@ -5,6 +5,9 @@ class OpeningGraph {
     constructor() {
         this.graph=new Graph()
     }
+    hasMoves() {
+        return this.graph.nodes.size>0
+    }
     clear() {
         this.graph = new Graph()
     }

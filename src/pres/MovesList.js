@@ -39,9 +39,9 @@ export default class MovesList extends React.Component {
         }
     }
     render(){
-        if(!this.props.settings.playerName) {
-            return <div className = "infoMessage" >No moves to show. Please enter a lichess or chess.com user name in the 
-                <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
+        if(!this.props.movesToShow) {
+            return <div className = "infoMessage" >No moves to show. Please select a source from the 
+                <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and enter the details.</div>
         }
     return <div>{(this.props.gameResults && this.props.gameResults.length>0)?this.resultsTable():null}
                 {this.movesTable()}</div>
@@ -117,17 +117,32 @@ export default class MovesList extends React.Component {
     </TableBody>
     :null}
         <TableFooter><TableRow>
-        {
-        hasMoves?
-            <TableCell colSpan="3">
-            Showing moves that have been 
-            played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
-            this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
-            </TableCell>:
-            <TableCell colSpan="3">
-            No moves found in this position played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
-            this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
-            </TableCell>
+        {this.props.settings.playerName?
+
+            hasMoves?
+                <TableCell colSpan="3">
+                Showing moves that have been 
+                played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
+                this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
+                </TableCell>:
+                <TableCell colSpan="3">
+                No moves found played by {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
+                this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
+                </TableCell>
+            :
+            hasMoves?
+                <TableCell colSpan="3">
+                Showing all moves that have been 
+                played by <b>{this.props.turnColor}</b> in 
+                this position.
+                </TableCell>:                
+                <TableCell colSpan="3">
+                No moves found 
+                played by <b>{this.props.turnColor}</b> in 
+                this position.
+                </TableCell>
+
+
         }</TableRow></TableFooter>
     </Table>
     }
