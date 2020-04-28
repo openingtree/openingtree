@@ -11,6 +11,7 @@ import Fade from '@material-ui/core/Fade'
 import Save from '@material-ui/icons/Save';
 import * as SitePolicy from '../../app/SitePolicy'
 import {Tooltip} from '@material-ui/core'
+import { saveAs } from 'file-saver';
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -35,6 +36,9 @@ export default class Actions extends React.Component {
     exportOpeningTree() {
         let treeData = this.props.exportOpeningTreeObject()
         console.log(JSON.stringify(treeData))
+        var blob = new Blob([JSON.stringify(treeData)], {type: "text/plain;charset=utf-8"});
+        saveAs(blob, "hello world.txt");
+        
     }
 
     readPgn(shouldDownloadToFile) {
