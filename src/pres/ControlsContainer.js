@@ -117,6 +117,8 @@ export default class ControlsContainer extends React.Component {
               showError = {this.props.showError}
               setDownloading = {this.props.setDownloading}
               isDownloading = {this.props.isDownloading}
+              openingGraph={this.props.openingGraph}
+              importCallback={this.props.importCallback}
               />
             </TabPane>
         <TabPane tabId="moves">

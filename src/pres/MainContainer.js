@@ -37,6 +37,14 @@ export default class MainContainer extends React.Component {
     this.againstBrushes = ['paleRed', 'paleRed', 'red']
 
   }
+
+  importGameState(importState) {
+    this.setState({
+      settings:importState.settings,
+      openingGraph:importState.openingGraph,
+      gamesProcessed:importState.gamesProcessed
+    })
+  }
   getChessboardWidth(){
     // have to manually set the width to pixels instead of "vw" value
     // this is because chessground component does not behave well with "vw" values
@@ -91,6 +99,7 @@ export default class MainContainer extends React.Component {
                 setDownloading={this.setDownloading.bind(this)}
                 isDownloading={this.state.downloadingGames}
                 openingGraph={this.state.openingGraph}
+                importCallback={this.importGameState.bind(this)}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'top', horizontal:"center" }} open={snackBarOpen} autoHideDuration={6000} onClose={this.closeError.bind(this)}>

@@ -32,6 +32,11 @@ export default class Actions extends React.Component {
         window.removeEventListener("beforeunload", this.unload);
     }
 
+    exportOpeningTree() {
+        let treeData = this.props.exportOpeningTreeObject()
+        console.log(JSON.stringify(treeData))
+    }
+
     readPgn(shouldDownloadToFile) {
         this.pgnReader = new PGNReader()
         this.pgnReader.fetchPGNFromSite(this.props.playerName,
@@ -104,7 +109,7 @@ export default class Actions extends React.Component {
         {
             <div className="pgnloadersection"><Tooltip placement="top" title={downloadDisabledReason}>
                 <span><MaterialUIButton
-                onClick={this.download.bind(this)}
+                onClick={this.exportOpeningTree.bind(this)}
                 variant="contained"
                 color="default"
                 startIcon={<Save />}
