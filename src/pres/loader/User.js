@@ -85,6 +85,9 @@ export default class User extends React.Component {
         if(source === Constants.SITE_PLAYER_DB) {
             return selectedNotablePlayer.name
         }
+        if(source === Constants.SITE_EVENT_DB) {
+            return ''
+        }
         return playerName
     }
     setPlayerDetails() {

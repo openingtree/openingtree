@@ -86,8 +86,11 @@ function autoShapes() {
 }
 
 function movesToShow() {
+    if(!this.state.openingGraph.hasMoves()) {
+        return null;
+    }
     var moves = this.state.openingGraph.movesForFen(this.chess.fen())
-    return moves?moves.sort((a,b)=>b.details.count-a.details.count):moves
+    return moves?moves.sort((a,b)=>b.details.count-a.details.count):[]
 }
 
 function gameResults() {
