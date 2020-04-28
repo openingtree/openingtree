@@ -55,7 +55,7 @@ export default class ControlsContainer extends React.Component {
     render(){
         return <div>
               <Modal isOpen={this.state.activeGame} toggle={this.toggleModal}>
-              <ModalHeader toggle={this.toggleModal}>Game result</ModalHeader>
+              <ModalHeader toggle={this.toggleModal}>Game details</ModalHeader>
               {!this.state.activeGame?null:
               <Table>
                 
