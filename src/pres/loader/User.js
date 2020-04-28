@@ -81,10 +81,19 @@ export default class User extends React.Component {
         } 
         return true
     }
-
+    finalPlayerName(source, playerName, selectedNotablePlayer) {
+        if(source === Constants.SITE_PLAYER_DB) {
+            return selectedNotablePlayer.name
+        }
+        return playerName
+    }
     setPlayerDetails() {
          if(this.validateInputDetailsSet()) {
-            this.props.playerDetailsChange(this.state.playerName, 
+            this.props.playerDetailsChange(
+                this.finalPlayerName(
+                    this.props.site, 
+                    this.state.playerName,
+                    this.state.selectedPlayer), 
                 this.state.files, 
                 this.state.selectedEvent, 
                 this.state.selectedPlayer)
