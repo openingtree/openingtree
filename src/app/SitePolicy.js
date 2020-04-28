@@ -19,7 +19,7 @@ export function exportFileName(source, playerName, playerColor, selectedEvent) {
         return `${selectedEvent.name}.pgn`
     }
     if(playerName) {
-        return `${playerName}${playerColor?"-"+playerColor:""}.png`
+        return `${playerName}-${playerColor}.png`
     }
     return "openingtree-exportedgames.pgn"
 }
