@@ -92,15 +92,15 @@ export default class ControlsContainer extends React.Component {
             }
             {!this.props.simplifiedView && this.props.moveDetails.bestWin?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Best win</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.moveDetails.bestWin} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.bestWinGame.url)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{this.props.moveDetails.bestWin} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.bestWinGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
             {!this.props.simplifiedView && this.props.moveDetails.worstLoss?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Worst loss</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.moveDetails.worstLoss} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.worstLossGame.url)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{this.props.moveDetails.worstLoss} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.worstLossGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Last played</TableCell>
-                <TableCell className="performanceRatingRow">{this.removeQuestionMarksFromDate(this.props.moveDetails.lastPlayedGame.date)} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.lastPlayedGame.url)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{this.removeQuestionMarksFromDate(this.props.moveDetails.lastPlayedGame.date)} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.lastPlayedGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>
             </TableBody>
             {this.props.simplifiedView?null:

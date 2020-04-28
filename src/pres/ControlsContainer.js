@@ -18,13 +18,14 @@ export default class ControlsContainer extends React.Component {
       }
     }
 
-    launchGame(url) {
-        return (e) => {
-            e.stopPropagation()
-            window.open(url, '_blank');
-            trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "ViewGameExternal")
-
-        }
+    launchGame(game) {
+      if(game.url) {
+          return (e) => {
+              e.stopPropagation()
+              window.open(game.url, '_blank');
+              trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "ViewGameExternal")
+          }
+      }
     }
 
     toggle(tab) {
