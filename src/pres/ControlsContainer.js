@@ -9,14 +9,21 @@ import MovesList from './MovesList';
 import {trackEvent} from '../app/Analytics'
 import * as Constants from '../app/Constants'
 import ReportControls from './ReportControls'
+import {Modal, ModalHeader} from 'reactstrap'
+import {Table, TableRow, TableBody, TableCell} from '@material-ui/core'
 
 export default class ControlsContainer extends React.Component {
     constructor(props){
       super(props)
       this.state = {
           activeTab:'user',
+          activeGame:null
+      }
+      this.toggleModal = ()=>{
+        this.setState({activeGame:null})
       }
     }
+    
 
     launchGame(game) {
       if(game.url) {
@@ -26,6 +33,10 @@ export default class ControlsContainer extends React.Component {
               trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "ViewGameExternal")
           }
       }
+      return ((e) => {
+        e.stopPropagation()
+        this.setState({activeGame:game})
+      })
     }
 
     toggle(tab) {
@@ -43,6 +54,23 @@ export default class ControlsContainer extends React.Component {
 
     render(){
         return <div>
+              <Modal isOpen={this.state.activeGame} toggle={this.toggleModal}>
+              <ModalHeader toggle={this.toggleModal}>Game result</ModalHeader>
+              {!this.state.activeGame?null:
+              <Table>
+                
+                <TableBody>
+                  {
+                    Object.entries(this.state.activeGame.headers).map((entry)=><TableRow className="performanceRatingRow">
+                        <TableCell className="performanceRatingRow">{entry[0]}</TableCell>
+                        <TableCell className="performanceRatingRow">{entry[1]}</TableCell>
+                    </TableRow>
+                    )}
+                  
+                </TableBody>
+              </Table>
+              }
+              </Modal>
             <Nav tabs>
         <NavItem>
           <NavLink
@@ -100,13 +128,13 @@ export default class ControlsContainer extends React.Component {
               settings={this.props.settings}
               turnColor={this.props.turnColor}
               settingsChange={this.props.settingsChange}
-              launchGame = {this.launchGame}
+              launchGame = {this.launchGame.bind(this)}
               />
         </TabPane>
         <TabPane tabId="report">
           <ReportControls fen={this.props.fen} simplifiedView = {false}
             moveDetails = {this.props.openingGraph.getDetailsForFen(this.props.fen)}
-            launchGame={this.launchGame} settings={this.props.settings}
+            launchGame={this.launchGame.bind(this)} settings={this.props.settings}
             switchToUserTab={this.switchToUserTab.bind(this)} 
             isOpen = {this.state.activeTab === "report"}
             showInfo = {this.props.showInfo}/>

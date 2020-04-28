@@ -58,7 +58,7 @@ export default class PGNReader {
             
 
             setTimeout(() => {
-                this.parsePGNTimed(result, advancedFilters, playerColor, 0, playerName, notify, showError, stopDownloading)
+                this.parsePGNTimed(site, result, advancedFilters, playerColor, 0, playerName, notify, showError, stopDownloading)
             } ,1)
             return this.continueProcessingGames
         }
@@ -78,7 +78,7 @@ export default class PGNReader {
         
     }
 
-    parsePGNTimed(pgnArray, advancedFilters, playerColor, index,  playerName, notify, showError, stopDownloading) {
+    parsePGNTimed(site, pgnArray, advancedFilters, playerColor, index,  playerName, notify, showError, stopDownloading) {
         if(index< pgnArray.length) {
             this.pendingGames--
         }
@@ -93,7 +93,7 @@ export default class PGNReader {
         var pgn = pgnArray[index]
         if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
             let chess = new Chess()
-            let resultObject = this.gameResult(pgn)
+            let resultObject = this.gameResult(pgn, site)
 
             pgn.moves.forEach(element => {
                 let sourceFen = chess.fen()
@@ -111,18 +111,29 @@ export default class PGNReader {
             openingGraph.addResultToRoot(resultObject, playerColor)
             this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, openingGraph)
         }
-            setTimeout(()=>{this.parsePGNTimed(pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError, stopDownloading)},1)
+            setTimeout(()=>{this.parsePGNTimed(site, pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError, stopDownloading)},1)
     }
 
-    gameResult(pgn) {
+    gameResult(pgn, site) {
+        let url= null 
+        if (site === Constants.SITE_CHESS_DOT_COM) {
+            url = pgn.headers.Link
+        } else if(site === Constants.SITE_LICHESS) {
+            url = pgn.headers.Site
+        }
+        let headers=null
+        if(!url) {
+            headers = pgn.headers
+        }
         return {
             result:pgn.result,
             white:pgn.headers.White,
             black:pgn.headers.Black,
             whiteElo:pgn.headers.WhiteElo,
             blackElo:pgn.headers.BlackElo,
-            url:pgn.headers.Link || pgn.headers.Site,
-            date:pgn.headers.Date
+            url:url,
+            date:pgn.headers.Date,
+            headers:headers
         }
     }
 }
