@@ -8,7 +8,9 @@ import { faList} from '@fortawesome/free-solid-svg-icons'
 import GetApp from '@material-ui/icons/GetApp'
 import Equalizer from '@material-ui/icons/Equalizer'
 import Fade from '@material-ui/core/Fade'
+import Save from '@material-ui/icons/Save';
 import * as SitePolicy from '../../app/SitePolicy'
+import {Tooltip} from '@material-ui/core'
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -76,6 +78,10 @@ export default class Actions extends React.Component {
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "StopDownloading", this.props.site)
     }
     mainComponent() {
+        let downloadDisabledReason = SitePolicy.treeSaveDisabledReason(
+                                        this.props.site, 
+                                        this.props.gamesProcessed, 
+                                        this.props.isDownloading)
         return <div style={{}}>
         <div className="pgnloadersection"><MaterialUIButton
             onClick={this.load.bind(this)}
@@ -95,6 +101,19 @@ export default class Actions extends React.Component {
         >
             Export as PGN
         </MaterialUIButton></div>
+        {
+            <div className="pgnloadersection"><Tooltip placement="top" title={downloadDisabledReason}>
+                <span><MaterialUIButton
+                onClick={this.download.bind(this)}
+                variant="contained"
+                color="default"
+                startIcon={<Save />}
+                className="mainButton" disableElevation
+                disabled={!!downloadDisabledReason}
+                >
+                    Save openingtree
+                </MaterialUIButton></span></Tooltip></div>
+            }
         {
             this.state.isGamesSubsectionOpen ?
                 <div>
