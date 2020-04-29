@@ -14,12 +14,14 @@ import {Tooltip} from '@material-ui/core'
 import { saveAs } from 'file-saver';
 import zlib from 'zlib'
 import {Buffer} from 'buffer'
+import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 
 export default class Actions extends React.Component {
     constructor(props) {
         super(props) 
         this.state = {
-            isGamesSubsectionOpen : false
+            isGamesSubsectionOpen : false,
+            exportingInProgress : false
         }
     }
     unload = () => {
@@ -34,12 +36,41 @@ export default class Actions extends React.Component {
     componentWillUnmount() {
         window.removeEventListener("beforeunload", this.unload);
     }
-
+    exportTreeClicked() {
+        this.setState({exportingInProgress:true})
+        setImmediate(this.exportOpeningTree.bind(this))
+    }
     exportOpeningTree() {
         let treeData = this.props.exportOpeningTreeObject()
-        var blob = new Blob([zlib.deflateSync(new Buffer(JSON.stringify(treeData)))], {type: "application/octet-stream"});
-        saveAs(blob, "hello world.txt");
+        //console.log(new Buffer(JSON.stringify(treeData)))
+        //saveAs(new Blob([JSON.stringify(treeData)], {type: "text/plain;charset=utf-8"}), "hello world.txt")
+        let chunkedArray = this.chunk(treeData)
+        let deflatedChunks = []
+        chunkedArray.forEach((chunk)=>{
+            zlib.deflate(
+                new Buffer(JSON.stringify(chunk)), 
+                (error,data)=>{
+                    deflatedChunks.push(data)
+                    if(deflatedChunks.length===chunkedArray.length) {
+                        saveAs(new Blob(deflatedChunks, {type: "application/octet-stream"}), "hello world.txt")
+                        this.setState({exportingInProgress:false})
+                    }
+                });
+            })
+    }
+
+    chunk(treeData) {
+        let chunk1 = treeData.object
+        return [chunk1,...this.chunkArray(treeData.array, 500)]
+    }
+
+    chunkArray(array, chunkSize) {
+        let chunkedArray=[]
         
+        for (let i=0, chunkIndex=1; i<array.length; i+=chunkSize, chunkIndex++) {
+            chunkedArray.push({chunk:array.slice(i,i+chunkSize), index:chunkIndex});
+        }
+        return chunkedArray
     }
 
     readPgn(shouldDownloadToFile) {
@@ -114,14 +145,14 @@ export default class Actions extends React.Component {
         {
             <div className="pgnloadersection"><Tooltip placement="top" title={downloadDisabledReason}>
                 <span><MaterialUIButton
-                onClick={this.exportOpeningTree.bind(this)}
+                onClick={this.exportTreeClicked.bind(this)}
                 variant="contained"
                 color="default"
-                startIcon={<Save />}
+                startIcon={this.state.exportingInProgress?<HourglassEmptyIcon/>:<Save/>}
                 className="mainButton" disableElevation
-                disabled={!!downloadDisabledReason}
+                disabled={!!downloadDisabledReason || this.state.exportingInProgress}
                 >
-                    Save openingtree
+                    {this.state.exportingInProgress?"Saving to file":"Save openingtree"}
                 </MaterialUIButton></span></Tooltip></div>
             }
         {
