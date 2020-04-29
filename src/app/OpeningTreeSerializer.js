@@ -3,6 +3,7 @@ import {Buffer} from 'buffer'
 import { saveAs } from 'file-saver';
 
 export function serializeOpeningTree(treeData, filename, callback) {
+    console.log(treeData)
     let chunkedArray = chunk(treeData)
     let deflatedChunks = []
     console.log(chunkedArray.length)
@@ -50,7 +51,7 @@ export function deserializeOpeningTree(file, callback) {
             callback("Input file not in correct format", null)
             return
         }
-        let deflatedData = getDeflatedChunks(data, index, numChunks)
+        let deflatedData = getDeflatedChunks(data, index, numChunks, callback)
         if(!deflatedData) {
             callback("Input file seems corrupted", null)
             return
@@ -64,25 +65,47 @@ export function deserializeOpeningTree(file, callback) {
     reader.readAsArrayBuffer(file)
 }
 
-function getDeflatedChunks(data, startIndex, numChunks) {
+function getDeflatedChunks(data, startIndex, numChunks, callback) {
     let index = startIndex
     let deflatedChunks = []
     let remainingChunks = numChunks
-    while(remainingChunks) {
+    let hasError=false
+    while(numChunks>0) {
         let chunkSize = unpackControlWord(data.slice(index,index+8))
         index = index + 8
         zlib.inflate(
             Buffer.from(data,index,chunkSize), (error, data)=> {
-                deflatedChunks.push(JSON.parse(data))
-                if(deflatedChunks.length === numChunks) {
-                    console.log(deflatedChunks)
+                remainingChunks--
+                if(error) {
+                    console.log(error)
+                    hasError=true
+                }
+                try {
+                    deflatedChunks.push(JSON.parse(data))
+                } catch (e) {
+                    console.log(e)
+                    hasError=true
+                }
+                if(remainingChunks===0) {
+                    if(hasError) {
+                        callback("Something went wrong while reading file", null)
+                    }
+                    
+                    callback(null, reconstructObjectFromChunks(deflatedChunks))
                 }
                 
             })
         index = index + chunkSize
-        remainingChunks--
+        numChunks--
     }
-    return data
+}
+
+function reconstructObjectFromChunks(deflatedChunks) {
+    let sortedChunks = deflatedChunks.sort((a,b)=>a.index-b.index)
+    return {
+        object:sortedChunks[0].chunk,
+        array:sortedChunks.slice(1).map((el)=>el.chunk).flat()
+    }
 }
 
 function unpackControlWord(control) {
@@ -103,7 +126,7 @@ function packControlWord(control) {
 }
 
 function chunk(treeData) {
-    let chunk1 = treeData.object
+    let chunk1 = {chunk:treeData.object, index:0}
     return [chunk1,...chunkArray(treeData.array, 500)]
 }
 
