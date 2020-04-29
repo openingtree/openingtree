@@ -12,6 +12,8 @@ import Save from '@material-ui/icons/Save';
 import * as SitePolicy from '../../app/SitePolicy'
 import {Tooltip} from '@material-ui/core'
 import { saveAs } from 'file-saver';
+import zlib from 'zlib'
+import {Buffer} from 'buffer'
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -35,8 +37,7 @@ export default class Actions extends React.Component {
 
     exportOpeningTree() {
         let treeData = this.props.exportOpeningTreeObject()
-        console.log(JSON.stringify(treeData))
-        var blob = new Blob([JSON.stringify(treeData)], {type: "text/plain;charset=utf-8"});
+        var blob = new Blob([zlib.deflateSync(new Buffer(JSON.stringify(treeData)))], {type: "application/octet-stream"});
         saveAs(blob, "hello world.txt");
         
     }
