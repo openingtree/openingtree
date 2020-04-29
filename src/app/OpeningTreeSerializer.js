@@ -5,6 +5,8 @@ import { saveAs } from 'file-saver';
 export function serializeOpeningTree(treeData, filename, callback) {
     let chunkedArray = chunk(treeData)
     let deflatedChunks = []
+    console.log(chunkedArray.length)
+    deflatedChunks.push(packControlWord(chunkedArray.length))
     let remainingChunks = chunkedArray.length
     let hasError = false;
     chunkedArray.forEach((chunk)=>{
@@ -31,12 +33,31 @@ export function serializeOpeningTree(treeData, filename, callback) {
 export function deserializeOpeningTree(file, callback) {
     let reader = new FileReader()
     reader.onload = function(evt) {
-        callback(null, evt.target.result)
+        let data = evt.target.result
+        console.log(unpackControlWord(data.slice(0,8)))
+        callback(null, data)
     };
     reader.onerror = function() {
         callback("Failed to opening tree file", null)
     }
     reader.readAsArrayBuffer(file)
+}
+
+function unpackControlWord(control) {
+    let view = new DataView(control)
+    if(view.getUint16(0)!=0x1337 || view.getUint16(6)!=0xC0D3) {
+        return null
+    }
+    return view.getUint32(2)
+}
+
+function packControlWord(control) {
+    var buffer = new ArrayBuffer(8); 
+    var view = new DataView(buffer); 
+    view.setUint16(0, 0x1337)
+    view.setUint32(2, control>>>0)
+    view.setUint16(6, 0xC0D3)
+    return buffer
 }
 
 function chunk(treeData) {
