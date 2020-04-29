@@ -6,6 +6,8 @@ export function serializeOpeningTree(treeData, filename, callback) {
     let chunkedArray = chunk(treeData)
     let deflatedChunks = []
     console.log(chunkedArray.length)
+    //push version number 1 for later backward compatibility
+    deflatedChunks.push(packControlWord(0x1))
     deflatedChunks.push(packControlWord(chunkedArray.length))
     let remainingChunks = chunkedArray.length
     let hasError = false;
@@ -17,6 +19,7 @@ export function serializeOpeningTree(treeData, filename, callback) {
                 if(error) {
                     hasError = true
                 }
+                deflatedChunks.push(packControlWord(data.byteLength))
                 deflatedChunks.push(data)
                 if(remainingChunks<=0) {
                     if(hasError) {
@@ -34,13 +37,43 @@ export function deserializeOpeningTree(file, callback) {
     let reader = new FileReader()
     reader.onload = function(evt) {
         let data = evt.target.result
-        console.log(unpackControlWord(data.slice(0,8)))
-        callback(null, data)
+        let index = 0
+        let version = unpackControlWord(data.slice(index,index+8))
+        index = index + 8
+        if(version !== 0x1) {
+            callback("File is not an openingtree save file. Are you loading the correct file?", null)
+            return
+        }
+        let numChunks = unpackControlWord(data.slice(index,index+8))
+        index = index + 8
+        if(!numChunks) {
+            callback("Input file not in correct format", null)
+            return
+        }
+        let deflatedData = getDeflatedChunks(data, index, numChunks)
+        if(!deflatedData) {
+            callback("Input file seems corrupted", null)
+            return
+        }
+        
+        callback(null, deflatedData)
     };
     reader.onerror = function() {
         callback("Failed to opening tree file", null)
     }
     reader.readAsArrayBuffer(file)
+}
+
+function getDeflatedChunks(data, startIndex, numChunks) {
+    let index = startIndex
+    while(numChunks) {
+        let chunkSize = unpackControlWord(data.slice(index,index+8))
+        index = index + 8
+        let chunkBinary = data.slice(index, index+chunkSize)
+        index = index + chunkSize
+        numChunks--
+    }
+    return data
 }
 
 function unpackControlWord(control) {
