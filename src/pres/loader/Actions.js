@@ -36,14 +36,29 @@ export default class Actions extends React.Component {
     componentWillUnmount() {
         window.removeEventListener("beforeunload", this.unload);
     }
+    importTreeClicked() {
+        this.setState({exportingInProgress:true})
+        setImmediate(this.importOpeningTree.bind(this))
+    }
+    importOpeningTree() {
+        let reader = new FileReader()
+        reader.onload = function(evt) {
+            console.log(evt.target.result)
+        };
+        reader.onerror = (function() {
+            this.props.showError("Failed to opening tree file")
+        }).bind(this)
+        reader.onloadend = (function() {
+            this.setState({exportingInProgress:false})
+        }).bind(this)
+        reader.readAsText(this.props.files[0])
+    }
     exportTreeClicked() {
         this.setState({exportingInProgress:true})
         setImmediate(this.exportOpeningTree.bind(this))
     }
     exportOpeningTree() {
         let treeData = this.props.exportOpeningTreeObject()
-        //console.log(new Buffer(JSON.stringify(treeData)))
-        //saveAs(new Blob([JSON.stringify(treeData)], {type: "text/plain;charset=utf-8"}), "hello world.txt")
         let chunkedArray = this.chunk(treeData)
         let deflatedChunks = []
         chunkedArray.forEach((chunk)=>{
@@ -118,12 +133,25 @@ export default class Actions extends React.Component {
         this.stopDownloading()
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "StopDownloading", this.props.site)
     }
-    mainComponent() {
+    openingTreeLoadActions() {
+        return <div className="pgnloadersection">
+            <MaterialUIButton
+            onClick={this.importTreeClicked.bind(this)}
+            variant="contained"
+            color="primary"
+            startIcon={this.state.exportingInProgress?<HourglassEmptyIcon/>:<GetApp/>}
+            className="mainButton" disableElevation
+            disabled={this.state.exportingInProgress}
+            >
+                {this.state.exportingInProgress?"Loading from file":"Load openingtree"}
+        </MaterialUIButton></div>
+    }
+    regularActions() {
         let downloadDisabledReason = SitePolicy.treeSaveDisabledReason(
                                         this.props.site, 
                                         this.props.gamesProcessed, 
                                         this.props.isDownloading)
-        return <div style={{}}>
+        return <div>
         <div className="pgnloadersection"><MaterialUIButton
             onClick={this.load.bind(this)}
             variant="contained"
@@ -168,6 +196,12 @@ export default class Actions extends React.Component {
                 : ""
         }
         </div>
+    }
+    mainComponent() {
+        if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
+            return this.openingTreeLoadActions()
+        }
+        return this.regularActions()
     }
     render(){
         if(this.props.expandedPanel) {
