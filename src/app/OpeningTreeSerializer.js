@@ -5,14 +5,24 @@ import { saveAs } from 'file-saver';
 export function serializeOpeningTree(treeData, filename, callback) {
     let chunkedArray = chunk(treeData)
     let deflatedChunks = []
+    let remainingChunks = chunkedArray.length
+    let hasError = false;
     chunkedArray.forEach((chunk)=>{
         zlib.deflate(
             new Buffer(JSON.stringify(chunk)), 
             (error,data)=>{
+                remainingChunks--
+                if(error) {
+                    hasError = true
+                }
                 deflatedChunks.push(data)
-                if(deflatedChunks.length===chunkedArray.length) {
+                if(remainingChunks<=0) {
+                    if(hasError) {
+                        callback("could not save file")
+                        return
+                    }
                     saveAs(new Blob(deflatedChunks, {type: "application/octet-stream"}), filename)
-                    callback('done')
+                    callback(null, `saved opening tree to file ${filename}`)
                 }
             });
         })

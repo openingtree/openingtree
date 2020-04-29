@@ -154,7 +154,7 @@ export default class PGNLoader extends React.Component {
                 setDownloading={this.props.setDownloading} clear={this.props.clear} isDownloading={this.props.isDownloading}
                 switchToMovesTab={this.props.switchToMovesTab} gamesProcessed={this.props.gamesProcessed} 
                 selectedNotablePlayer={this.state.selectedNotablePlayer} selectedNotableEvent={this.state.selectedNotableEvent}
-                exportOpeningTreeObject={this.exportOpeningTreeObject.bind(this)} 
+                exportOpeningTreeObject={this.exportOpeningTreeObject.bind(this)} showInfo={this.props.showInfo}
                 importOpeningTreeObject={this.exportOpeningTreeObject.bind(this)}/>
         </div>
     }

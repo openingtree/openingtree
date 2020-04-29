@@ -115,6 +115,7 @@ export default class ControlsContainer extends React.Component {
               onChange = {this.props.settingsChange} 
               notify = {this.props.updateProcessedGames}
               showError = {this.props.showError}
+              showInfo = {this.props.showInfo}
               setDownloading = {this.props.setDownloading}
               isDownloading = {this.props.isDownloading}
               openingGraph={this.props.openingGraph}

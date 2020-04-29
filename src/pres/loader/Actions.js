@@ -55,9 +55,15 @@ export default class Actions extends React.Component {
         setImmediate(this.exportOpeningTree.bind(this))
     }
     exportOpeningTree() {
-        serializeOpeningTree(this.props.exportOpeningTreeObject(), "11test.txt", ()=> {
-            this.setState({exportingInProgress:false})
-        })
+        serializeOpeningTree(this.props.exportOpeningTreeObject(), "11test.txt", 
+            (err, info) => {
+                if(err) {
+                    this.props.showError(err)                    
+                } else {
+                    this.props.showInfo(info)
+                }
+                this.setState({exportingInProgress:false})
+            })
     }
 
 
