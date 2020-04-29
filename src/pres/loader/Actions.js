@@ -11,10 +11,8 @@ import Fade from '@material-ui/core/Fade'
 import Save from '@material-ui/icons/Save';
 import * as SitePolicy from '../../app/SitePolicy'
 import {Tooltip} from '@material-ui/core'
-import { saveAs } from 'file-saver';
-import zlib from 'zlib'
-import {Buffer} from 'buffer'
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
+import {serializeOpeningTree, deserializeOpeningTree} from '../../app/OpeningTreeSerializer'
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -41,52 +39,27 @@ export default class Actions extends React.Component {
         setImmediate(this.importOpeningTree.bind(this))
     }
     importOpeningTree() {
-        let reader = new FileReader()
-        reader.onload = function(evt) {
-            console.log(evt.target.result)
-        };
-        reader.onerror = (function() {
-            this.props.showError("Failed to opening tree file")
-        }).bind(this)
-        reader.onloadend = (function() {
-            this.setState({exportingInProgress:false})
-        }).bind(this)
-        reader.readAsText(this.props.files[0])
+        deserializeOpeningTree(this.props.files[0], 
+            (err,data)=> {
+                if(err) {
+                    this.props.showError(err)
+                    this.setState({exportingInProgress:false})
+                    return
+                }
+                console.log(data)
+                this.setState({exportingInProgress:false})
+            })
     }
     exportTreeClicked() {
         this.setState({exportingInProgress:true})
         setImmediate(this.exportOpeningTree.bind(this))
     }
     exportOpeningTree() {
-        let treeData = this.props.exportOpeningTreeObject()
-        let chunkedArray = this.chunk(treeData)
-        let deflatedChunks = []
-        chunkedArray.forEach((chunk)=>{
-            zlib.deflate(
-                new Buffer(JSON.stringify(chunk)), 
-                (error,data)=>{
-                    deflatedChunks.push(data)
-                    if(deflatedChunks.length===chunkedArray.length) {
-                        saveAs(new Blob(deflatedChunks, {type: "application/octet-stream"}), "hello world.txt")
-                        this.setState({exportingInProgress:false})
-                    }
-                });
-            })
+        serializeOpeningTree(this.props.exportOpeningTreeObject(), "11test.txt", ()=> {
+            this.setState({exportingInProgress:false})
+        })
     }
 
-    chunk(treeData) {
-        let chunk1 = treeData.object
-        return [chunk1,...this.chunkArray(treeData.array, 500)]
-    }
-
-    chunkArray(array, chunkSize) {
-        let chunkedArray=[]
-        
-        for (let i=0, chunkIndex=1; i<array.length; i+=chunkSize, chunkIndex++) {
-            chunkedArray.push({chunk:array.slice(i,i+chunkSize), index:chunkIndex});
-        }
-        return chunkedArray
-    }
 
     readPgn(shouldDownloadToFile) {
         this.pgnReader = new PGNReader()
