@@ -61,18 +61,20 @@ export default class PGNLoader extends React.Component {
 
     exportOpeningTreeObject(){
         return {
-            graph:[...this.props.openingGraph.graph.nodes.entries()],
-            gamesProcessed:this.props.gamesProcessed,
-            settings:this.props.settings,
-            playerName:this.state.playername,
-            site: this.props.site,
+            object:{
+                gamesProcessed:this.props.gamesProcessed,
+                settings:this.props.settings,
+                playerName:this.state.playername,
+                site: this.props.site
+            },
+            array: [...this.props.openingGraph.graph.nodes.entries()]
         }
     }
 
     importOpeningTreeObject(openingTreeSave) {
         this.setState({
-            playerColor:openingTreeSave.settings.playerColor,
-            site:openingTreeSave.site
+            playerColor:openingTreeSave.object.settings.playerColor,
+            site:openingTreeSave.object.site
         })
         this.props.importCallback(openingTreeSave)
     }
