@@ -66,12 +66,21 @@ export function deserializeOpeningTree(file, callback) {
 
 function getDeflatedChunks(data, startIndex, numChunks) {
     let index = startIndex
-    while(numChunks) {
+    let deflatedChunks = []
+    let remainingChunks = numChunks
+    while(remainingChunks) {
         let chunkSize = unpackControlWord(data.slice(index,index+8))
         index = index + 8
-        let chunkBinary = data.slice(index, index+chunkSize)
+        zlib.inflate(
+            Buffer.from(data,index,chunkSize), (error, data)=> {
+                deflatedChunks.push(JSON.parse(data))
+                if(deflatedChunks.length === numChunks) {
+                    console.log(deflatedChunks)
+                }
+                
+            })
         index = index + chunkSize
-        numChunks--
+        remainingChunks--
     }
     return data
 }
