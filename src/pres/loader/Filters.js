@@ -83,6 +83,12 @@ export default class User extends React.Component {
         }
         return <span>{getNumberIcon(3)} Color and filters</span>
     }
+    componentWillReceiveProps(newProps) {
+        if(newProps.playerColor != this.state.playerColor) {
+            this.setState({playerColor:newProps.playerColor})
+        }
+    }
+
     areAdvancedFiltersApplied(){
         for (let [key, value] of Object.entries(this.defaultAdvancedFilters)) {
             if(this.props.advancedFilters[key] !== value) {
@@ -102,7 +108,7 @@ export default class User extends React.Component {
             <ExpansionPanelDetails>
                 <div className="pgnloaderfirstsection">
                     Games where <b>{this.props.playerName}</b> is playing as:
-                    <RadioGroup onChange={this.playerColorChange.bind(this)} value={this.props.playerColor}>
+                    <RadioGroup onChange={this.playerColorChange.bind(this)} value={this.state.playerColor}>
                         <FormControlLabel className="whitelabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_WHITE} label={this.state.playerColor === Constants.PLAYER_COLOR_WHITE?<b>White</b>:"White"}/>
                         <FormControlLabel className="blacklabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_BLACK} label={this.state.playerColor === Constants.PLAYER_COLOR_BLACK?<b>Black</b>:"Black"}/>
                     </RadioGroup>
