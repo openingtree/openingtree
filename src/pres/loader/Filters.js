@@ -128,7 +128,7 @@ export default class User extends React.Component {
                 </ExpansionPanelDetails>
                 <Divider />
                 <ExpansionPanelActions>
-                    <MaterialUIButton size="small" color="primary" onClick={this.setFilters.bind(this)}>Save</MaterialUIButton>
+                    <MaterialUIButton size="small" color="primary" onClick={this.setFilters.bind(this)}>Continue</MaterialUIButton>
                 </ExpansionPanelActions></ExpansionPanel>
     
     }

@@ -194,8 +194,7 @@ export default class User extends React.Component {
                 </ExpansionPanelDetails>
                 <Divider />
                 <ExpansionPanelActions>
-                    <MaterialUIButton size="small">Random</MaterialUIButton>
-                    <MaterialUIButton size="small" color="primary" onClick={this.setPlayerDetails.bind(this)}>Save</MaterialUIButton>
+                    <MaterialUIButton size="small" color="primary" onClick={this.setPlayerDetails.bind(this)}>Continue</MaterialUIButton>
                 </ExpansionPanelActions></ExpansionPanel>
             
     }
