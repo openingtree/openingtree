@@ -6,6 +6,13 @@ import {normalizePGN} from './IteratorUtils'
 export default class LichessIterator {
 
     constructor(playerName, files, playerColor, advancedFilters, ready, showError) {
+        files.forEach((file)=>{
+            let reader = this.setupReader(playerName, playerColor, advancedFilters, ready, showError)
+            reader.readAsText(file)
+        })
+    }
+
+    setupReader(playerName, playerColor, advancedFilters, ready, showError) {
         let reader = new FileReader()
         let playerColorHeaderName = playerColor === Constants.PLAYER_COLOR_WHITE? 'White': 'Black'
         let lowerCasePlayerName = playerName? playerName.toLowerCase() : null
@@ -38,6 +45,6 @@ export default class LichessIterator {
         reader.onloadend = function() {
             ready([], false)
         }
-        reader.readAsText(files[0])
+        return reader
     }
 }
