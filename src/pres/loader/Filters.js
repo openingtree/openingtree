@@ -84,9 +84,7 @@ export default class User extends React.Component {
         return <span>{getNumberIcon(3)} Color and filters</span>
     }
     componentWillReceiveProps(newProps) {
-        if(newProps.playerColor != this.state.playerColor) {
-            this.setState({playerColor:newProps.playerColor})
-        }
+        this.setState({...newProps.advancedFilters, playerColor:newProps.playerColor})
     }
 
     areAdvancedFiltersApplied(){
