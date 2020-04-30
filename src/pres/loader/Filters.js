@@ -17,6 +17,7 @@ import {advancedFilters} from './Common'
 import MuiCollapse from '@material-ui/core/Collapse';
 import * as SitePolicy from '../../app/SitePolicy'
 import { Radio, FormControlLabel, RadioGroup, FormHelperText, FormControl, FormLabel} from '@material-ui/core';
+import deepEqual from 'deep-equal'
 
 export default class User extends React.Component {
 
@@ -93,12 +94,17 @@ export default class User extends React.Component {
 
     areAdvancedFiltersApplied(){
         for (let [key, value] of Object.entries(this.defaultAdvancedFilters)) {
-            if(this.props.advancedFilters[key] !== value) {
+            if(this.props.advancedFilters[key]===value) {
+                continue
+            }
+            if(!deepEqual(this.props.advancedFilters[key], value)) {
                 return true
             } 
         }
         return false
     }
+
+    
     render(){
         let isDisabled = !SitePolicy.isFilterPanelEnabled(this.props.site, this.props.playerName, this.props.selectedNotablePlayer)
         return <ExpansionPanel expanded={this.props.expandedPanel === 'filters'}
