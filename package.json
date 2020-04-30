@@ -15,6 +15,7 @@
     "chess-eco-codes": "git+https://git@github.com/vjuneja/chess-eco-codes.git",
     "chess-web-api": "^1.0.6",
     "chess.js": "^0.10.2",
+    "deep-equal": "^2.0.3",
     "file-saver": "^2.0.2",
     "material-ui-dropzone": "^2.5.0",
     "normalize-newline": "^3.0.0",
