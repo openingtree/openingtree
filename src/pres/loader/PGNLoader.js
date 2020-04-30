@@ -66,7 +66,8 @@ export default class PGNLoader extends React.Component {
                 gamesProcessed:this.props.gamesProcessed,
                 settings:this.props.settings,
                 playerName:this.state.playername,
-                site: this.state.site
+                site: this.state.site,
+                advancedFilters:this.advancedFilters()
             },
             array: [...this.props.openingGraph.graph.nodes.entries()]
         }
@@ -74,6 +75,7 @@ export default class PGNLoader extends React.Component {
 
     importOpeningTreeObject(openingTreeSave) {
         this.setState({
+            ...openingTreeSave.object.advancedFilters,
             playerColor:openingTreeSave.object.settings.playerColor,
             site:openingTreeSave.object.site,
             playerName:openingTreeSave.object.settings.playerName
