@@ -5,6 +5,10 @@ class OpeningGraph {
     constructor() {
         this.graph=new Graph()
     }
+    setEntries(arrayEntries){
+        this.graph=new Graph(arrayEntries)
+    }
+
     hasMoves() {
         return this.graph.nodes.size>0
     }
@@ -47,13 +51,13 @@ class OpeningGraph {
         return currNode
     }
     createOrGetMoveNode(movesPlayedNode, move, fullTargetFen){
-        var movePlayed = movesPlayedNode.get(move.san)
+        var movePlayed = movesPlayedNode[move.san]
 
         if(!movePlayed) {
             movePlayed = new GraphMove()
             movePlayed.move = move
             movePlayed.fen = simplifiedFen(fullTargetFen)
-            movesPlayedNode.set(move.san, movePlayed)
+            movesPlayedNode[move.san]= movePlayed
         }
         return movesPlayedNode
     }
@@ -113,7 +117,7 @@ class OpeningGraph {
 
         var currNode = this.graph.nodes.get(fen)
         if(currNode) {
-            return Array.from(currNode.playedBy.entries()).map((entry)=> {
+            return Array.from(Object.entries(currNode.playedBy)).map((entry)=> {
                 let gMove = entry[1]
                 let targetNode = this.graph.nodes.get(gMove.fen)
                 return {
@@ -142,16 +146,24 @@ class OpeningGraph {
 
 
 class Graph {
-    nodes = new Map()
+    constructor(arrayEntries){
+        this.nodes = new Map()
+        if(arrayEntries) {
+            arrayEntries.forEach((entry)=> {
+                this.nodes.set(entry[0],entry[1])
+            })
+        }
+    }
 }
 
 class GraphNode {
-    fen = ''
-    playedByMax = 0 // used to keep track of how many times the most frequent move is played for ease of calculation later
-    playedBy = new Map()
-    gameResults = []
-    properties = {}
-    details = emptyDetails()
+    
+            fen = ''
+            playedByMax = 0 // used to keep track of how many times the most frequent move is played for ease of calculation later
+            playedBy = {}
+            gameResults = []
+            properties = {}
+            details = emptyDetails()
 }
 
 class GraphMove {

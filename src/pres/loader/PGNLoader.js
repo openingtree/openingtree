@@ -8,6 +8,7 @@ import Filters from './Filters'
 import Actions from './Actions'
 import request from 'request'
 import * as SitePolicy from '../../app/SitePolicy'
+import {openingGraph} from '../../app/OpeningGraph'
 
 export default class PGNLoader extends React.Component {
 
@@ -77,9 +78,11 @@ export default class PGNLoader extends React.Component {
             site:openingTreeSave.object.site,
             playerName:openingTreeSave.object.settings.playerName
         })
+        openingGraph.setEntries(openingTreeSave.array)
         this.props.importCallback({
             settings:openingTreeSave.object.settings,
-            gamesProcessed:openingTreeSave.object.gamesProcessed
+            gamesProcessed:openingTreeSave.object.gamesProcessed,
+            openingGraph:openingGraph
         })
     }
 
