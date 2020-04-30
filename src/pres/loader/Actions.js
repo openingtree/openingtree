@@ -94,6 +94,11 @@ export default class Actions extends React.Component {
         }
         return this.props.playerName
     }
+    componentWillReceiveProps(newProps) {
+        if(newProps.gamesProcessed>0) {
+            this.setState({isGamesSubsectionOpen:true})
+        }
+    }
 
     load() {
         this.props.clear()
