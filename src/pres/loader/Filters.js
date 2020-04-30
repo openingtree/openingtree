@@ -16,7 +16,7 @@ import AdvancedFilters from './AdvancedFilters'
 import {advancedFilters} from './Common'
 import MuiCollapse from '@material-ui/core/Collapse';
 import * as SitePolicy from '../../app/SitePolicy'
-import { Radio, FormControlLabel, RadioGroup } from '@material-ui/core';
+import { Radio, FormControlLabel, RadioGroup, FormHelperText, FormControl, FormLabel} from '@material-ui/core';
 
 export default class User extends React.Component {
 
@@ -71,6 +71,10 @@ export default class User extends React.Component {
     }
 
     setFilters(){
+        if(!this.state.playerColor) {
+            this.setState({colorError:"Please select a color"})
+            return
+        }
         this.props.filtersChange(this.state)
     }
     getSummary(isDisabled) {
@@ -105,11 +109,14 @@ export default class User extends React.Component {
             <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary(isDisabled)}</ExpansionPanelSummary>
             <ExpansionPanelDetails>
                 <div className="pgnloaderfirstsection">
-                    Games where <b>{this.props.playerName}</b> is playing as:
+                <FormControl component="fieldset" error={!!this.state.colorError}>
+                    <FormLabel component="legend">Games where <b>{this.props.playerName}</b> is playing as:</FormLabel>
                     <RadioGroup onChange={this.playerColorChange.bind(this)} value={this.state.playerColor}>
                         <FormControlLabel className="whitelabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_WHITE} label={this.state.playerColor === Constants.PLAYER_COLOR_WHITE?<b>White</b>:"White"}/>
                         <FormControlLabel className="blacklabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_BLACK} label={this.state.playerColor === Constants.PLAYER_COLOR_BLACK?<b>Black</b>:"Black"}/>
                     </RadioGroup>
+                    <FormHelperText>{this.state.colorError}</FormHelperText>
+                </FormControl>
                 </div>
                 {SitePolicy.isAdvancedFiltersEnabled(this.props.site)?<div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
                     <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
