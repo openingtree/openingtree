@@ -51,13 +51,7 @@ export function deserializeOpeningTree(file, callback) {
             callback("Input file not in correct format", null)
             return
         }
-        let deflatedData = getDeflatedChunks(data, index, numChunks, callback)
-        if(!deflatedData) {
-            callback("Input file seems corrupted", null)
-            return
-        }
-        
-        callback(null, deflatedData)
+        getDeflatedChunks(data, index, numChunks, callback)
     };
     reader.onerror = function() {
         callback("Failed to opening tree file", null)
@@ -88,7 +82,7 @@ function getDeflatedChunks(data, startIndex, numChunks, callback) {
                 }
                 if(remainingChunks===0) {
                     if(hasError) {
-                        callback("Something went wrong while reading file", null)
+                        callback("Input file seems corrupted", null)
                     }
                     
                     callback(null, reconstructObjectFromChunks(deflatedChunks))
