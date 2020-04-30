@@ -65,7 +65,7 @@ export default class PGNLoader extends React.Component {
                 gamesProcessed:this.props.gamesProcessed,
                 settings:this.props.settings,
                 playerName:this.state.playername,
-                site: this.props.site
+                site: this.state.site
             },
             array: [...this.props.openingGraph.graph.nodes.entries()]
         }
@@ -74,9 +74,13 @@ export default class PGNLoader extends React.Component {
     importOpeningTreeObject(openingTreeSave) {
         this.setState({
             playerColor:openingTreeSave.object.settings.playerColor,
-            site:openingTreeSave.object.site
+            site:openingTreeSave.object.site,
+            playerName:openingTreeSave.object.settings.playerName
         })
-        this.props.importCallback(openingTreeSave)
+        this.props.importCallback({
+            settings:openingTreeSave.object.settings,
+            gamesProcessed:openingTreeSave.object.gamesProcessed
+        })
     }
 
     playerDetailsChange(playerName, files, selectedNotableEvent, selectedNotablePlayer) {
@@ -155,7 +159,7 @@ export default class PGNLoader extends React.Component {
                 switchToMovesTab={this.props.switchToMovesTab} gamesProcessed={this.props.gamesProcessed} 
                 selectedNotablePlayer={this.state.selectedNotablePlayer} selectedNotableEvent={this.state.selectedNotableEvent}
                 exportOpeningTreeObject={this.exportOpeningTreeObject.bind(this)} showInfo={this.props.showInfo}
-                importOpeningTreeObject={this.exportOpeningTreeObject.bind(this)}/>
+                importOpeningTreeObject={this.importOpeningTreeObject.bind(this)}/>
         </div>
     }
 

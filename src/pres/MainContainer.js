@@ -41,7 +41,7 @@ export default class MainContainer extends React.Component {
   importGameState(importState) {
     this.setState({
       settings:importState.settings,
-      openingGraph:importState.openingGraph,
+      //openingGraph:importState.openingGraph,
       gamesProcessed:importState.gamesProcessed
     })
   }
