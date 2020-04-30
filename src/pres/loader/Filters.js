@@ -24,8 +24,7 @@ export default class User extends React.Component {
         super(props)
         this.state = {
             playerColor: this.props.playerColor,
-            isAdvancedFiltersOpen: false,
-            filtersSet:false,
+            isAdvancedFiltersOpen: false
         }
         this.timeframeSteps=this.props.timeframeSteps
         Object.assign(this.state, this.props.advancedFilters)
@@ -72,11 +71,10 @@ export default class User extends React.Component {
     }
 
     setFilters(){
-        this.setState({filtersSet:true})
         this.props.filtersChange(this.state)
     }
     getSummary(isDisabled) {
-        if(this.state.filtersSet && !isDisabled) {
+        if(this.props.playerColor && !isDisabled) {
             return <span>
                 {getNumberIcon('done')}
                 Color: <b>{this.props.playerColor===Constants.PLAYER_COLOR_WHITE?"White":"Black"} </b>
