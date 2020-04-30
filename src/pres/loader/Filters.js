@@ -104,7 +104,7 @@ export default class User extends React.Component {
             <ExpansionPanelDetails>
                 <div className="pgnloaderfirstsection">
                     Games where <b>{this.props.playerName}</b> is playing as:
-                    <RadioGroup onChange={this.playerColorChange.bind(this)}>
+                    <RadioGroup onChange={this.playerColorChange.bind(this)} value={this.props.playerColor}>
                         <FormControlLabel className="whitelabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_WHITE} label={this.state.playerColor === Constants.PLAYER_COLOR_WHITE?<b>White</b>:"White"}/>
                         <FormControlLabel className="blacklabel" control={<Radio color="primary" />} value={Constants.PLAYER_COLOR_BLACK} label={this.state.playerColor === Constants.PLAYER_COLOR_BLACK?<b>Black</b>:"Black"}/>
                     </RadioGroup>
