@@ -27,13 +27,12 @@ export function treeSaveDisabledReason(source, gamesProcessed, isDownloading){
     }
     return ''
 }
-
-export function exportFileName(source, playerName, playerColor, selectedEvent) {
+export function exportFileName(source, playerName, playerColor, selectedEvent, extension) {
     if(source === Constants.SITE_EVENT_DB) {
-        return `${selectedEvent.name}.pgn`
+        return `${selectedEvent.name}.${extension}`
     }
     if(playerName) {
-        return `${playerName}-${playerColor}.png`
+        return `${playerName}-${playerColor}.${extension}`
     }
-    return "openingtree-exportedgames.pgn"
+    return `openingtree-exportedgames.${extension}`
 }

@@ -55,7 +55,8 @@ export default class Actions extends React.Component {
         setImmediate(this.exportOpeningTree.bind(this))
     }
     exportOpeningTree() {
-        serializeOpeningTree(this.props.exportOpeningTreeObject(), "11test.txt", 
+        serializeOpeningTree(this.props.exportOpeningTreeObject(), 
+            SitePolicy.exportFileName(this.props.site, this.props.playerName, this.props.playerColor, null, "tree"), 
             (err, info) => {
                 if(err) {
                     this.props.showError(err)                    

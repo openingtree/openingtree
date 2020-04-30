@@ -36,7 +36,7 @@ export default class PGNReader {
         showError, stopDownloading, files) {
         this.continueProcessingGames = true
         if(shouldDownloadToFile) {
-            let fileStream =  streamsaver.createWriteStream(SitePolicy.exportFileName(site, playerName, playerColor, selectedNotableEvent))
+            let fileStream =  streamsaver.createWriteStream(SitePolicy.exportFileName(site, playerName, playerColor, selectedNotableEvent, "pgn"))
             this.fileWriter = fileStream.getWriter()
         }
         let encoder = new TextEncoder()
