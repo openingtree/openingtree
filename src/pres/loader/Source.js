@@ -46,7 +46,7 @@ export default class Source extends React.Component {
                 </div>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails>
-                <RadioGroup onChange={this.props.siteChange}>
+                <RadioGroup onChange={this.props.siteChange} value={this.props.site}>
                     <FormControlLabel className="sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_LICHESS)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_CHESS_DOT_COM)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_OPENING_TREE_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_OPENING_TREE_FILE)} />
