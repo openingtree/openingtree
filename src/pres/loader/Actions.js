@@ -105,7 +105,7 @@ export default class Actions extends React.Component {
 
     load() {
         this.props.clear()
-        this.setState({ isGamesSubsectionOpen: true })
+        this.setState({ isGamesSubsectionOpen: true, loadedSite:this.props.site })
         // set the player name and color in the global state
         this.props.onChange("playerName", this.props.playerName)
         this.props.onChange("playerColor", this.props.playerColor)
@@ -135,7 +135,8 @@ export default class Actions extends React.Component {
     }
     regularActions() {
         let downloadDisabledReason = SitePolicy.treeSaveDisabledReason(
-                                        this.props.site, 
+                                        this.state.loadedSite, 
+                                        this.props.site,
                                         this.props.gamesProcessed, 
                                         this.props.isDownloading)
         return <div>
