@@ -36,6 +36,7 @@ export default class Actions extends React.Component {
     }
     importTreeClicked() {
         this.setState({exportingInProgress:true})
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "LoadTree", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
         setImmediate(this.importOpeningTree.bind(this))
     }
     importOpeningTree() {
@@ -52,6 +53,7 @@ export default class Actions extends React.Component {
     }
     exportTreeClicked() {
         this.setState({exportingInProgress:true})
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "SaveTree", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
         setImmediate(this.exportOpeningTree.bind(this))
     }
     exportOpeningTree() {
