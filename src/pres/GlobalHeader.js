@@ -40,7 +40,7 @@ const GlobalHeader = (props) => {
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
           </Nav>
-          <UncontrolledDropdown navbar>
+          <UncontrolledDropdown navbar="true">
               <DropdownToggle className="bootNavColor" nav caret>
                 More
               </DropdownToggle>
