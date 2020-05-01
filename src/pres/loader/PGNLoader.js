@@ -133,7 +133,7 @@ export default class PGNLoader extends React.Component {
             })
         }
         this.setState({ site: newSite, expandedPanel:'user'})
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ChangeSite", this.state.site)
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ChangeSite", newSite)
     }
 
     filtersChange(filters) {

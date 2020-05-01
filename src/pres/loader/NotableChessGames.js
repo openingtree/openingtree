@@ -1,10 +1,12 @@
 import SelectSearch from 'react-select-search';
 import React from 'react'
-
+import * as Constants from '../../app/Constants'
+import { trackEvent } from '../../app/Analytics';
 
 export default class NotableChessGames extends React.Component {
 
     updateDetails = (value) => {
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "NotableGameSelected", value.value)
         this.props.onChange(value)
     }
     
