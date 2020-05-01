@@ -18,8 +18,8 @@ export default class User extends React.Component {
         this.state = {
             playerName:'',
             files:[],
-            selectedPlayer:{},
-            selectedEvent:{}
+            selectedPlayer:null,
+            selectedEvent:null
         }
     }
 
@@ -142,14 +142,14 @@ export default class User extends React.Component {
     getGoatDBSelection(){
         return <NotableChessGames 
             list={this.props.notablePlayers} 
-            placeholder="Select a player"
+            placeholder="Search a player"
             onChange={this.notablePlayerChange.bind(this)}
             selectedDetail={this.state.selectedPlayer}/>
     }
     getGoatDBEventSelection(){
         return <NotableChessGames 
             list={this.props.notableEvents} 
-            placeholder="Select an event"
+            placeholder="Search an event"
             onChange={this.notableEventChange.bind(this)}
             selectedDetail={this.state.selectedEvent}/>
     }

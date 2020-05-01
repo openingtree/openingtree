@@ -8231,9 +8231,9 @@ react-scripts@3.4.0:
   optionalDependencies:
     fsevents "2.1.2"
 
-react-select-search@0.10.2:
+"react-select-search@git+https://git@github.com/openingtree/react-select-search.git#v0.10-patch":
   version "0.10.2"
-  resolved "https://registry.yarnpkg.com/react-select-search/-/react-select-search-0.10.2.tgz#6c331b4cdf9b73db8a3ef109ae26acb0ff216f8c"
+  resolved "git+https://git@github.com/openingtree/react-select-search.git#9ba3e493a81e7356fd9b4947d25ab39eba93d23e"
   dependencies:
     fuse.js "^3.2.0"
     react-onclickoutside "^6.7.1"

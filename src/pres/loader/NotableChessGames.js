@@ -6,8 +6,11 @@ import { trackEvent } from '../../app/Analytics';
 export default class NotableChessGames extends React.Component {
 
     updateDetails = (value) => {
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "NotableGameSelected", value.value)
-        this.props.onChange(value)
+        if(!value.length) {
+            return
+        }
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "NotableGameSelected", value[value.length-1].value)
+        this.props.onChange(value[value.length-1])
     }
     
     renderDetails(option) {
@@ -24,9 +27,9 @@ export default class NotableChessGames extends React.Component {
             return <div className="lowOpacity textCenter"> Could not fetch list</div>
         }
         let options = this.props.list.map(option=>{return {...option, value:option.name}})
-        return <SelectSearch
+        return <SelectSearch multiple
             name="goatPlayers"
-            value={this.props.selectedDetail.value}
+            value={this.props.selectedDetail?[this.props.selectedDetail.value]:null}
             options={options}
             placeholder={this.props.placeholder}
             renderOption={this.renderDetails}
