@@ -121,7 +121,7 @@ function packControlWord(control) {
 
 function chunk(treeData) {
     let chunk1 = {chunk:treeData.object, index:0}
-    return [chunk1,...chunkArray(treeData.array, 500)]
+    return [chunk1,...chunkArray(treeData.array, 1000)]
 }
 
 function chunkArray(array, chunkSize) {
