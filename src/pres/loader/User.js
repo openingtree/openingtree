@@ -180,6 +180,7 @@ export default class User extends React.Component {
                     dropzoneText="Drag and drop openingtree save file here or click here to select a file"
                 />
         }
+        return <div/>
     }
 
     render() {
