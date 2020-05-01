@@ -2,12 +2,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExternalLinkAlt, faUser } from '@fortawesome/free-solid-svg-icons'
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter, TextField } from '@material-ui/core';
 import React from 'react'
-import {getPerformanceDetails, simplifiedFen} from '../app/util'
+import {getPerformanceDetails} from '../app/util'
 
 export default class ControlsContainer extends React.Component {
-    constructor(props) {
-        super(props)
-    }
     eatClicks(e) {
         e.stopPropagation()
     }

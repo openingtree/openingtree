@@ -10,8 +10,6 @@ import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
 import Collapse from '@material-ui/core/Collapse';
 import Dropzone from './Dropzone'
-import InputAdornment from '@material-ui/core/InputAdornment'
-import InsertLink from '@material-ui/icons/InsertLink'
 import NotableChessGames from './NotableChessGames';
 
 export default class User extends React.Component {

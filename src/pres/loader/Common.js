@@ -1,7 +1,7 @@
 import { withStyles } from '@material-ui/core/styles';
 import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
 import React from 'react'
-import { createSubObjectWithProperties, getTimeframeSteps } from '../../app/util'
+import { createSubObjectWithProperties } from '../../app/util'
 import * as Constants from '../../app/Constants'
 
 export const ExpansionPanel = withStyles({
@@ -22,7 +22,7 @@ export const ExpansionPanel = withStyles({
 })(MuiExpansionPanel);
 
 export function getNumberIcon(n) {
-    return <img className = 'lowOpacity styledNumbers' src={`/images/styled-${n}.png`} height={24}/>
+    return <img alt={`step ${n}`} className = 'lowOpacity styledNumbers' src={`/images/styled-${n}.png`} height={24}/>
 }
 
 export function advancedFilters(state) {

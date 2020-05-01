@@ -51,7 +51,7 @@ export function deserializeOpeningTree(file, callback) {
             callback("Input file not in correct format", null)
             return
         }
-        getDeflatedChunks(data, index, numChunks, callback)
+        getInflatedChunks(data, index, numChunks, callback)
     };
     reader.onerror = function() {
         callback("Failed to opening tree file", null)
@@ -59,36 +59,37 @@ export function deserializeOpeningTree(file, callback) {
     reader.readAsArrayBuffer(file)
 }
 
-function getDeflatedChunks(data, startIndex, numChunks, callback) {
+function getInflatedChunks(data, startIndex, numChunks, callback) {
     let index = startIndex
     let deflatedChunks = []
     let remainingChunks = numChunks
     let hasError=false
+    let handleInflate = (error, data)=> {
+        remainingChunks--
+        if(error) {
+            console.log(error)
+            hasError=true
+        }
+        try {
+            deflatedChunks.push(JSON.parse(data))
+        } catch (e) {
+            console.log(e)
+            hasError=true
+        }
+        if(remainingChunks===0) {
+            if(hasError) {
+                callback("Input file seems corrupted", null)
+            }
+            
+            callback(null, reconstructObjectFromChunks(deflatedChunks))
+        }
+        
+    }
     while(numChunks>0) {
         let chunkSize = unpackControlWord(data.slice(index,index+8))
         index = index + 8
         zlib.inflate(
-            Buffer.from(data,index,chunkSize), (error, data)=> {
-                remainingChunks--
-                if(error) {
-                    console.log(error)
-                    hasError=true
-                }
-                try {
-                    deflatedChunks.push(JSON.parse(data))
-                } catch (e) {
-                    console.log(e)
-                    hasError=true
-                }
-                if(remainingChunks===0) {
-                    if(hasError) {
-                        callback("Input file seems corrupted", null)
-                    }
-                    
-                    callback(null, reconstructObjectFromChunks(deflatedChunks))
-                }
-                
-            })
+            Buffer.from(data,index,chunkSize), handleInflate)
         index = index + chunkSize
         numChunks--
     }
@@ -104,7 +105,7 @@ function reconstructObjectFromChunks(deflatedChunks) {
 
 function unpackControlWord(control) {
     let view = new DataView(control)
-    if(view.getUint16(0)!=0x1337 || view.getUint16(6)!=0xC0D3) {
+    if(view.getUint16(0)!==0x1337 || view.getUint16(6)!==0xC0D3) {
         return null
     }
     return view.getUint32(2)

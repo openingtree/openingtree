@@ -15,7 +15,7 @@ export function isFilterPanelEnabled(source, playerName) {
 }
 
 export function treeSaveDisabledReason(source, gamesProcessed, isDownloading){
-    if(source != Constants.SITE_LICHESS && 
+    if(source !== Constants.SITE_LICHESS && 
         source !== Constants.SITE_CHESS_DOT_COM) {
         return "Only supported for chess.com and lichess"
     }
