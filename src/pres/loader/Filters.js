@@ -7,7 +7,7 @@ import Divider from '@material-ui/core/Divider';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
 import * as Constants from '../../app/Constants'
-import { Button, Collapse } from 'reactstrap'
+import { Collapse } from 'reactstrap'
 import { trackEvent } from '../../app/Analytics'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'

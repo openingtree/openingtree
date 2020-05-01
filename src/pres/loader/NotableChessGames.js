@@ -4,10 +4,6 @@ import React from 'react'
 
 export default class NotableChessGames extends React.Component {
 
-    constructor(props) {
-        super(props)
-        
-    }
     updateDetails = (value) => {
         this.props.onChange(value)
     }
@@ -21,7 +17,7 @@ export default class NotableChessGames extends React.Component {
     }
     render() {
         if(!this.props.list) {
-            return <div className="lowOpacity textCenter"><img width='25' height='25' src="./spinner.gif"/> Loading List</div>
+            return <div className="lowOpacity textCenter"><img alt="loading" width='25' height='25' src="./spinner.gif"/> Loading List</div>
         } else if(!this.props.list.length) {
             return <div className="lowOpacity textCenter"> Could not fetch list</div>
         }

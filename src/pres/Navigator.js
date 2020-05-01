@@ -26,6 +26,9 @@ export default class Navigator extends React.Component {
           case 39:
             this.next(e, "keyboard")
             break
+          default:
+            break
+
         }
       }
     

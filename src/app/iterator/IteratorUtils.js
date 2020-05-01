@@ -16,7 +16,7 @@ export function normalizePGN(pgnString) {
     // some pgn files have the result in a separate line instead of 
     // at the end of the moves this moves those results to the end of the moves
     // $1 replaces the first captured group which is the result
-    dataString = dataString.replace(/\s*\n+(1\-0|0\-1|1\/2\-1\/2)/g, ` $1`);
+    dataString = dataString.replace(/\s*\n+(1-0|0-1|1\/2-1\/2)/g, ` $1`);
 
     return dataString
 }
