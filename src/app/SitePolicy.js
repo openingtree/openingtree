@@ -14,12 +14,12 @@ export function isFilterPanelEnabled(source, playerName) {
     return !!playerName
 }
 
-export function treeSaveDisabledReason(source, gamesProcessed, isDownloading){
-    if(source !== Constants.SITE_LICHESS && 
-        source !== Constants.SITE_CHESS_DOT_COM) {
+export function treeSaveDisabledReason(loadedSite, selectedSite, gamesProcessed, isDownloading){
+    if(selectedSite !== Constants.SITE_LICHESS && 
+        selectedSite !== Constants.SITE_CHESS_DOT_COM) {
         return "Only supported for chess.com and lichess"
     }
-    if(gamesProcessed<=0) {
+    if(loadedSite!=selectedSite || gamesProcessed<=0) {
         return "You need to analyze games before saving"
     }
     if(isDownloading) {
