@@ -61,7 +61,7 @@ export default class ControlsContainer extends React.Component {
                 
                 <TableBody>
                   {
-                    Object.entries(this.state.activeGame.headers).map((entry)=><TableRow className="performanceRatingRow">
+                    Object.entries(this.state.activeGame.headers).map((entry)=>!entry[1]?null:<TableRow className="performanceRatingRow">
                         <TableCell className="performanceRatingRow">{entry[0]}</TableCell>
                         <TableCell className="performanceRatingRow">{entry[1]}</TableCell>
                     </TableRow>

@@ -19,7 +19,7 @@ export function treeSaveDisabledReason(loadedSite, selectedSite, gamesProcessed,
         selectedSite !== Constants.SITE_CHESS_DOT_COM) {
         return "Only supported for chess.com and lichess"
     }
-    if(loadedSite!=selectedSite || gamesProcessed<=0) {
+    if(loadedSite !== selectedSite || gamesProcessed<=0) {
         return "You need to analyze games before saving"
     }
     if(isDownloading) {

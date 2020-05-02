@@ -8233,7 +8233,7 @@ react-scripts@3.4.0:
 
 "react-select-search@git+https://git@github.com/openingtree/react-select-search.git#v0.10-patch":
   version "0.10.2"
-  resolved "git+https://git@github.com/openingtree/react-select-search.git#9ba3e493a81e7356fd9b4947d25ab39eba93d23e"
+  resolved "git+https://git@github.com/openingtree/react-select-search.git#a0288d4edcfed4a3041b9ab64e1fc1fa8632fadf"
   dependencies:
     fuse.js "^3.2.0"
     react-onclickoutside "^6.7.1"
