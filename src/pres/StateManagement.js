@@ -15,7 +15,7 @@ function playerColor() {
 }
 
 function brushes() {
-    if(this.playerColor() !== this.turnColor()) {
+    if(this.playerColor() === this.turnColor()) {
         return this.forBrushes
     }
     return this.againstBrushes
