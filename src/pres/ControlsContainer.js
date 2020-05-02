@@ -1,7 +1,7 @@
 import React from 'react'
 import PGNLoader from './loader/PGNLoader'
 import SettingsView from './Settings'
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col } from 'reactstrap';
+import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col,Button } from 'reactstrap';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faList, faCog, faChartBar } from '@fortawesome/free-solid-svg-icons'
@@ -9,7 +9,7 @@ import MovesList from './MovesList';
 import {trackEvent} from '../app/Analytics'
 import * as Constants from '../app/Constants'
 import ReportControls from './ReportControls'
-import {Modal, ModalHeader} from 'reactstrap'
+import {Modal, ModalHeader, ModalFooter} from 'reactstrap'
 import {Table, TableRow, TableBody, TableCell} from '@material-ui/core'
 
 export default class ControlsContainer extends React.Component {
@@ -70,6 +70,9 @@ export default class ControlsContainer extends React.Component {
                 </TableBody>
               </Table>
               }
+              <ModalFooter>
+          <Button color="secondary" onClick={this.toggleModal}>Done</Button>
+        </ModalFooter>
               </Modal>
             <Nav tabs>
         <NavItem>
