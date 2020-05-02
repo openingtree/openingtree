@@ -1,5 +1,6 @@
 import request from 'request'
 import {normalizePGN} from './IteratorUtils'
+import {trimString} from '../Common'
 
 export default class BaseUrlIterator {
 
@@ -31,7 +32,7 @@ export default class BaseUrlIterator {
     callDataCallback(body, dataCallback) {
         let pgnArray = body.split(`\n\n\n`)
             .map(
-                pgnString=> pgnString.replace(/^\s+|\s+$/g, '')//trim string
+                pgnString=> trimString(pgnString)
             )
         return dataCallback(pgnArray)
 

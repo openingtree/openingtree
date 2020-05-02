@@ -2,6 +2,7 @@ import { parse }  from '../PGNParser'
 import * as Constants from '../Constants'
 import {trackEvent} from '../Analytics'
 import {normalizePGN} from './IteratorUtils'
+import {trimString} from '../Common'
 
 export default class LichessIterator {
 
@@ -22,7 +23,7 @@ export default class LichessIterator {
 
             let parsedPGNs = pgnsArray.map((pgnString)=> {
                 try {
-                    let parsedPGN =  parse(pgnString)[0]
+                    let parsedPGN =  parse(trimString(pgnString))[0]
                     let playerColorHeaderValue = parsedPGN.headers[playerColorHeaderName]
                     if(playerName && playerColorHeaderValue && !playerColorHeaderValue.toLowerCase().includes(lowerCasePlayerName)) {
                         // filter out games not from selected player
