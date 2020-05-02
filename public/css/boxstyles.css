@@ -1,5 +1,14 @@
-@import 'https://weloveiconfonts.com/api/?family=fontawesome';
-
+@font-face {
+    font-family: 'FontAwesome';
+    font-style: normal;
+    font-weight: normal;
+    src: url('https://weloveiconfonts.com/api/fonts/fontawesome/fontawesome-webfont.eot');
+    src: url('https://weloveiconfonts.com/api/fonts/fontawesome/fontawesome-webfont.eot?#iefix') format('eot'), 
+    url('./fa.woff') format('woff'), 
+    url('./fa.ttf') format('truetype'), 
+    url('https://weloveiconfonts.com/api/fonts/fontawesome/fontawesome-webfont.svg#FontAwesomeRegular') format('svg');
+  }
+  
 [class*="fontawesome-"]:before {
     font-family: 'fontawesome', sans-serif;
 }
@@ -7,7 +16,7 @@
 body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
-
+.fontawesome-search:before{content:"\f002"}
 .select-search-box {
     width: 300px;
     position: relative;
