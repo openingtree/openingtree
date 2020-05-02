@@ -103,7 +103,7 @@ export default class User extends React.Component {
     
     getSummary() {
         if(this.props.site === Constants.SITE_PLAYER_DB){
-            if(this.props.selectedPlayer.name) {
+            if(this.props.selectedPlayer && this.props.selectedPlayer.name) {
                 return <span>
                         {getNumberIcon('done')}
                         {this.props.selectedPlayer.profile.title}{'\u00A0'}
@@ -124,7 +124,7 @@ export default class User extends React.Component {
                 return <span>{getNumberIcon('done')}{this.props.files.length} PGN files uploaded</span>
             }
         } else if(this.props.site === Constants.SITE_EVENT_DB) {
-            if(this.props.selectedEvent.name) {
+            if(this.props.selectedEvent && this.props.selectedEvent.name) {
                 return <span>{getNumberIcon('done')}{this.props.selectedEvent.name}</span>
             }
         }
@@ -137,7 +137,13 @@ export default class User extends React.Component {
             margin="dense" onChange={this.editPlayerName.bind(this)}
             label={label} variant="outlined"
             helperText={this.state.playerNameError? this.state.playerNameError:helperText}
-            error={this.state.playerNameError?true:false}/>
+            error={this.state.playerNameError?true:false} onKeyUp={this.playerNameKeyUp.bind(this)}/>
+    }
+
+    playerNameKeyUp(evt) {
+        if(evt.keyCode === 13) { // enter key pressed
+            this.setPlayerDetails()
+        }
     }
     getGoatDBSelection(){
         return <NotableChessGames 
