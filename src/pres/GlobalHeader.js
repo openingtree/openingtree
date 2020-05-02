@@ -11,21 +11,24 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Modal,
+  Modal, ModalBody,
   ModalHeader,
   ModalFooter,
   Button,
   ListGroup,
-  ListGroupItem
+  ListGroupItem,
+  NavItem, NavLink
 } from 'reactstrap'
 
 const GlobalHeader = (props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [modal, setModal] = useState(false);
-  
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+
   const toggle = () => setIsOpen(!isOpen)
   const toggleModal = () => setModal(!modal)
-  
+  const toggleFeedback = () => setFeedbackOpen(!feedbackOpen)
+
   const launch = (url) => {
     return () => {
       window.open(url, "_blank")
@@ -36,9 +39,13 @@ const GlobalHeader = (props) => {
       <Navbar color="light" light expand="md">
         <img src="/opening-tree-logo.png" height="32px" width="32px" alt="Logo"/>
         <NavbarBrand href="/">&nbsp;OpeningTree.com</NavbarBrand>
-        <NavbarToggler onClick={toggle} />
+        <NavbarToggler onClick={toggle}/>
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
+          <NavItem><NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE")}>"It's so powerful..." - IM Eric Rosen <span className="smallText">[Watch video]</span></NavLink></NavItem>
+          </Nav>
+          <Nav className="ml-auto" navbar>
+          <NavItem><NavLink className="navLinkButton" onClick={toggleFeedback}>Feedback</NavLink></NavItem>
           </Nav>
           <UncontrolledDropdown>
               <DropdownToggle className="bootNavColor" nav caret>
@@ -49,10 +56,10 @@ const GlobalHeader = (props) => {
                   Acknowledgements
                 </DropdownItem>
                 <DropdownItem onClick={launch("mailto:openingtreechess@gmail.com")}>
-                  Feedback
+                  Old version
                 </DropdownItem>
-                <DropdownItem onClick={launch("https://www.reddit.com/message/compose/?to=opening_tree")}>
-                  Message me on reddit
+                <DropdownItem onClick={launch("https://www.openingtree.com/old")}>
+                Old version
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem onClick={launch("https://lichess.org/")}>
@@ -68,6 +75,23 @@ const GlobalHeader = (props) => {
             </UncontrolledDropdown>
         </Collapse>
       </Navbar>
+      <Modal isOpen={feedbackOpen} toggle={toggleFeedback}>
+        <ModalHeader toggle={toggleFeedback}>Feedback</ModalHeader>
+        <ModalBody>
+          Your feedback is greatly appreciated. Reach out to me for feedback, suggestions, bug report or just a game of chess.
+          <ul>
+            <li>Email me: <a href="mailto:openingtreechess@gmail.com" target="_blank">openingtreechess@gmail.com</a></li>
+            <li>Message me on reddit <a href="https://www.reddit.com/message/compose/?to=opening_tree" target="_blank">u/opening_tree</a></li>
+            <li>lichess.org username: <a href="https://lichess.org/@/vannooz" target="_blank">vannooz</a></li>
+            <li>chess.com username: <a href="https://www.chess.com/member/vannooz" target="_blank">vannooz</a></li>
+          </ul>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={toggle}>Cancel</Button>
+        </ModalFooter>
+      </Modal>
+
+      
       <Modal isOpen={modal} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>Acknowledgements</ModalHeader>
         <ListGroup className="acknowledgement">
