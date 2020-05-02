@@ -87,7 +87,7 @@ const GlobalHeader = (props) => {
           </ul>
         </ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={toggle}>Cancel</Button>
+          <Button color="secondary" onClick={toggleFeedback}>Done</Button>
         </ModalFooter>
       </Modal>
 
