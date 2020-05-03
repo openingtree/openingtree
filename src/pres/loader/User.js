@@ -135,7 +135,7 @@ export default class User extends React.Component {
         return <TextField
             className="playernameField" name="playerName" id="playerNameTextBox" 
             margin="dense" onChange={this.editPlayerName.bind(this)}
-            label={label} variant="outlined"
+            label={label} variant="outlined" value={this.state.playerName}
             helperText={this.state.playerNameError? this.state.playerNameError:helperText}
             error={this.state.playerNameError?true:false} onKeyUp={this.playerNameKeyUp.bind(this)}/>
     }
