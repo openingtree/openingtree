@@ -42,7 +42,7 @@ const GlobalHeader = (props) => {
         <NavbarToggler onClick={toggle}/>
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-          <NavItem><NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE")}>"It's so powerful..." - IM Eric Rosen <span className="smallText">[Watch video]</span></NavLink></NavItem>
+          <NavItem><NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE")}>"It's so powerful" - IM Eric Rosen <span className="smallText">[Watch video]</span></NavLink></NavItem>
           </Nav>
           <Nav className="ml-auto" navbar>
           <NavItem><NavLink className="navLinkButton" onClick={toggleFeedback}>Feedback</NavLink></NavItem>
