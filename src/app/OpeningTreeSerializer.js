@@ -24,11 +24,11 @@ export function serializeOpeningTree(treeData, filename, callback) {
                 deflatedChunks.push(data)
                 if(remainingChunks<=0) {
                     if(hasError) {
-                        callback("could not save file")
+                        callback("Could not save file")
                         return
                     }
                     saveAs(new Blob(deflatedChunks, {type: "application/octet-stream"}), filename)
-                    callback(null, `saved opening tree to file ${filename}`)
+                    callback(null, `Saved opening tree to file ${filename}`)
                 }
             });
         })
