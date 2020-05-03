@@ -10,7 +10,6 @@ import ControlsContainer from './ControlsContainer'
 import {addStateManagement} from './StateManagement'
 import {Snackbar} from '@material-ui/core'
 import SnackbarContentWrapper from './SnackbarContentWrapper'
-import Alert from '@material-ui/lab/Alert';
 import * as Constants from '../app/Constants'
 
 export default class MainContainer extends React.Component {

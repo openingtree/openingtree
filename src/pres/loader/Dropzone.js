@@ -5,7 +5,7 @@ import * as Constants from '../../app/Constants'
 
 export default class Dropzone extends React.Component{
     handleFileChange(newFiles) {
-      trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "FileSaved")
+      trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "FileSaved", newFiles.length>0?newFiles[0].name:null)
       this.props.filesChange(newFiles)
     }
     render(){

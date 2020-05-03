@@ -55,11 +55,8 @@ const GlobalHeader = (props) => {
                 <DropdownItem onClick={toggleModal}>
                   Acknowledgements
                 </DropdownItem>
-                <DropdownItem onClick={launch("mailto:openingtreechess@gmail.com")}>
-                  Old version
-                </DropdownItem>
                 <DropdownItem onClick={launch("https://www.openingtree.com/old")}>
-                Old version
+                  Old version
                 </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem onClick={launch("https://lichess.org/")}>
@@ -105,8 +102,9 @@ const GlobalHeader = (props) => {
         <ListGroupItem tag="a" href="https://www.flaticon.com/" target="_blank" action>FlatIcons.com</ListGroupItem>
         <ListGroupItem tag="a" href="https://www.freelogodesign.org" target="_blank" action>Free logo design</ListGroupItem>
         <ListGroupItem tag="a" href="https://github.com/kevinludwig/pgn-parser" target="_blank" action>PGN Parser</ListGroupItem>
-        <ListGroupItem tag="a" href="https://www.reddit.com/r/chess" target="_blank" action>r/chess</ListGroupItem>
-        <ListGroupItem tag="a" href="https://www.reddit.com/r/anarchychess" target="_blank" action>r/anarchychess</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.npmjs.com/package/material-ui-dropzone" target="_blank" action>Dropzone</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.pgnmentor.com" target="_blank" action>PGN Mentor</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.twitch.tv/imrosen" target="_blank" action>IM Eric Rosen</ListGroupItem>
         </ListGroup>
         <ModalFooter>
           <Button color="secondary" onClick={toggleModal}>Done</Button>
