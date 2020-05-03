@@ -2,6 +2,7 @@ import SelectSearch from 'react-select-search';
 import React from 'react'
 import * as Constants from '../../app/Constants'
 import { trackEvent } from '../../app/Analytics';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export default class NotableChessGames extends React.Component {
 
@@ -15,7 +16,7 @@ export default class NotableChessGames extends React.Component {
     
     renderDetails(option) {
         return (<div>
-                <img alt={option.name} className="profilePicture" width="40" height="40" src={option.profile.imageUrl} />
+                <span><LazyLoadImage alt={option.name} className="profilePicture" width="40" height="40" src={option.profile.imageUrl} /></span>
                 <div>{option.name}</div>
                 <div className="smallText">{option.profile.subText}</div>
                 </div>);

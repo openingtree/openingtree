@@ -23,6 +23,7 @@
     "react-chessground": "^1.0.0",
     "react-dom": "^16.12.0",
     "react-ga": "^2.7.0",
+    "react-lazy-load-image-component": "^1.4.3",
     "react-scripts": "3.4.0",
     "react-select-search": "git+https://git@github.com/openingtree/react-select-search.git#v0.10-patch",
     "reactstrap": "^8.4.1",
