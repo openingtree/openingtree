@@ -123,7 +123,7 @@ function settingsChange(name, value) {
     })
 }
 function showError(message, trackingLabel) {
-    this.setState({message:message, messageSeverity:"warning"})
+    this.setState({message:message, messageSeverity:"error"})
     trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown",
         trackingLabel?trackingLabel:message)
 }
