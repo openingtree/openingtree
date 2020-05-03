@@ -9,6 +9,7 @@ import {Container, Row, Col} from 'reactstrap'
 import ControlsContainer from './ControlsContainer'
 import {addStateManagement} from './StateManagement'
 import {Snackbar} from '@material-ui/core'
+import SnackbarContentWrapper from './SnackbarContentWrapper'
 import Alert from '@material-ui/lab/Alert';
 import * as Constants from '../app/Constants'
 
@@ -102,10 +103,12 @@ export default class MainContainer extends React.Component {
                 importCallback={this.importGameState.bind(this)}
                 /></Col>
     </Row></Container>
-    <Snackbar anchorOrigin={{ vertical:'top', horizontal:"center" }} open={snackBarOpen} autoHideDuration={6000} onClose={this.closeError.bind(this)}>
-    <Alert onClose={this.closeError.bind(this)} severity={this.state.messageSeverity}>
-      {this.state.message}
-    </Alert>
+    <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:"left" }} open={snackBarOpen} autoHideDuration={6000} onClose={this.closeError.bind(this)}>
+    <SnackbarContentWrapper
+                            onClose={this.closeError.bind(this)}
+                            variant={this.state.messageSeverity}
+                            message={this.state.message}
+                        />
     </Snackbar>
     </div>
   }
