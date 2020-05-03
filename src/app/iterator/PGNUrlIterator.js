@@ -10,10 +10,10 @@ export default class PGNUrlIterator {
         new BaseUrlIterator(url, true, 
             (responseCode)=>{
                 if (responseCode !== 200) {
-                    showError('could not load url')
+                    showError('Could not load url')
                 }
             }, (error)=> {
-                showError('could not connect to url')
+                showError('Could not connect to url')
                 ready([], false)
             }, (pgnStringArray) => {
                 let parsedPGNs = pgnStringArray.map((pgnString)=> {
@@ -21,7 +21,7 @@ export default class PGNUrlIterator {
 
                         return parse(pgnString)[0]
                     } catch (e) {
-                        console.log("failed to parse pgn", pgnString)
+                        console.log("Failed to parse pgn", pgnString)
                         console.log(e)
                         trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedPGNUrl")
                         return null

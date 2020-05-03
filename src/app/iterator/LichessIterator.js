@@ -20,19 +20,19 @@ export default class LichessIterator {
         new BaseUrlIterator(lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter, false,
             (responseCode)=>{
                 if(responseCode === 404) {
-                    showError('could not find lichess user ' + playerName)
+                    showError('Could not find lichess user ' + playerName)
                 } else if (responseCode !== 200) {
-                    showError('could not load games of lichess user ' + playerName)
+                    showError('Could not load games of lichess user ' + playerName)
                 }
             }, (error)=> {
-                showError('failed to connect to lichess.org')
+                showError('Failed to connect to lichess.org')
                 ready([], false)
             }, (pgnStringArray) => {
                 let parsedPGNs = pgnStringArray.map((pgnString)=> {
                     try {
                         return parse(pgnString)[0]
                     } catch (e) {
-                        console.log("failed to parse pgn", pgnString)
+                        console.log("Failed to parse pgn", pgnString)
                         console.log(e)
                         trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedLichess", playerName)
                         return null
