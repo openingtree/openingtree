@@ -7,11 +7,8 @@ import { LazyLoadImage } from 'react-lazy-load-image-component';
 export default class NotableChessGames extends React.Component {
 
     updateDetails = (value) => {
-        if(!value.length) {
-            return
-        }
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "NotableGameSelected", value[value.length-1].value)
-        this.props.onChange(value[value.length-1])
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "NotableGameSelected", value.value)
+        this.props.onChange(value)
     }
     
     renderDetails(option) {
@@ -28,9 +25,9 @@ export default class NotableChessGames extends React.Component {
             return <div className="lowOpacity textCenter"> Could not fetch list</div>
         }
         let options = this.props.list.map(option=>{return {...option, value:option.name}})
-        return <SelectSearch multiple
+        return <SelectSearch
             name="goatPlayers"
-            value={this.props.selectedDetail?[this.props.selectedDetail.value]:null}
+            value={this.props.selectedDetail.value}
             options={options}
             placeholder={this.props.placeholder}
             renderOption={this.renderDetails}

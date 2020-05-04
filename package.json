@@ -25,7 +25,7 @@
     "react-ga": "^2.7.0",
     "react-lazy-load-image-component": "^1.4.3",
     "react-scripts": "3.4.0",
-    "react-select-search": "git+https://git@github.com/openingtree/react-select-search.git#v0.10-patch",
+    "react-select-search": "0.10.2",
     "reactstrap": "^8.4.1",
     "request": "^2.85.0",
     "streamsaver": "^2.0.4"
