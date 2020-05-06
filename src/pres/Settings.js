@@ -15,7 +15,7 @@ export default class SettingsView extends React.Component {
         })
     }
     analyse() {
-        window.open(`https://www.lichess.org/analysis/${this.props.fen}`, '_blank');
+        window.open(`https://www.lichess.org/analysis/standard/${this.props.fen}`, '_blank');
         trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "AnalyzeGame")
 
     }
