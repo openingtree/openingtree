@@ -159,7 +159,7 @@ export default class Actions extends React.Component {
             Export as PGN
         </MaterialUIButton></div>
         {
-            <div className="pgnloadersection"><Tooltip placement="top" title={downloadDisabledReason}>
+            <div className="pgnloadersection"><Tooltip placement="top" title={downloadDisabledReason||"Save a .tree file locally for faster reload later"}>
                 <span><MaterialUIButton
                 onClick={this.exportTreeClicked.bind(this)}
                 variant="contained"

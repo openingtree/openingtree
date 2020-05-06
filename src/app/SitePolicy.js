@@ -23,7 +23,7 @@ export function treeSaveDisabledReason(loadedSite, selectedSite, gamesProcessed,
         return "You need to analyze games before saving"
     }
     if(isDownloading) {
-        return "Not supported while games are loading"
+        return "Action not supported while games are loading"
     }
     return ''
 }

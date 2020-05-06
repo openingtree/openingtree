@@ -239,3 +239,13 @@
     margin-top:5px;
     margin-bottom:5px;
 }
+.singlePadding {
+    padding-top:0.75rem;
+    padding-bottom:0.75rem;
+    padding-left:1rem;
+    padding-right:1rem;
+
+}
+.smallBottomMargin {
+    margin-bottom:0.25rem;
+}

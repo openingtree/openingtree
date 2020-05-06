@@ -4,6 +4,8 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
 import Divider from '@material-ui/core/Divider';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
@@ -11,6 +13,7 @@ import * as Constants from '../../app/Constants'
 import Collapse from '@material-ui/core/Collapse';
 import Dropzone from './Dropzone'
 import NotableChessGames from './NotableChessGames';
+import {Card, CardBody, CardText, CardTitle} from 'reactstrap'
 
 export default class User extends React.Component {
     constructor(props) {
@@ -160,7 +163,7 @@ export default class User extends React.Component {
             selectedDetail={this.state.selectedEvent}/>
     }
 
-    getPgnFIleSelection() {
+    getPgnFileSelection() {
         return <div><Dropzone filesChange={this.filesChange.bind(this)} filesLimit={10}
         dropzoneText="Drag and drop up to 10 pgn files here or click here to select files"
                 />
@@ -168,9 +171,26 @@ export default class User extends React.Component {
                 </div>
     }
 
+    getOpeningTreeSelection() {
+        return <div>
+            <Card>
+                <CardBody className="singlePadding">
+                <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> How it works</CardTitle>
+                <CardText className="smallText">
+                    If you plan to revisit the same player, you can save a <b>.tree</b> file locally by loading a tree and then clicking <i>"Save Openingtree"</i>.
+                    To reload the same tree, drop the <b>.tree</b> file in the dropzone below.
+                </CardText>
+                </CardBody>
+                </Card><br/>
+            <Dropzone filesChange={this.filesChange.bind(this)} filesLimit={1}
+                    dropzoneText="Drag and drop openingtree save file here or click here to select a file"
+                />
+        </div>
+    }
+
     getInputsToShow() {
         if(this.props.site === Constants.SITE_PGN_FILE) {
-            return this.getPgnFIleSelection()
+            return this.getPgnFileSelection()
         } else if (this.props.site === Constants.SITE_LICHESS) {
             return this.getPlayerNameInput('lichess username')
         } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
@@ -180,9 +200,7 @@ export default class User extends React.Component {
         } else if (this.props.site === Constants.SITE_PLAYER_DB) {
             return this.getGoatDBSelection()
         } else if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
-            return <Dropzone filesChange={this.filesChange.bind(this)} filesLimit={1}
-                    dropzoneText="Drag and drop openingtree save file here or click here to select a file"
-                />
+            return this.getOpeningTreeSelection()
         }
         return <div/>
     }
