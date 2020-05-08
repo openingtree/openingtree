@@ -130,6 +130,7 @@ export default class MainContainer extends React.Component {
             <li>Message me on reddit <a rel="noopener noreferrer" href="https://www.reddit.com/message/compose/?to=opening_tree" target="_blank">u/opening_tree</a></li>
             <li>Message me on lichess: <a rel="noopener noreferrer" href="https://lichess.org/inbox/vannooz" target="_blank">vannooz</a></li>
             <li>Message me on chess.com: <a rel="noopener noreferrer" href="https://www.chess.com/messages/compose/vannooz" target="_blank">vannooz</a></li>
+            <li>Join my <a rel="noopener noreferrer" href="https://discord.gg/hCwKkN8" target="_blank">discord server</a> to chat</li>
           </ul>
         </ModalBody>
         <ModalFooter>
