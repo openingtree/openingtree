@@ -123,8 +123,9 @@ function settingsChange(name, value) {
         'settings':settings
     })
 }
-function showError(message, trackingLabel) {
-    this.setState({message:message, messageSeverity:"error"})
+function showError(message, trackingLabel, subMessage) {
+    this.setState({message:message, subMessage:subMessage
+        , messageSeverity:"error"})
     trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown",
         trackingLabel?trackingLabel:message)
 }
@@ -141,6 +142,7 @@ function closeError() {
 }
 
 function toggleFeedback() {
+    this.closeError()
     this.setState({feedbackOpen:!this.state.feedbackOpen})
 }
 
