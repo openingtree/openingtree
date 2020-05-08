@@ -4,16 +4,16 @@ import * as Constants from './Constants'
 class OpeningGraph {
     constructor() {
         this.graph=new Graph()
+        this.hasMoves = false
     }
     setEntries(arrayEntries){
         this.graph=new Graph(arrayEntries)
+        this.hasMoves = true
     }
 
-    hasMoves() {
-        return this.graph.nodes.size>0
-    }
     clear() {
         this.graph = new Graph()
+        this.hasMoves = false
     }
     addGameResultOnFen(fullFen, resultObject) {
         var currNode = this.getNodeFromGraph(fullFen)
@@ -38,6 +38,8 @@ class OpeningGraph {
         var movePlayedBy = this.createOrGetMoveNode(currNode.playedBy, move, fullTargetFen)
         currNode.playedByMax = Math.max(currNode.playedByMax, targetNode.details.count)
         currNode.playedBy = movePlayedBy
+        this.hasMoves = true
+
     }
 
     getNodeFromGraph(fullFen) {
