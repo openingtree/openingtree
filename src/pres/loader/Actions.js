@@ -41,9 +41,9 @@ export default class Actions extends React.Component {
     }
     importOpeningTree() {
         deserializeOpeningTree(this.props.files[0], 
-            (err,data)=> {
+            (err,data, subMesage)=> {
                 if(err) {
-                    this.props.showError(err)
+                    this.props.showError(err, null, subMesage)
                     this.setState({exportingInProgress:false})
                     return
                 }

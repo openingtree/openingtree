@@ -42,7 +42,7 @@ export function deserializeOpeningTree(file, callback) {
         let version = unpackControlWord(data.slice(index,index+8))
         index = index + 8
         if(version !== 0x1) {
-            callback("File is not an openingtree save file. Are you loading the correct file?", null)
+            callback("File is not an openingtree save file.", null,"Are you loading the correct file?")
             return
         }
         let numChunks = unpackControlWord(data.slice(index,index+8))
@@ -53,8 +53,8 @@ export function deserializeOpeningTree(file, callback) {
         }
         getInflatedChunks(data, index, numChunks, callback)
     };
-    reader.onerror = function() {
-        callback("Failed to read opening tree file", null)
+    reader.onerror = function(e) {
+        callback("Failed to read openingtree file", null, `${e.target.error.name}:${e.target.error.message}`)
     }
     reader.readAsArrayBuffer(file)
 }

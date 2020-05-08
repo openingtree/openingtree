@@ -39,8 +39,8 @@ export default class LichessIterator {
             })
             ready(parsedPGNs.filter(pgn=>!!pgn), true)
         };
-        reader.onerror = function() {
-            showError("Failed to load pgn file")
+        reader.onerror = function(e) {
+            showError("Failed to load pgn file", null, e.target.error.name+":"+e.target.error.message)
             ready([], false)
         }
         reader.onloadend = function() {
