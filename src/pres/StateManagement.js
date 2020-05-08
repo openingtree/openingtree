@@ -142,9 +142,13 @@ function closeError() {
     this.setState({message:'', subMessage:''})
 }
 
-function toggleFeedback() {
-    this.closeError()
-    this.setState({feedbackOpen:!this.state.feedbackOpen})
+function toggleFeedback(diagnosticsOpen) {
+    return () => {
+        let feedbackOpen = this.state.feedbackOpen
+        this.closeError()
+        this.setState({feedbackOpen:!feedbackOpen,
+                diagnosticsDataOpen:diagnosticsOpen})
+    }
 }
 
 function setDownloading(val) {
@@ -159,6 +163,37 @@ function copyDiagnostics() {
     copyText("diagnosticsText")
     this.showInfo("Copied Diagnostics data")
 }
+
+
+function importGameState(importState) {
+    this.setState({
+      settings:importState.settings,
+      openingGraph:importState.openingGraph,
+      gamesProcessed:importState.gamesProcessed
+    })
+  }
+  function getChessboardWidth(){
+    // have to manually set the width to pixels instead of "vw" value
+    // this is because chessground component does not behave well with "vw" values
+    if (window.innerWidth<=768) {
+      return `${Math.round(window.innerWidth*95/100)}px` //95vw
+    } else if ((window.innerWidth<=1024)) {
+      return `${Math.round(window.innerWidth*40/100)}px` // 40vw
+    } else {
+      return "512px"
+    }
+
+  }
+
+function getDiagnosticsValue() {
+  return `--------------------
+  ${navigator.userAgent}
+  -------------------
+  ${JSON.stringify(this.state)}
+  -------------------
+  `
+}
+
 
 function addStateManagement(obj){
     obj.orientation  = orientation
@@ -185,6 +220,9 @@ function addStateManagement(obj){
     obj.setDownloading = setDownloading
     obj.toggleDiagnosticsData = toggleDiagnosticsData.bind(obj)
     obj.copyDiagnostics = copyDiagnostics.bind(obj)
+    obj.importGameState = importGameState
+    obj.getDiagnosticsValue = getDiagnosticsValue
+    obj.getChessboardWidth = getChessboardWidth
 }
 
 export {addStateManagement}
