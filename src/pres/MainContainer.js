@@ -37,7 +37,8 @@ export default class MainContainer extends React.Component {
         },
         message:'',
         downloadingGames:false,
-        feedbackOpen:false
+        feedbackOpen:false,
+        diagnosticsDataOpen:false
       }
     this.chessboardWidth = this.getChessboardWidth()
 
@@ -46,40 +47,11 @@ export default class MainContainer extends React.Component {
 
   }
 
-  importGameState(importState) {
-    this.setState({
-      settings:importState.settings,
-      openingGraph:importState.openingGraph,
-      gamesProcessed:importState.gamesProcessed
-    })
-  }
-  getChessboardWidth(){
-    // have to manually set the width to pixels instead of "vw" value
-    // this is because chessground component does not behave well with "vw" values
-    if (window.innerWidth<=768) {
-      return `${Math.round(window.innerWidth*95/100)}px` //95vw
-    } else if ((window.innerWidth<=1024)) {
-      return `${Math.round(window.innerWidth*40/100)}px` // 40vw
-    } else {
-      return "512px"
-    }
-
-  }
-
-getDiagnosticsValue() {
-  return `--------------------
-  ${navigator.userAgent}
-  -------------------
-  ${JSON.stringify(this.state)}
-  -------------------
-  `
-}
-
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     let snackBarOpen = this.state.message?true:false
     return <div className="rootView"> 
-        <GlobalHeader toggleFeedback = {this.toggleFeedback}/>
+        <GlobalHeader toggleFeedback = {this.toggleFeedback(false)}/>
         <Container className="mainContainer">
           <Row><Col lg={{order:0, size:2}} xs={{order:2}}><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
     </Col><Col lg="6"><Chessground
@@ -128,12 +100,12 @@ getDiagnosticsValue() {
                             message={this.state.message}
                             subMessage={this.state.subMessage}
                             showReportButton={this.state.messageSeverity==='error'}
-                            onReport={this.toggleFeedback}
+                            onReport={this.toggleFeedback(true)}
                         />
     </Snackbar>
 
-    <Modal isOpen={this.state.feedbackOpen} toggle={this.toggleFeedback}>
-        <ModalHeader toggle={this.toggleFeedback}>Feedback</ModalHeader>
+    <Modal isOpen={this.state.feedbackOpen} toggle={this.toggleFeedback(false)}>
+        <ModalHeader toggle={this.toggleFeedback(false)}>Feedback</ModalHeader>
         <ModalBody>
           Your feedback is greatly appreciated. Reach out to me for feedback, suggestions, bug report or just a game of chess.
           <ul>
@@ -148,7 +120,7 @@ getDiagnosticsValue() {
           <Checkbox
             checked={this.state.diagnosticsDataOpen}
             onChange={this.toggleDiagnosticsData}
-            name="checkedB"
+            name="diagnostics"
             color="primary"
           />
         }
@@ -161,7 +133,7 @@ getDiagnosticsValue() {
             </Collapse>
         </ModalBody>
         <ModalFooter>
-          <Button color="secondary" onClick={this.toggleFeedback}>Done</Button>
+          <Button color="secondary" onClick={this.toggleFeedback(false)}>Done</Button>
         </ModalFooter>
       </Modal>
     </div>
