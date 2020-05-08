@@ -92,7 +92,7 @@ export default class ChessComIterator {
 
         request(`https://api.chess.com/pub/player/${playerName}/games/archives`, function (error, response, body) {
             if(error) {
-                showError('Could not connect to chess.com')
+                showError('Failed to connect to chess.com. chess.com might be down at the moment', null, "Some addons like 'Piracy Badger' can also cause this.")
                 ready([], false)
             } else if(response.statusCode === 404) {
                 showError('Could not find chess.com user '+playerName)

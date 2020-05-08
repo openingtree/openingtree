@@ -25,7 +25,7 @@ export default class LichessIterator {
                     showError('Could not load games of lichess user ' + playerName)
                 }
             }, (error)=> {
-                showError('Failed to connect to lichess.org')
+                showError('Failed to connect to lichess.org. Lichess might be down right now', null, "Some addons like 'Piracy Badger' can also cause this.")
                 ready([], false)
             }, (pgnStringArray) => {
                 let parsedPGNs = pgnStringArray.map((pgnString)=> {
