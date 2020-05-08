@@ -126,7 +126,7 @@ export default class MainContainer extends React.Component {
         <ModalBody>
           Your feedback is greatly appreciated. Reach out to me for feedback, suggestions, bug report or just a game of chess.
           <ul>
-            <li>Email me: <a rel="noopener noreferrer" href="mailto:openingtreechess@gmail.com" target="_blank">openingtreechess@gmail.com</a></li>
+            <li>Email me: <a rel="noopener noreferrer" href="mailto:feedback@openingtree.com" target="_blank">feedback@openingtree.com</a></li>
             <li>Message me on reddit <a rel="noopener noreferrer" href="https://www.reddit.com/message/compose/?to=opening_tree" target="_blank">u/opening_tree</a></li>
             <li>Message me on lichess: <a rel="noopener noreferrer" href="https://lichess.org/inbox/vannooz" target="_blank">vannooz</a></li>
             <li>Message me on chess.com: <a rel="noopener noreferrer" href="https://www.chess.com/messages/compose/vannooz" target="_blank">vannooz</a></li>
