@@ -3,6 +3,7 @@ import { faExternalLinkAlt, faUser } from '@fortawesome/free-solid-svg-icons'
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter, TextField } from '@material-ui/core';
 import React from 'react'
 import {getPerformanceDetails} from '../app/util'
+import {copyText} from './loader/Common'
 
 export default class ControlsContainer extends React.Component {
     eatClicks(e) {
@@ -10,16 +11,7 @@ export default class ControlsContainer extends React.Component {
     }
 
     copyFen() {
-        /* Get the text field */
-        var copyText = document.getElementById("fenField");
-      
-        /* Select the text field */
-        copyText.select();
-        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-      
-        /* Copy the text inside the text field */
-        document.execCommand("copy");
-      
+        copyText("fenField")/* Get the text field */
         /* Alert the copied text */
         this.props.showInfo("FEN copied");
     }

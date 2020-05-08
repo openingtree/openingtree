@@ -1,6 +1,7 @@
 import Chess from 'chess.js'
 import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
+import {copyText} from './loader/Common'
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -150,6 +151,15 @@ function setDownloading(val) {
     this.setState({downloadingGames:val})
 }
 
+function toggleDiagnosticsData() {
+    this.setState({diagnosticsDataOpen:!this.state.diagnosticsDataOpen})
+}
+
+function copyDiagnostics() {
+    copyText("diagnosticsText")
+    this.showInfo("Copied Diagnostics data")
+}
+
 function addStateManagement(obj){
     obj.orientation  = orientation
     obj.turnColor = turnColor
@@ -173,6 +183,8 @@ function addStateManagement(obj){
     obj.closeError = closeError
     obj.toggleFeedback = toggleFeedback.bind(obj)
     obj.setDownloading = setDownloading
+    obj.toggleDiagnosticsData = toggleDiagnosticsData.bind(obj)
+    obj.copyDiagnostics = copyDiagnostics.bind(obj)
 }
 
 export {addStateManagement}
