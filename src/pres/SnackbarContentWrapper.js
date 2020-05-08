@@ -2,6 +2,7 @@ import green from '@material-ui/core/colors/green';
 import amber from '@material-ui/core/colors/amber';
 import IconButton from '@material-ui/core/IconButton';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
+import Button from '@material-ui/core/Button'
 import {withStyles} from '@material-ui/core/styles';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import CloseIcon from '@material-ui/icons/Close';
@@ -46,7 +47,7 @@ const styles = (theme) => ({
 });
 
 function SnackbarContentWrapper(props) {
-    const {classes, className, message, onClose, variant, ...other} = props;
+    const {classes, className, message, onClose, variant, subMessage, onReport, showReportButton, ...other} = props;
     const Icon = variantIcon[variant];
 
     return (
@@ -54,12 +55,18 @@ function SnackbarContentWrapper(props) {
             className={clsx(classes[variant], className)}
             aria-describedby="client-snackbar"
             message={
-                <span id="client-snackbar" className={classes.message}>
+                <div><span id="client-snackbar" className={classes.message}>
                     <Icon className={clsx(classes.icon, classes.iconVariant)} />
-                    {message}
+                    {message} 
+                    
                 </span>
+                {!subMessage?null:<div className="smallText">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{subMessage}</div>}
+                </div>
             }
-            action={[
+            action={[ 
+                !showReportButton?null:<Button key="report" onClick = {onReport} color="inherit" size="small">
+                  Report this
+                </Button>,
                 <IconButton
                     key="close"
                     aria-label="Close"
@@ -68,7 +75,7 @@ function SnackbarContentWrapper(props) {
                     onClick={onClose}
                 >
                     <CloseIcon className={classes.icon} />
-                </IconButton>,
+                </IconButton>
             ]}
             {...other}
         />
@@ -80,6 +87,9 @@ SnackbarContentWrapper.propTypes = {
     className: PropTypes.string,
     message: PropTypes.node,
     onClose: PropTypes.func,
+    onReport: PropTypes.func,
+    subMessage: PropTypes.string,
+    showReportButton: PropTypes.bool,
     variant: PropTypes.oneOf(['success', 'warning', 'error', 'info']).isRequired,
 };
 

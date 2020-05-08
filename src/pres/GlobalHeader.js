@@ -11,7 +11,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Modal, ModalBody,
+  Modal,
   ModalHeader,
   ModalFooter,
   Button,
@@ -23,11 +23,9 @@ import {
 const GlobalHeader = (props) => {
   const [isOpen, setIsOpen] = useState(false)
   const [modal, setModal] = useState(false);
-  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   const toggle = () => setIsOpen(!isOpen)
   const toggleModal = () => setModal(!modal)
-  const toggleFeedback = () => setFeedbackOpen(!feedbackOpen)
 
   const launch = (url) => {
     return () => {
@@ -45,7 +43,7 @@ const GlobalHeader = (props) => {
           <NavItem><NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE")}>"It's so powerful" - IM Eric Rosen <span className="smallText">[Watch video]</span></NavLink></NavItem>
           </Nav>
           <Nav className="ml-auto" navbar>
-          <NavItem><NavLink className="navLinkButton" onClick={toggleFeedback}>Feedback</NavLink></NavItem>
+          <NavItem><NavLink className="navLinkButton" onClick={props.toggleFeedback}>Feedback</NavLink></NavItem>
           </Nav>
           <UncontrolledDropdown>
               <DropdownToggle className="bootNavColor" nav caret>
@@ -72,22 +70,6 @@ const GlobalHeader = (props) => {
             </UncontrolledDropdown>
         </Collapse>
       </Navbar>
-      <Modal isOpen={feedbackOpen} toggle={toggleFeedback}>
-        <ModalHeader toggle={toggleFeedback}>Feedback</ModalHeader>
-        <ModalBody>
-          Your feedback is greatly appreciated. Reach out to me for feedback, suggestions, bug report or just a game of chess.
-          <ul>
-            <li>Email me: <a rel="noopener noreferrer" href="mailto:openingtreechess@gmail.com" target="_blank">openingtreechess@gmail.com</a></li>
-            <li>Message me on reddit <a rel="noopener noreferrer" href="https://www.reddit.com/message/compose/?to=opening_tree" target="_blank">u/opening_tree</a></li>
-            <li>lichess.org username: <a rel="noopener noreferrer" href="https://lichess.org/@/vannooz" target="_blank">vannooz</a></li>
-            <li>chess.com username: <a rel="noopener noreferrer" href="https://www.chess.com/member/vannooz" target="_blank">vannooz</a></li>
-          </ul>
-        </ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={toggleFeedback}>Done</Button>
-        </ModalFooter>
-      </Modal>
-
       
       <Modal isOpen={modal} toggle={toggleModal}>
         <ModalHeader toggle={toggleModal}>Acknowledgements</ModalHeader>
