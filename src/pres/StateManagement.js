@@ -53,7 +53,6 @@ function onMoveAction(from, to) {
 function navigateTo(fen, previousMove){
     this.chess = new Chess(fen)
     this.setState({fen:fen, lastMove:previousMove})
-
 }
 function updateProcessedGames(downloadLimit, n, openingGraph) {
     let totalGamesProcessed = this.state.gamesProcessed+n
@@ -92,6 +91,8 @@ function movesToShow() {
     var moves = this.state.openingGraph.movesForFen(this.chess.fen())
     return moves?moves.sort((a,b)=>b.details.count-a.details.count):[]
 }
+
+
 
 function gameResults() {
     return this.state.openingGraph.gameResultsForFen(this.chess.fen())
@@ -136,7 +137,11 @@ function showInfo(message, trackingLabel) {
 
 
 function closeError() {
-    this.setState({message:''})
+    this.setState({message:'', subMessage:''})
+}
+
+function toggleFeedback() {
+    this.setState({feedbackOpen:!this.state.feedbackOpen})
 }
 
 function setDownloading(val) {
@@ -164,6 +169,7 @@ function addStateManagement(obj){
     obj.showError = showError
     obj.showInfo = showInfo
     obj.closeError = closeError
+    obj.toggleFeedback = toggleFeedback.bind(obj)
     obj.setDownloading = setDownloading
 }
 

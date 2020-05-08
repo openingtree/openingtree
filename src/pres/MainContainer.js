@@ -11,6 +11,11 @@ import {addStateManagement} from './StateManagement'
 import {Snackbar} from '@material-ui/core'
 import SnackbarContentWrapper from './SnackbarContentWrapper'
 import * as Constants from '../app/Constants'
+import {  Modal, ModalBody,
+  ModalHeader,
+  ModalFooter,
+  Button,
+} from 'reactstrap'
 
 export default class MainContainer extends React.Component {
   
@@ -29,7 +34,8 @@ export default class MainContainer extends React.Component {
           playerColor:''
         },
         message:'',
-        downloadingGames:false
+        downloadingGames:false,
+        feedbackOpen:false
       }
     this.chessboardWidth = this.getChessboardWidth()
 
@@ -58,12 +64,11 @@ export default class MainContainer extends React.Component {
 
   }
 
-
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     let snackBarOpen = this.state.message?true:false
     return <div className="rootView"> 
-        <GlobalHeader/>
+        <GlobalHeader toggleFeedback = {this.toggleFeedback}/>
         <Container className="mainContainer">
           <Row><Col lg={{order:0, size:2}} xs={{order:2}}><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
     </Col><Col lg="6"><Chessground
@@ -102,13 +107,35 @@ export default class MainContainer extends React.Component {
                 importCallback={this.importGameState.bind(this)}
                 /></Col>
     </Row></Container>
-    <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:"left" }} open={snackBarOpen} autoHideDuration={6000} onClose={this.closeError.bind(this)}>
+    <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:"left" }} 
+            open={snackBarOpen} autoHideDuration={6000} 
+            onClose={this.closeError.bind(this)}
+    >
     <SnackbarContentWrapper
                             onClose={this.closeError.bind(this)}
                             variant={this.state.messageSeverity}
                             message={this.state.message}
+                            subMessage={this.state.subMessage}
+                            showReportButton={this.state.messageSeverity==='error'}
+                            onReport={this.toggleFeedback}
                         />
     </Snackbar>
+
+    <Modal isOpen={this.state.feedbackOpen} toggle={this.toggleFeedback}>
+        <ModalHeader toggle={this.toggleFeedback}>Feedback</ModalHeader>
+        <ModalBody>
+          Your feedback is greatly appreciated. Reach out to me for feedback, suggestions, bug report or just a game of chess.
+          <ul>
+            <li>Email me: <a rel="noopener noreferrer" href="mailto:openingtreechess@gmail.com" target="_blank">openingtreechess@gmail.com</a></li>
+            <li>Message me on reddit <a rel="noopener noreferrer" href="https://www.reddit.com/message/compose/?to=opening_tree" target="_blank">u/opening_tree</a></li>
+            <li>lichess.org username: <a rel="noopener noreferrer" href="https://lichess.org/@/vannooz" target="_blank">vannooz</a></li>
+            <li>chess.com username: <a rel="noopener noreferrer" href="https://www.chess.com/member/vannooz" target="_blank">vannooz</a></li>
+          </ul>
+        </ModalBody>
+        <ModalFooter>
+          <Button color="secondary" onClick={this.toggleFeedback}>Done</Button>
+        </ModalFooter>
+      </Modal>
     </div>
   }
 }
