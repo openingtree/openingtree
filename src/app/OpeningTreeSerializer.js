@@ -54,7 +54,7 @@ export function deserializeOpeningTree(file, callback) {
         getInflatedChunks(data, index, numChunks, callback)
     };
     reader.onerror = function() {
-        callback("Failed to opening tree file", null)
+        callback("Failed to read opening tree file", null)
     }
     reader.readAsArrayBuffer(file)
 }
