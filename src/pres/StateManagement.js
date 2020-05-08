@@ -193,6 +193,20 @@ function getDiagnosticsValue() {
   -------------------
   `
 }
+function getRedditLink() {
+    return `https://www.reddit.com/message/compose/?to=${Constants.OPENNIG_TREE_REDDIT}&subject=${this.getSubject()}&message=%0D%0A%0D%0A%0D%0A${this.getBody()}`
+}
+
+function getEmailLink() {
+    return `mailto:${Constants.OPENING_TREE_EMAIL}?subject=${this.getSubject()}&body=%0D%0A%0D%0A%0D%0A${this.getBody()}`
+}
+
+function getSubject() {
+    return this.state.diagnosticsDataOpen?"Possible Openingtree bug":"Feedback on Openingtree"
+}
+function getBody() {
+    return this.state.diagnosticsDataOpen?this.getDiagnosticsValue():""
+}
 
 
 function addStateManagement(obj){
@@ -223,6 +237,10 @@ function addStateManagement(obj){
     obj.importGameState = importGameState
     obj.getDiagnosticsValue = getDiagnosticsValue
     obj.getChessboardWidth = getChessboardWidth
+    obj.getEmailLink = getEmailLink
+    obj.getSubject = getSubject
+    obj.getBody = getBody.bind(obj)
+    obj.getRedditLink = getRedditLink
 }
 
 export {addStateManagement}
