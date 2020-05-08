@@ -127,8 +127,15 @@ function settingsChange(name, value) {
 function showError(message, trackingLabel, subMessage) {
     this.setState({message:message, subMessage:subMessage
         , messageSeverity:"error"})
-    trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown",
-        trackingLabel?trackingLabel:message)
+    let label = null
+    if(trackingLabel) {
+        label = trackingLabel
+    } else if (subMessage) {
+        label = message + " : " + subMessage
+    } else {
+        label = message
+    }
+    trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown", label)
 }
 
 function showInfo(message, trackingLabel) {
