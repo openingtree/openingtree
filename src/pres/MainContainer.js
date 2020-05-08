@@ -8,14 +8,16 @@ import GlobalHeader from './GlobalHeader'
 import {Container, Row, Col} from 'reactstrap'
 import ControlsContainer from './ControlsContainer'
 import {addStateManagement} from './StateManagement'
-import {Snackbar} from '@material-ui/core'
+import {Snackbar, TextField} from '@material-ui/core'
 import SnackbarContentWrapper from './SnackbarContentWrapper'
 import * as Constants from '../app/Constants'
 import {  Modal, ModalBody,
   ModalHeader,
   ModalFooter,
-  Button,
+  Button,Collapse
 } from 'reactstrap'
+
+import {FormControlLabel, Checkbox} from '@material-ui/core'
 
 export default class MainContainer extends React.Component {
   
@@ -63,6 +65,15 @@ export default class MainContainer extends React.Component {
     }
 
   }
+
+getDiagnosticsValue() {
+  return `--------------------
+  ${navigator.userAgent}
+  -------------------
+  ${JSON.stringify(this.state)}
+  -------------------
+  `
+}
 
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
@@ -132,6 +143,22 @@ export default class MainContainer extends React.Component {
             <li>Message me on chess.com: <a rel="noopener noreferrer" href="https://www.chess.com/messages/compose/vannooz" target="_blank">vannooz</a></li>
             <li>Join my <a rel="noopener noreferrer" href="https://discord.gg/hCwKkN8" target="_blank">discord server</a> to chat</li>
           </ul>
+          <FormControlLabel
+        control={
+          <Checkbox
+            checked={this.state.diagnosticsDataOpen}
+            onChange={this.toggleDiagnosticsData}
+            name="checkedB"
+            color="primary"
+          />
+        }
+        label="Add diagnostics data to message"
+      />
+          <Collapse isOpen={this.state.diagnosticsDataOpen}>
+            <TextField id="diagnosticsText" label="Click to copy." variant="outlined" 
+            className="fullWidth" value={this.getDiagnosticsValue()} 
+            rowsMax={4} onClick={this.copyDiagnostics} multiline/>
+            </Collapse>
         </ModalBody>
         <ModalFooter>
           <Button color="secondary" onClick={this.toggleFeedback}>Done</Button>

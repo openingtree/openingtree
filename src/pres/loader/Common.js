@@ -34,3 +34,19 @@ export function advancedFilters(state) {
         Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT,
         Constants.FILTER_NAME_ELO_RANGE])
 }
+
+export function copyText(elementId) {
+    /* Get the text field */
+    var copyText = document.getElementById(elementId);
+    try {
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+        return true
+    } catch(e) {
+        return false
+    }
+}
