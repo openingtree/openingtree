@@ -128,8 +128,8 @@ export default class MainContainer extends React.Component {
           <ul>
             <li>Email me: <a rel="noopener noreferrer" href="mailto:openingtreechess@gmail.com" target="_blank">openingtreechess@gmail.com</a></li>
             <li>Message me on reddit <a rel="noopener noreferrer" href="https://www.reddit.com/message/compose/?to=opening_tree" target="_blank">u/opening_tree</a></li>
-            <li>lichess.org username: <a rel="noopener noreferrer" href="https://lichess.org/@/vannooz" target="_blank">vannooz</a></li>
-            <li>chess.com username: <a rel="noopener noreferrer" href="https://www.chess.com/member/vannooz" target="_blank">vannooz</a></li>
+            <li>Message me on lichess: <a rel="noopener noreferrer" href="https://lichess.org/inbox/vannooz" target="_blank">vannooz</a></li>
+            <li>Message me on chess.com: <a rel="noopener noreferrer" href="https://www.chess.com/messages/compose/vannooz" target="_blank">vannooz</a></li>
           </ul>
         </ModalBody>
         <ModalFooter>
