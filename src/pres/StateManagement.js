@@ -124,23 +124,19 @@ function settingsChange(name, value) {
         'settings':settings
     })
 }
-function showError(message, trackingLabel, subMessage) {
+function showError(message, trackingEvent, subMessage) {
     this.setState({message:message, subMessage:subMessage
         , messageSeverity:"error"})
-    let label = null
-    if(trackingLabel) {
-        label = trackingLabel
-    } else if (subMessage) {
-        label = message + " : " + subMessage
-    } else {
-        label = message
+    let eventName = "errorShown"
+    if(trackingEvent) {
+        eventName = eventName+":"+trackingEvent
     }
-    trackEvent(Constants.EVENT_CATEGORY_ERROR,"errorShown", label)
+    trackEvent(Constants.EVENT_CATEGORY_MESSAGE_SHOWN,eventName, message)
 }
 
 function showInfo(message, trackingLabel) {
     this.setState({message:message, messageSeverity:"success"})
-    trackEvent(Constants.EVENT_CATEGORY_ERROR,"infoShown",
+    trackEvent(Constants.EVENT_CATEGORY_MESSAGE_SHOWN,"infoShown",
         trackingLabel?trackingLabel:message)
 }
 

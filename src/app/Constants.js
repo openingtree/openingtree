@@ -26,6 +26,7 @@ export const EVENT_CATEGORY_CONTROLS = "controls"
 export const EVENT_CATEGORY_NAVIGATOR = "navigator"
 export const EVENT_CATEGORY_CHESSBOARD = "chessboard"
 export const EVENT_CATEGORY_ERROR = "error"
+export const EVENT_CATEGORY_MESSAGE_SHOWN = "message"
 
 export const ROOT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 
