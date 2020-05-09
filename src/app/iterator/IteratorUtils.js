@@ -7,6 +7,9 @@ export function normalizePGN(pgnString) {
 
     // Remove Single line commments because parser does not handle them
     dataString = dataString.replace(/^;.*$/gm, '')
+
+    // Remove escaped quotes from headers
+    dataString = dataString.replace(/\\"/gm, '')
     
     // some pgn files dont have triple \n separating games
     // so converting all double \n with triple \n if it happens before a [

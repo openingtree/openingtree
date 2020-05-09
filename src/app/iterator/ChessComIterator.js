@@ -4,6 +4,7 @@ import request from 'request'
 import * as Constants from '../Constants'
 import {isOpponentEloInSelectedRange, getTimeframeSteps, getSelectedTimeFrameData} from '../util'
 import {trackEvent} from '../Analytics'
+import {normalizePGN} from './IteratorUtils'
 
 export default class ChessComIterator {
 
@@ -36,7 +37,7 @@ export default class ChessComIterator {
                 }).map(
                     game=> {
                         try {
-                            return parse(game.pgn)[0]
+                            return parse(normalizePGN(game.pgn))[0]
                         } catch (e) {
                             console.log("failed to parse pgn", game)
                             console.log(e)
