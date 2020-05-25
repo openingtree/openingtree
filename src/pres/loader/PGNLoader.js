@@ -94,7 +94,8 @@ export default class PGNLoader extends React.Component {
             expandedPanel:SitePolicy.isFilterPanelEnabled(this.state.site, playerName, selectedNotablePlayer)?'filters':'',
             files:files,
             selectedNotableEvent:selectedNotableEvent,
-            selectedNotablePlayer:selectedNotablePlayer
+            selectedNotablePlayer:selectedNotablePlayer,
+            playerColor:''
         })
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "PlayerNameSaved")
     }

@@ -1,5 +1,9 @@
 import React, { useState } from 'react'
 import 'bootstrap/dist/css/bootstrap.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import {faComments, faCaretDown} from '@fortawesome/free-solid-svg-icons'
+import { faDiscord } from '@fortawesome/free-brands-svg-icons'
+import * as Constants from '../app/Constants'
 
 import {
   Navbar,
@@ -43,11 +47,14 @@ const GlobalHeader = (props) => {
           <NavItem><NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE")}>"It's so powerful" - IM Eric Rosen <span className="smallText">[Watch video]</span></NavLink></NavItem>
           </Nav>
           <Nav className="ml-auto" navbar>
-          <NavItem><NavLink className="navLinkButton" onClick={props.toggleFeedback}>Feedback</NavLink></NavItem>
+          <NavItem><NavLink className="navLinkButton" onClick={launch(Constants.OPENING_TREE_DISCORD)}><FontAwesomeIcon icon={faDiscord} className="discordIcon"/> Join our discord</NavLink></NavItem>
+          </Nav>
+          <Nav className="" navbar>
+          <NavItem><NavLink className="navLinkButton" onClick={props.toggleFeedback}><FontAwesomeIcon icon={faComments} className="feedbackIcon"/> Send feedback</NavLink></NavItem>
           </Nav>
           <UncontrolledDropdown>
-              <DropdownToggle className="bootNavColor" nav caret>
-                More
+              <DropdownToggle className="bootNavColor" nav>
+              <FontAwesomeIcon icon={faCaretDown} className="moreIcon"/>More
               </DropdownToggle>
               <DropdownMenu right>
                 <DropdownItem onClick={toggleModal}>

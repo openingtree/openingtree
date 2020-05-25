@@ -249,3 +249,18 @@
 .smallBottomMargin {
     margin-bottom:0.25rem;
 }
+
+.discordIcon {
+    color:rgb(121,136,215);
+    font-size:21px;
+    margin-bottom:-3px;
+}
+
+.feedbackIcon {
+    font-size:21px;
+    margin-bottom:-2px;
+}
+.moreIcon {
+    font-size:21px;
+    margin-right:3px;
+}
