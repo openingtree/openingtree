@@ -76,8 +76,8 @@ export function getSelectedTimeFrameData(timeframe, timeframeSteps) {
         return {
             label:"Current month",
             fromMonth:currentDate.getMonth(),
-            frmYear:currentDate.getYear(),
-            fromTimeStamp:getTimeStampInfoFor(currentDate.getMonth(), currentDate.getYear(), "min")
+            fromYear:currentDate.getFullYear(),
+            fromTimeStamp:getTimeStampInfoFor(currentDate.getMonth(), currentDate.getFullYear(), "min")
         }
     }
     if(fromIndex === 0 && toIndex === 0) {
