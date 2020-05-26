@@ -76,7 +76,7 @@ export default class User extends React.Component {
             this.setState({colorError:"Please select a color"})
             return
         }
-        this.setState({colorError:""})
+        this.setState({colorError:"", isAdvancedFiltersOpen:false})
         this.props.filtersChange(this.state)
     }
     getSummary(isDisabled) {
