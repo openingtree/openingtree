@@ -17,20 +17,21 @@ class OpeningGraph {
     }
 
     addPGN(pgn, pgnStats, parsedMoves, lastFen, playerColor) {
+        this.graph.pgnStats.push(pgnStats)
         parsedMoves.forEach(parsedMove => {
             this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.move, pgnStats, playerColor)
         })
-        this.addGameResultOnFen(lastFen, pgnStats)
-        this.addResultToRoot(pgnStats, playerColor)
+        this.addGameResultOnFen(lastFen, this.graph.pgnStats.length-1)
+        this.addStatsToRoot(pgnStats, playerColor)
     }
 
-    addGameResultOnFen(fullFen, resultObject) {
+    addGameResultOnFen(fullFen, resultIndex) {
         var currNode = this.getNodeFromGraph(fullFen)
-        currNode.gameResults.push(resultObject)
+        currNode.gameResults.push(resultIndex)
     }
-    addResultToRoot(resultObject, playerColor) {
+    addStatsToRoot(pgnStats, playerColor) {
         var targetNode = this.getNodeFromGraph(Constants.ROOT_FEN)
-        let newDetails = this.getUpdatedMoveDetails(targetNode.details, resultObject, playerColor)
+        let newDetails = this.getUpdatedMoveDetails(targetNode.details, pgnStats, playerColor)
         targetNode.details = newDetails
     }
 
@@ -119,7 +120,7 @@ class OpeningGraph {
 
         var currNode = this.graph.nodes.get(fen)
         if(currNode) {
-            return currNode.gameResults
+            return currNode.gameResults.map((index)=>this.graph.pgnStats[index])
         }
         return null
     }
@@ -159,6 +160,7 @@ class OpeningGraph {
 class Graph {
     constructor(arrayEntries){
         this.nodes = new Map()
+        this.pgnStats = []
         if(arrayEntries) {
             arrayEntries.forEach((entry)=> {
                 this.nodes.set(entry[0],entry[1])
@@ -173,7 +175,6 @@ class GraphNode {
             playedByMax = 0 // used to keep track of how many times the most frequent move is played for ease of calculation later
             playedBy = {}
             gameResults = []
-            properties = {}
             details = emptyDetails()
 }
 
