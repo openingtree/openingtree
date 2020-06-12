@@ -115,8 +115,14 @@ export default class PGNReader {
                 showError("Failed to load a game", `${playerName}:${playerColor}`)
             } else {
                 let fen = chess.fen()
-                openingGraph.addPGN(pgn, this.gameResult(pgn,site), parsedMoves, fen, playerColor)
-                this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, openingGraph)
+                let parsedPGNDetails = {
+                    pgn:pgn,
+                    pgnStats:this.gameResult(pgn,site),
+                    parsedMoves:parsedMoves,
+                    latestFen:fen,
+                    playerColor:playerColor
+                }
+                this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, parsedPGNDetails)
             }
         }
         setTimeout(()=>{this.parsePGNTimed(site, pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError, stopDownloading)},1)

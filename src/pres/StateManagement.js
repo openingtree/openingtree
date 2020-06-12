@@ -55,12 +55,13 @@ function navigateTo(fen, previousMove){
     this.chess = new Chess(fen)
     this.setState({fen:fen, lastMove:previousMove})
 }
-function updateProcessedGames(downloadLimit, n, openingGraph) {
+function updateProcessedGames(downloadLimit, n, parsedGame) {
     let totalGamesProcessed = this.state.gamesProcessed+n
+    this.state.openingGraph.addPGN(parsedGame.pgn, parsedGame.pgnStats, parsedGame.parsedMoves,
+            parsedGame.latestFen,parsedGame.playerColor)
     this.setState({
-    gamesProcessed: totalGamesProcessed,
-    openingGraph: openingGraph,
-    downloadingGames: (totalGamesProcessed<downloadLimit || downloadLimit>=Constants.MAX_DOWNLOAD_LIMIT)?this.state.downloadingGames:false
+        gamesProcessed: totalGamesProcessed,
+        downloadingGames: (totalGamesProcessed<downloadLimit || downloadLimit>=Constants.MAX_DOWNLOAD_LIMIT)?this.state.downloadingGames:false
     })
     // continue to download games if 
     // 1. we have not reached download limit OR
