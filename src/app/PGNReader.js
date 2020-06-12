@@ -116,7 +116,6 @@ export default class PGNReader {
             } else {
                 let fen = chess.fen()
                 let parsedPGNDetails = {
-                    pgn:pgn,
                     pgnStats:this.gameResult(pgn,site),
                     parsedMoves:parsedMoves,
                     latestFen:fen,

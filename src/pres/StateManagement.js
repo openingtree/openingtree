@@ -57,7 +57,7 @@ function navigateTo(fen, previousMove){
 }
 function updateProcessedGames(downloadLimit, n, parsedGame) {
     let totalGamesProcessed = this.state.gamesProcessed+n
-    this.state.openingGraph.addPGN(parsedGame.pgn, parsedGame.pgnStats, parsedGame.parsedMoves,
+    this.state.openingGraph.addPGN(parsedGame.pgnStats, parsedGame.parsedMoves,
             parsedGame.latestFen,parsedGame.playerColor)
     this.setState({
         gamesProcessed: totalGamesProcessed,

@@ -16,40 +16,57 @@ class OpeningGraph {
         this.hasMoves = false
     }
 
-    addPGN(pgn, pgnStats, parsedMoves, lastFen, playerColor) {
+    addPGN(pgnStats, parsedMoves, lastFen, playerColor) {
         this.graph.pgnStats.push(pgnStats)
+        this.graph.playerColor = playerColor
         parsedMoves.forEach(parsedMove => {
-            this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.move, pgnStats, playerColor)
+            this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.move, pgnStats, this.graph.pgnStats.length-1)
         })
         this.addGameResultOnFen(lastFen, this.graph.pgnStats.length-1)
-        this.addStatsToRoot(pgnStats, playerColor)
+        this.addStatsToRoot(pgnStats)
     }
 
     addGameResultOnFen(fullFen, resultIndex) {
         var currNode = this.getNodeFromGraph(fullFen)
         currNode.gameResults.push(resultIndex)
     }
-    addStatsToRoot(pgnStats, playerColor) {
+    addStatsToRoot(pgnStats) {
         var targetNode = this.getNodeFromGraph(Constants.ROOT_FEN)
-        let newDetails = this.getUpdatedMoveDetails(targetNode.details, pgnStats, playerColor)
+        let newDetails = this.getUpdatedMoveDetails(targetNode.details, pgnStats, targetNode.details)
         targetNode.details = newDetails
     }
 
     getDetailsForFen(fullFen) {
-        return this.getNodeFromGraph(simplifiedFen(fullFen)).details
+        let details = this.getNodeFromGraph(simplifiedFen(fullFen)).details
+        if (Number.isInteger(details)) {
+            return this.getUpdatedMoveDetails(emptyDetails(), this.graph.pgnStats[details])
+        } else if(!details) {
+            return emptyDetails()
+        } 
+        return details
     }
 
-    addMoveForFen(fullSourceFen, fullTargetFen, move, resultObject, playerColor) {
+    addMoveForFen(fullSourceFen, fullTargetFen, move, resultObject, resultIndex) {
         var targetNode = this.getNodeFromGraph(fullTargetFen)
-        let newDetails = this.getUpdatedMoveDetails(targetNode.details, resultObject, playerColor)
+        let newDetails = this.getUpdatedMoveDetails(targetNode.details, resultObject, resultIndex)
         targetNode.details = newDetails
 
         var currNode = this.getNodeFromGraph(fullSourceFen)
         var movePlayedBy = this.createOrGetMoveNode(currNode.playedBy, move, fullTargetFen)
-        currNode.playedByMax = Math.max(currNode.playedByMax, targetNode.details.count)
+        currNode.playedByMax = Math.max(currNode.playedByMax, this.getTargetDetailsCount(targetNode.details))
         currNode.playedBy = movePlayedBy
         this.hasMoves = true
 
+    }
+
+    getTargetDetailsCount(targetDetails) {
+        if(!targetDetails) {
+            return 0
+        }
+        if(Number.isInteger(targetDetails)) {
+            return 1
+        }
+        return targetDetails.count
     }
 
     getNodeFromGraph(fullFen) {
@@ -74,8 +91,20 @@ class OpeningGraph {
         return movesPlayedNode
     }
 
-    getUpdatedMoveDetails(currentMoveDetails, resultObject, playerColor) {
+    getUpdatedMoveDetails(currentMoveDetails, resultObject, resultObjectIndex) {
+        if(Number.isInteger(currentMoveDetails)) {
+            // if this is the second stat object being added
+            // calculate the first move details and then merge it with the second one
+            currentMoveDetails = this.getUpdatedMoveDetails(emptyDetails(),
+                            this.graph.pgnStats[currentMoveDetails],resultObjectIndex)
+        } else if(!currentMoveDetails) {
+            // if this is the first stat being added to this node,
+            // just write the index to calculate the stats later
+            return resultObjectIndex
+        }
+        
         let whiteWin = 0, blackWin = 0, draw = 0, opponentElo=0, resultInt = 0;
+        let playerColor = this.graph.playerColor
         if(resultObject.result === '1-0') {
             whiteWin = 1
             resultInt = playerColor === Constants.PLAYER_COLOR_WHITE? 1 : -1
@@ -131,13 +160,13 @@ class OpeningGraph {
         if(currNode) {
             return Array.from(Object.entries(currNode.playedBy)).map((entry)=> {
                 let gMove = entry[1]
-                let targetNode = this.graph.nodes.get(gMove.fen)
+                let targetNodeDetails = this.getDetailsForFen(gMove.fen)
                 return {
                     orig:gMove.move.from,
                     dest:gMove.move.to,
-                    level:this.levelFor(targetNode.details.count, currNode.playedByMax),
+                    level:this.levelFor(targetNodeDetails.count, currNode.playedByMax),
                     san:gMove.move.san,
-                    details:targetNode.details
+                    details:targetNodeDetails
                 }
             })
         }        
@@ -161,6 +190,7 @@ class Graph {
     constructor(arrayEntries){
         this.nodes = new Map()
         this.pgnStats = []
+        this.playerColor = ''
         if(arrayEntries) {
             arrayEntries.forEach((entry)=> {
                 this.nodes.set(entry[0],entry[1])
@@ -170,12 +200,10 @@ class Graph {
 }
 
 class GraphNode {
-    
             fen = ''
             playedByMax = 0 // used to keep track of how many times the most frequent move is played for ease of calculation later
             playedBy = {}
             gameResults = []
-            details = emptyDetails()
 }
 
 class GraphMove {
