@@ -91,10 +91,11 @@ export default class PGNReader {
         }
 
         var pgn = pgnArray[index]
+
         if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
             let chess = new Chess()
-            let resultObject = this.gameResult(pgn, site)
             let pgnParseFailed = false;
+            let parsedMoves = []
             pgn.moves.forEach(element => {
                 let sourceFen = chess.fen()
                 let move = chess.move(element.move, {sloppy: true})
@@ -103,19 +104,22 @@ export default class PGNReader {
                     pgnParseFailed=true
                     return
                 }
-                openingGraph.addMoveForFen(sourceFen, targetFen, move, resultObject, playerColor)
+                parsedMoves.push({
+                    sourceFen:sourceFen,
+                    targetFen:targetFen,
+                    move:move
+                })
             })
             if(pgnParseFailed) {
                 console.log('failed to load game ',  pgn)
                 showError("Failed to load a game", `${playerName}:${playerColor}`)
+            } else {
+                let fen = chess.fen()
+                openingGraph.addPGN(pgn, this.gameResult(pgn,site), parsedMoves, fen, playerColor)
+                this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, openingGraph)
             }
-                    
-            let fen = chess.fen()
-            openingGraph.addGameResultOnFen(fen, resultObject)
-            openingGraph.addResultToRoot(resultObject, playerColor)
-            this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, openingGraph)
         }
-            setTimeout(()=>{this.parsePGNTimed(site, pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError, stopDownloading)},1)
+        setTimeout(()=>{this.parsePGNTimed(site, pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError, stopDownloading)},1)
     }
 
     gameResult(pgn, site) {

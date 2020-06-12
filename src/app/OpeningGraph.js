@@ -15,6 +15,15 @@ class OpeningGraph {
         this.graph = new Graph()
         this.hasMoves = false
     }
+
+    addPGN(pgn, pgnStats, parsedMoves, lastFen, playerColor) {
+        parsedMoves.forEach(parsedMove => {
+            this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.move, pgnStats, playerColor)
+        })
+        this.addGameResultOnFen(lastFen, pgnStats)
+        this.addResultToRoot(pgnStats, playerColor)
+    }
+
     addGameResultOnFen(fullFen, resultObject) {
         var currNode = this.getNodeFromGraph(fullFen)
         currNode.gameResults.push(resultObject)
