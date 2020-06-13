@@ -79,13 +79,13 @@ export default class ControlsContainer extends React.Component {
                 <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
             </TableRow>
             }
-            {!this.props.simplifiedView && this.props.moveDetails.bestWin?<TableRow className="performanceRatingRow">
+            {!this.props.simplifiedView && this.props.moveDetails.bestWinElo?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Best win</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.moveDetails.bestWin} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.bestWinGame)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{this.props.moveDetails.bestWinElo} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.bestWinGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
-            {!this.props.simplifiedView && this.props.moveDetails.worstLoss?<TableRow className="performanceRatingRow">
+            {!this.props.simplifiedView && this.props.moveDetails.worstLossElo?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Worst loss</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.moveDetails.worstLoss} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.worstLossGame)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{this.props.moveDetails.worstLossElo} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.worstLossGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Last played</TableCell>
