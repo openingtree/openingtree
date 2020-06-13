@@ -237,16 +237,17 @@ class GraphNode {
 
 function emptyDetails() {
     return {
-        count: 0,
+//        count: 0,
         blackWins: 0,
         whiteWins: 0,
         draws: 0,
         totalOpponentElo: 0,
-        bestWin:null,
-        bestWinGame:null,
-        worstLoss:null,
-        worstLossGame:null,
-        lastPlayedGame:null
+//        bestWin:null,
+//        bestWinGame:null,
+//        worstLoss:null,
+//        worstLossGame:null,
+        lastPlayed:null
+//        lastPlayedGame:null
     }
 }
 
