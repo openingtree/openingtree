@@ -23,7 +23,7 @@ class OpeningGraph {
         this.graph.playerColor = playerColor
         this.hasMoves = true
         parsedMoves.forEach(parsedMove => {
-            this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.move, pgnStats)
+            this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.moveSan, pgnStats)
         })
         this.addGameResultOnFen(lastFen, pgnStats.index)
         this.addStatsToRoot(pgnStats)
@@ -83,7 +83,7 @@ class OpeningGraph {
         if(!currNode.playedBy) {
             currNode.playedBy = {}
         }
-        currNode.playedBy[move.san] = ''
+        currNode.playedBy[move] = ''
     }
 
     getTargetDetailsCount(targetDetails) {

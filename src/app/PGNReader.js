@@ -106,7 +106,7 @@ export default class PGNReader {
                 parsedMoves.push({
                     sourceFen:sourceFen,
                     targetFen:targetFen,
-                    move:move
+                    moveSan:move.san
                 })
             })
             if(pgnParseFailed) {
