@@ -1,5 +1,6 @@
 import {simplifiedFen, isDateMoreRecentThan} from './util'
 import * as Constants from './Constants'
+import Chess from 'chess.js'
 
 class OpeningGraph {
     constructor() {
@@ -19,6 +20,7 @@ class OpeningGraph {
     addPGN(pgnStats, parsedMoves, lastFen, playerColor) {
         this.graph.pgnStats.push(pgnStats)
         this.graph.playerColor = playerColor
+        this.hasMoves = true
         parsedMoves.forEach(parsedMove => {
             this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.move, pgnStats, this.graph.pgnStats.length-1)
         })
@@ -52,11 +54,8 @@ class OpeningGraph {
         targetNode.details = newDetails
 
         var currNode = this.getNodeFromGraph(fullSourceFen)
-        var movePlayedBy = this.createOrGetMoveNode(currNode.playedBy, move, fullTargetFen)
         currNode.playedByMax = Math.max(currNode.playedByMax, this.getTargetDetailsCount(targetNode.details))
-        currNode.playedBy = movePlayedBy
-        this.hasMoves = true
-
+        currNode.playedBy[move.san] = ''
     }
 
     getTargetDetailsCount(targetDetails) {
@@ -159,13 +158,14 @@ class OpeningGraph {
         var currNode = this.graph.nodes.get(fen)
         if(currNode) {
             return Array.from(Object.entries(currNode.playedBy)).map((entry)=> {
-                let gMove = entry[1]
-                let targetNodeDetails = this.getDetailsForFen(gMove.fen)
+                let chess = new Chess(fullFen)
+                let move = chess.move(entry[0], {sloppy: true})
+                let targetNodeDetails = this.getDetailsForFen(chess.fen())
                 return {
-                    orig:gMove.move.from,
-                    dest:gMove.move.to,
+                    orig:move.from,
+                    dest:move.to,
                     level:this.levelFor(targetNodeDetails.count, currNode.playedByMax),
-                    san:gMove.move.san,
+                    san:move.san,
                     details:targetNodeDetails
                 }
             })
@@ -200,7 +200,6 @@ class Graph {
 }
 
 class GraphNode {
-            fen = ''
             playedByMax = 0 // used to keep track of how many times the most frequent move is played for ease of calculation later
             playedBy = {}
             gameResults = []

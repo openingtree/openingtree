@@ -1,4 +1,3 @@
-import {openingGraph} from './OpeningGraph'
 import Chess from 'chess.js'
 import LichessIterator from './iterator/LichessIterator'
 import ChessComIterator from './iterator/ChessComIterator'
