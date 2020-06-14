@@ -7,8 +7,8 @@ class OpeningGraph {
         this.graph=new Graph()
         this.hasMoves = false
     }
-    setEntries(arrayEntries){
-        this.graph=new Graph(arrayEntries)
+    setEntries(arrayEntries, pgnStats){
+        this.graph=new Graph(arrayEntries, pgnStats)
         this.hasMoves = true
     }
 
@@ -217,7 +217,7 @@ class OpeningGraph {
 
 
 class Graph {
-    constructor(arrayEntries){
+    constructor(arrayEntries, pgnStats){
         this.nodes = new Map()
         this.pgnStats = []
         this.playerColor = ''
@@ -225,6 +225,9 @@ class Graph {
             arrayEntries.forEach((entry)=> {
                 this.nodes.set(entry[0],entry[1])
             })
+        }
+        if(pgnStats) {
+            this.pgnStats = pgnStats
         }
     }
 }
