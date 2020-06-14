@@ -47,7 +47,7 @@ const styles = (theme) => ({
 });
 
 function SnackbarContentWrapper(props) {
-    const {classes, className, message, onClose, variant, subMessage, onReport, showReportButton, ...other} = props;
+    const {classes, className, message, onClose, variant, subMessage, action, actionText, showReportButton, ...other} = props;
     const Icon = variantIcon[variant];
 
     return (
@@ -64,8 +64,8 @@ function SnackbarContentWrapper(props) {
                 </div>
             }
             action={[ 
-                !showReportButton?null:<Button key="report" onClick = {onReport} color="inherit" size="small">
-                  Report this
+                !showReportButton?null:<Button key="report" onClick = {action} color="inherit" size="small">
+                  {actionText}
                 </Button>,
                 <IconButton
                     key="close"

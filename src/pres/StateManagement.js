@@ -125,9 +125,26 @@ function settingsChange(name, value) {
         'settings':settings
     })
 }
-function showError(message, trackingEvent, subMessage) {
-    this.setState({message:message, subMessage:subMessage
-        , messageSeverity:"error"})
+
+function launch(url) {
+    return () => {
+      window.open(url, "_blank")
+    }
+  }
+
+
+function showError(message, trackingEvent, subMessage, action) {
+    let errorActionText, errorAction
+    if(action == Constants.ERROR_ACTION_VISIT_OLD_SITE) {
+        errorActionText="Visit old site"
+        errorAction = launch("https://www.openingtree.com/old")
+    } else {
+        errorActionText="Report this"
+        errorAction = this.toggleFeedback(true)
+    }
+    this.setState({message:message, subMessage:subMessage,
+        errorAction:errorAction, errorActionText:errorActionText,
+        messageSeverity:"error"})
     let eventName = "errorShown"
     if(trackingEvent) {
         eventName = eventName+":"+trackingEvent

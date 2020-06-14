@@ -40,3 +40,8 @@ export const OPENNIG_TREE_REDDIT = 'opening_tree'
 export const OPENING_TREE_LICHESS = 'vannooz'
 export const OPENING_TREE_CHESS_COM = 'vannooz'
 export const OPENING_TREE_DISCORD = 'https://discord.gg/hCwKkN8'
+
+export const OPENING_TREE_FILE_CURRENT_VERSION = 2
+
+export const ERROR_ACTION_REPORT = 'report'
+export const ERROR_ACTION_VISIT_OLD_SITE = 'visitOld'

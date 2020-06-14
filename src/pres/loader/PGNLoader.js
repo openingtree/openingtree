@@ -63,6 +63,8 @@ export default class PGNLoader extends React.Component {
     exportOpeningTreeObject(){
         return {
             header:{
+                version:2,// current openingtree file version. used to check compatibility of files
+                timestamp:Math.floor(Date.now() / 1000),
                 gamesProcessed:this.props.gamesProcessed,
                 settings:this.props.settings,
                 playerName:this.state.playername,
@@ -75,6 +77,15 @@ export default class PGNLoader extends React.Component {
     }
 
     importOpeningTreeObject(openingTreeSave) {
+        let saveVersion = 1;
+        if(openingTreeSave.header.version) {
+            saveVersion = openingTreeSave.header.version
+        }
+        if(saveVersion < Constants.OPENING_TREE_FILE_CURRENT_VERSION) {
+            this.props.showError("This is an old format of openingtree file.", null, 
+                "You can try loading it by visiting the old website", Constants.ERROR_ACTION_VISIT_OLD_SITE)
+            return false
+        }
         this.setState({
             ...openingTreeSave.header.advancedFilters,
             playerColor:openingTreeSave.header.settings.playerColor,
@@ -87,6 +98,7 @@ export default class PGNLoader extends React.Component {
             gamesProcessed:openingTreeSave.header.gamesProcessed,
             openingGraph:openingGraph
         })
+        return true
     }
 
     playerDetailsChange(playerName, files, selectedNotableEvent, selectedNotablePlayer) {

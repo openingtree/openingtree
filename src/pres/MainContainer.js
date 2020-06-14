@@ -100,7 +100,8 @@ export default class MainContainer extends React.Component {
                             message={this.state.message}
                             subMessage={this.state.subMessage}
                             showReportButton={this.state.messageSeverity==='error'}
-                            onReport={this.toggleFeedback(true)}
+                            action={this.state.errorAction}
+                            actionText={this.state.errorActionText}
                         />
     </Snackbar>
 

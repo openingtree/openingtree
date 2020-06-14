@@ -47,9 +47,11 @@ export default class Actions extends React.Component {
                     this.setState({exportingInProgress:false})
                     return
                 }
-                this.props.importOpeningTreeObject(data)
+                let success = this.props.importOpeningTreeObject(data)
                 this.setState({exportingInProgress:false})
-                this.props.showInfo("Successfuly loaded openingtree")                
+                if(success) {
+                    this.props.showInfo("Successfuly loaded openingtree")                
+                }
             })
     }
     exportTreeClicked() {
