@@ -77,7 +77,6 @@ export default class Actions extends React.Component {
     readPgn(shouldDownloadToFile) {
         new PGNReader().then((readerInstance) => {
             this.pgnReader = readerInstance
-            let proxycb = proxy(this.props.notify)
             this.pgnReader.fetchPGNFromSite(this.props.playerName,
                 this.props.playerColor,
                 this.props.site,
@@ -86,8 +85,8 @@ export default class Actions extends React.Component {
                 shouldDownloadToFile,
                 this.props.advancedFilters,
                 proxy(this.props.notify),
-                null, //this.props.showError,
-                null,//this.stopDownloading.bind(this),
+                proxy(this.props.showError),
+                proxy(this.stopDownloading.bind(this)),
                 this.props.files)
         })
 
