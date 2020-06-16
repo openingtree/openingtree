@@ -3,10 +3,12 @@ import LichessIterator from './iterator/LichessIterator'
 import ChessComIterator from './iterator/ChessComIterator'
 import PGNFileIterator from './iterator/PGNFileIterator'
 import * as Constants from './Constants'
-import streamsaver from 'streamsaver'
+//import streamsaver from 'streamsaver'
 import NotablePlayerIterator from './iterator/NotablePlayerIterator'
 import * as SitePolicy from './SitePolicy'
+import { expose } from 'comlink'
 
+const streamsaver = {}
 export default class PGNReader {
     constructor() {
         this.totalGames = 0;
@@ -57,7 +59,7 @@ export default class PGNReader {
             
 
             setTimeout(() => {
-                this.parsePGNTimed(site, result, advancedFilters, playerColor, 0, playerName, notify, showError, stopDownloading)
+                this.parsePGNTimed(site, result, advancedFilters, playerColor, playerName, notify, showError, stopDownloading)
             } ,1)
             return this.continueProcessingGames
         }
@@ -73,57 +75,54 @@ export default class PGNReader {
         } else if (site === Constants.SITE_EVENT_DB) {
             new NotablePlayerIterator(selectedNotableEvent, playerColor, advancedFilters, processor, showError)
         } 
-
+        return 'done'
         
     }
 
-    parsePGNTimed(site, pgnArray, advancedFilters, playerColor, index,  playerName, notify, showError, stopDownloading) {
-        if(index< pgnArray.length) {
+    parsePGNTimed(site, pgnArray, advancedFilters, playerColor,  playerName, notify, showError, stopDownloading) {
+        pgnArray.forEach((pgn)=>{
             this.pendingGames--
-        }
-        if(!this.pendingDownloads && this.pendingGames <= 0) {
-            stopDownloading()
-        }
-
-        if(index>= pgnArray.length || !this.continueProcessingGames) {
-            return
-        }
-
-        var pgn = pgnArray[index]
-
-        if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
-            let chess = new Chess()
-            let pgnParseFailed = false;
-            let parsedMoves = []
-            pgn.moves.forEach(element => {
-                let sourceFen = chess.fen()
-                let move = chess.move(element.move, {sloppy: true})
-                let targetFen = chess.fen()
-                if(!move){
-                    pgnParseFailed=true
-                    return
-                }
-                parsedMoves.push({
-                    sourceFen:sourceFen,
-                    targetFen:targetFen,
-                    moveSan:move.san
-                })
-            })
-            if(pgnParseFailed) {
-                console.log('failed to load game ',  pgn)
-                showError("Failed to load a game", `${playerName}:${playerColor}`)
-            } else {
-                let fen = chess.fen()
-                let parsedPGNDetails = {
-                    pgnStats:this.gameResult(pgn,site),
-                    parsedMoves:parsedMoves,
-                    latestFen:fen,
-                    playerColor:playerColor
-                }
-                this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, parsedPGNDetails)
+            if(!this.pendingDownloads && this.pendingGames <= 0) {
+                stopDownloading()
             }
-        }
-        setTimeout(()=>{this.parsePGNTimed(site, pgnArray, advancedFilters, playerColor, index+1, playerName, notify, showError, stopDownloading)},1)
+            if(!this.continueProcessingGames) {
+                return
+            }
+
+            if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
+                let chess = new Chess()
+                let pgnParseFailed = false;
+                let parsedMoves = []
+                pgn.moves.forEach(element => {
+                    let sourceFen = chess.fen()
+                    let move = chess.move(element.move, {sloppy: true})
+                    let targetFen = chess.fen()
+                    if(!move){
+                        pgnParseFailed=true
+                        return
+                    }
+                    parsedMoves.push({
+                        sourceFen:sourceFen,
+                        targetFen:targetFen,
+                        moveSan:move.san
+                    })
+                })
+                if(pgnParseFailed) {
+                    console.log('failed to load game ',  pgn)
+                    showError("Failed to load a game", `${playerName}:${playerColor}`)
+                } else {
+                    let fen = chess.fen()
+                    let parsedPGNDetails = {
+                        pgnStats:this.gameResult(pgn,site),
+                        parsedMoves:parsedMoves,
+                        latestFen:fen,
+                        playerColor:playerColor
+                    }
+                    console.log(notify)
+                    this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, parsedPGNDetails)
+                }
+            }
+        })
     }
 
     gameResult(pgn, site) {
@@ -149,3 +148,5 @@ export default class PGNReader {
         }
     }
 }
+
+expose(PGNReader)

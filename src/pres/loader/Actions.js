@@ -3,7 +3,7 @@ import * as Constants from '../../app/Constants'
 import { trackEvent } from '../../app/Analytics'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'
-import PGNReader from '../../app/PGNReader'
+import PGNReader from '../../app/PGNReaderWorker'
 import { faList} from '@fortawesome/free-solid-svg-icons'
 import GetApp from '@material-ui/icons/GetApp'
 import Equalizer from '@material-ui/icons/Equalizer'
@@ -13,6 +13,7 @@ import * as SitePolicy from '../../app/SitePolicy'
 import {Tooltip} from '@material-ui/core'
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {serializeOpeningTree, deserializeOpeningTree} from '../../app/OpeningTreeSerializer'
+import {proxy} from 'comlink'
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -74,18 +75,24 @@ export default class Actions extends React.Component {
 
 
     readPgn(shouldDownloadToFile) {
-        this.pgnReader = new PGNReader()
-        this.pgnReader.fetchPGNFromSite(this.props.playerName,
-            this.props.playerColor,
-            this.props.site,
-            this.props.selectedNotablePlayer,
-            this.props.selectedNotableEvent,
-            shouldDownloadToFile,
-            this.props.advancedFilters,
-            this.props.notify,
-            this.props.showError,
-            this.stopDownloading.bind(this),
-            this.props.files)
+        new PGNReader().then((readerInstance) => {
+            this.pgnReader = readerInstance
+            let proxycb = proxy(this.props.notify)
+            this.pgnReader.fetchPGNFromSite(this.props.playerName,
+                this.props.playerColor,
+                this.props.site,
+                this.props.selectedNotablePlayer,
+                this.props.selectedNotableEvent,
+                shouldDownloadToFile,
+                this.props.advancedFilters,
+                proxy(this.props.notify),
+                null, //this.props.showError,
+                null,//this.stopDownloading.bind(this),
+                this.props.files)
+        })
+
+
+
     }
 
     download() {

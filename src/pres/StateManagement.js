@@ -135,7 +135,7 @@ function launch(url) {
 
 function showError(message, trackingEvent, subMessage, action) {
     let errorActionText, errorAction
-    if(action == Constants.ERROR_ACTION_VISIT_OLD_SITE) {
+    if(action === Constants.ERROR_ACTION_VISIT_OLD_SITE) {
         errorActionText="Visit old site"
         errorAction = launch("https://www.openingtree.com/old")
     } else {

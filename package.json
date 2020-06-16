@@ -27,6 +27,7 @@
     "chess-eco-codes": "git+https://git@github.com/vjuneja/chess-eco-codes.git",
     "chess-web-api": "^1.0.6",
     "chess.js": "^0.10.2",
+    "comlink": "^4.3.0",
     "css-loader": "3.4.2",
     "deep-equal": "^2.0.3",
     "dotenv": "8.2.0",
@@ -80,7 +81,8 @@
     "webpack": "4.41.5",
     "webpack-dev-server": "3.10.2",
     "webpack-manifest-plugin": "2.2.0",
-    "workbox-webpack-plugin": "4.3.1"
+    "workbox-webpack-plugin": "4.3.1",
+    "worker-plugin": "^4.0.3"
   },
   "scripts": {
     "start": "node scripts/start.js",
