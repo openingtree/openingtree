@@ -1,0 +1,44 @@
+﻿# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Dependency directories
+node_modules/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn files
+.yarn-integrity
+yarn.lock
+
+# dotenv environment variables file
+*.env
+!example.env
+
+# Project-specifics
+.vscode
+dist
+tmp
+package-lock.json
+
+# Test configurations
+*.webpack.config.js
