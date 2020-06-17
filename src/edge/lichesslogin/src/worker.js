@@ -17,8 +17,8 @@ async function requestHandler(request) {
   // Do awesome stuff here
 
   const oauth2 = new ClientOAuth2({
-    clientId: LICHESS_CLIENT_ID,
-    clientSecret: LICHESS_CLIENT_SECRET,
+    clientId: "LICHESS_CLIENT_ID",
+    clientSecret: "LICHESS_CLIENT_SECRET",
     accessTokenUri: tokenHost+tokenPath,
     authorizationUri: tokenHost+authorizePath,
     redirectUri: redirectUri,
