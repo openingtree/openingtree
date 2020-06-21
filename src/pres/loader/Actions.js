@@ -14,6 +14,7 @@ import {Tooltip} from '@material-ui/core'
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {serializeOpeningTree, deserializeOpeningTree} from '../../app/OpeningTreeSerializer'
 import {proxy} from 'comlink'
+import streamsaver from 'streamsaver'
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -22,6 +23,9 @@ export default class Actions extends React.Component {
             isGamesSubsectionOpen : false,
             exportingInProgress : false
         }
+        streamsaver.mitm = "download/download-mitm.html"
+        this.encoder = new TextEncoder()
+
     }
     unload = () => {
         if (this.pgnReader) {
@@ -72,9 +76,38 @@ export default class Actions extends React.Component {
                 this.setState({exportingInProgress:false})
             })
     }
+    abortDownloading() {
+        if(this.fileWriter) {
+            this.fileWriter.close()
+            this.fileWriter = null
+        }
+    }
 
+    getPgnString(game){
+        return `${Object.entries(game.headers).map(header=>`[${header[0]} "${header[1]}"]`).join("\n")}
+                \n${game.moves.map((moveObject, index)=>{
+                    return `${index%2!==0?'':index/2+1+"."} ${moveObject.move}`
+                }).join(' ')} ${game.result}\n\n\n`
+    }
+    downloadResponse(result, pendingDownloads) {
+        this.fileWriter.write(this.encoder.encode(result.map(game=>this.getPgnString(game)).join(""))).then(()=>{
+            if(!pendingDownloads) {
+                this.abortDownloading()
+                return false
+            }
+        })
+        return true
+    }
 
     readPgn(shouldDownloadToFile) {
+        if(shouldDownloadToFile) {
+            let fileStream =  streamsaver.createWriteStream(
+                SitePolicy.exportFileName(
+                    this.props.site, this.props.playerName, 
+                    this.props.playerColor, this.props.selectedNotableEvent, "pgn"))
+            this.fileWriter = fileStream.getWriter()
+        }
+
         new PGNReader().then((readerInstance) => {
             this.pgnReader = readerInstance
             this.pgnReader.fetchPGNFromSite(this.props.playerName,
@@ -87,7 +120,8 @@ export default class Actions extends React.Component {
                 proxy(this.props.notify),
                 proxy(this.props.showError),
                 proxy(this.stopDownloading.bind(this)),
-                this.props.files)
+                this.props.files,
+                proxy(this.downloadResponse.bind(this)))
         })
 
 

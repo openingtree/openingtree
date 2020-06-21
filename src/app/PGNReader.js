@@ -3,52 +3,23 @@ import LichessIterator from './iterator/LichessIterator'
 import ChessComIterator from './iterator/ChessComIterator'
 import PGNFileIterator from './iterator/PGNFileIterator'
 import * as Constants from './Constants'
-//import streamsaver from 'streamsaver'
 import NotablePlayerIterator from './iterator/NotablePlayerIterator'
-import * as SitePolicy from './SitePolicy'
 import { expose } from 'comlink'
 
-const streamsaver = {}
 export default class PGNReader {
     constructor() {
         this.totalGames = 0;
         this.pendingGames = 0;
         this.pendingDownloads = true;
-        streamsaver.mitm = "download/download-mitm.html"
-        this.fileWriter = null
     }
 
-    abortDownloading() {
-        if(this.fileWriter) {
-            this.fileWriter.close()
-            this.fileWriter = null
-        }
-    }
 
-    getPgnString(game){
-        return `${Object.entries(game.headers).map(header=>`[${header[0]} "${header[1]}"]`).join("\n")}
-                \n${game.moves.map((moveObject, index)=>{
-                    return `${index%2!==0?'':index/2+1+"."} ${moveObject.move}`
-                }).join(' ')} ${game.result}\n\n\n`
-    }
 
     fetchPGNFromSite(playerName, playerColor, site, selectedNotablePlayer,
         selectedNotableEvent, shouldDownloadToFile, advancedFilters, notify, 
-        showError, stopDownloading, files) {
+        showError, stopDownloading, files, downloadResponse) {
         this.continueProcessingGames = true
-        if(shouldDownloadToFile) {
-            let fileStream =  streamsaver.createWriteStream(SitePolicy.exportFileName(site, playerName, playerColor, selectedNotableEvent, "pgn"))
-            this.fileWriter = fileStream.getWriter()
-        }
-        let encoder = new TextEncoder()
-        let downloadResponse = (result, pendingDownloads) => {
-            this.fileWriter.write(encoder.encode(result.map(game=>this.getPgnString(game)).join(""))).then(()=>{
-                if(!pendingDownloads) {
-                    this.abortDownloading()
-                }
-            })
-            return true
-        }
+        
         let handleResponse = (result, pendingDownloads) => {
             if(!result) {
                 return this.continueProcessingGames
@@ -123,7 +94,6 @@ export default class PGNReader {
                     playerColor:playerColor
                 }
                 notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, parsedPGNDetails).then((continueProcessingGames)=>{
-                    console.log(continueProcessingGames)
                     this.continueProcessingGames = continueProcessingGames
                 })
             }
