@@ -18,7 +18,7 @@ export default class PGNReader {
         this.fileWriter = null
     }
 
-    stopDownloading() {
+    abortDownloading() {
         if(this.fileWriter) {
             this.fileWriter.close()
             this.fileWriter = null
@@ -44,7 +44,7 @@ export default class PGNReader {
         let downloadResponse = (result, pendingDownloads) => {
             this.fileWriter.write(encoder.encode(result.map(game=>this.getPgnString(game)).join(""))).then(()=>{
                 if(!pendingDownloads) {
-                    this.stopDownloading()
+                    this.abortDownloading()
                 }
             })
             return true
@@ -59,7 +59,7 @@ export default class PGNReader {
             
 
             setTimeout(() => {
-                this.parsePGNTimed(site, result, advancedFilters, playerColor, playerName, notify, showError, stopDownloading)
+                this.parsePGNTimed(site, result, 0, advancedFilters, playerColor, playerName, notify, showError, stopDownloading)
             } ,1)
             return this.continueProcessingGames
         }
@@ -79,50 +79,57 @@ export default class PGNReader {
         
     }
 
-    parsePGNTimed(site, pgnArray, advancedFilters, playerColor,  playerName, notify, showError, stopDownloading) {
-        pgnArray.forEach((pgn)=>{
+    parsePGNTimed(site, pgnArray, index, advancedFilters, playerColor,  playerName, notify, showError, stopDownloading) {
+        if(index< pgnArray.length) {
             this.pendingGames--
-            if(!this.pendingDownloads && this.pendingGames <= 0) {
-                stopDownloading()
-            }
-            if(!this.continueProcessingGames) {
-                return
-            }
+        }
+        if(!this.pendingDownloads && this.pendingGames <= 0) {
+            stopDownloading()
+        }
 
-            if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
-                let chess = new Chess()
-                let pgnParseFailed = false;
-                let parsedMoves = []
-                pgn.moves.forEach(element => {
-                    let sourceFen = chess.fen()
-                    let move = chess.move(element.move, {sloppy: true})
-                    let targetFen = chess.fen()
-                    if(!move){
-                        pgnParseFailed=true
-                        return
-                    }
-                    parsedMoves.push({
-                        sourceFen:sourceFen,
-                        targetFen:targetFen,
-                        moveSan:move.san
-                    })
-                })
-                if(pgnParseFailed) {
-                    console.log('failed to load game ',  pgn)
-                    showError("Failed to load a game", `${playerName}:${playerColor}`)
-                } else {
-                    let fen = chess.fen()
-                    let parsedPGNDetails = {
-                        pgnStats:this.gameResult(pgn,site),
-                        parsedMoves:parsedMoves,
-                        latestFen:fen,
-                        playerColor:playerColor
-                    }
-                    console.log(notify)
-                    this.continueProcessingGames = notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, parsedPGNDetails)
+        if(index>= pgnArray.length || !this.continueProcessingGames) {
+            return
+        }
+        var pgn = pgnArray[index]
+
+
+        if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
+            let chess = new Chess()
+            let pgnParseFailed = false;
+            let parsedMoves = []
+            pgn.moves.forEach(element => {
+                let sourceFen = chess.fen()
+                let move = chess.move(element.move, {sloppy: true})
+                let targetFen = chess.fen()
+                if(!move){
+                    pgnParseFailed=true
+                    return
                 }
+                parsedMoves.push({
+                    sourceFen:sourceFen,
+                    targetFen:targetFen,
+                    moveSan:move.san
+                })
+            })
+            if(pgnParseFailed) {
+                console.log('failed to load game ',  pgn)
+                showError("Failed to load a game", `${playerName}:${playerColor}`)
+            } else {
+                let fen = chess.fen()
+                let parsedPGNDetails = {
+                    pgnStats:this.gameResult(pgn,site),
+                    parsedMoves:parsedMoves,
+                    latestFen:fen,
+                    playerColor:playerColor
+                }
+                notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, parsedPGNDetails).then((continueProcessingGames)=>{
+                    console.log(continueProcessingGames)
+                    this.continueProcessingGames = continueProcessingGames
+                })
             }
-        })
+        }
+        setTimeout(()=>{this.parsePGNTimed(site, pgnArray, index+1, advancedFilters, playerColor, playerName, notify, showError, stopDownloading)},1)
+
     }
 
     gameResult(pgn, site) {
