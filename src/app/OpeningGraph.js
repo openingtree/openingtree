@@ -30,14 +30,14 @@ class OpeningGraph {
     }
 
     addGameResultOnFen(fullFen, resultIndex) {
-        var currNode = this.getNodeFromGraph(fullFen)
+        var currNode = this.getNodeFromGraph(fullFen, true)
         if(!currNode.gameResults) {
             currNode.gameResults = []
         }
         currNode.gameResults.push(resultIndex)
     }
     addStatsToRoot(pgnStats) {
-        var targetNode = this.getNodeFromGraph(Constants.ROOT_FEN)
+        var targetNode = this.getNodeFromGraph(Constants.ROOT_FEN, true)
         if(!targetNode.details) {
             targetNode.details = emptyDetails()
         }
@@ -46,7 +46,8 @@ class OpeningGraph {
     }
 
     getDetailsForFen(fullFen) {
-        let details = this.getNodeFromGraph(simplifiedFen(fullFen)).details
+        let node = this.getNodeFromGraph(simplifiedFen(fullFen), false)
+        let details = node && node.details
         if (Number.isInteger(details)) {
             details = this.getUpdatedMoveDetails(emptyDetails(), this.graph.pgnStats[details])
         } else if(!details) {
@@ -74,11 +75,11 @@ class OpeningGraph {
     }
 
     addMoveForFen(fullSourceFen, fullTargetFen, move, resultObject) {
-        var targetNode = this.getNodeFromGraph(fullTargetFen)
+        var targetNode = this.getNodeFromGraph(fullTargetFen, true)
         let newDetails = this.getUpdatedMoveDetails(targetNode.details, resultObject)
         targetNode.details = newDetails
 
-        var currNode = this.getNodeFromGraph(fullSourceFen)
+        var currNode = this.getNodeFromGraph(fullSourceFen, true)
         currNode.playedByMax = Math.max(currNode.playedByMax, this.getTargetDetailsCount(targetNode.details))
         if(!currNode.playedBy) {
             currNode.playedBy = {}
@@ -97,10 +98,10 @@ class OpeningGraph {
         return targetDetails.draws+targetDetails.blackWins+targetDetails.whiteWins
     }
 
-    getNodeFromGraph(fullFen) {
+    getNodeFromGraph(fullFen, addIfNull) {
         let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
-        if(!currNode) {
+        if(!currNode && addIfNull) {
             currNode = new GraphNode()
             currNode.fen = fen
             this.graph.nodes.set(fen, currNode)
