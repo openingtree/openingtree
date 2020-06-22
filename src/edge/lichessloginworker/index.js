@@ -1,4 +1,3 @@
-const axios = require('axios')
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
@@ -35,25 +34,15 @@ function getUrlVars(url) {
   return vars
 }
 
-function getTokenResponse(code) {
-  var bodyFormData = new FormData()
-  bodyFormData.set('client_id', LICHESS_CLIENT_ID)
-  bodyFormData.set('grant_type', 'authorization_code')
-  return axios({
-    method: 'post',
-    url: tokenHost + tokenPath,
-    data: bodyFormData,
-    headers: { 'Content-Type': 'multipart/form-data' },
-    adapter: require('axios/lib/adapters/http'),
+async function getTokenResponse(code) {
+  let formData = new FormData()
+  formData.set('grant_type','authorization_code')
+  let tokenRequest = new Request(tokenHost+tokenPath, {
+    method:'POST',
+    body:formData
   })
-    .then(function(response) {
-      //handle success
-      console.log(response)
-      return { test: 'success' }
-    })
-    .catch(function(error) {
-      //handle error
-      console.log(error)
-      return { test1: JSON.stringify(error) }
-    })
+  
+  let resp = await fetch(tokenRequest)
+  return resp.text()
+
 }
