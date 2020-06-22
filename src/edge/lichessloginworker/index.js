@@ -6,7 +6,7 @@ window = {}
 
 const tokenHost = 'https://oauth.lichess.org'
 const tokenPath = '/oauth'
-const redirectUri = `https://lichessloginworker.openingtree.com/`
+const redirectUri = `https://lichesslogin.openingtree.com`
 
 /**
  * Respond to the request
@@ -36,7 +36,12 @@ function getUrlVars(url) {
 
 async function getTokenResponse(code) {
   let formData = new FormData()
-  formData.set('grant_type','authorization_code')
+  formData.set('grant_type', 'authorization_code')
+  formData.set('code', code)
+  formData.set('redirect_uri',redirectUri)
+  formData.set('client_id',LICHESS_CLIENT_ID)
+  formData.set('client_secret',LICHESS_CLIENT_SECRET)
+  
   let tokenRequest = new Request(tokenHost+tokenPath, {
     method:'POST',
     body:formData
