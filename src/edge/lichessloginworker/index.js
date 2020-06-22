@@ -7,7 +7,6 @@ window = {}
 const tokenHost = 'https://oauth.lichess.org'
 const tokenPath = '/oauth'
 const redirectUri = `https://lichesslogin.openingtree.com`
-
 /**
  * Respond to the request
  * @param {Request} request
@@ -15,11 +14,22 @@ const redirectUri = `https://lichesslogin.openingtree.com`
 async function handleRequest(req) {
   try {
     let params = getUrlVars(req.url)
-    let code = params.code
 
-    const tokenResponse = await getTokenResponse(code)
+    const html = `<html>
+    <head>
+      <script>
+        function redirect(){
+          console.log('${params.state}');
+          window.location.href='https://www.openingtree.com/${params.state}'
+        }
+      </script>
+    </head>
+    <body onload='redirect()'></body>
+    </html>`
+
+    const tokenResponse = await getTokenResponse(params.code)
     //const userInfo = await getUserInfo(token.token);
-    return new Response(JSON.stringify(tokenResponse), { status: 200 }) //res.send(`<h1>Success!</h1>Your lichess user info: <pre>${JSON.stringify(userInfo.data)}</pre>`);
+    return new Response(html, { status: 200 , headers:{'content-type':'text/html'}}) 
   } catch (error) {
     console.error('Access Token Error', error.message)
     return new Response('avc+' + error.message, { status: 200 })
