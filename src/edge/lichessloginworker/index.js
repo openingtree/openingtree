@@ -19,7 +19,8 @@ async function handleRequest(req) {
     <head>
       <script>
         function redirect(){
-          console.log('${params.state}');
+          document.domain = 'openingtree.com'
+          localStorage.setItem('myCat', 'Tom');
           window.location.href='https://www.openingtree.com/${params.state}'
         }
       </script>
@@ -29,7 +30,13 @@ async function handleRequest(req) {
 
     const tokenResponse = await getTokenResponse(params.code)
     //const userInfo = await getUserInfo(token.token);
-    return new Response(html, { status: 200 , headers:{'content-type':'text/html'}}) 
+    return new Response(html, { 
+      status: 200 , 
+      headers: {
+        'content-type':'text/html',
+        'Set-cookie':'test=test1; Domain=openingtree.com'
+      }
+    }) 
   } catch (error) {
     console.error('Access Token Error', error.message)
     return new Response('avc+' + error.message, { status: 200 })
