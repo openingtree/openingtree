@@ -2,7 +2,10 @@
     <head>
       <script>
         function redirect(){
-          window.location.replace='/../'
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('t');
+            document.cookie = 'at=' + token + '; Domain=www.openingtree.com;}'
+            window.location='/../'
         }
       </script>
     </head>

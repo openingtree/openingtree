@@ -15,28 +15,27 @@ async function handleRequest(req) {
   try {
     let params = getUrlVars(req.url)
 
-    const html = `<html>
-    <head>
-      <script>
-        function redirect(){
-          document.domain = 'openingtree.com'
-          localStorage.setItem('myCat', 'Tom');
-          window.location.href='https://www.openingtree.com/${params.state}'
-        }
-      </script>
-    </head>
-    <body onload='redirect()'></body>
-    </html>`
 
     const tokenResponse = await getTokenResponse(params.code)
-    //const userInfo = await getUserInfo(token.token);
-    return new Response(html, { 
-      status: 200 , 
-      headers: {
-        'content-type':'text/html',
-        'Set-cookie':'test=test1; Domain=openingtree.com'
+    const html = `<html>
+        <head>
+          <script>
+            function redirect(){
+              window.location = 'https://www.openingtree.com/${params.state}?t=${tokenResponse.access_token}'
+            }
+          </script>
+        </head>
+        <body onload='redirect()'><div style='padding:20px;color:gray;text-align:center;margin-left:auto;margin-right:auto;'>This page should redirect automatically. If it does not, please <a href='https://www.openingtree.com/${params.state}?t=${tokenResponse.access_token}'>click here</a></div></body>
+    </html>`
+    let response = new Response(html, {
+      headers:{
+        'Content-type':'text/html'
       }
-    }) 
+    })
+    let date = new Date();
+    date.setTime(date.getTime()+(30*24*60*60*1000));
+    response.headers.set('Set-cookie',`rt=${tokenResponse['refresh_token']}; Domain=lichesslogin.openingtree.com; Path=refresh; Httponly; expires=${date.toGMTString()}`)
+    return response
   } catch (error) {
     console.error('Access Token Error', error.message)
     return new Response('avc+' + error.message, { status: 200 })
@@ -65,6 +64,6 @@ async function getTokenResponse(code) {
   })
   
   let resp = await fetch(tokenRequest)
-  return resp.text()
+  return resp.json()
 
 }
