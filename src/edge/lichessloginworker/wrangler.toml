@@ -1,0 +1,10 @@
+name = "lichessloginworker"
+type = "webpack"
+account_id = "2b7dc0ec75ce90bb5bef61cab5d7692c"
+#workers_dev = true
+route = "lichesslogin.openingtree.com/*"
+zone_id = "9c1b85c91713b6d0a99fd3824bce7850"
+
+#Following env variables have been set using CLI
+#LICHESS_CLIENT_ID
+#LICHESS_CLIENT_SECRET
