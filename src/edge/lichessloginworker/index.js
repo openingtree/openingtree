@@ -21,11 +21,11 @@ async function handleRequest(req) {
         <head>
           <script>
             function redirect(){
-              window.location = 'https://www.openingtree.com/${params.state}?t=${tokenResponse.access_token}'
+              window.location = 'https://www.openingtree.com/${decodeURIComponent(params.state)}?t=${tokenResponse.access_token}'
             }
           </script>
         </head>
-        <body onload='redirect()'><div style='padding:20px;color:gray;text-align:center;margin-left:auto;margin-right:auto;'>This page should redirect automatically. If it does not, please <a href='https://www.openingtree.com/${params.state}?t=${tokenResponse.access_token}'>click here</a></div></body>
+        <body onload='redirect()'><div style='padding:20px;color:gray;text-align:center;margin-left:auto;margin-right:auto;'>This page should redirect automatically. If it does not, please <a href='https://www.openingtree.com/${decodeURIComponent(params.state)}?t=${tokenResponse.access_token}'>click here</a></div></body>
     </html>`
     let response = new Response(html, {
       headers:{

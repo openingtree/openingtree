@@ -4,8 +4,8 @@
         function redirect(){
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('t');
-            document.cookie = 'at=' + token + '; Domain=www.openingtree.com;}'
-            window.location='/../'
+            document.cookie = 'at=' + token + ';Domain=www.openingtree.com;Path=/'
+            window.location='../'
         }
       </script>
     </head>
