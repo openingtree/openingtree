@@ -4,12 +4,14 @@ import {trimString} from '../Common'
 
 export default class BaseUrlIterator {
 
-    constructor(url, shouldNormalizePGN, responseCodeCallback, errorCallback, dataCallback, endCallback) {
+    constructor(url, auth, shouldNormalizePGN, responseCodeCallback, errorCallback, dataCallback, endCallback) {
         let remainingBody=''
 
         let requestObject = request.get(
                 url, 
-                { json: false }).on('error', errorCallback)
+                { json: false , 
+                    auth: auth
+                }).on('error', errorCallback)
             .on('response',(response)=>{
                 return responseCodeCallback(response.statusCode)
             }).on('data', (data) => {

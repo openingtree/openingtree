@@ -6,7 +6,7 @@ import BaseUrlIterator from './BaseUrlIterator'
 
 export default class LichessIterator {
 
-    constructor(playerName, playerColor, advancedFilters, ready, showError) {
+    constructor(accessToken, playerName, playerColor, advancedFilters, ready, showError) {
         let lichessBaseURL = `https://lichess.org/api/games/user/`
         let playerNameFilter = encodeURIComponent(playerName)
         let colorFilter = `?color=${playerColor}`
@@ -17,7 +17,8 @@ export default class LichessIterator {
         let selectedTimeControls = getTimeControlsArray(Constants.SITE_LICHESS, advancedFilters, true)
         let perfFilter = selectedTimeControls.length === 0 || selectedTimeControls.length === 6?
                 "" : `&perfType=${selectedTimeControls.join(",")}`
-        new BaseUrlIterator(lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter, false,
+        new BaseUrlIterator(lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter, 
+            this.getAuth(accessToken), false,
             (responseCode)=>{
                 if(responseCode === 404) {
                     showError('Could not find lichess user ' + playerName)
@@ -53,5 +54,14 @@ export default class LichessIterator {
             }, ()=>{
                 ready([], false)
             })
+    }
+
+    getAuth(accessToken) {
+        if(accessToken) {
+            return {
+                'bearer' : accessToken
+            }
+        }
+        return null;
     }
 }

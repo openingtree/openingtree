@@ -17,7 +17,7 @@ export default class PGNReader {
 
     fetchPGNFromSite(playerName, playerColor, site, selectedNotablePlayer,
         selectedNotableEvent, shouldDownloadToFile, advancedFilters, notify, 
-        showError, stopDownloading, files, downloadResponse) {
+        showError, stopDownloading, files, downloadResponse, tokens) {
         this.continueProcessingGames = true
         
         let handleResponse = (result, pendingDownloads) => {
@@ -36,7 +36,7 @@ export default class PGNReader {
         }
         let processor = shouldDownloadToFile? downloadResponse: handleResponse
         if (site === Constants.SITE_LICHESS) {
-            new LichessIterator(playerName, playerColor, advancedFilters, processor, showError)
+            new LichessIterator(tokens.lichess, playerName, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_CHESS_DOT_COM) {
             new ChessComIterator(playerName, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_PGN_FILE) {

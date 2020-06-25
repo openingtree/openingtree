@@ -15,6 +15,7 @@ import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {serializeOpeningTree, deserializeOpeningTree} from '../../app/OpeningTreeSerializer'
 import {proxy} from 'comlink'
 import streamsaver from 'streamsaver'
+import cookieManager from '../../app/CookieManager'
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -121,13 +122,16 @@ export default class Actions extends React.Component {
                 proxy(this.props.showError),
                 proxy(this.stopDownloading.bind(this)),
                 this.props.files,
-                proxy(this.downloadResponse.bind(this)))
+                proxy(this.downloadResponse.bind(this)),
+                this.getTokens())
         })
-
-
-
     }
-
+    
+    getTokens(){
+        return {
+            lichess:cookieManager.getLichessAccessToken()
+        }
+    }
     download() {
         this.readPgn(true)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Download", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
