@@ -14,6 +14,7 @@ import Collapse from '@material-ui/core/Collapse';
 import Dropzone from './Dropzone'
 import NotableChessGames from './NotableChessGames';
 import {Card, CardBody, CardText, CardTitle} from 'reactstrap'
+import LockOpen from '@material-ui/icons/Lock'
 
 export default class User extends React.Component {
     constructor(props) {
@@ -49,7 +50,7 @@ export default class User extends React.Component {
     componentWillReceiveProps() {
         this.setState({playerNameError:''})
     }
-
+    
     validateInputDetailsSet() {
         if(this.props.site === Constants.SITE_EVENT_DB){
             if(!this.state.selectedEvent){
@@ -133,6 +134,36 @@ export default class User extends React.Component {
         }
         return <span>{getNumberIcon(2)}Player details</span>
     }
+    launchLichessOauth() {
+        window.location.href = 'https://oauth.lichess.org/oauth/authorize?response_type=code&client_id=EBXrB9R9OXpaRvOU&scope=preference:read&redirect_uri=https%3A%2F%2Flichesslogin.openingtree.com&state='+window.location.pathname
+    }
+    getLichessSelection() {
+        return <div>
+            <Card>
+                <CardBody className="singlePadding">
+                <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> Speed up tree building (optional)</CardTitle>
+                <CardText className="smallText">
+                    Lichess allows much faster download of games if you login. You can learn more about this <a href = 'https://lichess.org/api#operation/apiGamesUser' target="_blank">here</a>. 
+                    Recommended for viewing your own games or when your opponent has lots of games.
+                </CardText>
+                <MaterialUIButton
+                    onClick={this.launchLichessOauth}
+                        variant="contained"
+                        color="default"
+                        className="mainButton" disableElevation
+                        startIcon={<LockOpen />}
+                    >
+            LOGIN TO LICHESS
+        </MaterialUIButton>
+                </CardBody>
+                </Card><br/>
+
+            {this.getPlayerNameInput('lichess username')}</div>
+    }
+
+    getChessComSelection() {
+        return this.getPlayerNameInput('chess.com username')
+    }
 
     getPlayerNameInput(label, helperText) {
         return <TextField
@@ -142,6 +173,8 @@ export default class User extends React.Component {
             helperText={this.state.playerNameError? this.state.playerNameError:helperText}
             error={this.state.playerNameError?true:false} onKeyUp={this.playerNameKeyUp.bind(this)}/>
     }
+
+
 
     playerNameKeyUp(evt) {
         if(evt.keyCode === 13) { // enter key pressed
@@ -192,9 +225,9 @@ export default class User extends React.Component {
         if(this.props.site === Constants.SITE_PGN_FILE) {
             return this.getPgnFileSelection()
         } else if (this.props.site === Constants.SITE_LICHESS) {
-            return this.getPlayerNameInput('lichess username')
+            return this.getLichessSelection()
         } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
-            return this.getPlayerNameInput('chess.com username')
+            return this.getChessComSelection()
         } else if (this.props.site === Constants.SITE_EVENT_DB) {
             return this.getGoatDBEventSelection()
         } else if (this.props.site === Constants.SITE_PLAYER_DB) {
