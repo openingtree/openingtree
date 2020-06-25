@@ -1,4 +1,0 @@
-dist
-tmp
-!.babelrc.js
-!.eslintrc.js
