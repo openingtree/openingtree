@@ -165,6 +165,13 @@ export default class User extends React.Component {
     launchLichessOauth() {
         window.location.href = 'https://oauth.lichess.org/oauth/authorize?response_type=code&client_id=EBXrB9R9OXpaRvOU&scope=preference:read&redirect_uri=https%3A%2F%2Flichesslogin.openingtree.com&state='+window.location.pathname
     }
+    logoutOfLichess() {
+        cookieManager.deleteLichessAccessToken()
+        this.setState({
+            lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN,
+            lichessLoginName:''
+        })
+    }
     getLichessSelection() {
         return <div>
             {this.getLichessCardBody()}
@@ -185,7 +192,7 @@ export default class User extends React.Component {
                 <CardBody className="singlePadding">
                     <CardTitle className="bottomMargin"><FontAwesomeIcon icon={faCheck} className="lowOpacity"/> Logged in as <b>{this.state.lichessLoginName}</b></CardTitle>
                     <MaterialUIButton
-                        onClick={this.launchLichessOauth}
+                        onClick={this.logoutOfLichess.bind(this)}
                         variant="contained"
                         color="default"
                         className="mainButton" disableElevation
@@ -213,15 +220,6 @@ export default class User extends React.Component {
                 </MaterialUIButton>
         </CardBody>
         </Card>
-    }
-
-    getLichessCardAction() {
-        if (this.state.lichessLoginState === Constants.LICHESS_NOT_LOGGED_IN) {
-            return 
-        } else if (this.state.lichessLoginState === Constants.LICHESS_LOGGED_IN) {
-            return 
-        }
-
     }
 
     getChessComSelection() {
