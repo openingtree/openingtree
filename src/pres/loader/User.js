@@ -5,7 +5,8 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faInfoCircle} from '@fortawesome/free-solid-svg-icons'
+import {faCheck} from '@fortawesome/free-solid-svg-icons'
 import Divider from '@material-ui/core/Divider';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
@@ -15,6 +16,9 @@ import Dropzone from './Dropzone'
 import NotableChessGames from './NotableChessGames';
 import {Card, CardBody, CardText, CardTitle} from 'reactstrap'
 import LockOpen from '@material-ui/icons/Lock'
+import {Spinner} from 'reactstrap'
+import cookieManager from '../../app/CookieManager'
+import request from 'request'
 
 export default class User extends React.Component {
     constructor(props) {
@@ -23,7 +27,9 @@ export default class User extends React.Component {
             playerName:'',
             files:[],
             selectedPlayer:{},
-            selectedEvent:{}
+            selectedEvent:{},
+            lichessLoginState: Constants.LICHESS_NOT_LOGGED_IN,
+            lichessLoginName: null
         }
     }
 
@@ -47,10 +53,32 @@ export default class User extends React.Component {
             selectedEvent:event})
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.site === Constants.SITE_LICHESS) {
+            this.fetchLichessLoginStatus()
+        }
         this.setState({playerNameError:''})
     }
-    
+    fetchLichessLoginStatus(){
+        let lichessAccessToken = cookieManager.getLichessAccessToken()
+        if(lichessAccessToken) {
+            this.setState({lichessLoginState:Constants.LICHESS_STATE_PENDING})
+            request.get("https://lichess.org/api/account", {auth:{bearer:cookieManager.getLichessAccessToken()}}, (error, response)=>{
+                if(!error && response) {
+                    let responseObj = JSON.parse(response.body) 
+                    if(responseObj && responseObj.username) {
+                        this.setState({
+                            lichessLoginState:Constants.LICHESS_LOGGED_IN,
+                            lichessLoginName:responseObj.username
+                        })
+                        return
+                    } 
+                } 
+                this.setState({lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN})
+                console.log(error,JSON.parse(response.body))
+            })
+        }
+    }
     validateInputDetailsSet() {
         if(this.props.site === Constants.SITE_EVENT_DB){
             if(!this.state.selectedEvent){
@@ -139,26 +167,61 @@ export default class User extends React.Component {
     }
     getLichessSelection() {
         return <div>
-            <Card>
+            {this.getLichessCardBody()}
+            <br/>
+            {this.getPlayerNameInput('lichess username')}
+        </div>
+    }
+
+    getLichessCardBody() {
+        if (this.state.lichessLoginState === Constants.LICHESS_STATE_PENDING) {
+            return <Card>
+                <div className="center">
+                    <Spinner className="bigSpinner dividerMargin" /><br/>
+                </div>
+            </Card>
+        } else if (this.state.lichessLoginState === Constants.LICHESS_LOGGED_IN && this.state.lichessLoginName) {
+            return <Card>
                 <CardBody className="singlePadding">
-                <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> Speed up tree building (optional)</CardTitle>
-                <CardText className="smallText">
-                    Lichess allows much faster download of games if you login. You can learn more about this <a href = 'https://lichess.org/api#operation/apiGamesUser' target="_blank">here</a>. 
-                    Recommended for viewing your own games or when your opponent has lots of games.
-                </CardText>
-                <MaterialUIButton
-                    onClick={this.launchLichessOauth}
+                    <CardTitle className="bottomMargin"><FontAwesomeIcon icon={faCheck} className="lowOpacity"/> Logged in as <b>{this.state.lichessLoginName}</b></CardTitle>
+                    <MaterialUIButton
+                        onClick={this.launchLichessOauth}
                         variant="contained"
                         color="default"
                         className="mainButton" disableElevation
                         startIcon={<LockOpen />}
-                    >
-            LOGIN TO LICHESS
-        </MaterialUIButton>
+                        >
+                            LOGOUT
+                    </MaterialUIButton>
                 </CardBody>
-                </Card><br/>
+            </Card>
+        }
+        return <Card><CardBody className="singlePadding">
+        <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> Speed up tree building (optional)</CardTitle>
+        <CardText className="smallText">
+            Lichess allows much faster download of games if you login. You can learn more about this <a href = 'https://lichess.org/api#operation/apiGamesUser' rel="noopener noreferrer" target="_blank">here</a>. 
+            Recommended for viewing your own games or when your opponent has lots of games.
+        </CardText>
+        <MaterialUIButton
+                onClick={this.launchLichessOauth}
+                variant="contained"
+                color="default"
+                className="mainButton" disableElevation
+                startIcon={<LockOpen />}
+                >
+                    LOGIN TO LICHESS
+                </MaterialUIButton>
+        </CardBody>
+        </Card>
+    }
 
-            {this.getPlayerNameInput('lichess username')}</div>
+    getLichessCardAction() {
+        if (this.state.lichessLoginState === Constants.LICHESS_NOT_LOGGED_IN) {
+            return 
+        } else if (this.state.lichessLoginState === Constants.LICHESS_LOGGED_IN) {
+            return 
+        }
+
     }
 
     getChessComSelection() {

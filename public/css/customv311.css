@@ -249,6 +249,9 @@
 .smallBottomMargin {
     margin-bottom:0.25rem;
 }
+.bottomMargin {
+    margin-bottom:1rem;
+}
 
 .discordIcon {
     color:rgb(121,136,215);
@@ -263,4 +266,16 @@
 .moreIcon {
     font-size:21px;
     margin-right:3px;
+}
+
+.center {
+    margin-left:auto;
+    margin-right:auto;
+    text-align:center;
+}
+
+.bigSpinner {
+    width: 3rem;
+    height: 3rem;
+    opacity: 0.5;
 }

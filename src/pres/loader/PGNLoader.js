@@ -134,6 +134,8 @@ export default class PGNLoader extends React.Component {
         })
     }
 
+
+
     siteChange(event) {
         let newSite = event.target.value
         if(newSite === Constants.SITE_PLAYER_DB && !this.state.notablePlayers) {
@@ -164,7 +166,8 @@ export default class PGNLoader extends React.Component {
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)} 
                 showError={this.props.showError} files={this.state.files} notablePlayers={this.state.notablePlayers}
                 notableEvents={this.state.notableEvents} site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}
-                pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer} selectedEvent={this.state.selectedNotableEvent}/>
+                pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer} selectedEvent={this.state.selectedNotableEvent}
+            />
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
                 site={this.state.site} playerName={this.state.playerName} advancedFilters={this.advancedFilters()}
