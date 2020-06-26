@@ -37,7 +37,7 @@ async function handleRequest(req) {
       response.headers.set('Set-cookie',`rt=${tokenResponse['refresh_token']}; Domain=lichesslogin.openingtree.com; Path=/token; Httponly; expires=${date.toGMTString()}`)
       return response
     } else {
-      return Response.redirect(`https://www.openingtree.com${params.state?decodeURIComponent(params.state):""}?source=lichess`,302)
+      return Response.redirect(`https://www.openingtree.com${params.state?decodeURIComponent(params.state):""}`,302)
     }
   } catch (error) {
     console.error('Access Token Error', error.message)

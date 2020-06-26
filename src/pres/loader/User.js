@@ -31,6 +31,9 @@ export default class User extends React.Component {
             lichessLoginState: Constants.LICHESS_NOT_LOGGED_IN,
             lichessLoginName: null
         }
+        if(this.props.site === Constants.SITE_LICHESS) {
+            this.fetchLichessLoginStatus()
+        }
     }
 
     editPlayerName(event) {
@@ -75,7 +78,6 @@ export default class User extends React.Component {
                     } 
                 } 
                 this.setState({lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN})
-                console.log(error,JSON.parse(response.body))
             })
         }
     }
