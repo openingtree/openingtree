@@ -6,7 +6,7 @@ import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle} from '@fortawesome/free-solid-svg-icons'
-import {faCheck} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faSync} from '@fortawesome/free-solid-svg-icons'
 import Divider from '@material-ui/core/Divider';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
@@ -17,8 +17,6 @@ import NotableChessGames from './NotableChessGames';
 import {Card, CardBody, CardText, CardTitle} from 'reactstrap'
 import LockOpen from '@material-ui/icons/Lock'
 import {Spinner} from 'reactstrap'
-import cookieManager from '../../app/CookieManager'
-import request from 'request'
 
 export default class User extends React.Component {
     constructor(props) {
@@ -27,13 +25,9 @@ export default class User extends React.Component {
             playerName:'',
             files:[],
             selectedPlayer:{},
-            selectedEvent:{},
-            lichessLoginState: Constants.LICHESS_NOT_LOGGED_IN,
-            lichessLoginName: null
+            selectedEvent:{}
         }
-        if(this.props.site === Constants.SITE_LICHESS) {
-            this.fetchLichessLoginStatus()
-        }
+        
     }
 
     editPlayerName(event) {
@@ -57,30 +51,9 @@ export default class User extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.site === Constants.SITE_LICHESS) {
-            this.fetchLichessLoginStatus()
-        }
         this.setState({playerNameError:''})
     }
-    fetchLichessLoginStatus(){
-        let lichessAccessToken = cookieManager.getLichessAccessToken()
-        if(lichessAccessToken) {
-            this.setState({lichessLoginState:Constants.LICHESS_STATE_PENDING})
-            request.get("https://lichess.org/api/account", {auth:{bearer:cookieManager.getLichessAccessToken()}}, (error, response)=>{
-                if(!error && response) {
-                    let responseObj = JSON.parse(response.body) 
-                    if(responseObj && responseObj.username) {
-                        this.setState({
-                            lichessLoginState:Constants.LICHESS_LOGGED_IN,
-                            lichessLoginName:responseObj.username
-                        })
-                        return
-                    } 
-                } 
-                this.setState({lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN})
-            })
-        }
-    }
+    
     validateInputDetailsSet() {
         if(this.props.site === Constants.SITE_EVENT_DB){
             if(!this.state.selectedEvent){
@@ -167,13 +140,6 @@ export default class User extends React.Component {
     launchLichessOauth() {
         window.location.href = 'https://oauth.lichess.org/oauth/authorize?response_type=code&client_id=EBXrB9R9OXpaRvOU&scope=preference:read&redirect_uri=https%3A%2F%2Flichesslogin.openingtree.com&state='+window.location.pathname
     }
-    logoutOfLichess() {
-        cookieManager.deleteLichessAccessToken()
-        this.setState({
-            lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN,
-            lichessLoginName:''
-        })
-    }
     getLichessSelection() {
         return <div>
             {this.getLichessCardBody()}
@@ -183,18 +149,25 @@ export default class User extends React.Component {
     }
 
     getLichessCardBody() {
-        if (this.state.lichessLoginState === Constants.LICHESS_STATE_PENDING) {
+        if (this.props.lichessLoginState === Constants.LICHESS_STATE_PENDING) {
             return <Card>
                 <div className="center">
                     <Spinner className="bigSpinner dividerMargin" /><br/>
                 </div>
             </Card>
-        } else if (this.state.lichessLoginState === Constants.LICHESS_LOGGED_IN && this.state.lichessLoginName) {
+        } else if (this.props.lichessLoginState === Constants.LICHESS_LOGGED_IN && this.props.lichessLoginName) {
             return <Card>
                 <CardBody className="singlePadding">
-                    <CardTitle className="bottomMargin"><FontAwesomeIcon icon={faCheck} className="lowOpacity"/> Logged in as <b>{this.state.lichessLoginName}</b></CardTitle>
+                    <CardTitle className="bottomMargin">
+                    <span title="Refresh login status" onClick={this.props.refreshLichessStatus} className="linkStyle">
+                            <FontAwesomeIcon icon={faSync} className="lowOpacity"/>
+                        </span> Logged in as
+                        <b> {this.props.lichessLoginName}</b>
+                        
+                    </CardTitle>
+                    
                     <MaterialUIButton
-                        onClick={this.logoutOfLichess.bind(this)}
+                        onClick={this.props.logoutOfLichess}
                         variant="contained"
                         color="default"
                         className="mainButton" disableElevation

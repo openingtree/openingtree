@@ -9,6 +9,7 @@ import Actions from './Actions'
 import request from 'request'
 import * as SitePolicy from '../../app/SitePolicy'
 import {openingGraph} from '../../app/OpeningGraph'
+import cookieManager from '../../app/CookieManager'
 
 export default class PGNLoader extends React.Component {
 
@@ -27,8 +28,13 @@ export default class PGNLoader extends React.Component {
             notableEvents:null,
             files:[],
             selectedNotableEvent:{},
-            selectedNotablePlayer:{}
+            selectedNotablePlayer:{},
+            lichessLoginState: Constants.LICHESS_NOT_LOGGED_IN,
+            lichessLoginName: null
 
+        }
+        if(selectedSite === Constants.SITE_LICHESS) {
+            this.fetchLichessLoginStatus()
         }
         this.timeframeSteps = getTimeframeSteps()
         this.state[Constants.FILTER_NAME_SELECTED_TIMEFRAME] = [0, this.timeframeSteps.length - 1]
@@ -150,8 +156,39 @@ export default class PGNLoader extends React.Component {
                 this.setState({notableEvents:gamesDetails})
             })
         }
+        if(newSite === Constants.SITE_LICHESS) {
+            this.fetchLichessLoginStatus()
+        }
+
         this.setState({ site: newSite, expandedPanel:'user'})
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ChangeSite", newSite)
+    }
+    fetchLichessLoginStatus(){
+        let lichessAccessToken = cookieManager.getLichessAccessToken()
+        if(lichessAccessToken) {
+            this.setState({lichessLoginState:Constants.LICHESS_STATE_PENDING})
+            
+            request.get("https://lichess.org/api/account", {timeout:1000, auth:{bearer:cookieManager.getLichessAccessToken()}}, (error, response)=>{
+                if(!error && response) {
+                    let responseObj = JSON.parse(response.body) 
+                    if(responseObj && responseObj.username) {
+                        this.setState({
+                            lichessLoginState:Constants.LICHESS_LOGGED_IN,
+                            lichessLoginName:responseObj.username
+                        })
+                        return
+                    } 
+                } 
+                this.setState({lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN})
+            })
+        }
+    }
+    logoutOfLichess() {
+        cookieManager.deleteLichessAccessToken()
+        this.setState({
+            lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN,
+            lichessLoginName:''
+        })
     }
 
     filtersChange(filters) {
@@ -169,6 +206,8 @@ export default class PGNLoader extends React.Component {
                 showError={this.props.showError} files={this.state.files} notablePlayers={this.state.notablePlayers}
                 notableEvents={this.state.notableEvents} site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}
                 pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer} selectedEvent={this.state.selectedNotableEvent}
+                lichessLoginState={this.state.lichessLoginState} lichessLoginName={this.state.lichessLoginName}
+                logoutOfLichess={this.logoutOfLichess.bind(this)} refreshLichessStatus={this.fetchLichessLoginStatus.bind(this)}
             />
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
