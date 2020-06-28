@@ -158,14 +158,14 @@ export default class User extends React.Component {
         } else if (this.props.lichessLoginState === Constants.LICHESS_LOGGED_IN && this.props.lichessLoginName) {
             return <Card>
                 <CardBody className="singlePadding">
-                    <CardTitle className="bottomMargin">
-                    <span title="Refresh login status" onClick={this.props.refreshLichessStatus} className="linkStyle">
-                            <FontAwesomeIcon icon={faSync} className="lowOpacity"/>
-                        </span> Logged in as
+                    <CardTitle className="noBottomMargin">
+                        <FontAwesomeIcon icon={faCheck} className="lowOpacity greenColor"/> Logged in as
                         <b> {this.props.lichessLoginName}</b>
                         
                     </CardTitle>
-                    
+                    <CardTitle><FontAwesomeIcon icon={faSync} className="lowOpacity smallText leftMargin2"/>
+                    <span title="Refresh login status" onClick={this.props.refreshLichessStatus} className="smallText linkStyle leftMargin4"> Recheck login status</span>
+                    </CardTitle>
                     <MaterialUIButton
                         onClick={this.props.logoutOfLichess}
                         variant="contained"

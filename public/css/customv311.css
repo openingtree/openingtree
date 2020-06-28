@@ -279,3 +279,16 @@
     height: 3rem;
     opacity: 0.5;
 }
+
+.noBottomMargin {
+    margin-bottom:0px;
+}
+.greenColor{
+    color:green
+}
+.leftMargin2 {
+    margin-left:2px;
+}
+.leftMargin4 {
+    margin-left:4px;
+}
