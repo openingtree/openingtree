@@ -164,7 +164,7 @@ export default class User extends React.Component {
                         
                     </CardTitle>
                     <CardTitle><FontAwesomeIcon icon={faSync} className="lowOpacity smallText leftMargin2"/>
-                    <span title="Refresh login status" onClick={this.props.refreshLichessStatus} className="smallText linkStyle leftMargin4"> Recheck login status</span>
+                    <span onClick={this.props.refreshLichessStatus} className="smallText linkStyle leftMargin4"> Recheck login status</span>
                     </CardTitle>
                     <MaterialUIButton
                         onClick={this.props.logoutOfLichess}
