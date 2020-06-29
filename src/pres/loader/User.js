@@ -6,7 +6,7 @@ import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle} from '@fortawesome/free-solid-svg-icons'
-import {faCheck, faSync} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faSync, faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
 import Divider from '@material-ui/core/Divider';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
@@ -16,6 +16,7 @@ import Dropzone from './Dropzone'
 import NotableChessGames from './NotableChessGames';
 import {Card, CardBody, CardText, CardTitle} from 'reactstrap'
 import LockOpen from '@material-ui/icons/Lock'
+import ExitToApp from '@material-ui/icons/ExitToApp'
 import {Spinner} from 'reactstrap'
 
 export default class User extends React.Component {
@@ -155,23 +156,41 @@ export default class User extends React.Component {
                     <Spinner className="bigSpinner dividerMargin" /><br/>
                 </div>
             </Card>
+        } else if(this.props.lichessLoginState === Constants.LICHESS_FAILED_FETCH) {
+            return <Card><CardBody className="singlePadding">
+            <CardTitle className="smallBottomMargin redColor"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> Failed to fetch login status</CardTitle>
+            <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faSync} className="lowOpacity smallText leftMargin2"/>
+            <span onClick={this.props.refreshLichessStatus} className="smallText linkStyle leftMargin4"> Retry fetching status</span>
+            </CardTitle>
+            <CardTitle><FontAwesomeIcon icon={faSignOutAlt} className="lowOpacity smallText leftMargin2"/>
+            <span onClick={this.props.logoutOfLichess} className="smallText linkStyle leftMargin4"> Logout of lichess</span>
+            </CardTitle>
+    
+                    <MaterialUIButton
+                onClick={this.launchLichessOauth}
+                variant="contained"
+                color="default"
+                className="mainButton" disableElevation
+                startIcon={<LockOpen />}
+                >
+                    TRY LOGIN AGAIN
+                </MaterialUIButton>
+            </CardBody></Card>
         } else if (this.props.lichessLoginState === Constants.LICHESS_LOGGED_IN && this.props.lichessLoginName) {
             return <Card>
                 <CardBody className="singlePadding">
-                    <CardTitle className="noBottomMargin">
+                    <CardTitle>
                         <FontAwesomeIcon icon={faCheck} className="lowOpacity greenColor"/> Logged in as
                         <b> {this.props.lichessLoginName}</b>
                         
                     </CardTitle>
-                    <CardTitle><FontAwesomeIcon icon={faSync} className="lowOpacity smallText leftMargin2"/>
-                    <span onClick={this.props.refreshLichessStatus} className="smallText linkStyle leftMargin4"> Recheck login status</span>
-                    </CardTitle>
+                    
                     <MaterialUIButton
                         onClick={this.props.logoutOfLichess}
                         variant="contained"
                         color="default"
                         className="mainButton" disableElevation
-                        startIcon={<LockOpen />}
+                        startIcon={<ExitToApp />}
                         >
                             LOGOUT
                     </MaterialUIButton>

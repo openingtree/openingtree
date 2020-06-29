@@ -49,3 +49,4 @@ export const ERROR_ACTION_VISIT_OLD_SITE = 'visitOld'
 export const LICHESS_NOT_LOGGED_IN = 0;
 export const LICHESS_STATE_PENDING = 1;
 export const LICHESS_LOGGED_IN = 2;
+export const LICHESS_FAILED_FETCH = 3;

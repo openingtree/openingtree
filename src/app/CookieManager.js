@@ -6,7 +6,6 @@ class CookieManager {
     }
     deleteLichessAccessToken() {
         Cookies.remove('at', { path: '/', domain:'www.openingtree.com' })
-        Cookies.remove('login', { path: '/', domain:'www.openingtree.com' })
     }
 }
 
