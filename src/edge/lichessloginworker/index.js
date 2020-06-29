@@ -17,25 +17,7 @@ async function handleRequest(req) {
 
     const tokenResponse = await getTokenResponse(params.code)
     if(tokenResponse.access_token) {
-      let date = new Date();
-      date.setTime(date.getTime()+(30*24*60*60*1000));
-      const html = `<html>
-          <head>
-            <script>
-              function redirect(){
-                window.location = 'https://www.openingtree.com${params.state?decodeURIComponent(params.state):""}lichesslogin?t=${tokenResponse.access_token}&e=${date.getTime()}'
-              }
-            </script>
-          </head>
-          <body onload='redirect()'><div style='padding:20px;color:gray;text-align:center;margin-left:auto;margin-right:auto;'>This page should redirect automatically. If it does not, please <a href='https://www.openingtree.com/${decodeURIComponent(params.state)}?t=${tokenResponse.access_token}'>click here</a></div></body>
-      </html>`
-      let response = new Response(html, {
-        headers:{
-          'Content-type':'text/html'
-        }
-      })
-      response.headers.set('Set-cookie',`rt=${tokenResponse['refresh_token']}; Domain=lichesslogin.openingtree.com; Path=/token; Httponly; expires=${date.toGMTString()}`)
-      return response
+      return Response.redirect(`https://www.openingtree.com${params.state?decodeURIComponent(params.state):""}lichesslogin?t=${tokenResponse.access_token}`,302)
     } else {
       return Response.redirect(`https://www.openingtree.com${params.state?decodeURIComponent(params.state):""}`,302)
     }

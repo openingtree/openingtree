@@ -4,9 +4,10 @@
         function redirect(){
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('t');
+            var twentyYearsFromNow = new Date();
+            twentyYearsFromNow.setFullYear(twentyYearsFromNow.getFullYear() + 20);
             let date = new Date(parseInt(urlParams.get('e')));
-            document.cookie = 'at=' + token + ';Domain=www.openingtree.com;Path=/'
-            document.cookie = `login=lichess;Domain=www.openingtree.com;Path=/;expires=${date.toGMTString()}`
+            document.cookie = 'at=' + token + `;Domain=www.openingtree.com;Path=/;expires=${twentyYearsFromNow.toGMTString()}`
             window.location='../?source=lichess'
         }
       </script>
