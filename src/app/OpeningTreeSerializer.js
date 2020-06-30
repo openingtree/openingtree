@@ -99,7 +99,8 @@ function reconstructObjectFromChunks(deflatedChunks) {
     let header = sortedChunks[0]
     let arrays = []
     let index = 0
-    header.arraySizes.forEach((size)=>{
+    let arraySizes = header.arraySizes || [flattenedChunks.length]
+    arraySizes.forEach((size)=>{
         arrays.push(flattenedChunks.slice(index,index+size))
         index+=size
     })

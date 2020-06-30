@@ -168,7 +168,7 @@ export default class PGNLoader extends React.Component {
         if(lichessAccessToken) {
             this.setState({lichessLoginState:Constants.LICHESS_STATE_PENDING})
             
-            request.get("https://lichess.org/api/account", {timeout:10, auth:{bearer:cookieManager.getLichessAccessToken()}}, (error, response)=>{
+            request.get("https://lichess.org/api/account", {timeout:5000, auth:{bearer:cookieManager.getLichessAccessToken()}}, (error, response)=>{
                 if(!error && response) {
                     let responseObj = JSON.parse(response.body) 
                     if(responseObj && responseObj.username) {

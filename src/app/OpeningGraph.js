@@ -187,7 +187,7 @@ class OpeningGraph {
         let fen = simplifiedFen(fullFen)
 
         var currNode = this.graph.nodes.get(fen)
-        if(currNode) {
+        if(currNode && currNode.playedBy) {
             return Array.from(Object.entries(currNode.playedBy)).map((entry)=> {
                 let chess = new Chess(fullFen)
                 let move = chess.move(entry[0], {sloppy: true})
