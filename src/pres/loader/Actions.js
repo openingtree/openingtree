@@ -215,7 +215,7 @@ export default class Actions extends React.Component {
                 className="mainButton" disableElevation
                 disabled={!!downloadDisabledReason || this.state.exportingInProgress}
                 >
-                    {this.state.exportingInProgress?"Saving to file":"Save openingtree"}
+                    {this.state.exportingInProgress?"Saving to file":"Save .tree file"}
                 </MaterialUIButton></span></Tooltip></div>
             }
         {
