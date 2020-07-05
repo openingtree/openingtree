@@ -26,7 +26,7 @@ export default class Source extends React.Component {
         } else if (source === Constants.SITE_PLAYER_DB) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<People className="lowOpacity"/><span className="sourceName"> Notable chess players</span></span>
         }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Reload .tree file</span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Load .tree file</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }
