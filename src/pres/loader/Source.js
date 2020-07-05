@@ -20,13 +20,13 @@ export default class Source extends React.Component {
         } else if (source === Constants.SITE_CHESS_DOT_COM) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<img alt="chess.com" className="siteimage" src="./chesscomlogo.png" /></span>
         } else if (source === Constants.SITE_PGN_FILE) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Backup className="lowOpacity"/><span className="sourceName"> Upload PGN file</span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Backup className="lowOpacity"/><span className="sourceName"> Load <i>PGN</i> file</span></span>
         } else if (source === Constants.SITE_EVENT_DB) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<DateRange className="lowOpacity"/><span className="sourceName"> Notable chess events</span></span>
         } else if (source === Constants.SITE_PLAYER_DB) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<People className="lowOpacity"/><span className="sourceName"> Notable chess players</span></span>
         }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Load .tree file</span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Load <b>.tree</b> file</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }

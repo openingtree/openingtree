@@ -265,7 +265,7 @@ export default class User extends React.Component {
                 <CardBody className="singlePadding">
                 <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> How it works</CardTitle>
                 <CardText className="smallText">
-                    If you plan to revisit the same player, you can save a <b>.tree</b> file locally by loading a tree and then clicking <i>"Save Openingtree"</i>.
+                    If you plan to revisit the same player, you can save a <b>.tree</b> file locally by loading a tree and then clicking <i>"Save .tree file"</i>.
                     To reload the same tree, drop the <b>.tree</b> file in the dropzone below.
                 </CardText>
                 </CardBody>
