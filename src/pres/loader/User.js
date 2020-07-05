@@ -18,6 +18,7 @@ import {Card, CardBody, CardText, CardTitle} from 'reactstrap'
 import LockOpen from '@material-ui/icons/Lock'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import {Spinner} from 'reactstrap'
+import { trackEvent } from '../../app/Analytics'
 
 export default class User extends React.Component {
     constructor(props) {
@@ -139,8 +140,13 @@ export default class User extends React.Component {
         return <span>{getNumberIcon(2)}Player details</span>
     }
     launchLichessOauth() {
-        window.location.href = 'https://oauth.lichess.org/oauth/authorize?response_type=code&client_id=EBXrB9R9OXpaRvOU&scope=preference:read&redirect_uri=https%3A%2F%2Flichesslogin.openingtree.com&state='+window.location.pathname
-    }
+        trackEvent(
+            Constants.EVENT_CATEGORY_PGN_LOADER, "lichessLogin")
+        setTimeout(()=>{
+            window.location.href = 
+                'https://oauth.lichess.org/oauth/authorize?response_type=code&client_id=EBXrB9R9OXpaRvOU&scope=preference:read&redirect_uri=https%3A%2F%2Flichesslogin.openingtree.com&state='+window.location.pathname
+            }, 150)
+        }
     getLichessSelection() {
         return <div>
             {this.getLichessCardBody()}

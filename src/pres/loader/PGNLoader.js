@@ -166,6 +166,8 @@ export default class PGNLoader extends React.Component {
     fetchLichessLoginStatus(){
         let lichessAccessToken = cookieManager.getLichessAccessToken()
         if(lichessAccessToken) {
+            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessTokenFound")
+
             this.setState({lichessLoginState:Constants.LICHESS_STATE_PENDING})
             
             request.get("https://lichess.org/api/account", {timeout:5000, auth:{bearer:cookieManager.getLichessAccessToken()}}, (error, response)=>{
@@ -176,11 +178,15 @@ export default class PGNLoader extends React.Component {
                             lichessLoginState:Constants.LICHESS_LOGGED_IN,
                             lichessLoginName:responseObj.username
                         })
+                        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessFetchSuccess")
                         return
                     } 
                 } 
+                trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessFetchFailed")
                 this.setState({lichessLoginState:Constants.LICHESS_FAILED_FETCH})
             })
+        } else {
+            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessNoToken")
         }
     }
     logoutOfLichess() {
@@ -189,6 +195,7 @@ export default class PGNLoader extends React.Component {
             lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN,
             lichessLoginName:''
         })
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessLogout")
     }
 
     filtersChange(filters) {
