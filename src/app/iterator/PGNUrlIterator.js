@@ -7,7 +7,7 @@ export default class PGNUrlIterator {
 
     constructor(url, lowerCasePlayerNames, playerColor, advancedFilters, ready, showError) {
         let playerColorHeaderName = playerColor === Constants.PLAYER_COLOR_WHITE? 'White': 'Black'
-        new BaseUrlIterator(url, true, 
+        new BaseUrlIterator(url, null, true, 
             (responseCode)=>{
                 if (responseCode !== 200) {
                     showError('Could not load url')
@@ -32,7 +32,11 @@ export default class PGNUrlIterator {
                     if(!game) {
                         return false
                     }
-                    if(lowerCasePlayerNames && !lowerCasePlayerNames.includes(game.headers[playerColorHeaderName].toLowerCase())) {
+
+                    if((!game.headers[playerColorHeaderName]) 
+                        || lowerCasePlayerNames 
+                        && !lowerCasePlayerNames.includes(
+                            game.headers[playerColorHeaderName].toLowerCase())) {
                         return false
                     }
                     return true

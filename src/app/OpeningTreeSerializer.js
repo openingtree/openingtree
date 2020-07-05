@@ -3,10 +3,8 @@ import {Buffer} from 'buffer'
 import { saveAs } from 'file-saver';
 
 export function serializeOpeningTree(treeData, filename, callback) {
-    console.log(treeData)
     let chunkedArray = chunk(treeData)
     let deflatedChunks = []
-    console.log(chunkedArray.length)
     //push version number 1 for later backward compatibility
     deflatedChunks.push(packControlWord(0x1))
     deflatedChunks.push(packControlWord(chunkedArray.length))
@@ -97,9 +95,18 @@ function getInflatedChunks(data, startIndex, numChunks, callback) {
 
 function reconstructObjectFromChunks(deflatedChunks) {
     let sortedChunks = deflatedChunks.sort((a,b)=>a.index-b.index)
+    let flattenedChunks = sortedChunks.slice(1).map(el=>el.chunk).flat()
+    let header = sortedChunks[0]
+    let arrays = []
+    let index = 0
+    let arraySizes = header.arraySizes || [flattenedChunks.length]
+    arraySizes.forEach((size)=>{
+        arrays.push(flattenedChunks.slice(index,index+size))
+        index+=size
+    })
     return {
-        object:sortedChunks[0].chunk,
-        array:sortedChunks.slice(1).map((el)=>el.chunk).flat()
+        header:header.chunk,
+        arrays:arrays
     }
 }
 
@@ -121,15 +128,20 @@ function packControlWord(control) {
 }
 
 function chunk(treeData) {
-    let chunk1 = {chunk:treeData.object, index:0}
-    return [chunk1,...chunkArray(treeData.array, 1000)]
+    let chunk1 = {chunk:treeData.header, index:0, 
+        arraySizes:treeData.arrays.map(arr=>arr.length)}
+    let chunks = [chunk1]
+    treeData.arrays.forEach((array)=>{
+        Array.prototype.push.apply(chunks, chunkArray(array, 1000, chunks.length));
+    })
+    return chunks
 }
 
-function chunkArray(array, chunkSize) {
+function chunkArray(array, chunkSize, startIndex) {
     let chunkedArray=[]
     
     for (let i=0, chunkIndex=1; i<array.length; i+=chunkSize, chunkIndex++) {
-        chunkedArray.push({chunk:array.slice(i,i+chunkSize), index:chunkIndex});
+        chunkedArray.push({chunk:array.slice(i,i+chunkSize), index:startIndex+chunkIndex});
     }
     return chunkedArray
 }

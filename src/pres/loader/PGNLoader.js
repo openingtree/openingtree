@@ -9,24 +9,32 @@ import Actions from './Actions'
 import request from 'request'
 import * as SitePolicy from '../../app/SitePolicy'
 import {openingGraph} from '../../app/OpeningGraph'
+import cookieManager from '../../app/CookieManager'
 
 export default class PGNLoader extends React.Component {
 
     constructor(props) {
         super(props)
+        let selectedSite = new URLSearchParams(window.location.search).get("source")
+
         this.state = {
             playerName: '',
-            site: '',
+            site: selectedSite?selectedSite:'',
             playerColor: this.props.settings.playerColor,
             isAdvancedFiltersOpen: false,
             isGamesSubsectionOpen: false,
-            expandedPanel: 'source',
+            expandedPanel: selectedSite?'user':'source',
             notablePlayers:null,
             notableEvents:null,
             files:[],
             selectedNotableEvent:{},
-            selectedNotablePlayer:{}
+            selectedNotablePlayer:{},
+            lichessLoginState: Constants.LICHESS_NOT_LOGGED_IN,
+            lichessLoginName: null
 
+        }
+        if(selectedSite === Constants.SITE_LICHESS) {
+            this.fetchLichessLoginStatus()
         }
         this.timeframeSteps = getTimeframeSteps()
         this.state[Constants.FILTER_NAME_SELECTED_TIMEFRAME] = [0, this.timeframeSteps.length - 1]
@@ -62,30 +70,43 @@ export default class PGNLoader extends React.Component {
 
     exportOpeningTreeObject(){
         return {
-            object:{
+            header:{
+                version:2,// current openingtree file version. used to check compatibility of files
+                timestamp:Math.floor(Date.now() / 1000),
                 gamesProcessed:this.props.gamesProcessed,
                 settings:this.props.settings,
                 playerName:this.state.playername,
                 site: this.state.site,
                 advancedFilters:this.advancedFilters()
             },
-            array: [...this.props.openingGraph.graph.nodes.entries()]
+            arrays: [[...this.props.openingGraph.graph.nodes.entries()],
+                        [...this.props.openingGraph.graph.pgnStats]]
         }
     }
 
     importOpeningTreeObject(openingTreeSave) {
+        let saveVersion = 1;
+        if(openingTreeSave.header.version) {
+            saveVersion = openingTreeSave.header.version
+        }
+        if(saveVersion < Constants.OPENING_TREE_FILE_CURRENT_VERSION) {
+            this.props.showError("This is an old format of openingtree file.", null, 
+                "You can try loading it by visiting the old website", Constants.ERROR_ACTION_VISIT_OLD_SITE)
+            return false
+        }
         this.setState({
-            ...openingTreeSave.object.advancedFilters,
-            playerColor:openingTreeSave.object.settings.playerColor,
-            site:openingTreeSave.object.site,
-            playerName:openingTreeSave.object.settings.playerName
+            ...openingTreeSave.header.advancedFilters,
+            playerColor:openingTreeSave.header.settings.playerColor,
+            site:openingTreeSave.header.site,
+            playerName:openingTreeSave.header.settings.playerName
         })
-        openingGraph.setEntries(openingTreeSave.array)
+        openingGraph.setEntries(openingTreeSave.arrays[0], openingTreeSave.arrays[1])
         this.props.importCallback({
-            settings:openingTreeSave.object.settings,
-            gamesProcessed:openingTreeSave.object.gamesProcessed,
+            settings:openingTreeSave.header.settings,
+            gamesProcessed:openingTreeSave.header.gamesProcessed,
             openingGraph:openingGraph
         })
+        return true
     }
 
     playerDetailsChange(playerName, files, selectedNotableEvent, selectedNotablePlayer) {
@@ -121,6 +142,8 @@ export default class PGNLoader extends React.Component {
         })
     }
 
+
+
     siteChange(event) {
         let newSite = event.target.value
         if(newSite === Constants.SITE_PLAYER_DB && !this.state.notablePlayers) {
@@ -133,8 +156,46 @@ export default class PGNLoader extends React.Component {
                 this.setState({notableEvents:gamesDetails})
             })
         }
+        if(newSite === Constants.SITE_LICHESS) {
+            this.fetchLichessLoginStatus()
+        }
+
         this.setState({ site: newSite, expandedPanel:'user'})
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "ChangeSite", newSite)
+    }
+    fetchLichessLoginStatus(){
+        let lichessAccessToken = cookieManager.getLichessAccessToken()
+        if(lichessAccessToken) {
+            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessTokenFound")
+
+            this.setState({lichessLoginState:Constants.LICHESS_STATE_PENDING})
+            
+            request.get("https://lichess.org/api/account", {timeout:5000, auth:{bearer:cookieManager.getLichessAccessToken()}}, (error, response)=>{
+                if(!error && response) {
+                    let responseObj = JSON.parse(response.body) 
+                    if(responseObj && responseObj.username) {
+                        this.setState({
+                            lichessLoginState:Constants.LICHESS_LOGGED_IN,
+                            lichessLoginName:responseObj.username
+                        })
+                        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessFetchSuccess")
+                        return
+                    } 
+                } 
+                trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessFetchFailed")
+                this.setState({lichessLoginState:Constants.LICHESS_FAILED_FETCH})
+            })
+        } else {
+            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessNoToken")
+        }
+    }
+    logoutOfLichess() {
+        cookieManager.deleteLichessAccessToken()
+        this.setState({
+            lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN,
+            lichessLoginName:''
+        })
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessLogout")
     }
 
     filtersChange(filters) {
@@ -151,7 +212,10 @@ export default class PGNLoader extends React.Component {
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)} 
                 showError={this.props.showError} files={this.state.files} notablePlayers={this.state.notablePlayers}
                 notableEvents={this.state.notableEvents} site={this.state.site} playerDetailsChange={this.playerDetailsChange.bind(this)}
-                pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer} selectedEvent={this.state.selectedNotableEvent}/>
+                pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer} selectedEvent={this.state.selectedNotableEvent}
+                lichessLoginState={this.state.lichessLoginState} lichessLoginName={this.state.lichessLoginName}
+                logoutOfLichess={this.logoutOfLichess.bind(this)} refreshLichessStatus={this.fetchLichessLoginStatus.bind(this)}
+            />
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
                 site={this.state.site} playerName={this.state.playerName} advancedFilters={this.advancedFilters()}

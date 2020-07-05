@@ -1,13 +1,14 @@
 import {simplifiedFen, isDateMoreRecentThan} from './util'
 import * as Constants from './Constants'
+import Chess from 'chess.js'
 
 class OpeningGraph {
     constructor() {
         this.graph=new Graph()
         this.hasMoves = false
     }
-    setEntries(arrayEntries){
-        this.graph=new Graph(arrayEntries)
+    setEntries(arrayEntries, pgnStats){
+        this.graph=new Graph(arrayEntries, pgnStats)
         this.hasMoves = true
     }
 
@@ -15,57 +16,113 @@ class OpeningGraph {
         this.graph = new Graph()
         this.hasMoves = false
     }
-    addGameResultOnFen(fullFen, resultObject) {
-        var currNode = this.getNodeFromGraph(fullFen)
-        currNode.gameResults.push(resultObject)
+
+    addPGN(pgnStats, parsedMoves, lastFen, playerColor) {
+        pgnStats.index = this.graph.pgnStats.length
+        this.graph.pgnStats.push(pgnStats)
+        this.graph.playerColor = playerColor
+        this.hasMoves = true
+        parsedMoves.forEach(parsedMove => {
+            this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.moveSan, pgnStats)
+        })
+        this.addGameResultOnFen(lastFen, pgnStats.index)
+        this.addStatsToRoot(pgnStats)
     }
-    addResultToRoot(resultObject, playerColor) {
-        var targetNode = this.getNodeFromGraph(Constants.ROOT_FEN)
-        let newDetails = this.getUpdatedMoveDetails(targetNode.details, resultObject, playerColor)
+
+    addGameResultOnFen(fullFen, resultIndex) {
+        var currNode = this.getNodeFromGraph(fullFen, true)
+        if(!currNode.gameResults) {
+            currNode.gameResults = []
+        }
+        currNode.gameResults.push(resultIndex)
+    }
+    addStatsToRoot(pgnStats) {
+        var targetNode = this.getNodeFromGraph(Constants.ROOT_FEN, true)
+        if(!targetNode.details) {
+            targetNode.details = emptyDetails()
+        }
+        let newDetails = this.getUpdatedMoveDetails(targetNode.details, pgnStats)
         targetNode.details = newDetails
     }
 
     getDetailsForFen(fullFen) {
-        return this.getNodeFromGraph(simplifiedFen(fullFen)).details
+        let node = this.getNodeFromGraph(simplifiedFen(fullFen), false)
+        let details = node && node.details
+        if (Number.isInteger(details)) {
+            details = this.getUpdatedMoveDetails(emptyDetails(), this.graph.pgnStats[details])
+        } else if(!details) {
+            return emptyDetails()
+        }
+        details = this.updateCalculatedValues(details)   
+        return details
     }
 
-    addMoveForFen(fullSourceFen, fullTargetFen, move, resultObject, playerColor) {
-        var targetNode = this.getNodeFromGraph(fullTargetFen)
-        let newDetails = this.getUpdatedMoveDetails(targetNode.details, resultObject, playerColor)
+    updateCalculatedValues(details) {
+        if(Number.isInteger(details.bestWin)) {
+            details.bestWinGame = this.graph.pgnStats[details.bestWin]
+            details.bestWinElo = this.getOpponentElo(this.graph.playerColor,details.bestWinGame)
+        }
+        if(Number.isInteger(details.worstLoss)) {
+            details.worstLossGame = this.graph.pgnStats[details.worstLoss]
+            details.worstLossElo = this.getOpponentElo(this.graph.playerColor,details.worstLossGame)
+        }
+        if(Number.isInteger(details.lastPlayed)) {
+            details.lastPlayedGame = this.graph.pgnStats[details.lastPlayed]
+        }
+        details.count = details.whiteWins+details.blackWins+details.draws
+        return details
+
+    }
+
+    addMoveForFen(fullSourceFen, fullTargetFen, move, resultObject) {
+        var targetNode = this.getNodeFromGraph(fullTargetFen, true)
+        let newDetails = this.getUpdatedMoveDetails(targetNode.details, resultObject)
         targetNode.details = newDetails
 
-        var currNode = this.getNodeFromGraph(fullSourceFen)
-        var movePlayedBy = this.createOrGetMoveNode(currNode.playedBy, move, fullTargetFen)
-        currNode.playedByMax = Math.max(currNode.playedByMax, targetNode.details.count)
-        currNode.playedBy = movePlayedBy
-        this.hasMoves = true
-
+        var currNode = this.getNodeFromGraph(fullSourceFen, true)
+        currNode.playedByMax = Math.max(currNode.playedByMax, this.getTargetDetailsCount(targetNode.details))
+        if(!currNode.playedBy) {
+            currNode.playedBy = {}
+        }
+        currNode.playedBy[move] = ''
     }
 
-    getNodeFromGraph(fullFen) {
+    getTargetDetailsCount(targetDetails) {
+        if(!targetDetails) {
+            return 0
+        }
+        if(Number.isInteger(targetDetails)) {
+            //if details is an integer, then this has been played once
+            return 1
+        }
+        return targetDetails.draws+targetDetails.blackWins+targetDetails.whiteWins
+    }
+
+    getNodeFromGraph(fullFen, addIfNull) {
         let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
-        if(!currNode) {
+        if(!currNode && addIfNull) {
             currNode = new GraphNode()
             currNode.fen = fen
             this.graph.nodes.set(fen, currNode)
         }
         return currNode
     }
-    createOrGetMoveNode(movesPlayedNode, move, fullTargetFen){
-        var movePlayed = movesPlayedNode[move.san]
 
-        if(!movePlayed) {
-            movePlayed = new GraphMove()
-            movePlayed.move = move
-            movePlayed.fen = simplifiedFen(fullTargetFen)
-            movesPlayedNode[move.san]= movePlayed
+    getUpdatedMoveDetails(currentMoveDetails, resultObject) {
+        if(Number.isInteger(currentMoveDetails)) {
+            // if this is the second stat object being added
+            // calculate the first move details and then merge it with the second one
+            currentMoveDetails = this.getUpdatedMoveDetails(emptyDetails(),
+                            this.graph.pgnStats[currentMoveDetails])
+        } else if(!currentMoveDetails) {
+            // if this is the first stat being added to this node,
+            // just write the index to calculate the stats later
+            return resultObject.index
         }
-        return movesPlayedNode
-    }
-
-    getUpdatedMoveDetails(currentMoveDetails, resultObject, playerColor) {
-        let whiteWin = 0, blackWin = 0, draw = 0, opponentElo=0, resultInt = 0;
+        
+        let whiteWin = 0, blackWin = 0, draw = 0, resultInt = 0;
+        let playerColor = this.graph.playerColor
         if(resultObject.result === '1-0') {
             whiteWin = 1
             resultInt = playerColor === Constants.PLAYER_COLOR_WHITE? 1 : -1
@@ -76,28 +133,33 @@ class OpeningGraph {
             draw = 1
         }
 
-        if(playerColor === Constants.PLAYER_COLOR_WHITE) {
-            opponentElo = resultObject.blackElo
-        } else {
-            opponentElo = resultObject.whiteElo
-        }
+        let opponentElo = this.getOpponentElo(playerColor, resultObject)
         if(resultInt === 1) {
-            if(!currentMoveDetails.bestWin || parseInt(opponentElo)>parseInt(currentMoveDetails.bestWin)) {
-                currentMoveDetails.bestWin = opponentElo
-                currentMoveDetails.bestWinGame = resultObject
+            let currentBestWinGame = null
+            if(Number.isInteger(currentMoveDetails.bestWin)) {
+                currentBestWinGame = this.graph.pgnStats[currentMoveDetails.bestWin]
+            }
+            if(!currentBestWinGame || parseInt(opponentElo)>parseInt(this.getOpponentElo(playerColor, currentBestWinGame))) {
+                currentMoveDetails.bestWin = resultObject.index
             }
         }
         if(resultInt === -1) {
-            if(!currentMoveDetails.worstLoss || parseInt(opponentElo)<parseInt(currentMoveDetails.worstLoss)) {
-                currentMoveDetails.worstLoss = opponentElo
-                currentMoveDetails.worstLossGame = resultObject
+            let currentWorstLossGame = null
+            if(Number.isInteger(currentMoveDetails.worstLoss)) {
+                currentWorstLossGame = this.graph.pgnStats[currentMoveDetails.worstLoss]
+            }
+            if(!currentWorstLossGame || parseInt(opponentElo)<parseInt(this.getOpponentElo(playerColor, currentWorstLossGame))) {
+                currentMoveDetails.worstLoss = resultObject.index
             }
         }
-        if(!currentMoveDetails.lastPlayedGame || 
-            isDateMoreRecentThan(resultObject.date, currentMoveDetails.lastPlayedGame.date)) {
-                currentMoveDetails.lastPlayedGame = resultObject
+        let currentLastPlayedGame = null
+        if(Number.isInteger(currentMoveDetails.lastPlayed)) {
+            currentLastPlayedGame = this.graph.pgnStats[currentMoveDetails.lastPlayed]
         }
-        currentMoveDetails.count += 1
+        if(!currentLastPlayedGame || 
+            isDateMoreRecentThan(resultObject.date, currentLastPlayedGame.date)) {
+                currentMoveDetails.lastPlayed = resultObject.index
+        }
         currentMoveDetails.blackWins += blackWin
         currentMoveDetails.whiteWins += whiteWin
         currentMoveDetails.draws += draw
@@ -105,12 +167,19 @@ class OpeningGraph {
         return currentMoveDetails
     }
 
+    getOpponentElo(playerColor, resultObject) {
+        if(playerColor === Constants.PLAYER_COLOR_WHITE) {
+            return resultObject.blackElo
+        }
+        return resultObject.whiteElo
+    }
+
     gameResultsForFen(fullFen) {
         let fen = simplifiedFen(fullFen)
 
         var currNode = this.graph.nodes.get(fen)
-        if(currNode) {
-            return currNode.gameResults
+        if(currNode && currNode.gameResults) {
+            return currNode.gameResults.map((index)=>this.graph.pgnStats[index])
         }
         return null
     }
@@ -118,16 +187,17 @@ class OpeningGraph {
         let fen = simplifiedFen(fullFen)
 
         var currNode = this.graph.nodes.get(fen)
-        if(currNode) {
+        if(currNode && currNode.playedBy) {
             return Array.from(Object.entries(currNode.playedBy)).map((entry)=> {
-                let gMove = entry[1]
-                let targetNode = this.graph.nodes.get(gMove.fen)
+                let chess = new Chess(fullFen)
+                let move = chess.move(entry[0], {sloppy: true})
+                let targetNodeDetails = this.getDetailsForFen(chess.fen())
                 return {
-                    orig:gMove.move.from,
-                    dest:gMove.move.to,
-                    level:this.levelFor(targetNode.details.count, currNode.playedByMax),
-                    san:gMove.move.san,
-                    details:targetNode.details
+                    orig:move.from,
+                    dest:move.to,
+                    level:this.levelFor(targetNodeDetails.count, currNode.playedByMax),
+                    san:move.san,
+                    details:targetNodeDetails
                 }
             })
         }        
@@ -148,43 +218,40 @@ class OpeningGraph {
 
 
 class Graph {
-    constructor(arrayEntries){
+    constructor(arrayEntries, pgnStats){
         this.nodes = new Map()
+        this.pgnStats = []
+        this.playerColor = ''
         if(arrayEntries) {
             arrayEntries.forEach((entry)=> {
                 this.nodes.set(entry[0],entry[1])
             })
         }
+        if(pgnStats) {
+            this.pgnStats = pgnStats
+        }
     }
 }
 
 class GraphNode {
-    
-            fen = ''
             playedByMax = 0 // used to keep track of how many times the most frequent move is played for ease of calculation later
-            playedBy = {}
-            gameResults = []
-            properties = {}
-            details = emptyDetails()
-}
-
-class GraphMove {
-    fen = ''
-    move = {}
+            //playedBy = {}
+            //gameResults = []
 }
 
 function emptyDetails() {
     return {
-        count: 0,
+//        count: 0,
         blackWins: 0,
         whiteWins: 0,
         draws: 0,
         totalOpponentElo: 0,
-        bestWin:null,
-        bestWinGame:null,
-        worstLoss:null,
-        worstLossGame:null,
-        lastPlayedGame:null
+//        bestWin:null,
+//        bestWinGame:null,
+//        worstLoss:null,
+//        worstLossGame:null,
+        lastPlayed:null
+//        lastPlayedGame:null
     }
 }
 

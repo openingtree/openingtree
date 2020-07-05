@@ -5,7 +5,8 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import { Button as MaterialUIButton, TextField } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faInfoCircle} from '@fortawesome/free-solid-svg-icons'
+import {faCheck, faSync, faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
 import Divider from '@material-ui/core/Divider';
 import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
 import {ExpansionPanel} from './Common'
@@ -14,6 +15,10 @@ import Collapse from '@material-ui/core/Collapse';
 import Dropzone from './Dropzone'
 import NotableChessGames from './NotableChessGames';
 import {Card, CardBody, CardText, CardTitle} from 'reactstrap'
+import LockOpen from '@material-ui/icons/Lock'
+import ExitToApp from '@material-ui/icons/ExitToApp'
+import {Spinner} from 'reactstrap'
+import { trackEvent } from '../../app/Analytics'
 
 export default class User extends React.Component {
     constructor(props) {
@@ -24,6 +29,7 @@ export default class User extends React.Component {
             selectedPlayer:{},
             selectedEvent:{}
         }
+        
     }
 
     editPlayerName(event) {
@@ -46,10 +52,10 @@ export default class User extends React.Component {
             selectedEvent:event})
     }
 
-    componentWillReceiveProps() {
+    componentWillReceiveProps(nextProps) {
         this.setState({playerNameError:''})
     }
-
+    
     validateInputDetailsSet() {
         if(this.props.site === Constants.SITE_EVENT_DB){
             if(!this.state.selectedEvent){
@@ -133,6 +139,92 @@ export default class User extends React.Component {
         }
         return <span>{getNumberIcon(2)}Player details</span>
     }
+    launchLichessOauth() {
+        trackEvent(
+            Constants.EVENT_CATEGORY_PGN_LOADER, "lichessLogin")
+        setTimeout(()=>{
+            window.location.href = 
+                'https://oauth.lichess.org/oauth/authorize?response_type=code&client_id=EBXrB9R9OXpaRvOU&scope=preference:read&redirect_uri=https%3A%2F%2Flichesslogin.openingtree.com&state='+window.location.pathname
+            }, 150)
+        }
+    getLichessSelection() {
+        return <div>
+            {this.getLichessCardBody()}
+            <br/>
+            {this.getPlayerNameInput('lichess username')}
+        </div>
+    }
+
+    getLichessCardBody() {
+        if (this.props.lichessLoginState === Constants.LICHESS_STATE_PENDING) {
+            return <Card>
+                <div className="center">
+                    <Spinner className="bigSpinner dividerMargin" /><br/>
+                </div>
+            </Card>
+        } else if(this.props.lichessLoginState === Constants.LICHESS_FAILED_FETCH) {
+            return <Card><CardBody className="singlePadding">
+            <CardTitle className="smallBottomMargin redColor"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> Failed to fetch login status</CardTitle>
+            <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faSync} className="lowOpacity smallText leftMargin2"/>
+            <span onClick={this.props.refreshLichessStatus} className="smallText linkStyle leftMargin4"> Retry fetching status</span>
+            </CardTitle>
+            <CardTitle><FontAwesomeIcon icon={faSignOutAlt} className="lowOpacity smallText leftMargin2"/>
+            <span onClick={this.props.logoutOfLichess} className="smallText linkStyle leftMargin4"> Logout of lichess</span>
+            </CardTitle>
+    
+                    <MaterialUIButton
+                onClick={this.launchLichessOauth}
+                variant="contained"
+                color="default"
+                className="mainButton" disableElevation
+                startIcon={<LockOpen />}
+                >
+                    TRY LOGIN AGAIN
+                </MaterialUIButton>
+            </CardBody></Card>
+        } else if (this.props.lichessLoginState === Constants.LICHESS_LOGGED_IN && this.props.lichessLoginName) {
+            return <Card>
+                <CardBody className="singlePadding">
+                    <CardTitle>
+                        <FontAwesomeIcon icon={faCheck} className="lowOpacity greenColor"/> Logged in as
+                        <b> {this.props.lichessLoginName}</b>
+                        
+                    </CardTitle>
+                    
+                    <MaterialUIButton
+                        onClick={this.props.logoutOfLichess}
+                        variant="contained"
+                        color="default"
+                        className="mainButton" disableElevation
+                        startIcon={<ExitToApp />}
+                        >
+                            LOGOUT
+                    </MaterialUIButton>
+                </CardBody>
+            </Card>
+        }
+        return <Card><CardBody className="singlePadding">
+        <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> Speed up tree building (optional)</CardTitle>
+        <CardText className="smallText">
+            Lichess allows much faster download of games if you login. You can learn more about this <a href = 'https://lichess.org/api#operation/apiGamesUser' rel="noopener noreferrer" target="_blank">here</a>. 
+            Recommended for viewing your own games or when your opponent has lots of games.
+        </CardText>
+        <MaterialUIButton
+                onClick={this.launchLichessOauth}
+                variant="contained"
+                color="default"
+                className="mainButton" disableElevation
+                startIcon={<LockOpen />}
+                >
+                    LOGIN TO LICHESS
+                </MaterialUIButton>
+        </CardBody>
+        </Card>
+    }
+
+    getChessComSelection() {
+        return this.getPlayerNameInput('chess.com username')
+    }
 
     getPlayerNameInput(label, helperText) {
         return <TextField
@@ -142,6 +234,8 @@ export default class User extends React.Component {
             helperText={this.state.playerNameError? this.state.playerNameError:helperText}
             error={this.state.playerNameError?true:false} onKeyUp={this.playerNameKeyUp.bind(this)}/>
     }
+
+
 
     playerNameKeyUp(evt) {
         if(evt.keyCode === 13) { // enter key pressed
@@ -177,7 +271,7 @@ export default class User extends React.Component {
                 <CardBody className="singlePadding">
                 <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> How it works</CardTitle>
                 <CardText className="smallText">
-                    If you plan to revisit the same player, you can save a <b>.tree</b> file locally by loading a tree and then clicking <i>"Save Openingtree"</i>.
+                    If you plan to revisit the same player, you can save a <b>.tree</b> file locally by loading a tree and then clicking <i>"Save .tree file"</i>.
                     To reload the same tree, drop the <b>.tree</b> file in the dropzone below.
                 </CardText>
                 </CardBody>
@@ -192,9 +286,9 @@ export default class User extends React.Component {
         if(this.props.site === Constants.SITE_PGN_FILE) {
             return this.getPgnFileSelection()
         } else if (this.props.site === Constants.SITE_LICHESS) {
-            return this.getPlayerNameInput('lichess username')
+            return this.getLichessSelection()
         } else if (this.props.site === Constants.SITE_CHESS_DOT_COM) {
-            return this.getPlayerNameInput('chess.com username')
+            return this.getChessComSelection()
         } else if (this.props.site === Constants.SITE_EVENT_DB) {
             return this.getGoatDBEventSelection()
         } else if (this.props.site === Constants.SITE_PLAYER_DB) {

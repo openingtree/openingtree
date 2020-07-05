@@ -12,7 +12,6 @@ import People from '@material-ui/icons/People';
 import Save from '@material-ui/icons/Save';
 import Divider from '@material-ui/core/Divider';
 import DateRange from '@material-ui/icons/DateRange';
-import {Badge} from 'reactstrap'
 
 export default class Source extends React.Component {
     getSourceOption(source, addNumber) {
@@ -21,13 +20,13 @@ export default class Source extends React.Component {
         } else if (source === Constants.SITE_CHESS_DOT_COM) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<img alt="chess.com" className="siteimage" src="./chesscomlogo.png" /></span>
         } else if (source === Constants.SITE_PGN_FILE) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Backup className="lowOpacity"/><span className="sourceName"> Upload PGN file</span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Backup className="lowOpacity"/><span className="sourceName"> Load <i>PGN</i> file</span></span>
         } else if (source === Constants.SITE_EVENT_DB) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<DateRange className="lowOpacity"/><span className="sourceName"> Notable chess events</span></span>
         } else if (source === Constants.SITE_PLAYER_DB) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<People className="lowOpacity"/><span className="sourceName"> Notable chess players</span></span>
         }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Openingtree file <Badge className="sourceName" color="secondary">New</Badge></span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Load <b>.tree</b> file</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }

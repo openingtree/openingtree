@@ -55,12 +55,13 @@ function navigateTo(fen, previousMove){
     this.chess = new Chess(fen)
     this.setState({fen:fen, lastMove:previousMove})
 }
-function updateProcessedGames(downloadLimit, n, openingGraph) {
+function updateProcessedGames(downloadLimit, n, parsedGame) {
     let totalGamesProcessed = this.state.gamesProcessed+n
+    this.state.openingGraph.addPGN(parsedGame.pgnStats, parsedGame.parsedMoves,
+            parsedGame.latestFen,parsedGame.playerColor)
     this.setState({
-    gamesProcessed: totalGamesProcessed,
-    openingGraph: openingGraph,
-    downloadingGames: (totalGamesProcessed<downloadLimit || downloadLimit>=Constants.MAX_DOWNLOAD_LIMIT)?this.state.downloadingGames:false
+        gamesProcessed: totalGamesProcessed,
+        downloadingGames: (totalGamesProcessed<downloadLimit || downloadLimit>=Constants.MAX_DOWNLOAD_LIMIT)?this.state.downloadingGames:false
     })
     // continue to download games if 
     // 1. we have not reached download limit OR
@@ -124,9 +125,26 @@ function settingsChange(name, value) {
         'settings':settings
     })
 }
-function showError(message, trackingEvent, subMessage) {
-    this.setState({message:message, subMessage:subMessage
-        , messageSeverity:"error"})
+
+function launch(url) {
+    return () => {
+      window.open(url, "_blank")
+    }
+  }
+
+
+function showError(message, trackingEvent, subMessage, action) {
+    let errorActionText, errorAction
+    if(action === Constants.ERROR_ACTION_VISIT_OLD_SITE) {
+        errorActionText="Visit old site"
+        errorAction = launch("https://www.openingtree.com/old")
+    } else {
+        errorActionText="Report this"
+        errorAction = this.toggleFeedback(true)
+    }
+    this.setState({message:message, subMessage:subMessage,
+        errorAction:errorAction, errorActionText:errorActionText,
+        messageSeverity:"error"})
     let eventName = "errorShown"
     if(trackingEvent) {
         eventName = eventName+":"+trackingEvent

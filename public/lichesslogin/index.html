@@ -1,0 +1,16 @@
+<html>
+    <head>
+      <script>
+        function redirect(){
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('t');
+            var twentyYearsFromNow = new Date();
+            twentyYearsFromNow.setFullYear(twentyYearsFromNow.getFullYear() + 20);
+            let date = new Date(parseInt(urlParams.get('e')));
+            document.cookie = 'at=' + token + `;Domain=www.openingtree.com;Path=/;expires=${twentyYearsFromNow.toGMTString()}`
+            window.location='../?source=lichess'
+        }
+      </script>
+    </head>
+    <body onload='redirect()'><div style='padding:20px;color:gray;text-align:center;margin-left:auto;margin-right:auto;'>This page should redirect automatically. If it does not, please <a href='../'>click here</a></div></body>
+</html>

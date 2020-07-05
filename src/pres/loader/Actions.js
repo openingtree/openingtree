@@ -3,7 +3,7 @@ import * as Constants from '../../app/Constants'
 import { trackEvent } from '../../app/Analytics'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'
-import PGNReader from '../../app/PGNReader'
+import PGNReader from '../../app/PGNReaderWorker'
 import { faList} from '@fortawesome/free-solid-svg-icons'
 import GetApp from '@material-ui/icons/GetApp'
 import Equalizer from '@material-ui/icons/Equalizer'
@@ -13,6 +13,9 @@ import * as SitePolicy from '../../app/SitePolicy'
 import {Tooltip} from '@material-ui/core'
 import HourglassEmptyIcon from '@material-ui/icons/HourglassEmpty';
 import {serializeOpeningTree, deserializeOpeningTree} from '../../app/OpeningTreeSerializer'
+import {proxy} from 'comlink'
+import streamsaver from 'streamsaver'
+import cookieManager from '../../app/CookieManager'
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -21,6 +24,9 @@ export default class Actions extends React.Component {
             isGamesSubsectionOpen : false,
             exportingInProgress : false
         }
+        streamsaver.mitm = "download/download-mitm.html"
+        this.encoder = new TextEncoder()
+
     }
     unload = () => {
         if (this.pgnReader) {
@@ -47,9 +53,11 @@ export default class Actions extends React.Component {
                     this.setState({exportingInProgress:false})
                     return
                 }
-                this.props.importOpeningTreeObject(data)
+                let success = this.props.importOpeningTreeObject(data)
                 this.setState({exportingInProgress:false})
-                this.props.showInfo("Successfuly loaded openingtree")                
+                if(success) {
+                    this.props.showInfo("Successfuly loaded openingtree")                
+                }
             })
     }
     exportTreeClicked() {
@@ -69,23 +77,61 @@ export default class Actions extends React.Component {
                 this.setState({exportingInProgress:false})
             })
     }
-
-
-    readPgn(shouldDownloadToFile) {
-        this.pgnReader = new PGNReader()
-        this.pgnReader.fetchPGNFromSite(this.props.playerName,
-            this.props.playerColor,
-            this.props.site,
-            this.props.selectedNotablePlayer,
-            this.props.selectedNotableEvent,
-            shouldDownloadToFile,
-            this.props.advancedFilters,
-            this.props.notify,
-            this.props.showError,
-            this.stopDownloading.bind(this),
-            this.props.files)
+    abortDownloading() {
+        if(this.fileWriter) {
+            this.fileWriter.close()
+            this.fileWriter = null
+        }
     }
 
+    getPgnString(game){
+        return `${Object.entries(game.headers).map(header=>`[${header[0]} "${header[1]}"]`).join("\n")}
+                \n${game.moves.map((moveObject, index)=>{
+                    return `${index%2!==0?'':index/2+1+"."} ${moveObject.move}`
+                }).join(' ')} ${game.result}\n\n\n`
+    }
+    downloadResponse(result, pendingDownloads) {
+        this.fileWriter.write(this.encoder.encode(result.map(game=>this.getPgnString(game)).join(""))).then(()=>{
+            if(!pendingDownloads) {
+                this.abortDownloading()
+                return false
+            }
+        })
+        return true
+    }
+
+    readPgn(shouldDownloadToFile) {
+        if(shouldDownloadToFile) {
+            let fileStream =  streamsaver.createWriteStream(
+                SitePolicy.exportFileName(
+                    this.props.site, this.props.playerName, 
+                    this.props.playerColor, this.props.selectedNotableEvent, "pgn"))
+            this.fileWriter = fileStream.getWriter()
+        }
+
+        new PGNReader().then((readerInstance) => {
+            this.pgnReader = readerInstance
+            this.pgnReader.fetchPGNFromSite(this.props.playerName,
+                this.props.playerColor,
+                this.props.site,
+                this.props.selectedNotablePlayer,
+                this.props.selectedNotableEvent,
+                shouldDownloadToFile,
+                this.props.advancedFilters,
+                proxy(this.props.notify),
+                proxy(this.props.showError),
+                proxy(this.stopDownloading.bind(this)),
+                this.props.files,
+                proxy(this.downloadResponse.bind(this)),
+                this.getTokens())
+        })
+    }
+    
+    getTokens(){
+        return {
+            lichess:cookieManager.getLichessAccessToken()
+        }
+    }
     download() {
         this.readPgn(true)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Download", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
@@ -169,7 +215,7 @@ export default class Actions extends React.Component {
                 className="mainButton" disableElevation
                 disabled={!!downloadDisabledReason || this.state.exportingInProgress}
                 >
-                    {this.state.exportingInProgress?"Saving to file":"Save openingtree"}
+                    {this.state.exportingInProgress?"Saving to file":"Save .tree file"}
                 </MaterialUIButton></span></Tooltip></div>
             }
         {
