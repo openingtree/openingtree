@@ -14,12 +14,3 @@ export function trackEvent(category, action, label, value) {
       })
 }
 
-export function outboundLink(category,action,label,value, callback) {
-    ReactGA.outboundLink({
-            category: category,
-            action: action,
-            label: label,
-            value: value
-        },
-        callback)
-}
