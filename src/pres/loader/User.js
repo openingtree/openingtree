@@ -25,6 +25,7 @@ export default class User extends React.Component {
         super(props)
         this.state = {
             playerName:'',
+            tournamentUrl:'',
             files:[],
             selectedPlayer:{},
             selectedEvent:{}
@@ -38,7 +39,12 @@ export default class User extends React.Component {
             playerNameError:''
         })
     }
-
+    editTournamentUrl(event) {
+        this.setState({
+            tournamentUrl: event.target.value,
+            tournamentUrlError:''
+        })
+    }
     filesChange(files) {
         this.setState({files:files})
     }
@@ -53,7 +59,7 @@ export default class User extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({playerNameError:''})
+        this.setState({playerNameError:'', tournamentUrlError: ''})
     }
     
     validateInputDetailsSet() {
@@ -85,7 +91,18 @@ export default class User extends React.Component {
                 this.props.showError("Please upload an openingtree file")
                 return false
             }
-        } 
+        } else if(this.props.site === Constants.SITE_ONLINE_TOURNAMENTS) {
+            if(!this.state.tournamentUrl){
+                this.setState({
+                    tournamentUrlError:'Please enter the url'
+                })
+                return false
+            } else {
+                let url = new URL(this.state.tournamentUrl)
+                console.log(url.pathname)
+                console.log(url.hostname)
+            }
+        }
         return true
     }
     finalPlayerName(source, playerName, selectedNotablePlayer) {
@@ -137,8 +154,20 @@ export default class User extends React.Component {
                 return <span>{getNumberIcon('done')}{this.props.selectedEvent.name}</span>
             }
         }
-        return <span>{getNumberIcon(2)}Player details</span>
+        return <span>{getNumberIcon(2)}{this.title(this.props.site)}</span>
     }
+
+    title(site){
+        if(site === Constants.SITE_ONLINE_TOURNAMENTS 
+            || site === Constants.SITE_EVENT_DB) {
+            return "Tournament details"
+        } else if(site === Constants.SITE_OPENING_TREE_FILE 
+            || site === Constants.SITE_PGN_FILE) {
+                return "File details"
+        } 
+        return "Player details"
+    }
+
     launchLichessOauth() {
         trackEvent(
             Constants.EVENT_CATEGORY_PGN_LOADER, "lichessLogin")
@@ -235,7 +264,36 @@ export default class User extends React.Component {
             error={this.state.playerNameError?true:false} onKeyUp={this.playerNameKeyUp.bind(this)}/>
     }
 
+    getOnlineTournamentSelection() {
+        return <div>
+            {this.getOnlineTournamentCard()}
+            <br/>
+            {this.getOnlineTournamentInput('Enter tournament url', 'eg. https://lichess.org/tournament/QlooVt7W')}
+        </div>
+    }
+    getOnlineTournamentCard(){
+        return <Card>
+        <CardBody className="singlePadding">
+        <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> How it works</CardTitle>
+        <CardText className="smallText">
+            You can load games of a <b>lichess</b> or <b>chess.com</b> tournament by copying the  url from your address bar on those sites and pasting it below.
+            <br/>
+            <b>Known issue:</b> chess.com has a bug and is not returning pgn files fo the last few titled tuesdays and other special events, so they will fail to load.
+            
+        </CardText>
+        </CardBody>
+        </Card>
+    }
+    
 
+    getOnlineTournamentInput(label, helperText) {
+        return <TextField
+            className="urlField" name="onlineTournament" id="onlineTournamentTextBox" 
+            margin="dense" onChange={this.editTournamentUrl.bind(this)}
+            label={label} variant="outlined" value={this.state.tournamentUrl}
+            helperText={this.state.tournamentUrlError? this.state.tournamentUrlError:helperText}
+            error={this.state.tournamentUrlError?true:false} onKeyUp={this.playerNameKeyUp.bind(this)}/>
+    }
 
     playerNameKeyUp(evt) {
         if(evt.keyCode === 13) { // enter key pressed
@@ -295,6 +353,8 @@ export default class User extends React.Component {
             return this.getGoatDBSelection()
         } else if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
             return this.getOpeningTreeSelection()
+        } else if(this.props.site === Constants.SITE_ONLINE_TOURNAMENTS) {
+            return this.getOnlineTournamentSelection()
         }
         return <div/>
     }

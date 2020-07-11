@@ -180,7 +180,9 @@
 .playernameField {
     width:75%
 }
-
+.urlField {
+    width:100%
+}
 .mainButton {
     width:75%
 }

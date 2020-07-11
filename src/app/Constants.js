@@ -16,6 +16,7 @@ export const SITE_PGN_FILE = "pgnfile"
 export const SITE_EVENT_DB = "eventdb"
 export const SITE_PLAYER_DB = "playerdb"
 export const SITE_OPENING_TREE_FILE = "opntfile"
+export const SITE_ONLINE_TOURNAMENTS = "tournament"
 
 export const MAX_DOWNLOAD_LIMIT = 2000
 export const MAX_ELO_RATING = 3000
