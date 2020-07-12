@@ -94,13 +94,55 @@ export default class User extends React.Component {
         } else if(this.props.site === Constants.SITE_ONLINE_TOURNAMENTS) {
             if(!this.state.tournamentUrl){
                 this.setState({
-                    tournamentUrlError:'Please enter the url'
+                    tournamentUrlError:'Please enter a url'
                 })
                 return false
             } else {
-                let url = new URL(this.state.tournamentUrl)
-                console.log(url.pathname)
-                console.log(url.hostname)
+                
+                let url = this.state.tournamentUrl.trim()
+                if(!url.startsWith("http")) {
+                    url = "https://"+url
+                }
+                let parsedUrl = null
+                try {
+                    parsedUrl = new URL(url)
+                } catch (e) {
+                    this.setState({
+                        tournamentUrlError:'Please enter a valid url'
+                    })
+                    return false
+                }
+                let hostname = parsedUrl.hostname
+                let tournamentSite = null;
+                if(hostname === 'lichess.org' || hostname.endsWith('.lichess.org')) {
+                    tournamentSite = Constants.SITE_LICHESS
+                } else if(hostname === 'chess.com' || hostname.endsWith('.chess.com')) {
+                    tournamentSite = Constants.SITE_CHESS_DOT_COM
+                }
+                if(!tournamentSite) {
+                    this.setState({
+                        tournamentUrlError:'Please enter a lichess or chess.com url'
+                    })
+                    return false;
+                }
+                let pathComponents = parsedUrl.pathname.split("/")
+                let tournamentId = null
+                for(let i=pathComponents.length-1;i>=0;i--) {
+                    if(pathComponents[i]) {
+                        tournamentId = pathComponents[i]
+                        break
+                    }
+                }
+                if(!tournamentId) {
+                    this.setState({
+                        tournamentUrlError:'Please enter a valid tournament url'
+                    })
+                    return false;
+                }
+                this.selectedOnlineTournament = {
+                    tournamentSite:tournamentSite,
+                    tournamentId:tournamentId
+                }
             }
         }
         return true
@@ -123,7 +165,8 @@ export default class User extends React.Component {
                     this.state.selectedPlayer), 
                 this.state.files, 
                 this.state.selectedEvent, 
-                this.state.selectedPlayer)
+                this.state.selectedPlayer,
+                this.selectedOnlineTournament)
         }
     }
     

@@ -8,7 +8,8 @@ export function isAdvancedFiltersEnabled(source) {
 
 export function isFilterPanelEnabled(source, playerName) {
     if(source === Constants.SITE_EVENT_DB ||
-        source === Constants.SITE_OPENING_TREE_FILE) {
+        source === Constants.SITE_OPENING_TREE_FILE ||
+        source === Constants.SITE_ONLINE_TOURNAMENTS) {
             return false
     }
     return !!playerName

@@ -116,6 +116,7 @@ export default class Actions extends React.Component {
                 this.props.site,
                 this.props.selectedNotablePlayer,
                 this.props.selectedNotableEvent,
+                this.props.selectedOnlineTournament,
                 shouldDownloadToFile,
                 this.props.advancedFilters,
                 proxy(this.props.notify),

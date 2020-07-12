@@ -4,6 +4,7 @@ import ChessComIterator from './iterator/ChessComIterator'
 import PGNFileIterator from './iterator/PGNFileIterator'
 import * as Constants from './Constants'
 import NotablePlayerIterator from './iterator/NotablePlayerIterator'
+import OnlineTournamentIterator from './iterator/OnlineTournamentIterator'
 import { expose } from 'comlink'
 
 export default class PGNReader {
@@ -16,8 +17,9 @@ export default class PGNReader {
 
 
     fetchPGNFromSite(playerName, playerColor, site, selectedNotablePlayer,
-        selectedNotableEvent, shouldDownloadToFile, advancedFilters, notify, 
-        showError, stopDownloading, files, downloadResponse, tokens) {
+        selectedNotableEvent, selectedOnlneTournament, shouldDownloadToFile, 
+        advancedFilters, notify, showError, stopDownloading, files, 
+        downloadResponse, tokens) {
         this.continueProcessingGames = true
         
         let handleResponse = (result, pendingDownloads) => {
@@ -45,7 +47,9 @@ export default class PGNReader {
             new NotablePlayerIterator(selectedNotablePlayer, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_EVENT_DB) {
             new NotablePlayerIterator(selectedNotableEvent, playerColor, advancedFilters, processor, showError)
-        } 
+        } else if (site === Constants.SITE_ONLINE_TOURNAMENTS) {
+            new OnlineTournamentIterator(selectedOnlneTournament, processor,showError)
+        }
         return 'done'
         
     }
