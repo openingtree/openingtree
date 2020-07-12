@@ -1,8 +1,6 @@
-import { parse }  from '../PGNParser'
 import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData, isOpponentEloInSelectedRange} from '../util'
 import * as Constants from '../Constants'
-import {trackEvent} from '../Analytics'
-import BaseUrlIterator from './BaseUrlIterator'
+import BaseLichessIterator from './BaseLichessIterator'
 
 export default class LichessIterator {
 
@@ -17,51 +15,19 @@ export default class LichessIterator {
         let selectedTimeControls = getTimeControlsArray(Constants.SITE_LICHESS, advancedFilters, true)
         let perfFilter = selectedTimeControls.length === 0 || selectedTimeControls.length === 6?
                 "" : `&perfType=${selectedTimeControls.join(",")}`
-        new BaseUrlIterator(lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter, 
-            this.getAuth(accessToken), false,
-            (responseCode)=>{
-                if(responseCode === 404) {
-                    showError('Could not find lichess user ' + playerName)
-                } else if (responseCode !== 200) {
-                    showError('Could not load games of lichess user ' + playerName)
+        let url = lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter
+        new BaseLichessIterator(accessToken, url, advancedFilters, ready, showError, 
+            (pgn)=>{
+                if(!pgn || pgn.headers.Variant !== "Standard") {
+                    return false
                 }
-            }, (error)=> {
-                showError('Failed to connect to lichess.org. Lichess might be down right now', null, "Some addons like 'Piracy Badger' can also cause this.")
-                ready([], false)
-            }, (pgnStringArray) => {
-                let parsedPGNs = pgnStringArray.map((pgnString)=> {
-                    try {
-                        return parse(pgnString)[0]
-                    } catch (e) {
-                        console.log("Failed to parse pgn", pgnString)
-                        console.log(e)
-                        trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedLichess", playerName)
-                        return null
-                    }
-                })
-    
-                let continueProcessing = ready(parsedPGNs.filter((pgn)=>{
-                    if(!pgn || pgn.headers.Variant !== "Standard") {
-                        return false
-                    }
-                    let opponentElo = playerColor === Constants.PLAYER_COLOR_WHITE?pgn.headers.BlackElo:pgn.headers.WhiteElo
-                    if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
-                        return false
-                    }
-                    return true
-                }), true)
-                return continueProcessing
-            }, ()=>{
-                ready([], false)
-            })
-    }
-
-    getAuth(accessToken) {
-        if(accessToken) {
-            return {
-                'bearer' : accessToken
-            }
-        }
-        return null;
+                let opponentElo = playerColor === Constants.PLAYER_COLOR_WHITE?pgn.headers.BlackElo:pgn.headers.WhiteElo
+                if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
+                    return false
+                }
+                return true
+            },
+            'Could not find lichess user ' + playerName,
+            'Could not load games of lichess user ' + playerName)
     }
 }

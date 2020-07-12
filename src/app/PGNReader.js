@@ -17,7 +17,7 @@ export default class PGNReader {
 
 
     fetchPGNFromSite(playerName, playerColor, site, selectedNotablePlayer,
-        selectedNotableEvent, selectedOnlneTournament, shouldDownloadToFile, 
+        selectedNotableEvent, selectedOnlineTournament, shouldDownloadToFile, 
         advancedFilters, notify, showError, stopDownloading, files, 
         downloadResponse, tokens) {
         this.continueProcessingGames = true
@@ -48,7 +48,7 @@ export default class PGNReader {
         } else if (site === Constants.SITE_EVENT_DB) {
             new NotablePlayerIterator(selectedNotableEvent, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_ONLINE_TOURNAMENTS) {
-            new OnlineTournamentIterator(selectedOnlneTournament, processor,showError)
+            new OnlineTournamentIterator(tokens.lichess, selectedOnlineTournament, advancedFilters, processor,showError)
         }
         return 'done'
         
