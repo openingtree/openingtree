@@ -16,7 +16,7 @@ export default class LichessIterator {
         let perfFilter = selectedTimeControls.length === 0 || selectedTimeControls.length === 6?
                 "" : `&perfType=${selectedTimeControls.join(",")}`
         let url = lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter
-        new BaseLichessIterator(accessToken, url, advancedFilters, ready, showError, 
+        new BaseLichessIterator(accessToken, url, ready, showError, 
             (pgn)=>{
                 if(!pgn || pgn.headers.Variant !== "Standard") {
                     return false
