@@ -110,7 +110,7 @@ export default class PGNReader {
         let url= null 
         if (site === Constants.SITE_CHESS_DOT_COM) {
             url = pgn.headers.Link
-        } else if(site === Constants.SITE_LICHESS) {
+        } else if(site === Constants.SITE_LICHESS || site === Constants.SITE_ONLINE_TOURNAMENTS) {
             url = pgn.headers.Site
         }
         let headers=null
