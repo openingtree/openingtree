@@ -117,11 +117,14 @@ export default class User extends React.Component {
                 if(hostname === 'lichess.org' || hostname.endsWith('.lichess.org')) {
                     tournamentSite = Constants.SITE_LICHESS
                 } else if(hostname === 'chess.com' || hostname.endsWith('.chess.com')) {
-                    tournamentSite = Constants.SITE_CHESS_DOT_COM
+                    this.setState({
+                        tournamentUrlError:'chess.com tournaments are not currently supported'
+                    })
+                    return false;
                 }
                 if(!tournamentSite) {
                     this.setState({
-                        tournamentUrlError:'Please enter a lichess or chess.com url'
+                        tournamentUrlError:'Please enter a lichess.org url'
                     })
                     return false;
                 }
@@ -195,6 +198,11 @@ export default class User extends React.Component {
         } else if(this.props.site === Constants.SITE_EVENT_DB) {
             if(this.props.selectedEvent && this.props.selectedEvent.name) {
                 return <span>{getNumberIcon('done')}{this.props.selectedEvent.name}</span>
+            }
+        }
+        else if(this.props.site === Constants.SITE_ONLINE_TOURNAMENTS) {
+            if(this.props.selectedOnlineTournament) {
+                return <span>{getNumberIcon('done')}Id: <b>{this.props.selectedOnlineTournament.tournamentId}</b></span>
             }
         }
         return <span>{getNumberIcon(2)}{this.title(this.props.site)}</span>
@@ -319,9 +327,10 @@ export default class User extends React.Component {
         <CardBody className="singlePadding">
         <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> How it works</CardTitle>
         <CardText className="smallText">
-            You can load games of a <b>lichess</b> or <b>chess.com</b> tournament by copying the  url from your address bar on those sites and pasting it below.
-            <br/>
-            <b>Known issue:</b> chess.com has a bug and is not returning pgn files fo the last few titled tuesdays and other special events, so they will fail to load.
+            You can load all of the games of a lichess tournament by copying the  url from your address bar on those sites and pasting it below.
+            <br/><br/>
+            <b>Why is chess.com not supported?</b>
+            <br/>chess.com API has a few bugs in returning tournament games so we are not able to support them currently. Bugs have been reported to chess.com.
             
         </CardText>
         </CardBody>

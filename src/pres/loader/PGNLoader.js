@@ -216,6 +216,7 @@ export default class PGNLoader extends React.Component {
                 pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer} selectedEvent={this.state.selectedNotableEvent}
                 lichessLoginState={this.state.lichessLoginState} lichessLoginName={this.state.lichessLoginName}
                 logoutOfLichess={this.logoutOfLichess.bind(this)} refreshLichessStatus={this.fetchLichessLoginStatus.bind(this)}
+                selectedOnlineTournament={this.state.selectedOnlineTournament}
             />
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
