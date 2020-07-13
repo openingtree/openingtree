@@ -5,7 +5,7 @@ import React from 'react'
 import {getPerformanceDetails} from '../app/util'
 import {copyText} from './loader/Common'
 
-export default class ControlsContainer extends React.Component {
+export default class ReportControls extends React.Component {
     eatClicks(e) {
         e.stopPropagation()
     }
@@ -55,7 +55,7 @@ export default class ControlsContainer extends React.Component {
         return <div>
             {this.getFenField()}
             <Table onClick={this.eatClicks}>
-            {isNaN(performanceDetails.performanceRating)?null:            <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}><TableRow>
+            {(isNaN(performanceDetails.performanceRating) || !this.props.settings.playerName)?null:            <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}><TableRow>
                 <TableCell className="performanceRatingRow"><b>Performance</b></TableCell>
                 <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
                 </TableRow></TableHead>}
@@ -64,7 +64,7 @@ export default class ControlsContainer extends React.Component {
                 <TableCell className="performanceRatingRow">Results</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.results}</TableCell>
             </TableRow>
-            {isNaN(performanceDetails.averageElo)?null:
+            {(isNaN(performanceDetails.averageElo) || !this.props.settings.playerName)?null:
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Avg opponent</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
@@ -73,17 +73,17 @@ export default class ControlsContainer extends React.Component {
                 <TableCell className="performanceRatingRow">Score</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.score}</TableCell>
             </TableRow>
-            {this.props.simplifiedView || isNaN(performanceDetails.averageElo)?null:
+            {((this.props.simplifiedView || isNaN(performanceDetails.averageElo)) || !this.props.settings.playerName)?null:
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Rating change</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
             </TableRow>
             }
-            {!this.props.simplifiedView && this.props.moveDetails.bestWinElo?<TableRow className="performanceRatingRow">
+            {(this.props.settings.playerName && !this.props.simplifiedView && this.props.moveDetails.bestWinElo)?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Best win</TableCell>
                 <TableCell className="performanceRatingRow">{this.props.moveDetails.bestWinElo} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.bestWinGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
-            {!this.props.simplifiedView && this.props.moveDetails.worstLossElo?<TableRow className="performanceRatingRow">
+            {(this.props.settings.playerName && !this.props.simplifiedView && this.props.moveDetails.worstLossElo)?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Worst loss</TableCell>
                 <TableCell className="performanceRatingRow">{this.props.moveDetails.worstLossElo} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.worstLossGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
