@@ -12,6 +12,7 @@ export default class PGNReader {
         this.totalGames = 0;
         this.pendingGames = 0;
         this.pendingDownloads = true;
+        this.ignoreGameMessageSent = false;
     }
 
 
@@ -67,8 +68,13 @@ export default class PGNReader {
         }
         var pgn = pgnArray[index]
 
-
-        if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
+        if(pgn.moves.length<=2) {
+            if(!this.ignoreGameMessageSent) {
+                showError("Ignoring games with only one move made", null, null, 
+                    Constants.ERROR_ACTION_NONE, Constants.ERROR_SEVERITY_WARNING)            
+                this.ignoreGameMessageSent = true
+            }
+        }else if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
             let chess = new Chess()
             let pgnParseFailed = false;
             let parsedMoves = []

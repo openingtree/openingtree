@@ -133,19 +133,20 @@ function launch(url) {
   }
 
 
-function showError(message, trackingEvent, subMessage, action) {
+function showError(message, trackingEvent, subMessage, action, severity) {
     let errorActionText, errorAction
+    let messageSeverity = severity || Constants.ERROR_SEVERITY_ERROR
     if(action === Constants.ERROR_ACTION_VISIT_OLD_SITE) {
         errorActionText="Visit old site"
         errorAction = launch("https://www.openingtree.com/old")
-    } else {
+    } else if(action !== Constants.ERROR_ACTION_NONE){
         errorActionText="Report this"
         errorAction = this.toggleFeedback(true)
     }
     this.setState({message:message, subMessage:subMessage,
         errorAction:errorAction, errorActionText:errorActionText,
-        messageSeverity:"error"})
-    let eventName = "errorShown"
+        messageSeverity:messageSeverity})
+    let eventName = messageSeverity+"Shown"
     if(trackingEvent) {
         eventName = eventName+":"+trackingEvent
     }
@@ -153,7 +154,7 @@ function showError(message, trackingEvent, subMessage, action) {
 }
 
 function showInfo(message, trackingLabel) {
-    this.setState({message:message, messageSeverity:"success"})
+    this.setState({message:message, messageSeverity:Constants.ERROR_SEVERITY_SUCCESS})
     trackEvent(Constants.EVENT_CATEGORY_MESSAGE_SHOWN,"infoShown",
         trackingLabel?trackingLabel:message)
 }

@@ -46,8 +46,12 @@ export const OPENING_TREE_FILE_CURRENT_VERSION = 2
 
 export const ERROR_ACTION_REPORT = 'report'
 export const ERROR_ACTION_VISIT_OLD_SITE = 'visitOld'
-
+export const ERROR_ACTION_NONE = 'noAction'
 export const LICHESS_NOT_LOGGED_IN = 0;
 export const LICHESS_STATE_PENDING = 1;
 export const LICHESS_LOGGED_IN = 2;
 export const LICHESS_FAILED_FETCH = 3;
+
+export const ERROR_SEVERITY_ERROR = "error";
+export const ERROR_SEVERITY_WARNING = "warning";
+export const ERROR_SEVERITY_SUCCESS = "success";
