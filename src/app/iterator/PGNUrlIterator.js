@@ -5,7 +5,7 @@ import BaseUrlIterator from './BaseUrlIterator'
 
 export default class PGNUrlIterator {
 
-    constructor(url, lowerCasePlayerNames, playerColor, advancedFilters, ready, showError) {
+    constructor(url, lowerCasePlayerNames, playerColor, ready, showError) {
         let playerColorHeaderName = playerColor === Constants.PLAYER_COLOR_WHITE? 'White': 'Black'
         new BaseUrlIterator(url, null, true, 
             (responseCode)=>{

@@ -109,14 +109,15 @@ export default class PGNLoader extends React.Component {
         return true
     }
 
-    playerDetailsChange(playerName, files, selectedNotableEvent, selectedNotablePlayer) {
+    playerDetailsChange(playerName, files, selectedNotableEvent, selectedNotablePlayer, selectedOnlineTournament) {
         this.setState({
             playerName: playerName,
             expandedPanel:SitePolicy.isFilterPanelEnabled(this.state.site, playerName, selectedNotablePlayer)?'filters':'',
             files:files,
             selectedNotableEvent:selectedNotableEvent,
             selectedNotablePlayer:selectedNotablePlayer,
-            playerColor:''
+            playerColor:'',
+            selectedOnlineTournament:selectedOnlineTournament
         })
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "PlayerNameSaved")
     }
@@ -215,6 +216,7 @@ export default class PGNLoader extends React.Component {
                 pgnUrl={this.state.pgnUrl} selectedPlayer={this.state.selectedNotablePlayer} selectedEvent={this.state.selectedNotableEvent}
                 lichessLoginState={this.state.lichessLoginState} lichessLoginName={this.state.lichessLoginName}
                 logoutOfLichess={this.logoutOfLichess.bind(this)} refreshLichessStatus={this.fetchLichessLoginStatus.bind(this)}
+                selectedOnlineTournament={this.state.selectedOnlineTournament}
             />
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
@@ -229,7 +231,7 @@ export default class PGNLoader extends React.Component {
                 switchToMovesTab={this.props.switchToMovesTab} gamesProcessed={this.props.gamesProcessed} 
                 selectedNotablePlayer={this.state.selectedNotablePlayer} selectedNotableEvent={this.state.selectedNotableEvent}
                 exportOpeningTreeObject={this.exportOpeningTreeObject.bind(this)} showInfo={this.props.showInfo}
-                importOpeningTreeObject={this.importOpeningTreeObject.bind(this)}/>
+                importOpeningTreeObject={this.importOpeningTreeObject.bind(this)} selectedOnlineTournament={this.state.selectedOnlineTournament}/>
         </div>
     }
 

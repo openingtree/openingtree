@@ -4,6 +4,7 @@ import ChessComIterator from './iterator/ChessComIterator'
 import PGNFileIterator from './iterator/PGNFileIterator'
 import * as Constants from './Constants'
 import NotablePlayerIterator from './iterator/NotablePlayerIterator'
+import OnlineTournamentIterator from './iterator/OnlineTournamentIterator'
 import { expose } from 'comlink'
 
 export default class PGNReader {
@@ -11,13 +12,15 @@ export default class PGNReader {
         this.totalGames = 0;
         this.pendingGames = 0;
         this.pendingDownloads = true;
+        this.ignoreGameMessageSent = false;
     }
 
 
 
     fetchPGNFromSite(playerName, playerColor, site, selectedNotablePlayer,
-        selectedNotableEvent, shouldDownloadToFile, advancedFilters, notify, 
-        showError, stopDownloading, files, downloadResponse, tokens) {
+        selectedNotableEvent, selectedOnlineTournament, shouldDownloadToFile, 
+        advancedFilters, notify, showError, stopDownloading, files, 
+        downloadResponse, tokens) {
         this.continueProcessingGames = true
         
         let handleResponse = (result, pendingDownloads) => {
@@ -45,7 +48,9 @@ export default class PGNReader {
             new NotablePlayerIterator(selectedNotablePlayer, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_EVENT_DB) {
             new NotablePlayerIterator(selectedNotableEvent, playerColor, advancedFilters, processor, showError)
-        } 
+        } else if (site === Constants.SITE_ONLINE_TOURNAMENTS) {
+            new OnlineTournamentIterator(tokens.lichess, selectedOnlineTournament, advancedFilters, processor,showError)
+        }
         return 'done'
         
     }
@@ -63,8 +68,13 @@ export default class PGNReader {
         }
         var pgn = pgnArray[index]
 
-
-        if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
+        if(pgn.moves.length<=2) {
+            if(!this.ignoreGameMessageSent) {
+                showError("Ignoring games with only one move made", null, null, 
+                    Constants.ERROR_ACTION_NONE, Constants.ERROR_SEVERITY_WARNING)            
+                this.ignoreGameMessageSent = true
+            }
+        }else if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
             let chess = new Chess()
             let pgnParseFailed = false;
             let parsedMoves = []
@@ -106,7 +116,7 @@ export default class PGNReader {
         let url= null 
         if (site === Constants.SITE_CHESS_DOT_COM) {
             url = pgn.headers.Link
-        } else if(site === Constants.SITE_LICHESS) {
+        } else if(site === Constants.SITE_LICHESS || site === Constants.SITE_ONLINE_TOURNAMENTS) {
             url = pgn.headers.Site
         }
         let headers=null

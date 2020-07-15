@@ -16,6 +16,7 @@ export const SITE_PGN_FILE = "pgnfile"
 export const SITE_EVENT_DB = "eventdb"
 export const SITE_PLAYER_DB = "playerdb"
 export const SITE_OPENING_TREE_FILE = "opntfile"
+export const SITE_ONLINE_TOURNAMENTS = "tournament"
 
 export const MAX_DOWNLOAD_LIMIT = 2000
 export const MAX_ELO_RATING = 3000
@@ -45,8 +46,12 @@ export const OPENING_TREE_FILE_CURRENT_VERSION = 2
 
 export const ERROR_ACTION_REPORT = 'report'
 export const ERROR_ACTION_VISIT_OLD_SITE = 'visitOld'
-
+export const ERROR_ACTION_NONE = 'noAction'
 export const LICHESS_NOT_LOGGED_IN = 0;
 export const LICHESS_STATE_PENDING = 1;
 export const LICHESS_LOGGED_IN = 2;
 export const LICHESS_FAILED_FETCH = 3;
+
+export const ERROR_SEVERITY_ERROR = "error";
+export const ERROR_SEVERITY_WARNING = "warning";
+export const ERROR_SEVERITY_SUCCESS = "success";

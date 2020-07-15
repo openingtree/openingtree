@@ -132,8 +132,8 @@ function getDaysInMonth(year,month) {
 export function getPerformanceDetails(totalElo, white, draws, black, playerColor) {
     let totalGames = white + draws + black
     let averageElo = Math.round(totalElo/totalGames)
-    let playerWins = playerColor === Constants.PLAYER_COLOR_WHITE?white:black
-    let playerLosses = playerColor !== Constants.PLAYER_COLOR_WHITE?white:black
+    let playerWins = playerColor === Constants.PLAYER_COLOR_BLACK?black:white
+    let playerLosses = playerColor !== Constants.PLAYER_COLOR_BLACK?black:white
     let score = playerWins+(draws/2)
     let scorePercentage = Math.round(score*100/totalGames)
     let ratingChange = Common.DP_TABLE[scorePercentage]

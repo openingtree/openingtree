@@ -25,6 +25,7 @@ export default class User extends React.Component {
         super(props)
         this.state = {
             playerName:'',
+            tournamentUrl:'',
             files:[],
             selectedPlayer:{},
             selectedEvent:{}
@@ -38,7 +39,12 @@ export default class User extends React.Component {
             playerNameError:''
         })
     }
-
+    editTournamentUrl(event) {
+        this.setState({
+            tournamentUrl: event.target.value,
+            tournamentUrlError:''
+        })
+    }
     filesChange(files) {
         this.setState({files:files})
     }
@@ -53,7 +59,7 @@ export default class User extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({playerNameError:''})
+        this.setState({playerNameError:'', tournamentUrlError: ''})
     }
     
     validateInputDetailsSet() {
@@ -85,7 +91,63 @@ export default class User extends React.Component {
                 this.props.showError("Please upload an openingtree file")
                 return false
             }
-        } 
+        } else if(this.props.site === Constants.SITE_ONLINE_TOURNAMENTS) {
+            if(!this.state.tournamentUrl){
+                this.setState({
+                    tournamentUrlError:'Please enter a url'
+                })
+                return false
+            } else {
+                
+                let url = this.state.tournamentUrl.trim()
+                if(!url.startsWith("http")) {
+                    url = "https://"+url
+                }
+                let parsedUrl = null
+                try {
+                    parsedUrl = new URL(url)
+                } catch (e) {
+                    this.setState({
+                        tournamentUrlError:'Please enter a valid url'
+                    })
+                    return false
+                }
+                let hostname = parsedUrl.hostname
+                let tournamentSite = null;
+                if(hostname === 'lichess.org' || hostname.endsWith('.lichess.org')) {
+                    tournamentSite = Constants.SITE_LICHESS
+                } else if(hostname === 'chess.com' || hostname.endsWith('.chess.com')) {
+                    this.setState({
+                        tournamentUrlError:'chess.com tournaments are not currently supported'
+                    })
+                    return false;
+                }
+                if(!tournamentSite) {
+                    this.setState({
+                        tournamentUrlError:'Please enter a lichess.org url'
+                    })
+                    return false;
+                }
+                let pathComponents = parsedUrl.pathname.split("/")
+                let tournamentId = null
+                for(let i=pathComponents.length-1;i>=0;i--) {
+                    if(pathComponents[i]) {
+                        tournamentId = pathComponents[i]
+                        break
+                    }
+                }
+                if(!tournamentId) {
+                    this.setState({
+                        tournamentUrlError:'Please enter a valid tournament url'
+                    })
+                    return false;
+                }
+                this.selectedOnlineTournament = {
+                    tournamentSite:tournamentSite,
+                    tournamentId:tournamentId
+                }
+            }
+        }
         return true
     }
     finalPlayerName(source, playerName, selectedNotablePlayer) {
@@ -106,7 +168,8 @@ export default class User extends React.Component {
                     this.state.selectedPlayer), 
                 this.state.files, 
                 this.state.selectedEvent, 
-                this.state.selectedPlayer)
+                this.state.selectedPlayer,
+                this.selectedOnlineTournament)
         }
     }
     
@@ -137,8 +200,25 @@ export default class User extends React.Component {
                 return <span>{getNumberIcon('done')}{this.props.selectedEvent.name}</span>
             }
         }
-        return <span>{getNumberIcon(2)}Player details</span>
+        else if(this.props.site === Constants.SITE_ONLINE_TOURNAMENTS) {
+            if(this.props.selectedOnlineTournament) {
+                return <span>{getNumberIcon('done')}Id: <b>{this.props.selectedOnlineTournament.tournamentId}</b></span>
+            }
+        }
+        return <span>{getNumberIcon(2)}{this.title(this.props.site)}</span>
     }
+
+    title(site){
+        if(site === Constants.SITE_ONLINE_TOURNAMENTS 
+            || site === Constants.SITE_EVENT_DB) {
+            return "Tournament details"
+        } else if(site === Constants.SITE_OPENING_TREE_FILE 
+            || site === Constants.SITE_PGN_FILE) {
+                return "File details"
+        } 
+        return "Player details"
+    }
+
     launchLichessOauth() {
         trackEvent(
             Constants.EVENT_CATEGORY_PGN_LOADER, "lichessLogin")
@@ -235,7 +315,37 @@ export default class User extends React.Component {
             error={this.state.playerNameError?true:false} onKeyUp={this.playerNameKeyUp.bind(this)}/>
     }
 
+    getOnlineTournamentSelection() {
+        return <div>
+            {this.getOnlineTournamentCard()}
+            <br/>
+            {this.getOnlineTournamentInput('Enter tournament url', 'eg. https://lichess.org/tournament/QlooVt7W')}
+        </div>
+    }
+    getOnlineTournamentCard(){
+        return <Card>
+        <CardBody className="singlePadding">
+        <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> How it works</CardTitle>
+        <CardText className="smallText">
+            You can load all of the games of a lichess tournament by copying the  url from your address bar on those sites and pasting it below.
+            <br/><br/>
+            <b>Why is chess.com not supported?</b>
+            <br/>chess.com API has a few bugs in returning tournament games so we are not able to support them currently. Bugs have been reported to chess.com.
+            
+        </CardText>
+        </CardBody>
+        </Card>
+    }
+    
 
+    getOnlineTournamentInput(label, helperText) {
+        return <TextField
+            className="urlField" name="onlineTournament" id="onlineTournamentTextBox" 
+            margin="dense" onChange={this.editTournamentUrl.bind(this)}
+            label={label} variant="outlined" value={this.state.tournamentUrl}
+            helperText={this.state.tournamentUrlError? this.state.tournamentUrlError:helperText}
+            error={this.state.tournamentUrlError?true:false} onKeyUp={this.playerNameKeyUp.bind(this)}/>
+    }
 
     playerNameKeyUp(evt) {
         if(evt.keyCode === 13) { // enter key pressed
@@ -295,6 +405,8 @@ export default class User extends React.Component {
             return this.getGoatDBSelection()
         } else if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
             return this.getOpeningTreeSelection()
+        } else if(this.props.site === Constants.SITE_ONLINE_TOURNAMENTS) {
+            return this.getOnlineTournamentSelection()
         }
         return <div/>
     }

@@ -12,6 +12,10 @@ import People from '@material-ui/icons/People';
 import Save from '@material-ui/icons/Save';
 import Divider from '@material-ui/core/Divider';
 import DateRange from '@material-ui/icons/DateRange';
+import {Badge} from 'reactstrap'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faChessRook } from '@fortawesome/free-solid-svg-icons'
+
 
 export default class Source extends React.Component {
     getSourceOption(source, addNumber) {
@@ -27,6 +31,8 @@ export default class Source extends React.Component {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<People className="lowOpacity"/><span className="sourceName"> Notable chess players</span></span>
         }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Load <b>.tree</b> file</span></span>
+        } else if (source === Constants.SITE_ONLINE_TOURNAMENTS) {
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}{addNumber?<FontAwesomeIcon icon={faChessRook} className="lowOpacity" />:<Badge className="sourceName" color="info">New!</Badge>}<span className="sourceName"> Lichess tournaments</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }
@@ -49,6 +55,7 @@ export default class Source extends React.Component {
                 <RadioGroup onChange={this.props.siteChange} value={this.props.site}>
                     <FormControlLabel className="sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_LICHESS)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_CHESS_DOT_COM)} />
+                    <FormControlLabel className="sitelabel" value={Constants.SITE_ONLINE_TOURNAMENTS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_ONLINE_TOURNAMENTS)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_OPENING_TREE_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_OPENING_TREE_FILE)} />
                     <Divider className="dividerMargin"/>
                     <FormControlLabel className="sitelabel" value={Constants.SITE_PLAYER_DB} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PLAYER_DB)} />
