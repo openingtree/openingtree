@@ -130,6 +130,14 @@ export default class User extends React.Component {
                 }
                 let pathComponents = parsedUrl.pathname.split("/")
                 let tournamentId = null
+                let tournamentType = null
+                for(let i=0;i<pathComponents.length;i++) {
+                    if(pathComponents[i]) {
+                        tournamentType = pathComponents[i]
+                        break
+                    }
+                }
+
                 for(let i=pathComponents.length-1;i>=0;i--) {
                     if(pathComponents[i]) {
                         tournamentId = pathComponents[i]
@@ -142,9 +150,12 @@ export default class User extends React.Component {
                     })
                     return false;
                 }
+                
                 this.selectedOnlineTournament = {
                     tournamentSite:tournamentSite,
-                    tournamentId:tournamentId
+                    tournamentId:tournamentId,
+                    tournamentType:tournamentType
+                
                 }
             }
         }

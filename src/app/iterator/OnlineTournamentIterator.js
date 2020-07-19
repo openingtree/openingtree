@@ -5,7 +5,7 @@ export default class OnlineTournamentIterator {
 
     constructor(accessToken, onlineTournament, advancedFilters, ready, showError) {
             new BaseLichessIterator(accessToken, 
-                `https://lichess.org/api/tournament/${onlineTournament.tournamentId}/games`, 
+                `https://lichess.org/api/${onlineTournament.tournamentType}/${onlineTournament.tournamentId}/games`, 
                 ready, showError, (pgn)=>{
                     if(!pgn || pgn.headers.Variant !== "Standard") {
                         return false
