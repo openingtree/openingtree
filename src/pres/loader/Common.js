@@ -1,10 +1,10 @@
 import { withStyles } from '@material-ui/core/styles';
-import MuiExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MUIAccordion from '@material-ui/core/Accordion';
 import React from 'react'
 import { createSubObjectWithProperties } from '../../app/util'
 import * as Constants from '../../app/Constants'
 
-export const ExpansionPanel = withStyles({
+export const Accordion = withStyles({
     root: {
         border: '1px solid rgba(0, 0, 0, .125)',
         boxShadow: 'none',
@@ -19,7 +19,7 @@ export const ExpansionPanel = withStyles({
         },
     },
     expanded: {},
-})(MuiExpansionPanel);
+})(MUIAccordion);
 
 export function getNumberIcon(n) {
     return <img alt={`step ${n}`} className = 'lowOpacity styledNumbers' src={`/images/styled-${n}.png`} height={24}/>

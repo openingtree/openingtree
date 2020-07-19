@@ -1,15 +1,14 @@
 import React from 'react'
 import {getNumberIcon} from './Common'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import { Button as MaterialUIButton, TextField } from '@material-ui/core'
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import { Button as MaterialUIButton, TextField, AccordionDetails } from '@material-ui/core'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle} from '@fortawesome/free-solid-svg-icons'
 import {faCheck, faSync, faSignOutAlt} from '@fortawesome/free-solid-svg-icons'
 import Divider from '@material-ui/core/Divider';
-import ExpansionPanelActions from '@material-ui/core/ExpansionPanelActions';
-import {ExpansionPanel} from './Common'
+import AccordionActions from '@material-ui/core/AccordionActions';
+import {Accordion} from './Common'
 import * as Constants from '../../app/Constants'
 import Collapse from '@material-ui/core/Collapse';
 import Dropzone from './Dropzone'
@@ -423,19 +422,19 @@ export default class User extends React.Component {
     }
 
     render() {
-        return <ExpansionPanel expanded={this.props.expandedPanel === 'user'}
+        return <Accordion expanded={this.props.expandedPanel === 'user'}
                 TransitionComponent={Collapse}
                 TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
                 onChange={this.props.handleExpansionChange} 
                 disabled={this.props.site===''}>
-                <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                <AccordionSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary()}</AccordionSummary>
+                <AccordionDetails>
                         {this.getInputsToShow()}
-                </ExpansionPanelDetails>
+                </AccordionDetails>
                 <Divider />
-                <ExpansionPanelActions>
+                <AccordionActions>
                     <MaterialUIButton size="small" color="primary" onClick={this.setPlayerDetails.bind(this)}>Continue</MaterialUIButton>
-                </ExpansionPanelActions></ExpansionPanel>
+                </AccordionActions></Accordion>
             
     }
 }

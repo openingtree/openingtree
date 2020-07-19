@@ -25,7 +25,7 @@
     "camelcase": "^5.3.1",
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "chess-eco-codes": "git+https://git@github.com/vjuneja/chess-eco-codes.git",
-    "chess-web-api": "^1.0.6",
+    "chess-web-api": "1.0.6",
     "chess.js": "^0.10.2",
     "comlink": "^4.3.0",
     "css-loader": "3.4.2",

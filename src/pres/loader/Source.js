@@ -1,11 +1,11 @@
 import React from 'react'
 import {getNumberIcon} from './Common'
 import { Radio, FormControlLabel, RadioGroup } from '@material-ui/core';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Collapse from '@material-ui/core/Collapse';
-import {ExpansionPanel} from './Common'
+import {Accordion} from './Common'
 import * as Constants from '../../app/Constants'
 import Backup from '@material-ui/icons/Backup';
 import People from '@material-ui/icons/People';
@@ -38,11 +38,11 @@ export default class Source extends React.Component {
     }
 
     render() {
-        return <ExpansionPanel TransitionComponent={Collapse}
+        return <Accordion TransitionComponent={Collapse}
             TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
             expanded={this.props.expandedPanel === 'source'}
             onChange={this.props.handleExpansionChange}>
-            <ExpansionPanelSummary
+            <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1c-content"
                 id="panel1c-header"
@@ -50,8 +50,8 @@ export default class Source extends React.Component {
                 <div>
                     {this.getSourceOption(this.props.site, true)}
                 </div>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails>
+            </AccordionSummary>
+            <AccordionDetails>
                 <RadioGroup onChange={this.props.siteChange} value={this.props.site}>
                     <FormControlLabel className="sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_LICHESS)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_CHESS_DOT_COM)} />
@@ -62,8 +62,8 @@ export default class Source extends React.Component {
                     <FormControlLabel className="sitelabel" value={Constants.SITE_EVENT_DB} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_EVENT_DB)} />
                     <FormControlLabel className="sitelabel" value={Constants.SITE_PGN_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PGN_FILE)} />
                </RadioGroup>
-            </ExpansionPanelDetails>
-        </ExpansionPanel>
+            </AccordionDetails>
+        </Accordion>
         
     }
 }
