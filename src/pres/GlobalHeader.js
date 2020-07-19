@@ -63,6 +63,9 @@ const GlobalHeader = (props) => {
                 <DropdownItem onClick={launch("https://www.openingtree.com/old")}>
                   Old version
                 </DropdownItem>
+                <DropdownItem onClick={launch("https://github.com/openingtree/openingtree")}>
+                  Github
+                </DropdownItem>
                 <DropdownItem divider />
                 <DropdownItem onClick={launch("https://lichess.org/")}>
                   Lichess
