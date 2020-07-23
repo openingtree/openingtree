@@ -7,6 +7,22 @@ import {trackEvent} from '../app/Analytics'
 import * as Constants from '../app/Constants'
 
 export default class SettingsView extends React.Component {
+    constructor(props){
+        super(props)
+        window.addEventListener("keydown",this.keyHandler.bind(this))
+  
+    }
+    keyHandler(e){
+        console.log(e.keyCode)
+        switch(e.keyCode) {
+          case 70: // F key
+          this.toggle('orientation')()
+          break
+          default:
+            break
+
+        }
+      }
     toggle(eventName){
         return (()=> {
             let newValue = this.props.settings[eventName] === Constants.PLAYER_COLOR_WHITE ? Constants.PLAYER_COLOR_BLACK:Constants.PLAYER_COLOR_WHITE

@@ -104,6 +104,9 @@ export default class MovesList extends React.Component {
                         <Progress bar className="grayMove" value={`${move.details.draws/move.details.count*100}`}>{move.details.draws/move.details.count>0.1?move.details.draws:''}</Progress>
                         <Progress bar className="blackMove" value={`${move.details.blackWins/move.details.count*100}`}>{move.details.blackWins/move.details.count>0.1?move.details.blackWins:''}</Progress>
                     </Progress>
+                    <div style={{width:'100%', height:5, border:1}}>
+
+                    </div>
                 </TableCell>
             </TableRow>:
             <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
