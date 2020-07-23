@@ -13,7 +13,6 @@ export default class SettingsView extends React.Component {
   
     }
     keyHandler(e){
-        console.log(e.keyCode)
         switch(e.keyCode) {
           case 70: // F key
           this.toggle('orientation')()
