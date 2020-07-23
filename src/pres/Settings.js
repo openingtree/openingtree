@@ -13,6 +13,10 @@ export default class SettingsView extends React.Component {
   
     }
     keyHandler(e){
+        if(e.srcElement && e.srcElement.tagName === 'INPUT') {
+            console.log("ignore input")
+            return 
+        }
         switch(e.keyCode) {
           case 70: // F key
           this.toggle('orientation')()

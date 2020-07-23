@@ -2577,9 +2577,9 @@ chardet@^0.7.0:
   version "0.0.0"
   resolved "git+https://git@github.com/vjuneja/chess-eco-codes.git#56014aaf8743ba89f745af59e922e8830ddc37e7"
 
-chess-web-api@1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/chess-web-api/-/chess-web-api-1.0.6.tgz#6c64d1bca3b8269d6531f1bf2f383a05822a2920"
+chess-web-api@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/chess-web-api/-/chess-web-api-1.0.10.tgz#7439494429b64bbc403f8185a95ccab3ca8d99a8"
   dependencies:
     superagent "^5.2.1"
 
