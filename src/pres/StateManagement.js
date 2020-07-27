@@ -195,14 +195,26 @@ function importGameState(importState) {
     })
   }
   function getChessboardWidth(){
+    // getting nearest multiple of 8 because chessground has 
+    // css alignment issues if board width is not a multple of 8
+    
+    return `${nearestMultipleOf8(getChessboardWidthInternal())}px`
+  }
+  function nearestMultipleOf8(n){
+      while(n%8!==0) {
+          n++;
+      }
+      return n;
+  }
+  function getChessboardWidthInternal(){
     // have to manually set the width to pixels instead of "vw" value
     // this is because chessground component does not behave well with "vw" values
     if (window.innerWidth<=768) {
-      return `${Math.round(window.innerWidth*95/100)}px` //95vw
-    } else if ((window.innerWidth<=1024)) {
-      return `${Math.round(window.innerWidth*40/100)}px` // 40vw
+      return Math.round(window.innerWidth*95/100) //95vw
+    } else if ((window.innerWidth<=1424)) {
+      return Math.round(Math.min(window.innerWidth*50/100),window.innerHeight-100) // 40vw
     } else {
-      return "512px"
+      return Math.round(Math.min(712,window.innerHeight-100))// innherHeight-100 to leave some space for header and footer
     }
 
   }
