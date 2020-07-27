@@ -212,7 +212,7 @@ function importGameState(importState) {
     if (window.innerWidth<=768) {
       return Math.round(window.innerWidth*95/100) //95vw
     } else if ((window.innerWidth<=1424)) {
-      return Math.round(Math.min(window.innerWidth*50/100),window.innerHeight-100) // 40vw
+      return Math.round(Math.min(window.innerWidth*48/100),window.innerHeight-100) // 40vw
     } else {
       return Math.round(Math.min(712,window.innerHeight-100))// innherHeight-100 to leave some space for header and footer
     }

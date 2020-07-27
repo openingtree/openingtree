@@ -26,6 +26,7 @@ export default class MainContainer extends React.Component {
     this.chess = new Chess()
     addStateManagement(this)
     this.state = {
+        resize:0,
         fen: this.chess.fen(),
         lastMove: null,
         gamesProcessed:0,
@@ -44,8 +45,14 @@ export default class MainContainer extends React.Component {
 
     this.forBrushes = ['paleGrey', 'paleGreen', 'green']
     this.againstBrushes = ['paleRed', 'paleRed', 'red']
-
+    window.addEventListener('resize', this.handleResize.bind(this))
   }
+  handleResize() {
+    this.setState({resize:this.state.resize+1})
+    this.chessboardWidth = this.getChessboardWidth()
+    console.log(this.state.resize)
+  }
+
 
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
@@ -54,7 +61,7 @@ export default class MainContainer extends React.Component {
         <GlobalHeader toggleFeedback = {this.toggleFeedback(false)}/>
         <Container className="mainContainer">
           <Row><Col lg={{order:0, size:2}} xs={{order:2}}><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
-    </Col><Col lg="6"><Chessground
+    </Col><Col lg="6"><Chessground key={this.state.resize}
       height={this.chessboardWidth}
       width={this.chessboardWidth}
       orientation={this.orientation()}
