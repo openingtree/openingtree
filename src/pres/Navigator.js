@@ -11,7 +11,7 @@ export default class Navigator extends React.Component {
     
     constructor(props){
         super(props)
-        this.openingManager = new OpeningManager()
+        this.openingManager = new OpeningManager(this.props.variant)
         this.state = {
             currentMove:0,
           }      
@@ -36,7 +36,7 @@ export default class Navigator extends React.Component {
         //console.log(newProps)
         if(newProps.fen !== this.openingManager.fen()) {
             if(newProps.move === null) {
-                this.openingManager = new OpeningManager()
+                this.openingManager = new OpeningManager(newProps.variant)
                 return true
             }
             this.openingManager.addPly(newProps.fen, newProps.move)

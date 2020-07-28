@@ -1,9 +1,10 @@
 import {simplifiedFen, isDateMoreRecentThan} from './util'
 import * as Constants from './Constants'
+import * as Common from './Common'
 import Chess from 'chess.js'
 
 class OpeningGraph {
-    constructor() {
+    constructor(variant) {
         this.graph=new Graph()
         this.hasMoves = false
     }
@@ -17,7 +18,7 @@ class OpeningGraph {
         this.hasMoves = false
     }
 
-    addPGN(pgnStats, parsedMoves, lastFen, playerColor) {
+    addPGN(pgnStats, parsedMoves, lastFen, playerColor, variant) {
         pgnStats.index = this.graph.pgnStats.length
         this.graph.pgnStats.push(pgnStats)
         this.graph.playerColor = playerColor
@@ -26,7 +27,7 @@ class OpeningGraph {
             this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.moveSan, pgnStats)
         })
         this.addGameResultOnFen(lastFen, pgnStats.index)
-        this.addStatsToRoot(pgnStats)
+        this.addStatsToRoot(pgnStats, variant)
     }
 
     addGameResultOnFen(fullFen, resultIndex) {
@@ -36,8 +37,8 @@ class OpeningGraph {
         }
         currNode.gameResults.push(resultIndex)
     }
-    addStatsToRoot(pgnStats) {
-        var targetNode = this.getNodeFromGraph(Constants.ROOT_FEN, true)
+    addStatsToRoot(pgnStats, variant) {
+        var targetNode = this.getNodeFromGraph(Common.rootFen(variant), true)
         if(!targetNode.details) {
             targetNode.details = emptyDetails()
         }

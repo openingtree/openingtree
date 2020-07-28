@@ -29,6 +29,13 @@ export function trimString(str) {
     return str.replace(/^\s+|\s+$/g, '')
 }
 
+export function rootFen(variant) {
+    if(variant === Constants.VARIANT_RACING_KINGS) {
+        return Constants.RACING_KINGS_ROOT_FEN
+    }
+    return Constants.ROOT_FEN
+}
+
 export const DP_TABLE = {
     "100":800,   "99":677,    "98":589,    "97":538,
     "96":501,    "95":470,    "94":444,    "93":422,

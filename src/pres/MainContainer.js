@@ -16,6 +16,8 @@ import {  Modal, ModalBody,
   ModalFooter,
   Button,Collapse
 } from 'reactstrap'
+import * as Common from '../app/Common'
+
 
 import {FormControlLabel, Checkbox} from '@material-ui/core'
 
@@ -23,7 +25,8 @@ export default class MainContainer extends React.Component {
   
   constructor(props){
     super(props)
-    this.chess = new Chess()
+    let variant = Constants.VARIANT_RACING_KINGS
+    this.chess = new Chess(Common.rootFen(variant))
     addStateManagement(this)
     this.state = {
         resize:0,
@@ -39,7 +42,8 @@ export default class MainContainer extends React.Component {
         message:'',
         downloadingGames:false,
         feedbackOpen:false,
-        diagnosticsDataOpen:false
+        diagnosticsDataOpen:false,
+        variant:variant
       }
     this.chessboardWidth = this.getChessboardWidth()
 
@@ -60,7 +64,11 @@ export default class MainContainer extends React.Component {
     return <div className="rootView"> 
         <GlobalHeader toggleFeedback = {this.toggleFeedback(false)}/>
         <Container className="mainContainer">
-          <Row><Col lg={{order:0, size:2}} xs={{order:2}}><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
+          <Row><Col lg={{order:0, size:2}} xs={{order:2}}>
+            <Navigator fen = {this.state.fen} move={this.state.lastMove} 
+              onChange ={this.navigateTo.bind(this)}
+              variant = {this.state.variant}
+            />
     </Col><Col lg="6"><Chessground key={this.state.resize}
       height={this.chessboardWidth}
       width={this.chessboardWidth}
