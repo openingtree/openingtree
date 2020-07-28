@@ -75,7 +75,7 @@ export default class PGNReader {
                 this.ignoreGameMessageSent = true
             }
         }else if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
-            let chess = new Chess()
+            let chess = new Chess(Constants.RACING_KINGS_ROOT_FEN)
             let pgnParseFailed = false;
             let parsedMoves = []
             pgn.moves.forEach(element => {

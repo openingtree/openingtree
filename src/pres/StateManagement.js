@@ -1,5 +1,6 @@
 import Chess from 'chess.js'
 import * as Constants from '../app/Constants'
+import * as Common from '../app/Common'
 import {trackEvent} from '../app/Analytics'
 import {copyText} from './loader/Common'
 
@@ -108,7 +109,7 @@ function fillArray(arr, len) {
 }
 
 function reset() {
-    this.chess = new Chess()
+    this.chess = new Chess(Common.rootFen(this.state.variant))
     this.setState({fen: this.chess.fen(), lastMove:null})
 }
 

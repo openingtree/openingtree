@@ -18,7 +18,7 @@ export default class LichessIterator {
         let url = lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter
         new BaseLichessIterator(accessToken, url, ready, showError, 
             (pgn)=>{
-                if(!pgn || pgn.headers.Variant !== "Standard") {
+                if(!pgn || pgn.headers.Variant !== "Racing Kings") {
                     return false
                 }
                 let opponentElo = playerColor === Constants.PLAYER_COLOR_WHITE?pgn.headers.BlackElo:pgn.headers.WhiteElo
