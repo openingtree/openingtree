@@ -226,7 +226,7 @@ export default class Actions extends React.Component {
                         {!this.props.playerColor?"Games":this.props.playerColor === Constants.PLAYER_COLOR_WHITE?"White games":"Black games"}{` loaded: ${this.props.gamesProcessed} `}{this.props.isDownloading ? <span className="stopDownloading">[<span className="linkStyle" onClick={this.stopDownloadingAction.bind(this)}><img alt="loading spinner" src="./spinner.gif" height="15" />stop</span>]</span> : ""}
                     </div>
                     <div onClick={() => this.props.switchToMovesTab()} className="navLinkButton pgnloadersection">
-                        <FontAwesomeIcon icon={faList} /> View Moves>>
+                        <FontAwesomeIcon icon={faList} /> View Moves&gt;&gt;
                 </div>
                 </div>
                 : ""
