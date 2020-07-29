@@ -59,3 +59,5 @@ export const ERROR_SEVERITY_SUCCESS = "success";
 
 export const VARIANT_STANDARD = "standard";
 export const VARIANT_RACING_KINGS = "racingKings";
+
+export const LICHESS_HEADER_RACING_KINGS = "Racing Kings"
