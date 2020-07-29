@@ -25,7 +25,7 @@ export default class MainContainer extends React.Component {
   constructor(props){
     super(props)
     let urlVariant = new URLSearchParams(window.location.search).get("variant")
-    let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_STANDARD
+    let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_RACING_KINGS
     this.chess = chessLogic(selectedVariant, Common.rootFen(selectedVariant))
     addStateManagement(this)
     this.state = {
