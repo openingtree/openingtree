@@ -1,5 +1,4 @@
 import React from 'react'
-import Chess from 'chess.js'
 import Chessground from 'react-chessground'
 import 'react-chessground/dist/styles/chessground.css'
 import OpeningGraph from '../app/OpeningGraph'
