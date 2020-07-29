@@ -2,7 +2,7 @@ import React from 'react'
 import Chess from 'chess.js'
 import Chessground from 'react-chessground'
 import 'react-chessground/dist/styles/chessground.css'
-import {openingGraph} from '../app/OpeningGraph'
+import OpeningGraph from '../app/OpeningGraph'
 import Navigator from './Navigator'
 import GlobalHeader from './GlobalHeader'
 import {Container, Row, Col} from 'reactstrap'
@@ -17,7 +17,7 @@ import {  Modal, ModalBody,
   Button,Collapse
 } from 'reactstrap'
 import * as Common from '../app/Common'
-
+import {chessLogic} from '../app/chess/ChessLogic'
 
 import {FormControlLabel, Checkbox} from '@material-ui/core'
 
@@ -27,14 +27,14 @@ export default class MainContainer extends React.Component {
     super(props)
     let urlVariant = new URLSearchParams(window.location.search).get("variant")
     let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_STANDARD
-    this.chess = new Chess(Common.rootFen(selectedVariant))
+    this.chess = chessLogic(selectedVariant, Common.rootFen(selectedVariant))
     addStateManagement(this)
     this.state = {
         resize:0,
         fen: this.chess.fen(),
         lastMove: null,
         gamesProcessed:0,
-        openingGraph:openingGraph,
+        openingGraph:new OpeningGraph(selectedVariant),
         settings:{
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,

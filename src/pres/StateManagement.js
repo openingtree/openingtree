@@ -3,6 +3,7 @@ import * as Constants from '../app/Constants'
 import * as Common from '../app/Common'
 import {trackEvent} from '../app/Analytics'
 import {copyText} from './loader/Common'
+import {chessLogic} from '../app/chess/ChessLogic'
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -53,7 +54,7 @@ function onMoveAction(from, to) {
 }
 
 function navigateTo(fen, previousMove){
-    this.chess = new Chess(fen)
+    this.chess = chessLogic(this.state.variant, fen)
     this.setState({fen:fen, lastMove:previousMove})
 }
 function updateProcessedGames(downloadLimit, n, parsedGame) {
@@ -109,7 +110,7 @@ function fillArray(arr, len) {
 }
 
 function reset() {
-    this.chess = new Chess(Common.rootFen(this.state.variant))
+    this.chess = chessLogic(this.state.variant, Common.rootFen(this.state.variant))
     this.setState({fen: this.chess.fen(), lastMove:null})
 }
 
