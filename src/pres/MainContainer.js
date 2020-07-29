@@ -25,8 +25,9 @@ export default class MainContainer extends React.Component {
   
   constructor(props){
     super(props)
-    let variant = Constants.VARIANT_RACING_KINGS
-    this.chess = new Chess(Common.rootFen(variant))
+    let urlVariant = new URLSearchParams(window.location.search).get("variant")
+    let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_STANDARD
+    this.chess = new Chess(Common.rootFen(selectedVariant))
     addStateManagement(this)
     this.state = {
         resize:0,
@@ -43,7 +44,7 @@ export default class MainContainer extends React.Component {
         downloadingGames:false,
         feedbackOpen:false,
         diagnosticsDataOpen:false,
-        variant:variant
+        variant:selectedVariant
       }
     this.chessboardWidth = this.getChessboardWidth()
 
@@ -103,6 +104,7 @@ export default class MainContainer extends React.Component {
                 isDownloading={this.state.downloadingGames}
                 openingGraph={this.state.openingGraph}
                 importCallback={this.importGameState.bind(this)}
+                variant={this.state.variant}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:"left" }} 

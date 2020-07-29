@@ -109,7 +109,7 @@ export default class Actions extends React.Component {
             this.fileWriter = fileStream.getWriter()
         }
 
-        new PGNReader().then((readerInstance) => {
+        new PGNReader(this.props.variant).then((readerInstance) => {
             this.pgnReader = readerInstance
             this.pgnReader.fetchPGNFromSite(this.props.playerName,
                 this.props.playerColor,

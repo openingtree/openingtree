@@ -36,6 +36,13 @@ export function rootFen(variant) {
     return Constants.ROOT_FEN
 }
 
+export function lichessVariantHeader(variant) {
+    if(variant === Constants.VARIANT_RACING_KINGS) {
+        return Constants.LICHESS_HEADER_RACING_KINGS
+    }
+    return Constants.LICHESS_HEADER_STANDARD
+}
+
 export const DP_TABLE = {
     "100":800,   "99":677,    "98":589,    "97":538,
     "96":501,    "95":470,    "94":444,    "93":422,
