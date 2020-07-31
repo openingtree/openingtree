@@ -1,4 +1,4 @@
-import Chess from 'chess.js'
+import {chessLogic} from './chess/ChessLogic'
 import LichessIterator from './iterator/LichessIterator'
 import ChessComIterator from './iterator/ChessComIterator'
 import PGNFileIterator from './iterator/PGNFileIterator'
@@ -77,7 +77,7 @@ export default class PGNReader {
                 this.ignoreGameMessageSent = true
             }
         }else if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
-            let chess = new Chess(Common.rootFen(this.variant))
+            let chess = chessLogic(this.variant, Common.rootFen(this.variant))
             let pgnParseFailed = false;
             let parsedMoves = []
             pgn.moves.forEach(element => {
@@ -85,6 +85,9 @@ export default class PGNReader {
                 let move = chess.move(element.move, {sloppy: true})
                 let targetFen = chess.fen()
                 if(!move){
+                    if(!pgnParseFailed) {
+                        console.log('failed to load game ',  pgn, element.move)
+                    }
                     pgnParseFailed=true
                     return
                 }
@@ -95,7 +98,6 @@ export default class PGNReader {
                 })
             })
             if(pgnParseFailed) {
-                console.log('failed to load game ',  pgn)
                 showError("Failed to load a game", `${playerName}:${playerColor}`)
             } else {
                 let fen = chess.fen()

@@ -1,4 +1,3 @@
-import Chess from 'chess.js'
 import * as Constants from '../app/Constants'
 import * as Common from '../app/Common'
 import {trackEvent} from '../app/Analytics'
