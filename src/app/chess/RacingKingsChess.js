@@ -56,16 +56,12 @@ export default class RacingKingsChess {
 // to pass to the chess.js library. Since the move Ncd5 will end with a check (+) 
 // it will fail the filter below
 function disambiguate(problematicMove, potentialMoves) {
-    console.log("-------------------")
-    console.log(potentialMoves)
     let filteredMoves = potentialMoves.filter((potentialMove)=>{
         if(problematicMove.charAt(0) !== potentialMove.charAt(0)) {
             return false;
         }
         return problematicMove.slice(-2) === potentialMove.slice(-2)
     })
-    console.log(filteredMoves)
-    console.log("-------------------")
     if(filteredMoves.length !== 1) {
         return null
     }

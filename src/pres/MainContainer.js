@@ -54,7 +54,6 @@ export default class MainContainer extends React.Component {
   handleResize() {
     this.setState({resize:this.state.resize+1})
     this.chessboardWidth = this.getChessboardWidth()
-    console.log(this.state.resize)
   }
 
 

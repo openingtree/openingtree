@@ -14,7 +14,6 @@ export default class SettingsView extends React.Component {
     }
     keyHandler(e){
         if(e.srcElement && e.srcElement.tagName === 'INPUT') {
-            console.log("ignore input")
             return 
         }
         switch(e.keyCode) {
