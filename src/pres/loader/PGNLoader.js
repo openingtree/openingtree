@@ -207,7 +207,8 @@ export default class PGNLoader extends React.Component {
         return <div><div className="pgnloadersection">
             <Source expandedPanel={this.state.expandedPanel}
                 handleExpansionChange={this.handleExpansionChange('source').bind(this)}
-                site={this.state.site} siteChange={this.siteChange.bind(this)}/>
+                site={this.state.site} siteChange={this.siteChange.bind(this)}
+                variant={this.props.variant}/>
             <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)} 
                 showError={this.props.showError} files={this.state.files} notablePlayers={this.state.notablePlayers}
