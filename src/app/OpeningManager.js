@@ -1,8 +1,12 @@
-import * as Constants from './Constants'
+import * as ChessLogic from './chess/ChessLogic'
 
 export default class OpeningManager {
-    plys = [{pgn:'', fen:Constants.ROOT_FEN, move:null}]
+    plys = []
     currentIndex = 0
+    constructor(variant) {
+        this.plys = [{pgn:'', fen:ChessLogic.rootFen(variant), move:null}]
+        this.currentIndex = 0
+    }
     addPly(fen,move) {
         if(this.currentIndex<this.plys.length-1 && this.plys[this.currentIndex+1].move.san === move.san) {
             this.moveForward()

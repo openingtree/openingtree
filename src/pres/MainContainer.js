@@ -1,8 +1,7 @@
 import React from 'react'
-import Chess from 'chess.js'
 import Chessground from 'react-chessground'
 import 'react-chessground/dist/styles/chessground.css'
-import {openingGraph} from '../app/OpeningGraph'
+import OpeningGraph from '../app/OpeningGraph'
 import Navigator from './Navigator'
 import GlobalHeader from './GlobalHeader'
 import {Container, Row, Col} from 'reactstrap'
@@ -16,6 +15,7 @@ import {  Modal, ModalBody,
   ModalFooter,
   Button,Collapse
 } from 'reactstrap'
+import {chessLogic} from '../app/chess/ChessLogic'
 
 import {FormControlLabel, Checkbox} from '@material-ui/core'
 
@@ -23,14 +23,16 @@ export default class MainContainer extends React.Component {
   
   constructor(props){
     super(props)
-    this.chess = new Chess()
+    let urlVariant = new URLSearchParams(window.location.search).get("variant")
+    let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_STANDARD
+    this.chess = chessLogic(selectedVariant)
     addStateManagement(this)
     this.state = {
         resize:0,
         fen: this.chess.fen(),
         lastMove: null,
         gamesProcessed:0,
-        openingGraph:openingGraph,
+        openingGraph:new OpeningGraph(selectedVariant),
         settings:{
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,
@@ -39,7 +41,8 @@ export default class MainContainer extends React.Component {
         message:'',
         downloadingGames:false,
         feedbackOpen:false,
-        diagnosticsDataOpen:false
+        diagnosticsDataOpen:false,
+        variant:selectedVariant
       }
     this.chessboardWidth = this.getChessboardWidth()
 
@@ -50,7 +53,6 @@ export default class MainContainer extends React.Component {
   handleResize() {
     this.setState({resize:this.state.resize+1})
     this.chessboardWidth = this.getChessboardWidth()
-    console.log(this.state.resize)
   }
 
 
@@ -60,14 +62,17 @@ export default class MainContainer extends React.Component {
     return <div className="rootView"> 
         <GlobalHeader toggleFeedback = {this.toggleFeedback(false)}/>
         <Container className="mainContainer">
-          <Row><Col lg={{order:0, size:2}} xs={{order:2}}><Navigator fen = {this.state.fen} move={this.state.lastMove} onChange ={this.navigateTo.bind(this)}/>
+          <Row><Col lg={{order:0, size:2}} xs={{order:2}}>
+            <Navigator fen = {this.state.fen} move={this.state.lastMove} 
+              onChange ={this.navigateTo.bind(this)}
+              variant = {this.state.variant}
+            />
     </Col><Col lg="6"><Chessground key={this.state.resize}
       height={this.chessboardWidth}
       width={this.chessboardWidth}
       orientation={this.orientation()}
       turnColor={this.turnColor()}
       movable={this.calcMovable()}
-      
       lastMove={lastMoveArray}
       fen={this.state.fen}
       onMove={this.onMoveAction.bind(this)}
@@ -95,6 +100,8 @@ export default class MainContainer extends React.Component {
                 isDownloading={this.state.downloadingGames}
                 openingGraph={this.state.openingGraph}
                 importCallback={this.importGameState.bind(this)}
+                variant={this.state.variant}
+                variantChange={this.variantChange.bind(this)}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:"left" }} 

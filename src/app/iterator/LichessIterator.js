@@ -1,10 +1,11 @@
 import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData, isOpponentEloInSelectedRange} from '../util'
 import * as Constants from '../Constants'
+import * as Common from '../Common'
 import BaseLichessIterator from './BaseLichessIterator'
 
 export default class LichessIterator {
 
-    constructor(accessToken, playerName, playerColor, advancedFilters, ready, showError) {
+    constructor(variant, accessToken, playerName, playerColor, advancedFilters, ready, showError) {
         let lichessBaseURL = `https://lichess.org/api/games/user/`
         let playerNameFilter = encodeURIComponent(playerName)
         let colorFilter = `?color=${playerColor}`
@@ -18,7 +19,7 @@ export default class LichessIterator {
         let url = lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter
         new BaseLichessIterator(accessToken, url, ready, showError, 
             (pgn)=>{
-                if(!pgn || pgn.headers.Variant !== "Standard") {
+                if(!pgn || pgn.headers.Variant !== Common.lichessVariantHeader(variant)) {
                     return false
                 }
                 let opponentElo = playerColor === Constants.PLAYER_COLOR_WHITE?pgn.headers.BlackElo:pgn.headers.WhiteElo

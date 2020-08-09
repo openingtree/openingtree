@@ -1,7 +1,7 @@
-import Chess from 'chess.js'
 import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
 import {copyText} from './loader/Common'
+import {chessLogic} from '../app/chess/ChessLogic'
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -52,13 +52,13 @@ function onMoveAction(from, to) {
 }
 
 function navigateTo(fen, previousMove){
-    this.chess = new Chess(fen)
+    this.chess = chessLogic(this.state.variant, fen)
     this.setState({fen:fen, lastMove:previousMove})
 }
 function updateProcessedGames(downloadLimit, n, parsedGame) {
     let totalGamesProcessed = this.state.gamesProcessed+n
     this.state.openingGraph.addPGN(parsedGame.pgnStats, parsedGame.parsedMoves,
-            parsedGame.latestFen,parsedGame.playerColor)
+            parsedGame.latestFen,parsedGame.playerColor, this.state.variant)
     this.setState({
         gamesProcessed: totalGamesProcessed,
         downloadingGames: (totalGamesProcessed<downloadLimit || downloadLimit>=Constants.MAX_DOWNLOAD_LIMIT)?this.state.downloadingGames:false
@@ -108,7 +108,7 @@ function fillArray(arr, len) {
 }
 
 function reset() {
-    this.chess = new Chess()
+    this.chess = chessLogic(this.state.variant)
     this.setState({fen: this.chess.fen(), lastMove:null})
 }
 
@@ -242,6 +242,10 @@ function getBody() {
     return this.state.diagnosticsDataOpen?this.getDiagnosticsValue():""
 }
 
+function variantChange(newVariant) {
+    this.setState({variant:newVariant})
+    setImmediate(this.reset.bind(this))
+}
 
 function addStateManagement(obj){
     obj.orientation  = orientation
@@ -275,6 +279,7 @@ function addStateManagement(obj){
     obj.getSubject = getSubject
     obj.getBody = getBody.bind(obj)
     obj.getRedditLink = getRedditLink
+    obj.variantChange = variantChange
 }
 
 export {addStateManagement}

@@ -30,6 +30,7 @@ export const EVENT_CATEGORY_ERROR = "error"
 export const EVENT_CATEGORY_MESSAGE_SHOWN = "message"
 
 export const ROOT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
+export const RACING_KINGS_ROOT_FEN="8/8/8/8/8/8/krbnNBRK/qrbnNBRQ w - - 0 1"
 
 export const PLAYER_COLOR_WHITE = 'white'
 export const PLAYER_COLOR_BLACK = 'black'
@@ -55,3 +56,9 @@ export const LICHESS_FAILED_FETCH = 3;
 export const ERROR_SEVERITY_ERROR = "error";
 export const ERROR_SEVERITY_WARNING = "warning";
 export const ERROR_SEVERITY_SUCCESS = "success";
+
+export const VARIANT_STANDARD = "standard";
+export const VARIANT_RACING_KINGS = "racingKings";
+
+export const LICHESS_HEADER_RACING_KINGS = "Racing Kings"
+export const LICHESS_HEADER_STANDARD = "Standard"

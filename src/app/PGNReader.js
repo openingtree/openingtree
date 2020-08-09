@@ -1,4 +1,4 @@
-import Chess from 'chess.js'
+import {chessLogic} from './chess/ChessLogic'
 import LichessIterator from './iterator/LichessIterator'
 import ChessComIterator from './iterator/ChessComIterator'
 import PGNFileIterator from './iterator/PGNFileIterator'
@@ -8,11 +8,12 @@ import OnlineTournamentIterator from './iterator/OnlineTournamentIterator'
 import { expose } from 'comlink'
 
 export default class PGNReader {
-    constructor() {
+    constructor(variant) {
         this.totalGames = 0;
         this.pendingGames = 0;
         this.pendingDownloads = true;
         this.ignoreGameMessageSent = false;
+        this.variant = variant;
     }
 
 
@@ -39,7 +40,7 @@ export default class PGNReader {
         }
         let processor = shouldDownloadToFile? downloadResponse: handleResponse
         if (site === Constants.SITE_LICHESS) {
-            new LichessIterator(tokens.lichess, playerName, playerColor, advancedFilters, processor, showError)
+            new LichessIterator(this.variant,tokens.lichess, playerName, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_CHESS_DOT_COM) {
             new ChessComIterator(playerName, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_PGN_FILE) {
@@ -49,7 +50,7 @@ export default class PGNReader {
         } else if (site === Constants.SITE_EVENT_DB) {
             new NotablePlayerIterator(selectedNotableEvent, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_ONLINE_TOURNAMENTS) {
-            new OnlineTournamentIterator(tokens.lichess, selectedOnlineTournament, advancedFilters, processor,showError)
+            new OnlineTournamentIterator(this.variant,tokens.lichess, selectedOnlineTournament, advancedFilters, processor,showError)
         }
         return 'done'
         
@@ -75,7 +76,7 @@ export default class PGNReader {
                 this.ignoreGameMessageSent = true
             }
         }else if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
-            let chess = new Chess()
+            let chess = chessLogic(this.variant)
             let pgnParseFailed = false;
             let parsedMoves = []
             pgn.moves.forEach(element => {
@@ -83,6 +84,9 @@ export default class PGNReader {
                 let move = chess.move(element.move, {sloppy: true})
                 let targetFen = chess.fen()
                 if(!move){
+                    if(!pgnParseFailed) {
+                        console.log('failed to load game ',  pgn, element.move)
+                    }
                     pgnParseFailed=true
                     return
                 }
@@ -93,7 +97,6 @@ export default class PGNReader {
                 })
             })
             if(pgnParseFailed) {
-                console.log('failed to load game ',  pgn)
                 showError("Failed to load a game", `${playerName}:${playerColor}`)
             } else {
                 let fen = chess.fen()

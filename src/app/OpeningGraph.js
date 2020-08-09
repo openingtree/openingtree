@@ -1,11 +1,12 @@
 import {simplifiedFen, isDateMoreRecentThan} from './util'
 import * as Constants from './Constants'
-import Chess from 'chess.js'
+import {chessLogic, rootFen} from '../app/chess/ChessLogic'
 
-class OpeningGraph {
-    constructor() {
+export default class OpeningGraph {
+    constructor(variant) {
         this.graph=new Graph()
         this.hasMoves = false
+        this.variant = variant
     }
     setEntries(arrayEntries, pgnStats){
         this.graph=new Graph(arrayEntries, pgnStats)
@@ -26,7 +27,7 @@ class OpeningGraph {
             this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.moveSan, pgnStats)
         })
         this.addGameResultOnFen(lastFen, pgnStats.index)
-        this.addStatsToRoot(pgnStats)
+        this.addStatsToRoot(pgnStats, this.variant)
     }
 
     addGameResultOnFen(fullFen, resultIndex) {
@@ -36,8 +37,8 @@ class OpeningGraph {
         }
         currNode.gameResults.push(resultIndex)
     }
-    addStatsToRoot(pgnStats) {
-        var targetNode = this.getNodeFromGraph(Constants.ROOT_FEN, true)
+    addStatsToRoot(pgnStats, variant) {
+        var targetNode = this.getNodeFromGraph(rootFen(variant), true)
         if(!targetNode.details) {
             targetNode.details = emptyDetails()
         }
@@ -214,7 +215,7 @@ class OpeningGraph {
         var currNode = this.graph.nodes.get(fen)
         if(currNode && currNode.playedBy) {
             return Array.from(Object.entries(currNode.playedBy)).map((entry)=> {
-                let chess = new Chess(fullFen)
+                let chess = chessLogic(this.variant, fullFen)
                 let move = chess.move(entry[0], {sloppy: true})
                 let targetNodeDetails = this.getDetailsForFen(chess.fen())
                 return {
@@ -281,5 +282,3 @@ function emptyDetails() {
 //        lastPlayedGame:null
     }
 }
-
-export const openingGraph = new OpeningGraph()
