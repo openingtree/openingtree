@@ -69,6 +69,12 @@ class OpeningGraph {
         if(Number.isInteger(details.lastPlayed)) {
             details.lastPlayedGame = this.graph.pgnStats[details.lastPlayed]
         }
+        if(Number.isInteger(details.longestGame)) {
+            details.longestGameInfo = this.graph.pgnStats[details.longestGame]
+        }
+        if(Number.isInteger(details.shortestGame)) {
+            details.shortestGameInfo = this.graph.pgnStats[details.shortestGame]
+        }
         details.count = details.whiteWins+details.blackWins+details.draws
         return details
 
@@ -160,6 +166,25 @@ class OpeningGraph {
             isDateMoreRecentThan(resultObject.date, currentLastPlayedGame.date)) {
                 currentMoveDetails.lastPlayed = resultObject.index
         }
+        let currentLongestGame = null
+        if(Number.isInteger(currentMoveDetails.longestGame)) {
+            currentLongestGame = this.graph.pgnStats[currentMoveDetails.longestGame]
+        }
+        if(!currentLongestGame || 
+            resultObject.numberOfPlys > currentLongestGame.numberOfPlys) {
+                currentMoveDetails.longestGame = resultObject.index
+        }
+
+        let currentShortestGame = null
+        if(Number.isInteger(currentMoveDetails.shortestGame)) {
+            currentShortestGame = this.graph.pgnStats[currentMoveDetails.shortestGame]
+        }
+        if(!currentShortestGame || 
+            resultObject.numberOfPlys < currentShortestGame.numberOfPlys) {
+                currentMoveDetails.shortestGame = resultObject.index
+        }
+
+
         currentMoveDetails.blackWins += blackWin
         currentMoveDetails.whiteWins += whiteWin
         currentMoveDetails.draws += draw
@@ -246,6 +271,8 @@ function emptyDetails() {
         whiteWins: 0,
         draws: 0,
         totalOpponentElo: 0,
+        shortestGame:null,
+        longestGame:null,
 //        bestWin:null,
 //        bestWinGame:null,
 //        worstLoss:null,

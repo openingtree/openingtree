@@ -131,7 +131,8 @@ export default class PGNReader {
             blackElo:pgn.headers.BlackElo,
             url:url,
             date:pgn.headers.Date,
-            headers:headers
+            headers:headers,
+            numberOfPlys:pgn.moves.length
         }
     }
 }

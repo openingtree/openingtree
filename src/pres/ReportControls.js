@@ -87,6 +87,15 @@ export default class ReportControls extends React.Component {
                 <TableCell className="performanceRatingRow">Worst loss</TableCell>
                 <TableCell className="performanceRatingRow">{this.props.moveDetails.worstLossElo} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.worstLossGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
+            {(!this.props.simplifiedView && this.props.moveDetails.longestGameInfo)?<TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Longest game</TableCell>
+                <TableCell className="performanceRatingRow">{this.props.moveDetails.longestGameInfo.numberOfPlys} Plys <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.longestGameInfo)} icon={faExternalLinkAlt}/></TableCell>
+            </TableRow>:null}
+            {(!this.props.simplifiedView && this.props.moveDetails.shortestGameInfo)?<TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Shortest game</TableCell>
+                <TableCell className="performanceRatingRow">{this.props.moveDetails.shortestGameInfo.numberOfPlys} Plys <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.shortestGameInfo)} icon={faExternalLinkAlt}/></TableCell>
+            </TableRow>:null}
+
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Last played</TableCell>
                 <TableCell className="performanceRatingRow">{this.removeQuestionMarksFromDate(this.props.moveDetails.lastPlayedGame.date)} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.lastPlayedGame)} icon={faExternalLinkAlt}/></TableCell>
