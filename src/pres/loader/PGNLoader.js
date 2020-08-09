@@ -6,6 +6,7 @@ import Source from './Source'
 import User from './User'
 import Filters from './Filters'
 import Actions from './Actions'
+import Variants from './Variants'
 import request from 'request'
 import * as SitePolicy from '../../app/SitePolicy'
 import cookieManager from '../../app/CookieManager'
@@ -205,6 +206,9 @@ export default class PGNLoader extends React.Component {
 
     render() {
         return <div><div className="pgnloadersection">
+            <Variants expandedPanel={this.state.expandedPanel}
+                handleExpansionChange={this.handleExpansionChange('variant').bind(this)}
+                variantChange={this.props.variantChange} variant={this.props.variant}/>
             <Source expandedPanel={this.state.expandedPanel}
                 handleExpansionChange={this.handleExpansionChange('source').bind(this)}
                 site={this.state.site} siteChange={this.siteChange.bind(this)}

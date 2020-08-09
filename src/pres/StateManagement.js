@@ -243,6 +243,10 @@ function getBody() {
     return this.state.diagnosticsDataOpen?this.getDiagnosticsValue():""
 }
 
+function variantChange(event) {
+    let newVariant = event.target.value
+    this.setState({variant:newVariant})
+}
 
 function addStateManagement(obj){
     obj.orientation  = orientation
@@ -276,6 +280,7 @@ function addStateManagement(obj){
     obj.getSubject = getSubject
     obj.getBody = getBody.bind(obj)
     obj.getRedditLink = getRedditLink
+    obj.variantChange = variantChange
 }
 
 export {addStateManagement}

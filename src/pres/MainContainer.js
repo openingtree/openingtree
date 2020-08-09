@@ -74,7 +74,6 @@ export default class MainContainer extends React.Component {
       orientation={this.orientation()}
       turnColor={this.turnColor()}
       movable={this.calcMovable()}
-      
       lastMove={lastMoveArray}
       fen={this.state.fen}
       onMove={this.onMoveAction.bind(this)}
@@ -103,6 +102,7 @@ export default class MainContainer extends React.Component {
                 openingGraph={this.state.openingGraph}
                 importCallback={this.importGameState.bind(this)}
                 variant={this.state.variant}
+                variantChange={this.variantChange.bind(this)}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:"left" }} 

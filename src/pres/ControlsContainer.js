@@ -124,6 +124,7 @@ export default class ControlsContainer extends React.Component {
               openingGraph={this.props.openingGraph}
               importCallback={this.props.importCallback}
               variant={this.props.variant}
+              variantChange={this.props.variantChange}
               />
             </TabPane>
         <TabPane tabId="moves">
