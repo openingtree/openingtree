@@ -29,13 +29,6 @@ export function trimString(str) {
     return str.replace(/^\s+|\s+$/g, '')
 }
 
-export function rootFen(variant) {
-    if(variant === Constants.VARIANT_RACING_KINGS) {
-        return Constants.RACING_KINGS_ROOT_FEN
-    }
-    return Constants.ROOT_FEN
-}
-
 export function lichessVariantHeader(variant) {
     if(variant === Constants.VARIANT_RACING_KINGS) {
         return Constants.LICHESS_HEADER_RACING_KINGS

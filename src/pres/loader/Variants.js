@@ -29,9 +29,14 @@ export default class Source extends React.Component {
                 control={<Radio color="primary" />} 
                 label={this.getVariantOption(source)} />
     }
-    setVariant(){
-
+    continue(){
+        this.props.variantChange(this.props.variant)
     }
+    setVariant(event){
+        let newVariant = event.target.value
+        this.props.variantChange(newVariant)
+    }
+
     render() {
         return <Accordion TransitionComponent={Collapse}
             TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
@@ -47,7 +52,7 @@ export default class Source extends React.Component {
                 </div>
             </AccordionSummary>
             <AccordionDetails>
-                <RadioGroup onChange={this.props.variantChange} value={this.props.variant}>
+                <RadioGroup onChange={this.setVariant.bind(this)} value={this.props.variant}>
                 {this.getVariantRadio(Constants.VARIANT_STANDARD)}
                 {this.getVariantRadio(Constants.VARIANT_RACING_KINGS)}
                </RadioGroup>
@@ -55,7 +60,7 @@ export default class Source extends React.Component {
             <Divider />
 
             <AccordionActions>
-                    <MaterialUIButton size="small" color="primary" onClick={this.setVariant.bind(this)}>Continue</MaterialUIButton>
+                    <MaterialUIButton size="small" color="primary" onClick={this.continue.bind(this)}>Continue</MaterialUIButton>
                 </AccordionActions>
         </Accordion>
         

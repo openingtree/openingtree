@@ -203,12 +203,16 @@ export default class PGNLoader extends React.Component {
         this.setState({...filters, expandedPanel:''})
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "FitlersSaved", this.state.site)
     }
+    variantChange(newVariant) {
+        this.setState({expandedPanel:'source'})
+        this.props.variantChange(newVariant)
+    }
 
     render() {
         return <div><div className="pgnloadersection">
             <Variants expandedPanel={this.state.expandedPanel}
                 handleExpansionChange={this.handleExpansionChange('variant').bind(this)}
-                variantChange={this.props.variantChange} variant={this.props.variant}/>
+                variantChange={this.variantChange.bind(this)} variant={this.props.variant}/>
             <Source expandedPanel={this.state.expandedPanel}
                 handleExpansionChange={this.handleExpansionChange('source').bind(this)}
                 site={this.state.site} siteChange={this.siteChange.bind(this)}

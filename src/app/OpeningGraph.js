@@ -1,7 +1,6 @@
 import {simplifiedFen, isDateMoreRecentThan} from './util'
 import * as Constants from './Constants'
-import * as Common from './Common'
-import {chessLogic} from '../app/chess/ChessLogic'
+import {chessLogic, rootFen} from '../app/chess/ChessLogic'
 
 export default class OpeningGraph {
     constructor(variant) {
@@ -39,7 +38,7 @@ export default class OpeningGraph {
         currNode.gameResults.push(resultIndex)
     }
     addStatsToRoot(pgnStats, variant) {
-        var targetNode = this.getNodeFromGraph(Common.rootFen(variant), true)
+        var targetNode = this.getNodeFromGraph(rootFen(variant), true)
         if(!targetNode.details) {
             targetNode.details = emptyDetails()
         }

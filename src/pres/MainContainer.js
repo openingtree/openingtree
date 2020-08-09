@@ -15,7 +15,6 @@ import {  Modal, ModalBody,
   ModalFooter,
   Button,Collapse
 } from 'reactstrap'
-import * as Common from '../app/Common'
 import {chessLogic} from '../app/chess/ChessLogic'
 
 import {FormControlLabel, Checkbox} from '@material-ui/core'
@@ -25,8 +24,8 @@ export default class MainContainer extends React.Component {
   constructor(props){
     super(props)
     let urlVariant = new URLSearchParams(window.location.search).get("variant")
-    let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_RACING_KINGS
-    this.chess = chessLogic(selectedVariant, Common.rootFen(selectedVariant))
+    let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_STANDARD
+    this.chess = chessLogic(selectedVariant)
     addStateManagement(this)
     this.state = {
         resize:0,

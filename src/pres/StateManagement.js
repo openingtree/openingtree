@@ -1,5 +1,4 @@
 import * as Constants from '../app/Constants'
-import * as Common from '../app/Common'
 import {trackEvent} from '../app/Analytics'
 import {copyText} from './loader/Common'
 import {chessLogic} from '../app/chess/ChessLogic'
@@ -109,7 +108,7 @@ function fillArray(arr, len) {
 }
 
 function reset() {
-    this.chess = chessLogic(this.state.variant, Common.rootFen(this.state.variant))
+    this.chess = chessLogic(this.state.variant)
     this.setState({fen: this.chess.fen(), lastMove:null})
 }
 
@@ -243,9 +242,9 @@ function getBody() {
     return this.state.diagnosticsDataOpen?this.getDiagnosticsValue():""
 }
 
-function variantChange(event) {
-    let newVariant = event.target.value
+function variantChange(newVariant) {
     this.setState({variant:newVariant})
+    setImmediate(this.reset.bind(this))
 }
 
 function addStateManagement(obj){

@@ -1,10 +1,10 @@
-import * as Common from './Common'
+import * as ChessLogic from './chess/ChessLogic'
 
 export default class OpeningManager {
     plys = []
     currentIndex = 0
     constructor(variant) {
-        this.plys = [{pgn:'', fen:Common.rootFen(variant), move:null}]
+        this.plys = [{pgn:'', fen:ChessLogic.rootFen(variant), move:null}]
         this.currentIndex = 0
     }
     addPly(fen,move) {

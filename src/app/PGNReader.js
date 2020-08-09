@@ -3,7 +3,6 @@ import LichessIterator from './iterator/LichessIterator'
 import ChessComIterator from './iterator/ChessComIterator'
 import PGNFileIterator from './iterator/PGNFileIterator'
 import * as Constants from './Constants'
-import * as Common from './Common'
 import NotablePlayerIterator from './iterator/NotablePlayerIterator'
 import OnlineTournamentIterator from './iterator/OnlineTournamentIterator'
 import { expose } from 'comlink'
@@ -77,7 +76,7 @@ export default class PGNReader {
                 this.ignoreGameMessageSent = true
             }
         }else if(pgn.moves[0] && pgn.moves[0].move_number === 1) {
-            let chess = chessLogic(this.variant, Common.rootFen(this.variant))
+            let chess = chessLogic(this.variant)
             let pgnParseFailed = false;
             let parsedMoves = []
             pgn.moves.forEach(element => {
