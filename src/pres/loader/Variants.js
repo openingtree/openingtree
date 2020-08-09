@@ -19,8 +19,11 @@ export default class Source extends React.Component {
         if (source === Constants.VARIANT_RACING_KINGS) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<FontAwesomeIcon icon={faFlagCheckered} /> <span className="sourceName"> Racing kings </span></span>
         } else if (source === Constants.VARIANT_STANDARD) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<FontAwesomeIcon icon={faChessKing} /> Standard</span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<FontAwesomeIcon icon={faChessKing} /> <span className="sourceName"> Standard variant </span></span>
         } 
+    }
+    changeLink(){
+        return this.props.expandedPanel === 'variant'?null:<span className="smallText sourceName" /*style={{"vertical-align":"bottom"}}*/>&nbsp;[<span className="linkStyle">change</span>]</span>
     }
     getVariantRadio(source) {
         return <FormControlLabel 
@@ -50,6 +53,9 @@ export default class Source extends React.Component {
                 <div>
                     {this.getVariantOption(this.props.variant, true)}
                 </div>
+                <div>
+             {this.changeLink()}
+            </div>
             </AccordionSummary>
             <AccordionDetails>
                 <RadioGroup onChange={this.setVariant.bind(this)} value={this.props.variant}>
