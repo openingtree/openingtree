@@ -191,8 +191,10 @@ function importGameState(importState) {
     this.setState({
       settings:importState.settings,
       openingGraph:importState.openingGraph,
-      gamesProcessed:importState.gamesProcessed
+      gamesProcessed:importState.gamesProcessed,
+      variant:importState.variant?importState.variant:Constants.VARIANT_STANDARD
     })
+    setImmediate(this.reset.bind(this))
   }
   function getChessboardWidth(){
     // getting nearest multiple of 8 because chessground has 
