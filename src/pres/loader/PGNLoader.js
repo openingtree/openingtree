@@ -145,8 +145,7 @@ export default class PGNLoader extends React.Component {
 
 
 
-    siteChange(event) {
-        let newSite = event.target.value
+    siteChange(newSite) {
         if(newSite === Constants.SITE_PLAYER_DB && !this.state.notablePlayers) {
             this.fetchGOATGames('https://goatchess.github.io/list.json', (gamesDetails)=>{
                 this.setState({notablePlayers:gamesDetails})

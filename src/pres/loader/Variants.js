@@ -23,7 +23,7 @@ export default class Source extends React.Component {
         } 
     }
     changeLink(){
-        return this.props.expandedPanel === 'variant'?null:<span className="smallText sourceName" /*style={{"vertical-align":"bottom"}}*/>&nbsp;[<span className="linkStyle">change</span>]</span>
+        return this.props.expandedPanel === 'variant'?null:<span className="smallText" style={{"vertical-align":"bottom"}}>&nbsp;[<span className="linkStyle">change</span>]</span>
     }
     getVariantRadio(source) {
         return <FormControlLabel 
