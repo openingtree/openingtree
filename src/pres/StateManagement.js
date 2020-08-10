@@ -194,7 +194,7 @@ function importGameState(importState) {
       gamesProcessed:importState.gamesProcessed,
       variant:importState.variant?importState.variant:Constants.VARIANT_STANDARD
     })
-    setImmediate(this.reset.bind(this))
+    setImmediate(this.reset.bind(this))// setImmediate because we want the variant change to take effect
   }
   function getChessboardWidth(){
     // getting nearest multiple of 8 because chessground has 
