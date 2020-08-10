@@ -269,7 +269,7 @@ export default class User extends React.Component {
                 className="mainButton" disableElevation
                 startIcon={<LockOpen />}
                 >
-                    TRY LOGIN AGAIN
+                    LOGIN AGAIN
                 </MaterialUIButton>
             </CardBody></Card>
         } else if (this.props.lichessLoginState === Constants.LICHESS_LOGGED_IN && this.props.lichessLoginName) {
