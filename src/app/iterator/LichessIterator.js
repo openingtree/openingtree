@@ -18,7 +18,8 @@ export default class LichessIterator {
         let url = lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter
         new BaseLichessIterator(accessToken, url, ready, showError, 
             (pgn)=>{
-                if(!pgn || pgn.headers.Variant !== Common.lichessVariantHeader(variant)) {
+                if(!pgn || pgn.headers.Variant !== Common.lichessVariantHeader(variant)
+                    || !this.timeControlFilter(selectedTimeControls,pgn.headers.TimeControl)) {
                     return false
                 }
                 let opponentElo = playerColor === Constants.PLAYER_COLOR_WHITE?pgn.headers.BlackElo:pgn.headers.WhiteElo
@@ -40,23 +41,30 @@ export default class LichessIterator {
     }
 
     timeControlFilter(appliedFilters, timeControlHeader){
-        
+        if(appliedFilters.length === 0) {
+            return true
+        }
+        return appliedFilters.includes(timeControlHeader)
     }
     getTimeSchedule(timeControl) {
         try {
             if(!timeControl.includes("+")){
                 return Constants.TIME_CONTROL_CORRESPONDENCE
             }
-            times = timeControl.split("+")
+            let times = timeControl.split("+")
             let base = times[0]
             let inc = times[1]
             let total  = parseInt(base) + 40 * parseInt(inc)
-            if(total<30) {
-                Constants.TIME_CONTROL_ULTRA_BULLET
-            } else if(total<120){
-
-            } else if(total<120){
-
+            if (total<30) {
+                return Constants.TIME_CONTROL_ULTRA_BULLET
+            } else if (total<120){
+                return Constants.TIME_CONTROL_BULLET
+            } else if (total<480){
+                return Constants.TIME_CONTROL_BLITZ
+            } else if (total<1500){
+                return Constants.TIME_CONTROL_RAPID
+            } else {
+                return Constants.TIME_CONTROL_CLASSICAL
             }
         } catch (e) {
             return Constants.TIME_CONTROL_CORRESPONDENCE
