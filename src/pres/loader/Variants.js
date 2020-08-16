@@ -9,21 +9,44 @@ import Collapse from '@material-ui/core/Collapse';
 import {Accordion} from './Common'
 import * as Constants from '../../app/Constants'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFlagCheckered, faChessKing } from '@fortawesome/free-solid-svg-icons'
+import { faFlagCheckered, faChessKing, faDiceThree, faMountain } from '@fortawesome/free-solid-svg-icons'
 import { Button as MaterialUIButton } from '@material-ui/core'
 import Divider from '@material-ui/core/Divider';
 
 
 export default class Source extends React.Component {
-    getVariantOption(source, addNumber) {
-        if (source === Constants.VARIANT_RACING_KINGS) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<FontAwesomeIcon icon={faFlagCheckered} /> <span className="sourceName"> Racing kings </span></span>
-        } else if (source === Constants.VARIANT_STANDARD) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}<FontAwesomeIcon icon={faChessKing} /> <span className="sourceName"> Standard variant </span></span>
+
+
+    getVariantOption(variant, addNumber) {
+        return <span>
+            {addNumber?getNumberIcon('done', addNumber):null}
+            <FontAwesomeIcon icon={this.getVariantIcon(variant)} /> <span> {this.getVariantText(variant)} </span>
+        </span>
+    }
+
+    getVariantText(variant) {
+        if (variant === Constants.VARIANT_RACING_KINGS) {
+            return "Racing kings"
+        } else if (variant === Constants.VARIANT_THREE_CHECK) {
+            return "Three check"
+        } else if (variant === Constants.VARIANT_KING_OF_THE_HILL) {
+            return "King of the hill"
         } 
+        return "Standard rules" 
+    }
+
+    getVariantIcon(variant) {
+        if (variant === Constants.VARIANT_RACING_KINGS) {
+            return faFlagCheckered
+        } else if (variant === Constants.VARIANT_THREE_CHECK) {
+            return faDiceThree
+        } else if (variant === Constants.VARIANT_KING_OF_THE_HILL) {
+            return faMountain
+        } 
+        return faChessKing
     }
     changeLink(){
-        return this.props.expandedPanel === 'variant'?null:<span className="smallText" style={{"vertical-align":"bottom"}}>&nbsp;[<span className="linkStyle">change</span>]</span>
+        return this.props.expandedPanel === 'variant'?null:<span className="smallText" style={{"verticalAlign":"text-bottom"}}>&nbsp;[<span className="linkStyle">change</span>]</span>
     }
     getVariantRadio(source) {
         return <FormControlLabel 
@@ -60,6 +83,8 @@ export default class Source extends React.Component {
             <AccordionDetails>
                 <RadioGroup onChange={this.setVariant.bind(this)} value={this.props.variant}>
                 {this.getVariantRadio(Constants.VARIANT_STANDARD)}
+                {this.getVariantRadio(Constants.VARIANT_THREE_CHECK)}
+                {this.getVariantRadio(Constants.VARIANT_KING_OF_THE_HILL)}
                 {this.getVariantRadio(Constants.VARIANT_RACING_KINGS)}
                </RadioGroup>
             </AccordionDetails>

@@ -59,6 +59,10 @@ export const ERROR_SEVERITY_SUCCESS = "success";
 
 export const VARIANT_STANDARD = "standard";
 export const VARIANT_RACING_KINGS = "racingkings";
+export const VARIANT_THREE_CHECK = "threecheck";
+export const VARIANT_KING_OF_THE_HILL = "kingofthehill";
 
 export const LICHESS_HEADER_RACING_KINGS = "Racing Kings"
+export const LICHESS_HEADER_THREE_CHECK = "Three Check"
+export const LICHESS_HEADER_KING_OF_THE_HILL = "King of the Hill"
 export const LICHESS_HEADER_STANDARD = "Standard"
