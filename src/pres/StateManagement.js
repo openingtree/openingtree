@@ -72,7 +72,7 @@ function updateProcessedGames(downloadLimit, n, parsedGame) {
 function moveToShape(move) {
     return {
         orig:move.orig,
-                    dest: move.dest,
+                    dest: move.dest !== move.orig? move.dest:null,
                     brush: this.brushes()[move.level]
     }
 }
