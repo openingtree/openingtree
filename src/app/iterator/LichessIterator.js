@@ -15,7 +15,7 @@ export default class LichessIterator {
         let timeUntilFilter = `${selectedTimeFrameData.toTimeStamp?`&until=${selectedTimeFrameData.toTimeStamp}`:""}`
         let selectedTimeControls = getTimeControlsArray(Constants.SITE_LICHESS, advancedFilters, true)
         let perfs =this.getPerfs(variant,selectedTimeControls)
-        let perfFilter = perfs?`perfType=${perfs}`:''
+        let perfFilter = perfs?`&perfType=${perfs}`:''
         let url = lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter
         new BaseLichessIterator(accessToken, url, ready, showError, 
             (pgn)=>{
@@ -38,8 +38,9 @@ export default class LichessIterator {
             return selectedTimeControls.length === 0 || selectedTimeControls.length === 6?
                 null : selectedTimeControls.join(",")
         }
-        return variant
+        return Common.lichessPerf(variant)
     }
+
 
     timeControlFilter(appliedFilters, timeControlHeader){
         if(appliedFilters.length === 0 || appliedFilters.length == 6) {

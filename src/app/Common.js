@@ -32,9 +32,25 @@ export function trimString(str) {
 export function lichessVariantHeader(variant) {
     if(variant === Constants.VARIANT_RACING_KINGS) {
         return Constants.LICHESS_HEADER_RACING_KINGS
+    } else if(variant === Constants.VARIANT_KING_OF_THE_HILL) {
+        return Constants.LICHESS_HEADER_KING_OF_THE_HILL
+    } else if(variant === Constants.VARIANT_THREE_CHECK) {
+        return Constants.LICHESS_HEADER_THREE_CHECK
     }
     return Constants.LICHESS_HEADER_STANDARD
 }
+export function lichessPerf(variant) {
+    if(variant === Constants.VARIANT_KING_OF_THE_HILL) {
+        return Constants.LICHESS_PERF_KING_OF_THE_HILL
+    } else if(variant === Constants.VARIANT_RACING_KINGS) {
+        return Constants.LICHESS_PERF_RACING_KINGS
+    } else if(variant === Constants.VARIANT_THREE_CHECK) {
+        return Constants.LICHESS_PERF_THREE_CHECK
+    }
+
+
+}
+
 
 export const DP_TABLE = {
     "100":800,   "99":677,    "98":589,    "97":538,

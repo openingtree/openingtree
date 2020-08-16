@@ -20,7 +20,9 @@ import { Button as MaterialUIButton } from '@material-ui/core'
 
 
 const SOURCE_VARIANT_COMBINATION = {
-    [Constants.VARIANT_RACING_KINGS]:[Constants.SITE_LICHESS, Constants.SITE_ONLINE_TOURNAMENTS, Constants.SITE_OPENING_TREE_FILE, Constants.SITE_PGN_FILE]
+    [Constants.VARIANT_RACING_KINGS]:[Constants.SITE_LICHESS, Constants.SITE_ONLINE_TOURNAMENTS, Constants.SITE_OPENING_TREE_FILE, Constants.SITE_PGN_FILE],
+    [Constants.VARIANT_KING_OF_THE_HILL]:[Constants.SITE_CHESS_DOT_COM, Constants.SITE_LICHESS, Constants.SITE_ONLINE_TOURNAMENTS, Constants.SITE_OPENING_TREE_FILE, Constants.SITE_PGN_FILE],
+    [Constants.VARIANT_THREE_CHECK]:[Constants.SITE_CHESS_DOT_COM, Constants.SITE_LICHESS, Constants.SITE_ONLINE_TOURNAMENTS, Constants.SITE_OPENING_TREE_FILE, Constants.SITE_PGN_FILE],
 }
 
 export default class Source extends React.Component {
