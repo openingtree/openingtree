@@ -9,7 +9,7 @@ import Collapse from '@material-ui/core/Collapse';
 import {Accordion} from './Common'
 import * as Constants from '../../app/Constants'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFlagCheckered, faChessKing, faDiceThree, faMountain } from '@fortawesome/free-solid-svg-icons'
+import { faFlagCheckered, faChessKing, faDiceThree, faMountain , faHouseDamage} from '@fortawesome/free-solid-svg-icons'
 import { Button as MaterialUIButton } from '@material-ui/core'
 import Divider from '@material-ui/core/Divider';
 
@@ -31,6 +31,8 @@ export default class Source extends React.Component {
             return "Three check"
         } else if (variant === Constants.VARIANT_KING_OF_THE_HILL) {
             return "King of the hill"
+        } else if (variant === Constants.VARIANT_CRAZYHOUSE) {
+            return "Crazyhouse"
         } 
         return "Standard rules" 
     }
@@ -42,6 +44,8 @@ export default class Source extends React.Component {
             return faDiceThree
         } else if (variant === Constants.VARIANT_KING_OF_THE_HILL) {
             return faMountain
+        } else if (variant === Constants.VARIANT_CRAZYHOUSE) {
+            return faHouseDamage
         } 
         return faChessKing
     }
@@ -83,6 +87,7 @@ export default class Source extends React.Component {
             <AccordionDetails>
                 <RadioGroup onChange={this.setVariant.bind(this)} value={this.props.variant}>
                 {this.getVariantRadio(Constants.VARIANT_STANDARD)}
+                {this.getVariantRadio(Constants.VARIANT_CRAZYHOUSE)}
                 {this.getVariantRadio(Constants.VARIANT_THREE_CHECK)}
                 {this.getVariantRadio(Constants.VARIANT_KING_OF_THE_HILL)}
                 {this.getVariantRadio(Constants.VARIANT_RACING_KINGS)}

@@ -15,9 +15,9 @@ export default class MovesList extends React.Component {
         }
     }
 
-    move(from, to) {
+    move(from, to, san) {
         return () => {
-            this.props.onMove(from, to)
+            this.props.onMove(from, to, san)
             trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "MoveClicked")
         }
     }
@@ -92,7 +92,7 @@ export default class MovesList extends React.Component {
             let sampleResultBlack = this.player(move.details.lastPlayedGame.black, move.details.lastPlayedGame.blackElo)
             let sampleResult = move.details.lastPlayedGame.result
 
-            return move.details.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
+            return move.details.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest, move.san)}>
                 <TableCell size="small" className="smallCol">{move.san} </TableCell>
                 <TableCell size="small" id={`performancePopover${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
                     {move.details.count} <FontAwesomeIcon className="lowOpacity" icon={faInfoCircle}/>
@@ -109,7 +109,7 @@ export default class MovesList extends React.Component {
                     </div>
                 </TableCell>
             </TableRow>:
-            <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest)}>
+            <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest, move.san)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell colSpan = "2">
         {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame)} icon={faExternalLinkAlt}/>}

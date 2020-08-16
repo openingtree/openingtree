@@ -61,16 +61,20 @@ export const VARIANT_STANDARD = "standard";
 export const VARIANT_RACING_KINGS = "racingkings";
 export const VARIANT_THREE_CHECK = "threecheck";
 export const VARIANT_KING_OF_THE_HILL = "kingofthehill";
+export const VARIANT_CRAZYHOUSE = "crazyhouse";
 
 export const CHESS_COM_RULES_STANDARD = "chess";
 export const CHESS_COM_RULES_THREE_CHECK = "threeCheck";
 export const CHESS_COM_RULES_KING_OF_THE_HILL = "kingofthehill";
+export const CHESS_COM_RULES_CRAZYHOUSE = "crazyhouse";
 
 export const LICHESS_PERF_RACING_KINGS = "racingKings"
 export const LICHESS_PERF_THREE_CHECK = "threeCheck"
 export const LICHESS_PERF_KING_OF_THE_HILL = "kingOfTheHill"
+export const LICHESS_PERF_CRAZYHOUSE = "crazyhouse"
 
 export const LICHESS_HEADER_RACING_KINGS = "Racing Kings"
 export const LICHESS_HEADER_THREE_CHECK = "Three-check"
 export const LICHESS_HEADER_KING_OF_THE_HILL = "King of the Hill"
 export const LICHESS_HEADER_STANDARD = "Standard"
+export const LICHESS_HEADER_CRAZYHOUSE = "Crazyhouse"

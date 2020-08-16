@@ -39,15 +39,15 @@ function orientation() {
     return this.state.settings.orientation
 }
 
-function onMove(from, to) {
+function onMove(from, to, san) {
     const chess = this.chess
-    let move = chess.move({ from, to, promotion: 'q'})
+    let move = chess.move({ from, to, san, promotion: 'q'})
     this.setState({ fen: chess.fen(), lastMove: move})
 }
 
 
-function onMoveAction(from, to) {
-    this.onMove(from,to)
+function onMoveAction(from, to, san) {
+    this.onMove(from,to, san)
     trackEvent(Constants.EVENT_CATEGORY_CHESSBOARD, "Move")
 }
 

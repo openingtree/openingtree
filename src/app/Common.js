@@ -36,6 +36,8 @@ export function lichessVariantHeader(variant) {
         return Constants.LICHESS_HEADER_KING_OF_THE_HILL
     } else if(variant === Constants.VARIANT_THREE_CHECK) {
         return Constants.LICHESS_HEADER_THREE_CHECK
+    } else if(variant === Constants.VARIANT_CRAZYHOUSE) {
+        return Constants.LICHESS_HEADER_CRAZYHOUSE
     }
     return Constants.LICHESS_HEADER_STANDARD
 }
@@ -46,6 +48,8 @@ export function lichessPerf(variant) {
         return Constants.LICHESS_PERF_RACING_KINGS
     } else if(variant === Constants.VARIANT_THREE_CHECK) {
         return Constants.LICHESS_PERF_THREE_CHECK
+    } else if(variant === Constants.VARIANT_CRAZYHOUSE) {
+        return Constants.LICHESS_PERF_CRAZYHOUSE
     }
 }
 export function chessDotComRules(variant) {
@@ -53,6 +57,8 @@ export function chessDotComRules(variant) {
         return Constants.CHESS_COM_RULES_KING_OF_THE_HILL
     } else if(variant === Constants.VARIANT_THREE_CHECK) {
         return Constants.CHESS_COM_RULES_THREE_CHECK
+    } else if(variant === Constants.VARIANT_CRAZYHOUSE) {
+        return Constants.CHESS_COM_RULES_CRAZYHOUSE
     }
     return Constants.CHESS_COM_RULES_STANDARD
 }
