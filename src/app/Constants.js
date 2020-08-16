@@ -62,6 +62,10 @@ export const VARIANT_RACING_KINGS = "racingkings";
 export const VARIANT_THREE_CHECK = "threeCheck";
 export const VARIANT_KING_OF_THE_HILL = "kingofthehill";
 
+export const CHESS_COM_RULES_STANDARD = "chess";
+export const CHESS_COM_RULES_THREE_CHECK = "threeCheck";
+export const CHESS_COM_RULES_KING_OF_THE_HILL = "kingofthehill";
+
 export const LICHESS_PERF_RACING_KINGS = "racingKings"
 export const LICHESS_PERF_THREE_CHECK = "threeCheck"
 export const LICHESS_PERF_KING_OF_THE_HILL = "kingOfTheHill"

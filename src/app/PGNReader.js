@@ -42,7 +42,7 @@ export default class PGNReader {
         if (site === Constants.SITE_LICHESS) {
             new LichessIterator(this.variant,tokens.lichess, playerName, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_CHESS_DOT_COM) {
-            new ChessComIterator(playerName, playerColor, advancedFilters, processor, showError)
+            new ChessComIterator(this.variant,playerName, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_PGN_FILE) {
             new PGNFileIterator(playerName, files, playerColor, advancedFilters, processor, showError)
         } else if (site === Constants.SITE_PLAYER_DB) {

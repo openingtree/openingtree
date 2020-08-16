@@ -47,8 +47,14 @@ export function lichessPerf(variant) {
     } else if(variant === Constants.VARIANT_THREE_CHECK) {
         return Constants.LICHESS_PERF_THREE_CHECK
     }
-
-
+}
+export function chessDotComRules(variant) {
+    if(variant === Constants.VARIANT_KING_OF_THE_HILL) {
+        return Constants.CHESS_COM_RULES_KING_OF_THE_HILL
+    } else if(variant === Constants.VARIANT_THREE_CHECK) {
+        return Constants.CHESS_COM_RULES_THREE_CHECK
+    }
+    return Constants.CHESS_COM_RULES_STANDARD
 }
 
 
