@@ -58,7 +58,9 @@ export default class CrazyhouseChess {
     }
     toggleTurn() {
         var tokens = this.chess.fen().split(' ');
+        // switch the color
         tokens[1] = tokens[1] === 'b'? 'w' : 'b'
+        // remove en passent
         tokens[3] = '-'
         this.chess.load(tokens.join(' '));
     }
