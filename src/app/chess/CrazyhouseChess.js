@@ -16,30 +16,27 @@ export default class CrazyhouseChess {
     }
 
     move(moveObject, options) {
-        console.log(moveObject, this.turn())
-        if(!moveObject) {
-            return null
-        }
-        if(typeof moveObject !== "string") {
-            let move = this.chess.move(moveObject, options)
-            if(move) {
-                return move
-            }
-            return this.move(moveObject.san, options)
-        }
         let move = this.chess.move(moveObject, options)
         if(move) {
             return move
         }
-        if(moveObject.includes('@')){
-            let locationOfAt = moveObject.indexOf('@')
+        if(typeof moveObject === "string") {
+            return this.moveSan(moveObject)
+        } else {
+            return this.moveSan(moveObject.san)
+        }
+    }
+
+    moveSan(san) {
+        if(san.includes('@')){
+            let locationOfAt = san.indexOf('@')
             let piece = ''
             if(locationOfAt === 0) {
                 piece = this.chess.PAWN
             } else {
-                piece = moveObject.charAt(0).toLowerCase()
+                piece = san.charAt(0).toLowerCase()
             }
-            let location = moveObject.slice(locationOfAt+1,locationOfAt+3)
+            let location = san.slice(locationOfAt+1,locationOfAt+3)
             let success = this.chess.put({type:piece, color:this.turn()}, location)
             if(!success) {
                 return null
@@ -51,7 +48,7 @@ export default class CrazyhouseChess {
                 color: color,
                 from:location,
                 to:location,
-                san:moveObject
+                san:san
             }
         }
         return null
