@@ -16,6 +16,7 @@ export default class CrazyhouseChess {
     }
 
     move(moveObject, options) {
+        console.log(moveObject, this.turn())
         if(!moveObject) {
             return null
         }
@@ -54,11 +55,11 @@ export default class CrazyhouseChess {
             }
         }
         return null
-
     }
     toggleTurn() {
         var tokens = this.chess.fen().split(' ');
-        tokens[1] = tokens[1] === this.chess.WHITE? this.chess.BLACK : this.chess.WHITE
+        tokens[1] = tokens[1] === 'b'? 'w' : 'b'
+        tokens[3] = '-'
         this.chess.load(tokens.join(' '));
     }
     
