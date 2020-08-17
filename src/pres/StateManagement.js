@@ -2,6 +2,7 @@ import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
 import {copyText} from './loader/Common'
 import {chessLogic} from '../app/chess/ChessLogic'
+import OpeningGraph from '../app/OpeningGraph'
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -245,7 +246,7 @@ function getBody() {
 }
 
 function variantChange(newVariant) {
-    this.setState({variant:newVariant})
+    this.setState({variant:newVariant, openingGraph:new OpeningGraph(newVariant)})
     setImmediate(this.reset.bind(this))
 }
 
