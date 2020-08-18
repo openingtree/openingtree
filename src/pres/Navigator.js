@@ -34,8 +34,14 @@ export default class Navigator extends React.Component {
     
     shouldComponentUpdate(newProps) {
         //console.log(newProps)
+        if(newProps.variant !== this.props.variant) {
+            this.openingManager = new OpeningManager(newProps.variant)
+            return true
+
+        }
         if(newProps.fen !== this.openingManager.fen()) {
             if(newProps.move === null) {
+                // called when "clear" or "starting position" actions are hit
                 this.openingManager = new OpeningManager(newProps.variant)
                 return true
             }

@@ -92,7 +92,7 @@ export default class MovesList extends React.Component {
             let sampleResultBlack = this.player(move.details.lastPlayedGame.black, move.details.lastPlayedGame.blackElo)
             let sampleResult = move.details.lastPlayedGame.result
 
-            return move.details.count > 1?<TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest, move.san)}>
+            return move.details.count > 1?<TableRow className="moveRow" key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.orig, move.dest, move.san)}>
                 <TableCell size="small" className="smallCol">{move.san} </TableCell>
                 <TableCell size="small" id={`performancePopover${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
                     {move.details.count} <FontAwesomeIcon className="lowOpacity" icon={faInfoCircle}/>
