@@ -1,7 +1,8 @@
-import Chess from 'chess.js'
 import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
 import {copyText} from './loader/Common'
+import {chessLogic} from '../app/chess/ChessLogic'
+import OpeningGraph from '../app/OpeningGraph'
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -39,26 +40,26 @@ function orientation() {
     return this.state.settings.orientation
 }
 
-function onMove(from, to) {
+function onMove(from, to, san) {
     const chess = this.chess
-    let move = chess.move({ from, to, promotion: 'q'})
+    let move = chess.move({ from, to, san, promotion: 'q'})
     this.setState({ fen: chess.fen(), lastMove: move})
 }
 
 
-function onMoveAction(from, to) {
-    this.onMove(from,to)
+function onMoveAction(from, to, san) {
+    this.onMove(from,to, san)
     trackEvent(Constants.EVENT_CATEGORY_CHESSBOARD, "Move")
 }
 
 function navigateTo(fen, previousMove){
-    this.chess = new Chess(fen)
+    this.chess = chessLogic(this.state.variant, fen)
     this.setState({fen:fen, lastMove:previousMove})
 }
 function updateProcessedGames(downloadLimit, n, parsedGame) {
     let totalGamesProcessed = this.state.gamesProcessed+n
     this.state.openingGraph.addPGN(parsedGame.pgnStats, parsedGame.parsedMoves,
-            parsedGame.latestFen,parsedGame.playerColor)
+            parsedGame.latestFen,parsedGame.playerColor, this.state.variant)
     this.setState({
         gamesProcessed: totalGamesProcessed,
         downloadingGames: (totalGamesProcessed<downloadLimit || downloadLimit>=Constants.MAX_DOWNLOAD_LIMIT)?this.state.downloadingGames:false
@@ -72,7 +73,7 @@ function updateProcessedGames(downloadLimit, n, parsedGame) {
 function moveToShape(move) {
     return {
         orig:move.orig,
-                    dest: move.dest,
+                    dest: move.dest !== move.orig? move.dest:null,
                     brush: this.brushes()[move.level]
     }
 }
@@ -108,7 +109,7 @@ function fillArray(arr, len) {
 }
 
 function reset() {
-    this.chess = new Chess()
+    this.chess = chessLogic(this.state.variant)
     this.setState({fen: this.chess.fen(), lastMove:null})
 }
 
@@ -191,8 +192,10 @@ function importGameState(importState) {
     this.setState({
       settings:importState.settings,
       openingGraph:importState.openingGraph,
-      gamesProcessed:importState.gamesProcessed
+      gamesProcessed:importState.gamesProcessed,
+      variant:importState.variant?importState.variant:Constants.VARIANT_STANDARD
     })
+    setImmediate(this.reset.bind(this))// setImmediate because we want the variant change to take effect
   }
   function getChessboardWidth(){
     // getting nearest multiple of 8 because chessground has 
@@ -242,6 +245,10 @@ function getBody() {
     return this.state.diagnosticsDataOpen?this.getDiagnosticsValue():""
 }
 
+function variantChange(newVariant) {
+    this.setState({variant:newVariant, openingGraph:new OpeningGraph(newVariant)})
+    setImmediate(this.reset.bind(this))
+}
 
 function addStateManagement(obj){
     obj.orientation  = orientation
@@ -275,6 +282,7 @@ function addStateManagement(obj){
     obj.getSubject = getSubject
     obj.getBody = getBody.bind(obj)
     obj.getRedditLink = getRedditLink
+    obj.variantChange = variantChange
 }
 
 export {addStateManagement}

@@ -11,7 +11,7 @@ export default class Navigator extends React.Component {
     
     constructor(props){
         super(props)
-        this.openingManager = new OpeningManager()
+        this.openingManager = new OpeningManager(this.props.variant)
         this.state = {
             currentMove:0,
           }      
@@ -34,9 +34,15 @@ export default class Navigator extends React.Component {
     
     shouldComponentUpdate(newProps) {
         //console.log(newProps)
+        if(newProps.variant !== this.props.variant) {
+            this.openingManager = new OpeningManager(newProps.variant)
+            return true
+
+        }
         if(newProps.fen !== this.openingManager.fen()) {
             if(newProps.move === null) {
-                this.openingManager = new OpeningManager()
+                // called when "clear" or "starting position" actions are hit
+                this.openingManager = new OpeningManager(newProps.variant)
                 return true
             }
             this.openingManager.addPly(newProps.fen, newProps.move)

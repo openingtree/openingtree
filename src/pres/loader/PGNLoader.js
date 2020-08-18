@@ -6,9 +6,9 @@ import Source from './Source'
 import User from './User'
 import Filters from './Filters'
 import Actions from './Actions'
+import Variants from './Variants'
 import request from 'request'
 import * as SitePolicy from '../../app/SitePolicy'
-import {openingGraph} from '../../app/OpeningGraph'
 import cookieManager from '../../app/CookieManager'
 
 export default class PGNLoader extends React.Component {
@@ -77,7 +77,8 @@ export default class PGNLoader extends React.Component {
                 settings:this.props.settings,
                 playerName:this.state.playername,
                 site: this.state.site,
-                advancedFilters:this.advancedFilters()
+                advancedFilters:this.advancedFilters(),
+                variant:this.props.variant
             },
             arrays: [[...this.props.openingGraph.graph.nodes.entries()],
                         [...this.props.openingGraph.graph.pgnStats]]
@@ -98,13 +99,14 @@ export default class PGNLoader extends React.Component {
             ...openingTreeSave.header.advancedFilters,
             playerColor:openingTreeSave.header.settings.playerColor,
             site:openingTreeSave.header.site,
-            playerName:openingTreeSave.header.settings.playerName
+            playerName:openingTreeSave.header.settings.playerName,
         })
-        openingGraph.setEntries(openingTreeSave.arrays[0], openingTreeSave.arrays[1])
+        this.props.openingGraph.setEntries(openingTreeSave.arrays[0], openingTreeSave.arrays[1])
         this.props.importCallback({
             settings:openingTreeSave.header.settings,
             gamesProcessed:openingTreeSave.header.gamesProcessed,
-            openingGraph:openingGraph
+            openingGraph:this.props.openingGraph,
+            variant:openingTreeSave.header.variant
         })
         return true
     }
@@ -145,8 +147,7 @@ export default class PGNLoader extends React.Component {
 
 
 
-    siteChange(event) {
-        let newSite = event.target.value
+    siteChange(newSite) {
         if(newSite === Constants.SITE_PLAYER_DB && !this.state.notablePlayers) {
             this.fetchGOATGames('https://goatchess.github.io/list.json', (gamesDetails)=>{
                 this.setState({notablePlayers:gamesDetails})
@@ -203,12 +204,20 @@ export default class PGNLoader extends React.Component {
         this.setState({...filters, expandedPanel:''})
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "FitlersSaved", this.state.site)
     }
+    variantChange(newVariant) {
+        this.setState({expandedPanel:'source'})
+        this.props.variantChange(newVariant)
+    }
 
     render() {
         return <div><div className="pgnloadersection">
+            <Variants expandedPanel={this.state.expandedPanel}
+                handleExpansionChange={this.handleExpansionChange('variant').bind(this)}
+                variantChange={this.variantChange.bind(this)} variant={this.props.variant}/>
             <Source expandedPanel={this.state.expandedPanel}
                 handleExpansionChange={this.handleExpansionChange('source').bind(this)}
-                site={this.state.site} siteChange={this.siteChange.bind(this)}/>
+                site={this.state.site} siteChange={this.siteChange.bind(this)}
+                variant={this.props.variant}/>
             <User expandedPanel={this.state.expandedPanel} playerName={this.state.playerName}
                 handleExpansionChange={this.handleExpansionChange('user').bind(this)} 
                 showError={this.props.showError} files={this.state.files} notablePlayers={this.state.notablePlayers}
@@ -231,7 +240,8 @@ export default class PGNLoader extends React.Component {
                 switchToMovesTab={this.props.switchToMovesTab} gamesProcessed={this.props.gamesProcessed} 
                 selectedNotablePlayer={this.state.selectedNotablePlayer} selectedNotableEvent={this.state.selectedNotableEvent}
                 exportOpeningTreeObject={this.exportOpeningTreeObject.bind(this)} showInfo={this.props.showInfo}
-                importOpeningTreeObject={this.importOpeningTreeObject.bind(this)} selectedOnlineTournament={this.state.selectedOnlineTournament}/>
+                importOpeningTreeObject={this.importOpeningTreeObject.bind(this)} selectedOnlineTournament={this.state.selectedOnlineTournament}
+                variant={this.props.variant}/>
         </div>
     }
 

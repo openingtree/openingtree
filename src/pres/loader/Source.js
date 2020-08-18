@@ -15,7 +15,16 @@ import DateRange from '@material-ui/icons/DateRange';
 import {Badge} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChessRook } from '@fortawesome/free-solid-svg-icons'
+import AccordionActions from '@material-ui/core/AccordionActions';
+import { Button as MaterialUIButton } from '@material-ui/core'
 
+
+const SOURCE_VARIANT_COMBINATION = {
+    [Constants.VARIANT_RACING_KINGS]:[Constants.SITE_LICHESS, Constants.SITE_ONLINE_TOURNAMENTS, Constants.SITE_OPENING_TREE_FILE, Constants.SITE_PGN_FILE],
+    [Constants.VARIANT_KING_OF_THE_HILL]:[Constants.SITE_CHESS_DOT_COM, Constants.SITE_LICHESS, Constants.SITE_ONLINE_TOURNAMENTS, Constants.SITE_OPENING_TREE_FILE, Constants.SITE_PGN_FILE],
+    [Constants.VARIANT_THREE_CHECK]:[Constants.SITE_CHESS_DOT_COM, Constants.SITE_LICHESS, Constants.SITE_ONLINE_TOURNAMENTS, Constants.SITE_OPENING_TREE_FILE, Constants.SITE_PGN_FILE],
+    [Constants.VARIANT_CRAZYHOUSE]:[Constants.SITE_CHESS_DOT_COM, Constants.SITE_LICHESS, Constants.SITE_ONLINE_TOURNAMENTS, Constants.SITE_OPENING_TREE_FILE, Constants.SITE_PGN_FILE]
+}
 
 export default class Source extends React.Component {
     getSourceOption(source, addNumber) {
@@ -36,7 +45,20 @@ export default class Source extends React.Component {
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }
-
+    continue(){
+        this.props.siteChange(this.props.site)
+    }
+    setSite(event) {
+        let newSite = event.target.value
+        this.props.siteChange(newSite)
+    }
+    isSourceAvailable(source, variant) {
+        let supportedSources = SOURCE_VARIANT_COMBINATION[variant]
+        if(!supportedSources) {
+            return true
+        }
+        return supportedSources.includes(source)
+    }
     render() {
         return <Accordion TransitionComponent={Collapse}
             TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
@@ -52,18 +74,38 @@ export default class Source extends React.Component {
                 </div>
             </AccordionSummary>
             <AccordionDetails>
-                <RadioGroup onChange={this.props.siteChange} value={this.props.site}>
-                    <FormControlLabel className="sitelabel" value={Constants.SITE_LICHESS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_LICHESS)} />
-                    <FormControlLabel className="sitelabel" value={Constants.SITE_CHESS_DOT_COM} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_CHESS_DOT_COM)} />
-                    <FormControlLabel className="sitelabel" value={Constants.SITE_ONLINE_TOURNAMENTS} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_ONLINE_TOURNAMENTS)} />
-                    <FormControlLabel className="sitelabel" value={Constants.SITE_OPENING_TREE_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_OPENING_TREE_FILE)} />
-                    <Divider className="dividerMargin"/>
-                    <FormControlLabel className="sitelabel" value={Constants.SITE_PLAYER_DB} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PLAYER_DB)} />
-                    <FormControlLabel className="sitelabel" value={Constants.SITE_EVENT_DB} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_EVENT_DB)} />
-                    <FormControlLabel className="sitelabel" value={Constants.SITE_PGN_FILE} control={<Radio color="primary" />} label={this.getSourceOption(Constants.SITE_PGN_FILE)} />
+                <RadioGroup onChange={this.setSite.bind(this)} value={this.props.site}>
+                {this.getSourceRadio(Constants.SITE_LICHESS)}
+                {this.getSourceRadio(Constants.SITE_CHESS_DOT_COM)}
+                {this.getSourceRadio(Constants.SITE_ONLINE_TOURNAMENTS)}
+                {this.getSourceRadio(Constants.SITE_OPENING_TREE_FILE)}
+                {this.props.variant === Constants.VARIANT_STANDARD?<Divider className="dividerMargin"/>:null}
+                {this.getSourceRadio(Constants.SITE_PLAYER_DB)}
+                {this.getSourceRadio(Constants.SITE_EVENT_DB)}
+                {this.getSourceRadio(Constants.SITE_PGN_FILE)}
                </RadioGroup>
             </AccordionDetails>
+            {this.props.site?
+            <span>
+            <Divider />
+
+            <AccordionActions>
+                    <MaterialUIButton size="small" color="primary" onClick={this.continue.bind(this)}>Continue</MaterialUIButton>
+                </AccordionActions></span>:
+                null
+            }
         </Accordion>
         
+    }
+
+    getSourceRadio(source) {
+        if(!this.isSourceAvailable(source,this.props.variant)) {
+            return null
+        }
+        return <FormControlLabel 
+                className="sitelabel" 
+                value={source} 
+                control={<Radio color="primary" />} 
+                label={this.getSourceOption(source)} />
     }
 }

@@ -2,13 +2,14 @@ import ChessWebAPI from 'chess-web-api'
 import { parse }  from '../PGNParser'
 import request from 'request'
 import * as Constants from '../Constants'
+import * as Common from '../Common'
 import {isOpponentEloInSelectedRange, getTimeframeSteps, getSelectedTimeFrameData} from '../util'
 import {trackEvent} from '../Analytics'
 import {normalizePGN} from './IteratorUtils'
 
 export default class ChessComIterator {
 
-    constructor(playerName, playerColor, advancedFilters, ready, showError) {
+    constructor(variant, playerName, playerColor, advancedFilters, ready, showError) {
         let chessAPI = new ChessWebAPI({
             queue: true,
         });
@@ -17,7 +18,7 @@ export default class ChessComIterator {
             pendingRequests--
             let continueProcessing = ready(archiveResponse.body.games.filter(
                 game=>{
-                    if(game.rules!=="chess" || game[playerColor].username.toLowerCase() !== playerName.toLowerCase()) {
+                    if(game.rules!==Common.chessDotComRules(variant) || game[playerColor].username.toLowerCase() !== playerName.toLowerCase()) {
                         return false
                     }
                     let ratedMode = advancedFilters[Constants.FILTER_NAME_RATED]

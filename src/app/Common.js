@@ -29,6 +29,41 @@ export function trimString(str) {
     return str.replace(/^\s+|\s+$/g, '')
 }
 
+export function lichessVariantHeader(variant) {
+    if(variant === Constants.VARIANT_RACING_KINGS) {
+        return Constants.LICHESS_HEADER_RACING_KINGS
+    } else if(variant === Constants.VARIANT_KING_OF_THE_HILL) {
+        return Constants.LICHESS_HEADER_KING_OF_THE_HILL
+    } else if(variant === Constants.VARIANT_THREE_CHECK) {
+        return Constants.LICHESS_HEADER_THREE_CHECK
+    } else if(variant === Constants.VARIANT_CRAZYHOUSE) {
+        return Constants.LICHESS_HEADER_CRAZYHOUSE
+    }
+    return Constants.LICHESS_HEADER_STANDARD
+}
+export function lichessPerf(variant) {
+    if(variant === Constants.VARIANT_KING_OF_THE_HILL) {
+        return Constants.LICHESS_PERF_KING_OF_THE_HILL
+    } else if(variant === Constants.VARIANT_RACING_KINGS) {
+        return Constants.LICHESS_PERF_RACING_KINGS
+    } else if(variant === Constants.VARIANT_THREE_CHECK) {
+        return Constants.LICHESS_PERF_THREE_CHECK
+    } else if(variant === Constants.VARIANT_CRAZYHOUSE) {
+        return Constants.LICHESS_PERF_CRAZYHOUSE
+    }
+}
+export function chessDotComRules(variant) {
+    if(variant === Constants.VARIANT_KING_OF_THE_HILL) {
+        return Constants.CHESS_COM_RULES_KING_OF_THE_HILL
+    } else if(variant === Constants.VARIANT_THREE_CHECK) {
+        return Constants.CHESS_COM_RULES_THREE_CHECK
+    } else if(variant === Constants.VARIANT_CRAZYHOUSE) {
+        return Constants.CHESS_COM_RULES_CRAZYHOUSE
+    }
+    return Constants.CHESS_COM_RULES_STANDARD
+}
+
+
 export const DP_TABLE = {
     "100":800,   "99":677,    "98":589,    "97":538,
     "96":501,    "95":470,    "94":444,    "93":422,
