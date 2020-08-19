@@ -59,6 +59,7 @@ export default class MainContainer extends React.Component {
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     let snackBarOpen = this.state.message?true:false
+    let movesToShow = this.movesToShow()
     return <div className="rootView"> 
         <GlobalHeader toggleFeedback = {this.toggleFeedback(false)}/>
         <Container className="mainContainer">
@@ -79,7 +80,7 @@ export default class MainContainer extends React.Component {
       drawable ={{
         enabled: true,
         visible: true,
-        autoShapes: this.autoShapes()
+        autoShapes: this.autoShapes(movesToShow)
       }}
       style={{ margin: 'auto' }}
     />
@@ -90,7 +91,7 @@ export default class MainContainer extends React.Component {
                 settings={this.state.settings}
                 reset={this.reset.bind(this)}
                 clear={this.clear.bind(this)}
-                movesToShow={this.movesToShow()}
+                movesToShow={movesToShow}
                 gameResults={this.gameResults()}
                 onMove={this.onMove.bind(this)}
                 turnColor={this.turnColor()}

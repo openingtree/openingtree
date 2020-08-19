@@ -78,8 +78,7 @@ function moveToShape(move) {
     }
 }
 
-function autoShapes() {
-    var moves = this.movesToShow()
+function autoShapes(moves) {
     if(moves) {
         var shapes = moves.map(this.moveToShape.bind(this))
         return this.fillArray(shapes,  25)
