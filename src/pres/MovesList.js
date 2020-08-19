@@ -6,6 +6,9 @@ import { faUser, faExternalLinkAlt, faInfoCircle } from '@fortawesome/free-solid
 import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
 import ReportControls from './ReportControls'
+import {Container, Row, Col} from 'reactstrap'
+import "react-step-progress-bar/styles.css";
+import { ProgressBar,Step } from "react-step-progress-bar";
 
 export default class MovesList extends React.Component {
     constructor(props) {
@@ -43,9 +46,39 @@ export default class MovesList extends React.Component {
             return <div className = "infoMessage" >No moves to show. Please select a source from the 
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and enter the details.</div>
         }
-    return <div>{(this.props.gameResults && this.props.gameResults.length>0)?this.resultsTable():null}
+        return <div>{(this.props.gameResults && this.props.gameResults.length>0)?this.resultsTable():null}
                 {this.movesTable()}</div>
     }
+
+    compareProgress(){
+        return (
+            <ProgressBar
+              percent={0}
+              filledBackground="rgba(0, 0, 0, 0.5)"
+              stepPositions={[30,60]}
+            >
+              <Step transition="scale">
+                {({ accomplished }) => (
+                  <img
+                    style={{ filter: `grayscale(${accomplished ? 0 : 80}%)` }}
+                    width="30"
+                    src="https://vignette.wikia.nocookie.net/pkmnshuffle/images/9/9d/Pichu.png/revision/latest?cb=20170407222851"
+                  />
+                )}
+              </Step>
+              <Step transition="scale">
+                {({ accomplished }) => (
+                  <img
+                    style={{ filter: `grayscale(${accomplished ? 0 : 80}%)` }}
+                    width="30"
+                    src="https://vignette.wikia.nocookie.net/pkmnshuffle/images/9/97/Pikachu_%28Smiling%29.png/revision/latest?cb=20170410234508"
+                  />
+                )}
+              </Step>
+            </ProgressBar>
+          )
+    }
+
     resultsTable() {
         return <Table>
             <TableBody>
@@ -99,14 +132,17 @@ export default class MovesList extends React.Component {
                     {this.getPopover(moveIndex)}
                 </TableCell>
                 <TableCell>
+                    <Container>
+                    <Row><Col className="navCol">
                     <Progress className = "border" multi>
                         <Progress bar className="whiteMove" value={`${move.details.whiteWins/move.details.count*100}`}>{move.details.whiteWins/move.details.count>0.1?move.details.whiteWins:''}</Progress>
                         <Progress bar className="grayMove" value={`${move.details.draws/move.details.count*100}`}>{move.details.draws/move.details.count>0.1?move.details.draws:''}</Progress>
                         <Progress bar className="blackMove" value={`${move.details.blackWins/move.details.count*100}`}>{move.details.blackWins/move.details.count>0.1?move.details.blackWins:''}</Progress>
-                    </Progress>
-                    <div style={{width:'100%', height:5, border:1}}>
-
-                    </div>
+                    </Progress></Col></Row>
+                    <Row><Col className="navCol">
+                    {this.compareProgress()}
+                    </Col></Row>
+                    </Container>
                 </TableCell>
             </TableRow>:
             <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest, move.san)}>
