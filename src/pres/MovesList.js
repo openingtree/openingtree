@@ -51,27 +51,29 @@ export default class MovesList extends React.Component {
     }
 
     compareProgress(){
+        let steps = [30,30]
         return (
             <ProgressBar
               percent={0}
-              filledBackground="rgba(0, 0, 0, 0.5)"
-              stepPositions={[30,60]}
+              stepPositions={steps}
             >
+                
               <Step transition="scale">
                 {({ accomplished }) => (
-                  <img
-                    style={{ filter: `grayscale(${accomplished ? 0 : 80}%)` }}
-                    width="30"
-                    src="https://vignette.wikia.nocookie.net/pkmnshuffle/images/9/9d/Pichu.png/revision/latest?cb=20170407222851"
+                  <img onClick = {alert}
+                    width="16"
+                    height="20"
+                    src="./images/arrow-white.png"
                   />
                 )}
               </Step>
               <Step transition="scale">
                 {({ accomplished }) => (
                   <img
-                    style={{ filter: `grayscale(${accomplished ? 0 : 80}%)` }}
-                    width="30"
-                    src="https://vignette.wikia.nocookie.net/pkmnshuffle/images/9/97/Pikachu_%28Smiling%29.png/revision/latest?cb=20170410234508"
+                    style={{ filter: `grayscale(80%)` }}
+                    width="14"
+                    height="18"
+                    src="./images/arrow-black.png"
                   />
                 )}
               </Step>
