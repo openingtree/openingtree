@@ -3,6 +3,7 @@ import {trackEvent} from '../app/Analytics'
 import {copyText} from './loader/Common'
 import {chessLogic} from '../app/chess/ChessLogic'
 import OpeningGraph from '../app/OpeningGraph'
+import {fetchBookMoves} from '../app/OpeningBook'
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -249,6 +250,33 @@ function variantChange(newVariant) {
     setImmediate(this.reset.bind(this))
 }
 
+function getBookMoves() {
+    let moves = this.state.openingGraph.getBookNode(this.chess.fen())
+
+    if(!moves) {
+        moves = "pending"
+        this.state.openingGraph.addBookNode(this.chess.fen(), moves)
+        fetchBookMoves(this.state.fen, this.state.variantChange, ["1600","1800","2000","2200"],["bullet","blitz","rapid","classical"],(moves)=>{
+            if(moves === "error") {
+                this.state.openingGraph.addBookNode(this.chess.fen(), {fetch:"failed"})
+            } else {
+                this.state.openingGraph.addBookNode(this.chess.fen(), moves)
+            }
+            this.setState({update:this.state.update+1})
+        })
+    }
+    if(moves === "pending") {
+        return null
+    }
+    return moves
+
+}
+
+function mergePlayerAndBookMoves(movesToShow, bookMoves) {
+
+}
+
+
 function addStateManagement(obj){
     obj.orientation  = orientation
     obj.turnColor = turnColor
@@ -282,6 +310,8 @@ function addStateManagement(obj){
     obj.getBody = getBody.bind(obj)
     obj.getRedditLink = getRedditLink
     obj.variantChange = variantChange
+    obj.getBookMoves = getBookMoves
+    obj.mergePlayerAndBookMoves = mergePlayerAndBookMoves
 }
 
 export {addStateManagement}

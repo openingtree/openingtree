@@ -42,7 +42,8 @@ export default class MainContainer extends React.Component {
         downloadingGames:false,
         feedbackOpen:false,
         diagnosticsDataOpen:false,
-        variant:selectedVariant
+        variant:selectedVariant,
+        update:0//increase count to force update the component
       }
     this.chessboardWidth = this.getChessboardWidth()
 
@@ -60,6 +61,8 @@ export default class MainContainer extends React.Component {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     let snackBarOpen = this.state.message?true:false
     let movesToShow = this.movesToShow()
+    let bookMoves = this.getBookMoves()
+    this.mergePlayerAndBookMoves(movesToShow, bookMoves)
     return <div className="rootView"> 
         <GlobalHeader toggleFeedback = {this.toggleFeedback(false)}/>
         <Container className="mainContainer">

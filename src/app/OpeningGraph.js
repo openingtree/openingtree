@@ -94,6 +94,15 @@ export default class OpeningGraph {
         currNode.playedBy[move] = ''
     }
 
+    addBookNode(fullFen, book) {
+        let fen = simplifiedFen(fullFen)
+        this.graph.book.set(fen, book)
+    }
+    getBookNode(fullFen) {
+        let fen = simplifiedFen(fullFen)
+        return this.graph.book.get(fen)
+    }
+
     getTargetDetailsCount(targetDetails) {
         if(!targetDetails) {
             return 0
@@ -246,6 +255,7 @@ export default class OpeningGraph {
 class Graph {
     constructor(arrayEntries, pgnStats){
         this.nodes = new Map()
+        this.book = new Map()
         this.pgnStats = []
         this.playerColor = ''
         if(arrayEntries) {
