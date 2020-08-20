@@ -19,11 +19,36 @@ export default class MovesList extends React.Component {
         return <MovesTable movesToShow={this.props.movesToShow}
                 launchGame={this.props.launchGame} settings={this.props.settings}
                 turnColor={this.props.turnColor} onMove={this.props.onMove}
-                clickedEventName="MoveClicked"/>
+                clickedEventName="MoveClicked" tableFooter={this.tableFooter()}/>
     }
     resultsTable() {
         return <ResultsTable gameResults={this.props.gameResults}
                 launchGame={this.props.launchGame}/>
+    }
+
+    tableFooter() {
+        let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)
+        if(this.props.settings.playerName) {
+            if(hasMoves) {
+                return <span>
+                    Showing moves that have been  played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
+                    this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
+                    </span>
+            } else {
+                return <span>No moves found played by {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
+                    this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.</span>
+            }
+        } else {
+            if(hasMoves) {
+                return <span>
+                    Showing all moves that have been played by <b>{this.props.turnColor}</b> in this position.
+                    </span>
+            } else {
+                return <span>
+                    No moves found played by <b>{this.props.turnColor}</b> in this position.
+                    </span>
+            }
+        }
     }
 
 }

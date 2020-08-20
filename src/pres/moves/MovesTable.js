@@ -135,33 +135,10 @@ export default class MovesTable extends React.Component {
     </TableBody>
     :null}
         <TableFooter><TableRow>
-        {this.props.settings.playerName?
-
-            hasMoves?
-                <TableCell colSpan="3">
-                Showing moves that have been 
-                played {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
-                this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
-                </TableCell>:
-                <TableCell colSpan="3">
-                No moves found played by {this.props.turnColor === this.props.settings.playerColor? "by" : "by others against"} <b>{this.props.settings.playerName}</b> in 
-                this position. <b>{this.props.settings.playerName}</b> is playing as <b>{this.props.settings.playerColor}</b>.
-                </TableCell>
-            :
-            hasMoves?
-                <TableCell colSpan="3">
-                Showing all moves that have been 
-                played by <b>{this.props.turnColor}</b> in 
-                this position.
-                </TableCell>:                
-                <TableCell colSpan="3">
-                No moves found 
-                played by <b>{this.props.turnColor}</b> in 
-                this position.
-                </TableCell>
-
-
-        }</TableRow></TableFooter>
+            <TableCell colSpan="3">
+                {this.props.tableFooter}
+            </TableCell>
+        </TableRow></TableFooter>
     </Table>
     }
 }
