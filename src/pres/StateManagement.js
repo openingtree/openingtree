@@ -250,6 +250,11 @@ function variantChange(newVariant) {
     setImmediate(this.reset.bind(this))
 }
 
+// fetch the book moves openinggraph directly if they are available
+// otherwise 
+//  1. fetch them from lichess
+//  2. store them in openinggraph
+//  3. update the component so that getBookMoves gets called again
 function getBookMoves() {
     let moves = this.state.openingGraph.getBookNode(this.chess.fen())
 
@@ -268,11 +273,12 @@ function getBookMoves() {
     if(moves === "pending") {
         return null
     }
-    return moves
-
+    return transformBookMoves(moves)
 }
 
-function mergePlayerAndBookMoves(movesToShow, bookMoves) {
+function 
+
+function mergePlayerAndBookMoves(playermovesToShow, bookMovesToShow) {
 
 }
 
