@@ -5,7 +5,7 @@ import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col,Button } from 'rea
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faList, faCog, faChartBar } from '@fortawesome/free-solid-svg-icons'
-import MovesList from './MovesList';
+import MovesList from './moves/MovesList';
 import {trackEvent} from '../app/Analytics'
 import * as Constants from '../app/Constants'
 import ReportControls from './ReportControls'

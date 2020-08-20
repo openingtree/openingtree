@@ -3,12 +3,13 @@ import {Progress, Popover } from "reactstrap"
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faExternalLinkAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
-import ReportControls from './ReportControls'
+import ReportControls from '../ReportControls'
 import {Container, Row, Col} from 'reactstrap'
 import "react-step-progress-bar/styles.css";
-import {trackEvent} from '../app/Analytics'
-import * as Constants from '../app/Constants'
+import {trackEvent} from '../../app/Analytics'
+import * as Constants from '../../app/Constants'
 import { ProgressBar,Step } from "react-step-progress-bar";
+import {playerDetails} from './MovesCommon'
 
 export default class MovesTable extends React.Component {
     constructor(props){
@@ -17,14 +18,19 @@ export default class MovesTable extends React.Component {
             openPerformanceIndex: null
         }
     }
+    componentDidUpdate(prevProps, prevState) {
+        if(prevProps.turnColor !== this.props.turnColor) {
+            this.setState({
+                openPerformanceIndex: null,
+            })
+        }
+    }
+
     move(from, to, san) {
         return () => {
             this.props.onMove(from, to, san)
-            trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, "MoveClicked")
+            trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, this.props.clickedEventName)
         }
-    }
-    player(name, elo) {
-        return `${name}${elo?`(${elo})`:''}`
     }
 
 
@@ -94,8 +100,8 @@ export default class MovesTable extends React.Component {
         <TableBody>
         {
         this.props.movesToShow.map((move, moveIndex) => {
-            let sampleResultWhite = this.player(move.details.lastPlayedGame.white, move.details.lastPlayedGame.whiteElo)
-            let sampleResultBlack = this.player(move.details.lastPlayedGame.black, move.details.lastPlayedGame.blackElo)
+            let sampleResultWhite = playerDetails(move.details.lastPlayedGame.white, move.details.lastPlayedGame.whiteElo)
+            let sampleResultBlack = playerDetails(move.details.lastPlayedGame.black, move.details.lastPlayedGame.blackElo)
             let sampleResult = move.details.lastPlayedGame.result
 
             return move.details.count > 1?<TableRow className="moveRow" key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.orig, move.dest, move.san)}>
