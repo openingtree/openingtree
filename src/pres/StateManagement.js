@@ -259,24 +259,16 @@ function getBookMoves() {
     let moves = this.state.openingGraph.getBookNode(this.chess.fen())
 
     if(!moves) {
-        moves = "pending"
-        this.state.openingGraph.addBookNode(this.chess.fen(), moves)
-        fetchBookMoves(this.state.fen, this.state.variantChange, ["1600","1800","2000","2200"],["bullet","blitz","rapid","classical"],(moves)=>{
-            if(moves === "error") {
-                this.state.openingGraph.addBookNode(this.chess.fen(), {fetch:"failed"})
-            } else {
-                this.state.openingGraph.addBookNode(this.chess.fen(), moves)
-            }
+        moves = fetchBookMoves(this.state.fen, this.state.variantChange, ["1600","1800","2000","2200"],["bullet","blitz","rapid","classical"],(moves)=>{
+            this.state.openingGraph.addBookNode(this.chess.fen(), moves)
             this.setState({update:this.state.update+1})
         })
-    }
-    if(moves === "pending") {
-        return null
+        this.state.openingGraph.addBookNode(this.chess.fen(), moves)
     }
     return moves
 }
 
-function mergePlayerAndBookMoves(plamovesToShow, bookMovesToShow) {
+function mergePlayerAndBookMoves(playerMovesToShow, bookMovesToShow) {
 
 }
 
