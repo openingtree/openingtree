@@ -273,12 +273,10 @@ function getBookMoves() {
     if(moves === "pending") {
         return null
     }
-    return transformBookMoves(moves)
+    return moves
 }
 
-function 
-
-function mergePlayerAndBookMoves(playermovesToShow, bookMovesToShow) {
+function mergePlayerAndBookMoves(plamovesToShow, bookMovesToShow) {
 
 }
 
