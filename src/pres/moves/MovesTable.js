@@ -26,9 +26,9 @@ export default class MovesTable extends React.Component {
         }
     }
 
-    move(from, to, san) {
+    move(san) {
         return () => {
-            this.props.onMove(from, to, san)
+            this.props.onMove(san)
             trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, this.props.clickedEventName)
         }
     }
@@ -100,36 +100,11 @@ export default class MovesTable extends React.Component {
         <TableBody>
         {
         this.props.movesToShow.map((move, moveIndex) => {
-            let sampleResultWhite = playerDetails(move.details.lastPlayedGame.white, move.details.lastPlayedGame.whiteElo)
-            let sampleResultBlack = playerDetails(move.details.lastPlayedGame.black, move.details.lastPlayedGame.blackElo)
-            let sampleResult = move.details.lastPlayedGame.result
-
-            return move.details.count > 1?<TableRow className="moveRow" key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.orig, move.dest, move.san)}>
-                <TableCell size="small" className="smallCol">{move.san} </TableCell>
-                <TableCell size="small" id={`performancePopover${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
-                    {move.details.count} <FontAwesomeIcon className="lowOpacity" icon={faInfoCircle}/>
-                    {this.getPopover(moveIndex)}
-                </TableCell>
-                <TableCell>
-                    <Container>
-                    <Row><Col className="navCol">
-                    <Progress className = "border" multi>
-                        <Progress bar className="whiteMove" value={`${move.details.whiteWins/move.details.count*100}`}>{move.details.whiteWins/move.details.count>0.1?move.details.whiteWins:''}</Progress>
-                        <Progress bar className="grayMove" value={`${move.details.draws/move.details.count*100}`}>{move.details.draws/move.details.count>0.1?move.details.draws:''}</Progress>
-                        <Progress bar className="blackMove" value={`${move.details.blackWins/move.details.count*100}`}>{move.details.blackWins/move.details.count>0.1?move.details.blackWins:''}</Progress>
-                    </Progress></Col></Row>
-                    <Row><Col className="navCol">
-                    {this.compareProgress()}
-                    </Col></Row>
-                    </Container>
-                </TableCell>
-            </TableRow>:
-            <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest, move.san)}>
-                <TableCell size="small" className="smallCol">{move.san}</TableCell>
-                <TableCell colSpan = "2">
-        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame)} icon={faExternalLinkAlt}/>}
-                </TableCell>
-            </TableRow>
+            let lastPlayedGame = move.details.lastPlayedGame
+            return lastPlayedGame && move.details.count === 1?
+                this.getSingleItemRow(move,lastPlayedGame):
+                this.getMultiItemRow(move, moveIndex)
+                
             }
         )}
     </TableBody>
@@ -141,4 +116,39 @@ export default class MovesTable extends React.Component {
         </TableRow></TableFooter>
     </Table>
     }
+    getMultiItemRow(move, moveIndex) {
+        return <TableRow className="moveRow" key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.san)}>
+            <TableCell size="small" className="smallCol">{move.san} </TableCell>
+            <TableCell size="small" id={`performancePopover${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
+                {move.details.count} <FontAwesomeIcon className="lowOpacity" icon={faInfoCircle}/>
+                {this.getPopover(moveIndex)}
+            </TableCell>
+            <TableCell>
+                <Container>
+                <Row><Col className="navCol">
+                <Progress className = "border" multi>
+                    <Progress bar className="whiteMove" value={`${move.details.whiteWins/move.details.count*100}`}>{move.details.whiteWins/move.details.count>0.1?move.details.whiteWins:''}</Progress>
+                    <Progress bar className="grayMove" value={`${move.details.draws/move.details.count*100}`}>{move.details.draws/move.details.count>0.1?move.details.draws:''}</Progress>
+                    <Progress bar className="blackMove" value={`${move.details.blackWins/move.details.count*100}`}>{move.details.blackWins/move.details.count>0.1?move.details.blackWins:''}</Progress>
+                </Progress></Col></Row>
+                <Row><Col className="navCol">
+                {this.compareProgress()}
+                </Col></Row>
+                </Container>
+            </TableCell>
+        </TableRow>
+    }
+    getSingleItemRow(move,lastPlayedGame) {
+        let sampleResultWhite = playerDetails(lastPlayedGame.white, lastPlayedGame.whiteElo)
+        let sampleResultBlack = playerDetails(lastPlayedGame.black, lastPlayedGame.blackElo)
+        let sampleResult = lastPlayedGame.result
+
+        return <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest, move.san)}>
+                <TableCell size="small" className="smallCol">{move.san}</TableCell>
+                <TableCell colSpan = "2">
+                        {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame)} icon={faExternalLinkAlt}/>}
+                </TableCell>
+            </TableRow>
+    }
+
 }

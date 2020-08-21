@@ -99,7 +99,20 @@ export default class OpeningGraph {
         this.graph.book.set(fen, this.transform(book))
     }
     transform(book) {
-        return book
+        if(!book || !book.moves) {
+            return book
+        }
+        return book.moves.map((move)=>{
+            return {
+                san:move.san,
+                details:{
+                    blackWins:move.black,
+                    whiteWins:move.white,
+                    draws:move.draws,
+                    count:move.black+move.white+move.draws
+                }
+            }
+        })
     }
     getBookNode(fullFen) {
         let fen = simplifiedFen(fullFen)
