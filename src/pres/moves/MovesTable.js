@@ -33,7 +33,6 @@ export default class MovesTable extends React.Component {
         }
     }
 
-
     togglePerformancePopover(moveIndex) {
         return (e) => {
             if(this.state.openPerformanceIndex !== null) {
@@ -46,7 +45,7 @@ export default class MovesTable extends React.Component {
     }
 
     compareProgress(){
-        let steps = [30,30]
+        let steps = [30,70]
         return (
             <ProgressBar
               percent={0}
@@ -120,16 +119,16 @@ export default class MovesTable extends React.Component {
         return <TableRow className="moveRow" key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.san)}>
             <TableCell size="small" className="smallCol">{move.san} </TableCell>
             <TableCell size="small" id={`performancePopover${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
-                {move.details.count} <FontAwesomeIcon className="lowOpacity" icon={faInfoCircle}/>
+                {this.simplify(move.details.count)}<FontAwesomeIcon className="lowOpacity leftPadding" icon={faInfoCircle}/>
                 {this.getPopover(moveIndex)}
             </TableCell>
             <TableCell>
                 <Container>
                 <Row><Col className="navCol">
                 <Progress className = "border" multi>
-                    <Progress bar className="whiteMove" value={`${move.details.whiteWins/move.details.count*100}`}>{move.details.whiteWins/move.details.count>0.1?move.details.whiteWins:''}</Progress>
-                    <Progress bar className="grayMove" value={`${move.details.draws/move.details.count*100}`}>{move.details.draws/move.details.count>0.1?move.details.draws:''}</Progress>
-                    <Progress bar className="blackMove" value={`${move.details.blackWins/move.details.count*100}`}>{move.details.blackWins/move.details.count>0.1?move.details.blackWins:''}</Progress>
+                    <Progress bar className="whiteMove" value={`${this.percentage(move.details.whiteWins,move.details.count)}`}>{this.getProgressLabel(move.details.whiteWins,move.details.count)}</Progress>
+                    <Progress bar className="grayMove" value={`${this.percentage(move.details.draws,move.details.count)}`}>{this.getProgressLabel(move.details.draws,move.details.count)}</Progress>
+                    <Progress bar className="blackMove" value={`${this.percentage(move.details.blackWins,move.details.count)}`}>{this.getProgressLabel(move.details.blackWins,move.details.count)}</Progress>
                 </Progress></Col></Row>
                 <Row><Col className="navCol">
                 {this.compareProgress()}
@@ -137,6 +136,22 @@ export default class MovesTable extends React.Component {
                 </Container>
             </TableCell>
         </TableRow>
+    }
+
+    getProgressLabel(count, total){
+        let percentage = this.percentage(count,total)
+        if(percentage<10) {
+            return ''
+        }
+        if(this.props.showAsPercentage) {
+            return `${percentage.toFixed(1)}%`
+        }
+        return count
+
+    }
+
+    percentage(count, total){
+        return count/total*100
     }
     getSingleItemRow(move,lastPlayedGame) {
         let sampleResultWhite = playerDetails(lastPlayedGame.white, lastPlayedGame.whiteElo)
@@ -149,6 +164,17 @@ export default class MovesTable extends React.Component {
                         {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame)} icon={faExternalLinkAlt}/>}
                 </TableCell>
             </TableRow>
+    }
+
+    simplify(count){
+        if(count>=1000000){
+            return `${(count/1000000).toFixed(1)}M`
+        }        
+        if(count>=10000){
+            return `${Math.round(count/1000)}k`
+        }
+
+        return count
     }
 
 }
