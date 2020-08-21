@@ -87,22 +87,16 @@ export default class OpeningGraph {
         targetNode.details = newDetails
 
         var currNode = this.getNodeFromGraph(fullSourceFen, true)
-        currNode.playedByMax = Math.max(currNode.playedByMax, this.getTargetDetailsCount(targetNode.details))
         if(!currNode.playedBy) {
             currNode.playedBy = {}
         }
-        currNode.playedBy[move] = ''
-    }
-
-    getTargetDetailsCount(targetDetails) {
-        if(!targetDetails) {
-            return 0
+        let moveCount = currNode.playedBy[move]
+        if(!moveCount) {
+            moveCount = 0
         }
-        if(Number.isInteger(targetDetails)) {
-            //if details is an integer, then this has been played once
-            return 1
-        }
-        return targetDetails.draws+targetDetails.blackWins+targetDetails.whiteWins
+        moveCount = moveCount+1
+        currNode.playedBy[move] = moveCount
+        currNode.playedByMax = Math.max(currNode.playedByMax, moveCount)
     }
 
     getNodeFromGraph(fullFen, addIfNull) {
@@ -223,7 +217,8 @@ export default class OpeningGraph {
                     dest:move.to,
                     level:this.levelFor(targetNodeDetails.count, currNode.playedByMax),
                     san:move.san,
-                    details:targetNodeDetails
+                    details:targetNodeDetails,
+                    moveCount:entry[1]
                 }
             })
         }        
