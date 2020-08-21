@@ -16,7 +16,7 @@ export default class MovesList extends React.Component {
     }
 
     movesTable() {
-        return <MovesTable movesToShow={this.props.playerMoves}
+        return <MovesTable movesToShow={this.props.playerMoves} namespace='moves'
                 launchGame={this.props.launchGame} settings={this.props.settings}
                 turnColor={this.props.turnColor} onMove={this.props.onMove}
                 clickedEventName="MoveClicked" tableFooter={this.tableFooter()}/>

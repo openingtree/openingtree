@@ -65,6 +65,18 @@ export function getTimeframeSteps() {
     return steps
 }
 
+
+export function simplifyCount(count){
+    if(count>=1000000){
+        return `${(count/1000000).toFixed(1)}M`
+    }        
+    if(count>=10000){
+        return `${Math.round(count/1000)}k`
+    }
+
+    return count
+}
+
 export function getSelectedTimeFrameData(timeframe, timeframeSteps) {
     let fromIndex = timeframe[0]
     let toIndex = timeframe[1]
@@ -129,19 +141,24 @@ function getDaysInMonth(year,month) {
     return new Date(year, month + 1, 0).getDate();
 }
 
-export function getPerformanceDetails(totalElo, white, draws, black, playerColor) {
+export function getPerformanceDetails(totalOpponentElo, averageElo, white, draws, black, playerColor) {
     let totalGames = white + draws + black
-    let averageElo = Math.round(totalElo/totalGames)
+    let averageOpponentElo = totalOpponentElo?Math.round(totalOpponentElo/totalGames):null
     let playerWins = playerColor === Constants.PLAYER_COLOR_BLACK?black:white
     let playerLosses = playerColor !== Constants.PLAYER_COLOR_BLACK?black:white
     let score = playerWins+(draws/2)
-    let scorePercentage = Math.round(score*100/totalGames)
-    let ratingChange = Common.DP_TABLE[scorePercentage]
+    let scorePercentage = score*100/totalGames
+    let ratingChange = Common.DP_TABLE[Math.round(scorePercentage)]
+    let performanceRating = null
+    if(averageOpponentElo) {
+        performanceRating = averageOpponentElo+ratingChange
+    }
     return {
-        results:`+${playerWins}-${playerLosses}=${draws}`,
-        performanceRating:averageElo+ratingChange,
-        averageElo: averageElo,
-        score:`${Number.isInteger(score)?score:score.toFixed(1)}/${totalGames}`,
+        results:`+${simplifyCount(playerWins)}-${simplifyCount(playerLosses)}=${simplifyCount(draws)}`,
+        performanceRating:performanceRating,
+        averageOpponentElo: averageOpponentElo,// avg elo rating of opponents only
+        averageElo:averageElo, // avg elo rating of all players
+        score:`${Number.isInteger(scorePercentage)?scorePercentage:scorePercentage.toFixed(1)}% for ${playerColor === Constants.PLAYER_COLOR_BLACK?'black':'white'}`,
         ratingChange:`${ratingChange===0?'':(ratingChange>0?'+':'-')}${Math.abs(ratingChange)}`
     }
 }

@@ -10,6 +10,7 @@ import {trackEvent} from '../../app/Analytics'
 import * as Constants from '../../app/Constants'
 import { ProgressBar,Step } from "react-step-progress-bar";
 import {playerDetails} from './MovesCommon'
+import {simplifyCount} from '../../app/util'
 
 export default class MovesTable extends React.Component {
     constructor(props){
@@ -79,7 +80,7 @@ export default class MovesTable extends React.Component {
         let performancePopoverOpen = this.state.openPerformanceIndex === moveIndex
         let openMove = this.props.movesToShow[moveIndex]
 
-        return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`performancePopover${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
+        return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`p${this.props.namespace}${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
                 <ReportControls moveDetails={openMove.details} simplifiedView={true} isOpen = {performancePopoverOpen} launchGame={this.props.launchGame} settings={this.props.settings}/>
             </Popover>
     }
@@ -118,8 +119,8 @@ export default class MovesTable extends React.Component {
     getMultiItemRow(move, moveIndex) {
         return <TableRow className="moveRow" key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.san)}>
             <TableCell size="small" className="smallCol">{move.san} </TableCell>
-            <TableCell size="small" id={`performancePopover${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
-                {this.simplify(move.details.count)}<FontAwesomeIcon className="lowOpacity leftPadding" icon={faInfoCircle}/>
+            <TableCell size="small" id={`p${this.props.namespace}${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
+                {simplifyCount(move.details.count)}<FontAwesomeIcon className="lowOpacity leftPadding" icon={faInfoCircle}/>
                 {this.getPopover(moveIndex)}
             </TableCell>
             <TableCell>
@@ -164,17 +165,6 @@ export default class MovesTable extends React.Component {
                         {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame)} icon={faExternalLinkAlt}/>}
                 </TableCell>
             </TableRow>
-    }
-
-    simplify(count){
-        if(count>=1000000){
-            return `${(count/1000000).toFixed(1)}M`
-        }        
-        if(count>=10000){
-            return `${Math.round(count/1000)}k`
-        }
-
-        return count
     }
 
 }

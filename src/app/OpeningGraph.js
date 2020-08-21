@@ -103,13 +103,16 @@ export default class OpeningGraph {
             return book
         }
         return book.moves.map((move)=>{
+            let count = move.black+move.white+move.draws
             return {
                 san:move.san,
                 details:{
+                    hasData:true,
                     blackWins:move.black,
                     whiteWins:move.white,
                     draws:move.draws,
-                    count:move.black+move.white+move.draws
+                    count:count,
+                    averageElo:move.averageRating
                 }
             }
         })
@@ -215,6 +218,7 @@ export default class OpeningGraph {
         currentMoveDetails.whiteWins += whiteWin
         currentMoveDetails.draws += draw
         currentMoveDetails.totalOpponentElo += parseInt(opponentElo)
+        currentMoveDetails.hasData = true
         return currentMoveDetails
     }
 
@@ -293,6 +297,7 @@ class GraphNode {
 
 function emptyDetails() {
     return {
+        hasData:false,
 //        count: 0,
         blackWins: 0,
         whiteWins: 0,

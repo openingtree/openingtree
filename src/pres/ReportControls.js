@@ -38,7 +38,7 @@ export default class ReportControls extends React.Component {
 
       
     render() {
-        if(!this.props.moveDetails.lastPlayedGame) {
+        if(!this.props.moveDetails.hasData) {
             return <div>{this.getFenField()}<div className = "infoMessage" >No data to show. Please enter a lichess or chess.com user name in the 
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
                 </div>
@@ -46,6 +46,7 @@ export default class ReportControls extends React.Component {
         let performanceDetails = {}
         if(this.props.isOpen) {
             performanceDetails = getPerformanceDetails(this.props.moveDetails.totalOpponentElo, 
+                                                        this.props.moveDetails.averageElo,
                                                         this.props.moveDetails.whiteWins, 
                                                         this.props.moveDetails.draws, 
                                                         this.props.moveDetails.blackWins, 
@@ -55,7 +56,7 @@ export default class ReportControls extends React.Component {
         return <div>
             {this.getFenField()}
             <Table onClick={this.eatClicks}>
-            {(isNaN(performanceDetails.performanceRating) || !this.props.settings.playerName)?null:            <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}><TableRow>
+            {!performanceDetails.performanceRating || (isNaN(performanceDetails.performanceRating) || !this.props.settings.playerName)?null:            <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}><TableRow>
                 <TableCell className="performanceRatingRow"><b>Performance</b></TableCell>
                 <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
                 </TableRow></TableHead>}
@@ -64,9 +65,14 @@ export default class ReportControls extends React.Component {
                 <TableCell className="performanceRatingRow">Results</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.results}</TableCell>
             </TableRow>
-            {(isNaN(performanceDetails.averageElo) || !this.props.settings.playerName)?null:
+            {(isNaN(performanceDetails.averageOpponentElo) || performanceDetails.averageOpponentElo <= 0 || !this.props.settings.playerName)?null:
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Avg opponent</TableCell>
+                <TableCell className="performanceRatingRow">{performanceDetails.averageOpponentElo}</TableCell>
+            </TableRow>}
+            {(isNaN(performanceDetails.averageElo))?null:
+            <TableRow className="performanceRatingRow">
+                <TableCell className="performanceRatingRow">Avg Elo</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
             </TableRow>}
             <TableRow className="performanceRatingRow">
@@ -96,10 +102,10 @@ export default class ReportControls extends React.Component {
                 <TableCell className="performanceRatingRow">{this.props.moveDetails.shortestGameInfo.numberOfPlys} Plys <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.shortestGameInfo)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
 
-            <TableRow className="performanceRatingRow">
+            {this.props.moveDetails.lastPlayedGame?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Last played</TableCell>
                 <TableCell className="performanceRatingRow">{this.removeQuestionMarksFromDate(this.props.moveDetails.lastPlayedGame.date)} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.lastPlayedGame)} icon={faExternalLinkAlt}/></TableCell>
-            </TableRow>
+            </TableRow>:null}
             </TableBody>
             {this.props.simplifiedView?null:
             <TableFooter>
