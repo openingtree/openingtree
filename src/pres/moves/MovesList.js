@@ -7,7 +7,7 @@ import ResultsTable from './ResultsTable';
 export default class MovesList extends React.Component {
 
     render(){
-        if(!this.props.movesToShow) {
+        if(!this.props.playerMoves) {
             return <div className = "infoMessage" >No moves to show. Please select a source from the 
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and enter the details.</div>
         }
@@ -16,7 +16,7 @@ export default class MovesList extends React.Component {
     }
 
     movesTable() {
-        return <MovesTable movesToShow={this.props.movesToShow}
+        return <MovesTable movesToShow={this.props.playerMoves}
                 launchGame={this.props.launchGame} settings={this.props.settings}
                 turnColor={this.props.turnColor} onMove={this.props.onMove}
                 clickedEventName="MoveClicked" tableFooter={this.tableFooter()}/>
@@ -27,7 +27,7 @@ export default class MovesList extends React.Component {
     }
 
     tableFooter() {
-        let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)
+        let hasMoves = (this.props.playerMoves && this.props.playerMoves.length>0)
         if(this.props.settings.playerName) {
             if(hasMoves) {
                 return <span>

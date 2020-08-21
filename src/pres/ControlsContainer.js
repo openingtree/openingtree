@@ -4,8 +4,9 @@ import SettingsView from './Settings'
 import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col,Button } from 'reactstrap';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUser, faList, faCog, faChartBar } from '@fortawesome/free-solid-svg-icons'
-import MovesList from './moves/MovesList';
+import { faUser, faList, faCog, faChartBar, faBook } from '@fortawesome/free-solid-svg-icons'
+import MovesList from './moves/MovesList'
+import BookMoves from './moves/BookMoves'
 import {trackEvent} from '../app/Analytics'
 import * as Constants from '../app/Constants'
 import ReportControls from './ReportControls'
@@ -93,6 +94,14 @@ export default class ControlsContainer extends React.Component {
         </NavItem>
         <NavItem>
           <NavLink
+            className={classnames({ active: this.state.activeTab === 'book' })}
+            onClick={() => { this.toggle('book'); }}
+          >
+            <FontAwesomeIcon icon={faBook} /> {this.state.activeTab === 'book'?"Opening book":""}
+          </NavLink>
+        </NavItem>
+        <NavItem>
+          <NavLink
             className={classnames({ active: this.state.activeTab === 'report' })}
             onClick={() => { this.toggle('report'); }}
           >
@@ -130,8 +139,19 @@ export default class ControlsContainer extends React.Component {
         <TabPane tabId="moves">
             <MovesList 
               switchToUserTab={this.switchToUserTab.bind(this)} 
-              movesToShow={this.props.movesToShow} 
+              playerMoves={this.props.playerMoves} 
               gameResults={this.props.gameResults}
+              onMove={this.props.onMove}
+              settings={this.props.settings}
+              turnColor={this.props.turnColor}
+              settingsChange={this.props.settingsChange}
+              launchGame = {this.launchGame.bind(this)}
+              />
+        </TabPane>
+        <TabPane tabId="book">
+            <BookMoves 
+              bookMoves={this.props.bookMoves} 
+              gameResults={this.props.bookResults}
               onMove={this.props.onMove}
               settings={this.props.settings}
               turnColor={this.props.turnColor}

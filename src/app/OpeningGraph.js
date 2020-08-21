@@ -96,7 +96,10 @@ export default class OpeningGraph {
 
     addBookNode(fullFen, book) {
         let fen = simplifiedFen(fullFen)
-        this.graph.book.set(fen, book)
+        this.graph.book.set(fen, this.transform(book))
+    }
+    transform(book) {
+        return book
     }
     getBookNode(fullFen) {
         let fen = simplifiedFen(fullFen)

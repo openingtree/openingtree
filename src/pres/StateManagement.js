@@ -87,7 +87,7 @@ function autoShapes(moves) {
     return this.fillArray([], 25) // dummy arrow to clear out existing arrows
 }
 
-function movesToShow() {
+function getPlayerMoves() {
     if(!this.state.openingGraph.hasMoves) {
         return null;
     }
@@ -289,7 +289,7 @@ function addStateManagement(obj){
     obj.fillArray = fillArray
     obj.brushes = brushes
     obj.moveToShape = moveToShape
-    obj.movesToShow = movesToShow
+    obj.getPlayerMoves = getPlayerMoves
     obj.gameResults = gameResults
     obj.showError = showError
     obj.showInfo = showInfo
