@@ -215,7 +215,7 @@ export default class OpeningGraph {
                 return {
                     orig:move.from,
                     dest:move.to,
-                    level:this.levelFor(targetNodeDetails.count, currNode.playedByMax),
+                    level:this.levelFor(entry[1], currNode.playedByMax),
                     san:move.san,
                     details:targetNodeDetails,
                     moveCount:entry[1]
