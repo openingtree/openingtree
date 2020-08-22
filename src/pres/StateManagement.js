@@ -92,7 +92,7 @@ function getPlayerMoves() {
         return null;
     }
     var moves = this.state.openingGraph.movesForFen(this.chess.fen())
-    return moves?moves.sort((a,b)=>b.details.count-a.details.count):[]
+    return moves?moves.sort((a,b)=>b.moveCount-a.moveCount):[]
 }
 
 
