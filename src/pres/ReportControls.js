@@ -38,18 +38,19 @@ export default class ReportControls extends React.Component {
 
       
     render() {
-        if(!this.props.moveDetails.hasData) {
+        let moveDetails = this.props.moveDetails
+        if(!moveDetails.hasData) {
             return <div>{this.getFenField()}<div className = "infoMessage" >No data to show. Please enter a lichess or chess.com user name in the 
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
                 </div>
         }
         let performanceDetails = {}
         if(this.props.isOpen) {
-            performanceDetails = getPerformanceDetails(this.props.moveDetails.totalOpponentElo, 
-                                                        this.props.moveDetails.averageElo,
-                                                        this.props.moveDetails.whiteWins, 
-                                                        this.props.moveDetails.draws, 
-                                                        this.props.moveDetails.blackWins, 
+            performanceDetails = getPerformanceDetails(moveDetails.totalOpponentElo, 
+                                                        moveDetails.averageElo,
+                                                        moveDetails.whiteWins, 
+                                                        moveDetails.draws, 
+                                                        moveDetails.blackWins, 
                                                         this.props.settings.playerColor)
         } 
 
@@ -85,32 +86,32 @@ export default class ReportControls extends React.Component {
                 <TableCell className="performanceRatingRow">{performanceDetails.ratingChange}</TableCell>
             </TableRow>
             }
-            {(this.props.settings.playerName && !this.props.simplifiedView && this.props.moveDetails.bestWinElo)?<TableRow className="performanceRatingRow">
+            {(this.props.settings.playerName && !this.props.simplifiedView && moveDetails.bestWinElo)?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Best win</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.moveDetails.bestWinElo} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.bestWinGame)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{moveDetails.bestWinElo} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(moveDetails.bestWinGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
-            {(this.props.settings.playerName && !this.props.simplifiedView && this.props.moveDetails.worstLossElo)?<TableRow className="performanceRatingRow">
+            {(this.props.settings.playerName && !this.props.simplifiedView && moveDetails.worstLossElo)?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Worst loss</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.moveDetails.worstLossElo} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.worstLossGame)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{moveDetails.worstLossElo} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(moveDetails.worstLossGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
-            {(!this.props.simplifiedView && this.props.moveDetails.longestGameInfo)?<TableRow className="performanceRatingRow">
+            {(!this.props.simplifiedView && moveDetails.longestGameInfo)?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Longest game</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.moveDetails.longestGameInfo.numberOfPlys} Plys <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.longestGameInfo)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{moveDetails.longestGameInfo.numberOfPlys} Plys <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(moveDetails.longestGameInfo)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
-            {(!this.props.simplifiedView && this.props.moveDetails.shortestGameInfo)?<TableRow className="performanceRatingRow">
+            {(!this.props.simplifiedView && moveDetails.shortestGameInfo)?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Shortest game</TableCell>
-                <TableCell className="performanceRatingRow">{this.props.moveDetails.shortestGameInfo.numberOfPlys} Plys <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.shortestGameInfo)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{moveDetails.shortestGameInfo.numberOfPlys} Plys <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(moveDetails.shortestGameInfo)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
 
-            {this.props.moveDetails.lastPlayedGame?<TableRow className="performanceRatingRow">
+            {moveDetails.lastPlayedGame?<TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Last played</TableCell>
-                <TableCell className="performanceRatingRow">{this.removeQuestionMarksFromDate(this.props.moveDetails.lastPlayedGame.date)} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(this.props.moveDetails.lastPlayedGame)} icon={faExternalLinkAlt}/></TableCell>
+                <TableCell className="performanceRatingRow">{this.removeQuestionMarksFromDate(moveDetails.lastPlayedGame.date)} <FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(moveDetails.lastPlayedGame)} icon={faExternalLinkAlt}/></TableCell>
             </TableRow>:null}
             </TableBody>
-            {this.props.simplifiedView?null:
+            {!this.props.reportFooter?null:
             <TableFooter>
                 <TableRow>
-                    <TableCell colSpan="2">Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></TableCell>
+                    <TableCell colSpan="2">{this.props.reportFooter}</TableCell>
                 </TableRow>
             </TableFooter>
             }

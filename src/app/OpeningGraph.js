@@ -118,7 +118,8 @@ export default class OpeningGraph {
                     draws:move.draws,
                     count:count,
                     averageElo:move.averageRating
-                }
+                },
+                moveCount:count
             }
         })
     }

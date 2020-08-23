@@ -165,7 +165,7 @@ export default class ControlsContainer extends React.Component {
             launchGame={this.launchGame.bind(this)} settings={this.props.settings}
             switchToUserTab={this.switchToUserTab.bind(this)} 
             isOpen = {this.state.activeTab === "report"}
-            showInfo = {this.props.showInfo}/>
+            showInfo = {this.props.showInfo} reportFooter={this.reportFooter()}/>
         </TabPane>
         <TabPane tabId="settings">
           <Row>
@@ -177,5 +177,9 @@ export default class ControlsContainer extends React.Component {
         </TabPane>
       </TabContent>
         </div>
+    }
+
+    reportFooter(){
+      return <span>Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></span>
     }
 }

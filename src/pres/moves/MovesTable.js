@@ -2,7 +2,7 @@ import React from 'react'
 import {Progress, Popover } from "reactstrap"
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExternalLinkAlt, faInfoCircle } from '@fortawesome/free-solid-svg-icons'
+import { faExternalLinkAlt, faInfoCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
 import ReportControls from '../ReportControls'
 import {Container, Row, Col} from 'reactstrap'
 import "react-step-progress-bar/styles.css";
@@ -81,8 +81,32 @@ export default class MovesTable extends React.Component {
         let openMove = this.props.movesToShow[moveIndex]
 
         return <Popover trigger="hover" placement="right" isOpen={performancePopoverOpen} target={`p${this.props.namespace}${moveIndex}`} toggle={this.togglePerformancePopover(moveIndex)}>
-                <ReportControls moveDetails={openMove.details} simplifiedView={true} isOpen = {performancePopoverOpen} launchGame={this.props.launchGame} settings={this.props.settings}/>
+                <ReportControls moveDetails={openMove.details} simplifiedView={true} 
+                isOpen = {performancePopoverOpen} launchGame={this.props.launchGame} 
+                settings={this.props.settings} reportFooter ={this.reportFooter(moveIndex)}/>
             </Popover>
+    }
+
+    reportFooter(moveIndex) {
+        let currMove = this.props.movesToShow[moveIndex]
+
+        if(this.getTranspositionWarningLevel(moveIndex)!=='none') {
+            return <div>{this.getInfoIcon(moveIndex)}<b> This move has transpositions</b> <div>{currMove.san} has been played only {currMove.moveCount} times but the resulting position has appeared {currMove.details.count} times through other move orders.</div></div>
+        }
+    }
+
+    getTranspositionWarningLevel(moveIndex){
+        let currMove = this.props.movesToShow[moveIndex]
+        let targetCount = currMove.details.count
+        let difference = targetCount - currMove.moveCount
+        if (difference>0) {
+            if(difference>10 && difference/targetCount>0.1) {
+                return "warning"
+            } else {
+                return "info"
+            }
+        }
+        return "none"
     }
 
     render() {
@@ -101,7 +125,7 @@ export default class MovesTable extends React.Component {
         {
         this.props.movesToShow.map((move, moveIndex) => {
             let lastPlayedGame = move.details.lastPlayedGame
-            return lastPlayedGame && move.details.count === 1?
+            return lastPlayedGame && move.moveCount === 1?
                 this.getSingleItemRow(move,lastPlayedGame):
                 this.getMultiItemRow(move, moveIndex)
                 
@@ -120,7 +144,7 @@ export default class MovesTable extends React.Component {
         return <TableRow className="moveRow" key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.san)}>
             <TableCell size="small" className="smallCol">{move.san} </TableCell>
             <TableCell size="small" id={`p${this.props.namespace}${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
-                {simplifyCount(move.details.count)}<FontAwesomeIcon className="lowOpacity leftPadding" icon={faInfoCircle}/>
+                {simplifyCount(move.moveCount)}{this.getInfoIcon(moveIndex)}
                 {this.getPopover(moveIndex)}
             </TableCell>
             <TableCell>
@@ -137,6 +161,18 @@ export default class MovesTable extends React.Component {
                 </Container>
             </TableCell>
         </TableRow>
+    }
+
+    getInfoIcon(moveIndex) {
+        if(this.getTranspositionWarningLevel(moveIndex) === "warning"){
+            return <FontAwesomeIcon 
+                className={`leftPadding redColor lowOpacity`} 
+                icon={faExclamationTriangle}/>
+        }
+        return <FontAwesomeIcon 
+            className={`lowOpacity leftPadding`} 
+            icon={faInfoCircle}/>
+
     }
 
     getProgressLabel(count, total){
