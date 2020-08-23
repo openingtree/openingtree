@@ -207,6 +207,7 @@ export default class PGNLoader extends React.Component {
     variantChange(newVariant) {
         this.setState({expandedPanel:'source'})
         this.props.variantChange(newVariant)
+        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "VariantChange", newVariant)
     }
 
     render() {
