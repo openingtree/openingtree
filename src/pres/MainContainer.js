@@ -107,6 +107,7 @@ export default class MainContainer extends React.Component {
                 importCallback={this.importGameState.bind(this)}
                 variant={this.state.variant}
                 variantChange={this.variantChange.bind(this)}
+                forceFetchBookMoves={this.forceFetchBookMoves.bind(this)}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:"left" }} 

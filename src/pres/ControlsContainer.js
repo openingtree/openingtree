@@ -180,6 +180,7 @@ export default class ControlsContainer extends React.Component {
               launchGame = {this.launchGame.bind(this)}
               switchToMovesTab = {this.switchToMovesTab.bind(this)}
               highlightMove = {this.state.highlightBookMove}
+              forceFetchBookMoves = {this.props.forceFetchBookMoves}
               />
         </TabPane>
         <TabPane tabId="report">

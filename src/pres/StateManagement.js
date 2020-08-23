@@ -259,12 +259,18 @@ function getBookMoves() {
     let moves = this.state.openingGraph.getBookNode(this.chess.fen())
 
     if(!moves) {
-        moves = fetchBookMoves(this.state.fen, this.state.variantChange, ["1600","1800","2000","2200"],["bullet","blitz","rapid","classical"],(moves)=>{
-            this.state.openingGraph.addBookNode(this.chess.fen(), moves)
-            this.setState({update:this.state.update+1})
-        })
-        this.state.openingGraph.addBookNode(this.chess.fen(), moves)
+        moves = this.forceFetchBookMoves()
     }
+    return moves
+}
+
+function forceFetchBookMoves() {
+    let moves = fetchBookMoves(this.state.fen, this.state.variantChange, ["1600","1800","2000","2200"],["bullet","blitz","rapid","classical"],(moves)=>{
+        this.state.openingGraph.addBookNode(this.chess.fen(), moves)
+        this.setState({update:this.state.update+1})
+    })
+    this.state.openingGraph.addBookNode(this.chess.fen(), moves)
+    this.setState({update:this.state.update+1})
     return moves
 }
 
@@ -335,6 +341,7 @@ function addStateManagement(obj){
     obj.getRedditLink = getRedditLink
     obj.variantChange = variantChange
     obj.getBookMoves = getBookMoves
+    obj.forceFetchBookMoves = forceFetchBookMoves
     obj.mergePlayerAndBookMoves = mergePlayerAndBookMoves
 }
 
