@@ -158,7 +158,7 @@ export default class MovesTable extends React.Component {
                     <Progress bar className="grayMove" value={`${this.percentage(move.details.draws,move.details.count)}`}>{this.getProgressLabel(move.details.draws,move.details.count)}</Progress>
                     <Progress bar className="blackMove" value={`${this.percentage(move.details.blackWins,move.details.count)}`}>{this.getProgressLabel(move.details.blackWins,move.details.count)}</Progress>
                 </Progress></Col></Row>
-                <Row><Col className="navCol">
+                <Row className="zeroHeight"><Col className="navCol">
                 {this.compareProgress(move)}
                 </Col></Row>
                 </Container>
