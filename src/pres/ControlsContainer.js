@@ -49,8 +49,27 @@ export default class ControlsContainer extends React.Component {
     switchToUserTab() {
       this.toggle('user')
     }
-    switchToMovesTab() {
+    switchToMovesTab(highlightMove) {
       this.toggle('moves')
+      if(highlightMove) {
+        this.setState({highlightPlayerMove:highlightMove})
+        setTimeout(() => {
+          this.setState({
+            highlightPlayerMove:null
+          })
+        }, 1000);
+      }
+    }
+    switchToBookTab(highlightMove) {
+      this.toggle('book')
+      if(highlightMove) {
+        this.setState({highlightBookMove:highlightMove})
+        setTimeout(() => {
+          this.setState({
+            highlightBookMove:null
+          })
+        }, 1000);
+      }
     }
 
     render(){
@@ -146,6 +165,8 @@ export default class ControlsContainer extends React.Component {
               turnColor={this.props.turnColor}
               settingsChange={this.props.settingsChange}
               launchGame = {this.launchGame.bind(this)}
+              switchToBookTab={this.switchToBookTab.bind(this)}
+              highlightMove={this.state.highlightPlayerMove}
               />
         </TabPane>
         <TabPane tabId="book">
@@ -157,6 +178,8 @@ export default class ControlsContainer extends React.Component {
               turnColor={this.props.turnColor}
               settingsChange={this.props.settingsChange}
               launchGame = {this.launchGame.bind(this)}
+              switchToMovesTab = {this.switchToMovesTab.bind(this)}
+              highlightMove = {this.state.highlightBookMove}
               />
         </TabPane>
         <TabPane tabId="report">

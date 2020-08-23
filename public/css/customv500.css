@@ -42,11 +42,18 @@
     cursor: pointer;
 }
 
+.moveRow.bgColor:hover  {
+    background-color: lightblue;
+    cursor: pointer;
+}
 .moveRow:hover  {
     background-color: #dcdcdc;
     cursor: pointer;
 }
 
+.bgColor {
+    background-color: lightblue;
+}
 
 .smallCol {
     width: 2rem;

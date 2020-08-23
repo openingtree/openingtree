@@ -44,6 +44,13 @@ export default class MovesTable extends React.Component {
             e.stopPropagation()
         }
     }
+    
+    compareClicked(san){
+        return (e)=>{
+            e.stopPropagation()
+            this.props.compareToClicked(san)
+        }
+    }
 
     compareProgress(currMove){
         let steps = currMove.compareTo
@@ -58,7 +65,8 @@ export default class MovesTable extends React.Component {
                 
               <Step transition="scale">
                 {({ accomplished }) => (
-                  <img onClick = {alert}
+                  <img onClick = {this.compareClicked(currMove.san)}
+                    className="pointerExternalLink"
                     width="16"
                     height="20"
                     src="./images/arrow-white.png"
@@ -67,7 +75,8 @@ export default class MovesTable extends React.Component {
               </Step>
               <Step transition="scale">
                 {({ accomplished }) => (
-                  <img
+                  <img onClick= {this.compareClicked(currMove.san)}
+                    className="pointerExternalLink"
                     style={{ filter: `grayscale(80%)` }}
                     width="14"
                     height="18"
@@ -144,7 +153,7 @@ export default class MovesTable extends React.Component {
     </Table>
     }
     getMultiItemRow(move, moveIndex) {
-        return <TableRow className="moveRow" key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.san)}>
+        return <TableRow className={`${this.props.highlightMove === move.san?'bgColor ':''}moveRow`} key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.san)}>
             <TableCell size="small" className="smallCol">{move.san} </TableCell>
             <TableCell size="small" id={`p${this.props.namespace}${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
                 {simplifyCount(move.moveCount)}{this.getInfoIcon(moveIndex)}
@@ -198,7 +207,7 @@ export default class MovesTable extends React.Component {
         let sampleResultBlack = playerDetails(lastPlayedGame.black, lastPlayedGame.blackElo)
         let sampleResult = lastPlayedGame.result
 
-        return <TableRow className="moveRow" key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest, move.san)}>
+        return <TableRow className={`${this.props.highlightMove === move.san?'bgColor ':''}moveRow`} key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest, move.san)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell colSpan = "2">
                         {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame)} icon={faExternalLinkAlt}/>}
