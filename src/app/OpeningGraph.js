@@ -107,21 +107,24 @@ export default class OpeningGraph {
         if(!book || !book.moves) {
             return book
         }
-        return book.moves.map((move)=>{
-            let count = move.black+move.white+move.draws
-            return {
-                san:move.san,
-                details:{
-                    hasData:true,
-                    blackWins:move.black,
-                    whiteWins:move.white,
-                    draws:move.draws,
-                    count:count,
-                    averageElo:move.averageRating
-                },
-                moveCount:count
-            }
-        })
+        return {
+            fetch:"success",
+            moves:book.moves.map((move)=>{
+                let count = move.black+move.white+move.draws
+                return {
+                    san:move.san,
+                    details:{
+                        hasData:true,
+                        blackWins:move.black,
+                        whiteWins:move.white,
+                        draws:move.draws,
+                        count:count,
+                        averageElo:move.averageRating
+                    },
+                    moveCount:count
+                }
+            })
+        }
     }
     getBookNode(fullFen) {
         let fen = simplifiedFen(fullFen)

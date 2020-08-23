@@ -269,7 +269,35 @@ function getBookMoves() {
 }
 
 function mergePlayerAndBookMoves(playerMovesToShow, bookMovesToShow) {
+    if(!playerMovesToShow) {
+        return
+    }
+    let bookMovesMap = createMap(bookMovesToShow.moves)
+    playerMovesToShow.forEach((move)=>{
+        let bookMove = bookMovesMap.get(move.san)
+        if(!bookMove) {
+            return
+        }
+        move.compareTo = getCompareToValues(bookMove)
+        bookMove.compareTo = getCompareToValues(move)
+    })
+}
 
+function getCompareToValues(move) {
+    return [move.details.whiteWins/move.details.count*100, 
+        (move.details.whiteWins+move.details.draws)/move.details.count*100]
+}
+
+function createMap(movesToShow){
+    let map = new Map()
+    if(!movesToShow) {
+        return map
+    }
+    console.log(movesToShow)
+    movesToShow.forEach((move)=> {
+        map.set(move.san, move)
+    })
+    return map
 }
 
 

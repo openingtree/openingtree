@@ -45,8 +45,11 @@ export default class MovesTable extends React.Component {
         }
     }
 
-    compareProgress(){
-        let steps = [30,70]
+    compareProgress(currMove){
+        let steps = currMove.compareTo
+        if(!steps) {
+            return null
+        }
         return (
             <ProgressBar
               percent={0}
@@ -156,7 +159,7 @@ export default class MovesTable extends React.Component {
                     <Progress bar className="blackMove" value={`${this.percentage(move.details.blackWins,move.details.count)}`}>{this.getProgressLabel(move.details.blackWins,move.details.count)}</Progress>
                 </Progress></Col></Row>
                 <Row><Col className="navCol">
-                {this.compareProgress()}
+                {this.compareProgress(move)}
                 </Col></Row>
                 </Container>
             </TableCell>
