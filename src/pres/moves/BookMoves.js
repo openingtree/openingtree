@@ -47,7 +47,8 @@ export default class BookMove extends React.Component {
                 turnColor={this.props.turnColor} onMove={this.props.onMove}
                 clickedEventName="BookMoveClicked" showAsPercentage
                 highlightMove={this.props.highlightMove} 
-                compareToClicked={this.props.switchToMovesTab}/>
+                compareToClicked={this.props.switchToMovesTab}
+                compareToAlt="Indicator for player moves - Click me"/>
     }
     resultsTable() {
         return <ResultsTable gameResults={this.props.gameResults}

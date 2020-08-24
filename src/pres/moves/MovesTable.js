@@ -62,30 +62,36 @@ export default class MovesTable extends React.Component {
               percent={0}
               stepPositions={steps}
             >
-                
-              <Step transition="scale">
-                {({ accomplished }) => (
-                  <img onClick = {this.compareClicked(currMove.san)}
-                    className="pointerExternalLink"
-                    width="16"
-                    height="20"
-                    src="./images/arrow-white.png"
-                  />
-                )}
-              </Step>
-              <Step transition="scale">
-                {({ accomplished }) => (
-                  <img onClick= {this.compareClicked(currMove.san)}
-                    className="pointerExternalLink"
-                    style={{ filter: `grayscale(80%)` }}
-                    width="14"
-                    height="18"
-                    src="./images/arrow-black.png"
-                  />
-                )}
-              </Step>
+                {this.getIndicator("./images/arrow-white.png", "20", "16", 
+                    this.constructAlt(this.props.compareToAlt,steps),
+                    this.compareClicked(currMove.san))}
+                {this.getIndicator("./images/arrow-black.png", "18", "14", 
+                    this.constructAlt(this.props.compareToAlt,steps),
+                    this.compareClicked(currMove.san))}
             </ProgressBar>
           )
+    }
+    constructAlt(altTitle, steps) {
+        let white = Math.round(steps[0])
+        let draws = Math.round(steps[1])-white
+        let black = 100-white-draws
+        return `${altTitle} \nWhite wins ${white}% \nDraws ${draws}% \nBlack wins ${black}%`
+    }
+    //&#013;
+
+    getIndicator(src, height, width, alt, click) {
+        return <Step transition="scale">
+            {({ accomplished }) => (
+            <img onClick = {click}
+                alt={alt}
+                title={alt}
+                className="pointerExternalLink"
+                width={width}
+                height={height}
+                src={src}
+            />
+            )}
+          </Step>
     }
 
     getPopover(moveIndex) {
@@ -207,7 +213,7 @@ export default class MovesTable extends React.Component {
         let sampleResultBlack = playerDetails(lastPlayedGame.black, lastPlayedGame.blackElo)
         let sampleResult = lastPlayedGame.result
 
-        return <TableRow className={`${this.props.highlightMove === move.san?'bgColor ':''}moveRow`} key = {`${move.orig}${move.dest}`} onClick={this.move(move.orig, move.dest, move.san)}>
+        return <TableRow className={`${this.props.highlightMove === move.san?'bgColor ':''}moveRow`} key = {`${move.orig}${move.dest}`} onClick={this.move(move.san)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell colSpan = "2">
                         {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame)} icon={faExternalLinkAlt}/>}
