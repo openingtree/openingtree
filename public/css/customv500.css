@@ -317,3 +317,9 @@
 .zeroHeight{
     height:0px;
 }
+.scoresProgress{
+    padding-bottom:2px;
+}
+.littlePaddingTop{
+    padding-top:7px
+}

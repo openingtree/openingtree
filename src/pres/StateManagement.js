@@ -290,9 +290,20 @@ function mergePlayerAndBookMoves(playerMovesToShow, bookMovesToShow) {
         if(!bookMove) {
             return
         }
-        move.compareTo = getCompareToValues(bookMove)
-        bookMove.compareTo = getCompareToValues(move)
+        move.compareTo = {
+            bookScore:getCompareScores(bookMove),
+            userScore:getCompareScores(move),
+            values:getCompareToValues(bookMove)
+        }
+        bookMove.compareTo = {
+            bookScore:getCompareScores(bookMove),
+            userScore:getCompareScores(move),
+            values:getCompareToValues(move)
+        }
     })
+}
+function getCompareScores(move){
+    return (move.details.whiteWins+move.details.draws/2)/move.details.count*100
 }
 
 function getCompareToValues(move) {

@@ -52,21 +52,42 @@ export default class MovesTable extends React.Component {
         }
     }
 
+    compareScores(currMove) {
+        let compareTo = currMove.compareTo
+        if(!compareTo) {
+            return null
+        }
+        let values = [compareTo.bookScore, compareTo.userScore]
+        return (
+            <ProgressBar
+              percent={0}
+              stepPositions={values}
+            >
+                {this.getIndicator("./images/book.png", "12", "12", 
+                    this.constructAlt(this.props.compareToAlt,values),
+                    this.compareClicked(currMove.san))}
+                {this.getIndicator("./images/user.png", "12", "12", 
+                    this.constructAlt(this.props.compareToAlt,values),
+                    this.compareClicked(currMove.san))}
+            </ProgressBar>
+          )
+    }
+
     compareProgress(currMove){
-        let steps = currMove.compareTo
-        if(!steps) {
+        let compareTo = currMove.compareTo
+        if(!compareTo) {
             return null
         }
         return (
             <ProgressBar
               percent={0}
-              stepPositions={steps}
+              stepPositions={compareTo.values}
             >
                 {this.getIndicator("./images/arrow-white.png", "20", "16", 
-                    this.constructAlt(this.props.compareToAlt,steps),
+                    this.constructAlt(this.props.compareToAlt,compareTo.values),
                     this.compareClicked(currMove.san))}
                 {this.getIndicator("./images/arrow-black.png", "18", "14", 
-                    this.constructAlt(this.props.compareToAlt,steps),
+                    this.constructAlt(this.props.compareToAlt,compareTo.values),
                     this.compareClicked(currMove.san))}
             </ProgressBar>
           )
@@ -165,8 +186,11 @@ export default class MovesTable extends React.Component {
                 {simplifyCount(move.moveCount)}{this.getInfoIcon(moveIndex)}
                 {this.getPopover(moveIndex)}
             </TableCell>
-            <TableCell>
+            <TableCell className="littlePaddingTop">
                 <Container>
+                <Row className="scoresProgress"><Col className="navCol">
+                {this.compareScores(move)}
+                </Col></Row>
                 <Row><Col className="navCol">
                 <Progress className = "border" multi>
                     <Progress bar className="whiteMove" value={`${this.percentage(move.details.whiteWins,move.details.count)}`}>{this.getProgressLabel(move.details.whiteWins,move.details.count)}</Progress>
