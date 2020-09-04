@@ -2,7 +2,7 @@ import React from 'react'
 import {Progress, Popover } from "reactstrap"
 import { Table, TableRow, TableHead, TableBody, TableCell, TableFooter } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faExternalLinkAlt, faInfoCircle, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons'
+import { faExternalLinkAlt, faInfoCircle, faExclamationTriangle, faWrench } from '@fortawesome/free-solid-svg-icons'
 import ReportControls from '../ReportControls'
 import {Container, Row, Col} from 'reactstrap'
 import "react-step-progress-bar/styles.css";
@@ -156,7 +156,9 @@ export default class MovesTable extends React.Component {
         <TableRow>
             <TableCell size="small" className="smallCol"><b>Move</b></TableCell>
             <TableCell size="small" className="smallCol"><b>Games</b></TableCell>
-            <TableCell><b>Results</b></TableCell>
+            <TableCell><b>Results</b><FontAwesomeIcon 
+                className={`floatRight`} 
+                icon={faWrench}/></TableCell>
         </TableRow></TableHead>  
         :null}
         {hasMoves?
