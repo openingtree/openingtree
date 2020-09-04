@@ -11,12 +11,14 @@ import * as Constants from '../../app/Constants'
 import { ProgressBar,Step } from "react-step-progress-bar";
 import {playerDetails} from './MovesCommon'
 import {simplifyCount} from '../../app/util'
+import MovesSettings from './MovesSettings'
 
 export default class MovesTable extends React.Component {
     constructor(props){
         super(props)
         this.state = {
-            openPerformanceIndex: null
+            openPerformanceIndex: null,
+            moveSettingsOpen:false
         }
     }
     componentDidUpdate(prevProps, prevState) {
@@ -32,6 +34,10 @@ export default class MovesTable extends React.Component {
             this.props.onMove(san)
             trackEvent(Constants.EVENT_CATEGORY_MOVES_LIST, this.props.clickedEventName)
         }
+    }
+
+    toggleMovesSettings(){
+        this.setState({moveSettingsOpen:!this.state.moveSettingsOpen})
     }
 
     togglePerformancePopover(moveIndex) {
@@ -158,8 +164,11 @@ export default class MovesTable extends React.Component {
             <TableCell size="small" className="smallCol"><b>Games</b></TableCell>
             <TableCell><b>Results</b><FontAwesomeIcon 
                 className={`floatRight`} 
-                icon={faWrench}/></TableCell>
-        </TableRow></TableHead>  
+                icon={faWrench} onClick={this.toggleMovesSettings.bind(this)}/>
+                <MovesSettings isOpen={this.state.moveSettingsOpen} 
+                    toggle={this.toggleMovesSettings.bind(this)}/>
+            </TableCell>
+        </TableRow></TableHead>
         :null}
         {hasMoves?
         <TableBody>
