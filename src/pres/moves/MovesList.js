@@ -22,7 +22,9 @@ export default class MovesList extends React.Component {
                 clickedEventName="MoveClicked" tableFooter={this.tableFooter()}
                 highlightMove={this.props.highlightMove} 
                 compareToClicked={this.props.switchToBookTab}
-                compareToAlt="Indicator for book moves - Click me"/>
+                compareToAlt="Indicator for book moves - Click me"
+                settingsChange={this.props.settingsChange}
+                />
     }
     resultsTable() {
         return <ResultsTable gameResults={this.props.gameResults}

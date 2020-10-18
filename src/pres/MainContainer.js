@@ -36,7 +36,17 @@ export default class MainContainer extends React.Component {
         settings:{
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,
-          playerColor:''
+          playerColor:'',
+          movesSettings:{
+            openingBookType:Constants.OPENING_BOOK_TYPE_MASTERS,
+            openingBookRating:Constants.ALL_BOOK_RATINGS,
+            openingBookTimeControls:[Constants.TIME_CONTROL_BULLET,
+                                    Constants.TIME_CONTROL_BLITZ,
+                                    Constants.TIME_CONTROL_RAPID,
+                                    Constants.TIME_CONTROL_CLASSICAL],
+            enableWinsIndicators:true,
+            enableScoreIndicators:true
+          }
         },
         message:'',
         downloadingGames:false,

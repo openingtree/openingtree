@@ -78,3 +78,9 @@ export const LICHESS_HEADER_THREE_CHECK = "Three-check"
 export const LICHESS_HEADER_KING_OF_THE_HILL = "King of the Hill"
 export const LICHESS_HEADER_STANDARD = "Standard"
 export const LICHESS_HEADER_CRAZYHOUSE = "Crazyhouse"
+
+export const OPENING_BOOK_TYPE_OFF = 'off'
+export const OPENING_BOOK_TYPE_MASTERS = 'masters'
+export const OPENING_BOOK_TYPE_LICHESS = 'lichess'
+
+export const ALL_BOOK_RATINGS = ['1600','1800','2000','2200','2500']

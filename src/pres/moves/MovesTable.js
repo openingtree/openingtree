@@ -166,7 +166,10 @@ export default class MovesTable extends React.Component {
                 className={`floatRight`} 
                 icon={faWrench} onClick={this.toggleMovesSettings.bind(this)}/>
                 <MovesSettings isOpen={this.state.moveSettingsOpen} 
-                    toggle={this.toggleMovesSettings.bind(this)}/>
+                    toggle={this.toggleMovesSettings.bind(this)}
+                    settingsChange={this.props.settingsChange}
+                    updateSettings = {this.props.updateSettings}
+                    settings={this.props.settings}/>
             </TableCell>
         </TableRow></TableHead>
         :null}
