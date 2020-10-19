@@ -119,7 +119,7 @@ export default class ReportControls extends React.Component {
     }
 
     removeQuestionMarksFromDate(date) {
-        if(date.indexOf('?') === -1) {
+        if(!date || date.indexOf('?') === -1) {
             return date
         }
         return date.slice(0, date.indexOf('.'))
