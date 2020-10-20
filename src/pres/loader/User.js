@@ -167,7 +167,10 @@ export default class User extends React.Component {
         if(source === Constants.SITE_EVENT_DB) {
             return ''
         }
-        return playerName
+        if(!playerName) {
+            return playerName
+        }
+        return playerName.trim()
     }
     setPlayerDetails() {
          if(this.validateInputDetailsSet()) {
