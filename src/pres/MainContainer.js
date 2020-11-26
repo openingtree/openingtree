@@ -44,8 +44,8 @@ export default class MainContainer extends React.Component {
                                     Constants.TIME_CONTROL_BLITZ,
                                     Constants.TIME_CONTROL_RAPID,
                                     Constants.TIME_CONTROL_CLASSICAL],
-            enableWinsIndicators:true,
-            enableScoreIndicators:true
+            openingBookScoreIndicator:false,
+            openingBookWinsIndicator:true
           }
         },
         message:'',

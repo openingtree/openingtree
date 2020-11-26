@@ -200,20 +200,22 @@ export default class MovesTable extends React.Component {
                 {simplifyCount(move.moveCount)}{this.getInfoIcon(moveIndex)}
                 {this.getPopover(moveIndex)}
             </TableCell>
-            <TableCell className="littlePaddingTop">
+            <TableCell>
                 <Container>
+                {this.props.settings.movesSettings.openingBookScoreIndicator?
                 <Row className="scoresProgress"><Col className="navCol">
                 {this.compareScores(move)}
-                </Col></Row>
+                </Col></Row>:null}
                 <Row><Col className="navCol">
                 <Progress className = "border" multi>
                     <Progress bar className="whiteMove" value={`${this.percentage(move.details.whiteWins,move.details.count)}`}>{this.getProgressLabel(move.details.whiteWins,move.details.count)}</Progress>
                     <Progress bar className="grayMove" value={`${this.percentage(move.details.draws,move.details.count)}`}>{this.getProgressLabel(move.details.draws,move.details.count)}</Progress>
                     <Progress bar className="blackMove" value={`${this.percentage(move.details.blackWins,move.details.count)}`}>{this.getProgressLabel(move.details.blackWins,move.details.count)}</Progress>
                 </Progress></Col></Row>
+                {this.props.settings.movesSettings.openingBookWinsIndicator?
                 <Row className="zeroHeight"><Col className="navCol">
                 {this.compareProgress(move)}
-                </Col></Row>
+                </Col></Row>:null}
                 </Container>
             </TableCell>
         </TableRow>
