@@ -263,6 +263,9 @@ function variantChange(newVariant) {
 //  3. update the component so that getBookMoves gets called again
 function getBookMoves() {
     let moves = this.state.openingGraph.getBookNode(this.chess.fen())
+    if(this.state.settings.movesSettings.openingBookType === Constants.OPENING_BOOK_TYPE_OFF) {
+        return {fetch:'off'}
+    }
 
     if(!moves) {
         moves = this.forceFetchBookMoves()
@@ -271,7 +274,7 @@ function getBookMoves() {
 }
 
 function forceFetchBookMoves() {
-    let moves = fetchBookMoves(this.state.fen, this.state.variantChange, ["1600","1800","2000","2200"],["bullet","blitz","rapid","classical"],(moves)=>{
+    let moves = fetchBookMoves(this.state.fen, this.state.variant, ["1600","1800","2000","2200"],["bullet","blitz","rapid","classical"],(moves)=>{
         this.state.openingGraph.addBookNode(this.chess.fen(), moves)
         this.setState({update:this.state.update+1})
     })

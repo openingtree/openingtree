@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faInfoCircle} from '@fortawesome/free-solid-svg-icons'
 import { Button as MaterialUIButton } from '@material-ui/core'
 import Cached from '@material-ui/icons/Cached'
+import * as Constants from '../../app/Constants'
 
 export default class BookMove extends React.Component {
 
@@ -18,28 +19,27 @@ export default class BookMove extends React.Component {
                 {this.movesTable()}</div>
     }
 
+    enableBook(){
+        console.log('openingbook')
+        let newMovesSettings = Object.assign({},this.props.settings.movesSettings)
+        newMovesSettings.openingBookType = Constants.OPENING_BOOK_TYPE_MASTERS
+        this.props.settingsChange('movesSettings', newMovesSettings)
+    }
+
     movesTable() {
         if(this.props.bookMoves.fetch === "pending") {
             return <div className="center"><br/><Spinner/></div>
         }
+        if(this.props.bookMoves.fetch === "off") {
+            return this.offCard('Opening book is disabled',
+            'Click the button below to enable it',
+            this.enableBook.bind(this),'Enable opening book', <Cached />)
+        }
+
         if(this.props.bookMoves.fetch === "failed") {
-            return <Card className="errorCard"><CardBody className="singlePadding">
-            <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> Failed to fetch book moves</CardTitle>
-            <CardText className="smallText">
-                Please check your internet connection. Lichess could also be down.
-                <br/>
-                <br/><MaterialUIButton
-                onClick={this.props.forceFetchBookMoves}
-                variant="contained"
-                color="default"
-                className="mainButton" disableElevation
-                startIcon={<Cached />}
-                >
-                    Try again
-                </MaterialUIButton>
-            </CardText>
-            </CardBody>
-            </Card>
+            return this.offCard('Failed to fetch book moves',
+            'Please check your internet connection. Lichess could also be down.',
+            this.props.forceFetchBookMoves,'Try again', <Cached />)
         }
 
         return <MovesTable movesToShow={this.props.bookMoves.moves} namespace='book'
@@ -50,6 +50,26 @@ export default class BookMove extends React.Component {
                 compareToClicked={this.props.switchToMovesTab}
                 compareToAlt="Indicator for player moves - Click me"
                 settingsChange={this.props.settingsChange}/>
+    }
+
+    offCard(title, message, action, actionText, actionIcon) {
+        return <Card className="errorCard"><CardBody className="singlePadding">
+        <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> {title}</CardTitle>
+        <CardText className="smallText">
+            {message}
+            <br/>
+            <br/><MaterialUIButton
+            onClick={action}
+            variant="contained"
+            color="default"
+            className="mainButton" disableElevation
+            startIcon={actionIcon}
+            >
+                {actionText}
+            </MaterialUIButton>
+        </CardText>
+        </CardBody>
+        </Card>
     }
     resultsTable() {
         return <ResultsTable gameResults={this.props.gameResults}
