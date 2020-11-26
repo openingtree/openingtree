@@ -20,7 +20,6 @@ export default class BookMove extends React.Component {
     }
 
     enableBook(){
-        console.log('openingbook')
         let newMovesSettings = Object.assign({},this.props.settings.movesSettings)
         newMovesSettings.openingBookType = Constants.OPENING_BOOK_TYPE_MASTERS
         this.props.settingsChange('movesSettings', newMovesSettings)

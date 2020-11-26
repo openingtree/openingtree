@@ -279,7 +279,7 @@ function forceFetchBookMoves() {
         this.setState({update:this.state.update+1})
     })
     this.state.openingGraph.addBookNode(this.chess.fen(), moves)
-    this.setState({update:this.state.update+1})
+    setImmediate(()=>this.setState({update:this.state.update+1}))
     return moves
 }
 
@@ -319,7 +319,6 @@ function createMap(movesToShow){
     if(!movesToShow) {
         return map
     }
-    console.log(movesToShow)
     movesToShow.forEach((move)=> {
         map.set(move.san, move)
     })
