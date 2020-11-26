@@ -163,7 +163,7 @@ export default class MovesTable extends React.Component {
             <TableCell size="small" className="smallCol"><b>Move</b></TableCell>
             <TableCell size="small" className="smallCol"><b>Games</b></TableCell>
             <TableCell><b>Results</b><FontAwesomeIcon 
-                className={`floatRight`} 
+                className={`floatRight pointer`} 
                 icon={faWrench} onClick={this.toggleMovesSettings.bind(this)}/>
                 <MovesSettings isOpen={this.state.moveSettingsOpen} 
                     toggle={this.toggleMovesSettings.bind(this)}

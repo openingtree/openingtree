@@ -18,6 +18,7 @@ import {  Modal, ModalBody,
 import {chessLogic} from '../app/chess/ChessLogic'
 
 import {FormControlLabel, Checkbox} from '@material-ui/core'
+import cookieManager from '../app/CookieManager'
 
 export default class MainContainer extends React.Component {
   
@@ -37,16 +38,7 @@ export default class MainContainer extends React.Component {
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,
           playerColor:'',
-          movesSettings:{
-            openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
-            openingBookRating:Constants.ALL_BOOK_RATINGS,
-            openingBookTimeControls:[Constants.TIME_CONTROL_BULLET,
-                                    Constants.TIME_CONTROL_BLITZ,
-                                    Constants.TIME_CONTROL_RAPID,
-                                    Constants.TIME_CONTROL_CLASSICAL],
-            openingBookScoreIndicator:false,
-            openingBookWinsIndicator:true
-          }
+          movesSettings:this.getMovesSettingsFromCookie()
         },
         message:'',
         downloadingGames:false,
@@ -65,6 +57,25 @@ export default class MainContainer extends React.Component {
     this.setState({resize:this.state.resize+1})
     this.chessboardWidth = this.getChessboardWidth()
   }
+
+  getMovesSettingsFromCookie(){
+    let settings = cookieManager.getSettingsCookie()
+    if(!settings) {
+      // default settings
+      return {
+        openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
+        openingBookRating:Constants.ALL_BOOK_RATINGS,
+        openingBookTimeControls:[Constants.TIME_CONTROL_BULLET,
+                                Constants.TIME_CONTROL_BLITZ,
+                                Constants.TIME_CONTROL_RAPID,
+                                Constants.TIME_CONTROL_CLASSICAL],
+        openingBookScoreIndicator:false,
+        openingBookWinsIndicator:true
+      }
+    }
+    return settings.movesSettings
+  }
+
 
 
   render() {

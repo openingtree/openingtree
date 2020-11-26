@@ -4,6 +4,7 @@ import {copyText} from './loader/Common'
 import {chessLogic} from '../app/chess/ChessLogic'
 import OpeningGraph from '../app/OpeningGraph'
 import {fetchBookMoves} from '../app/OpeningBook'
+import CookieManager from '../app/CookieManager'
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -127,6 +128,9 @@ function clear() {
 
 function settingsChange(name, value) {
     if(name === 'movesSettings') {
+        let settingsToPersist = {}
+        settingsToPersist[name] = value
+        CookieManager.setSettingsCookie(settingsToPersist)
         this.state.openingGraph.clearBookNodes()
     }
     let settings = this.state.settings
