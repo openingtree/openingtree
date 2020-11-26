@@ -24,6 +24,9 @@ function brushes() {
     }
     return this.againstBrushes
 }
+function highlightArrow(move) {
+    this.setState({highlightedMove:move})
+}
 
 function calcMovable() {
 const dests = {}
@@ -86,12 +89,30 @@ function moveToShape(move) {
     }
 }
 
-function autoShapes(moves) {
-    if(moves) {
-        var shapes = moves.map(this.moveToShape.bind(this))
-        return this.fillArray(shapes,  25)
+function autoShapes(moves, highlightedMove) {
+    var shapes = []
+    if(highlightedMove) {
+        if(!highlightedMove.orig || !highlightedMove.dest) {
+            let chess = chessLogic(this.state.variant, this.state.fen)
+            let move = chess.move(highlightedMove.san)
+            highlightedMove.orig=move.from
+            highlightedMove.dest=move.to
+        }
+        highlightedMove.level = 0
+        shapes.push(this.moveToShape(highlightedMove))
     }
-    return this.fillArray([], 25) // dummy arrow to clear out existing arrows
+    if(moves) {
+        shapes = shapes.concat(moves.filter((m)=>{
+            if(!highlightedMove) {
+                return true
+            } 
+            if (highlightedMove.orig === m.orig && highlightedMove.dest === m.dest) {
+                return false
+            }
+            return true
+        }).map(this.moveToShape.bind(this)))
+    }
+    return this.fillArray(shapes,  25)
 }
 
 function getPlayerMoves() {
@@ -369,6 +390,7 @@ function addStateManagement(obj){
     obj.getBookMoves = getBookMoves
     obj.forceFetchBookMoves = forceFetchBookMoves
     obj.mergePlayerAndBookMoves = mergePlayerAndBookMoves
+    obj.highlightArrow = highlightArrow
 }
 
 export {addStateManagement}

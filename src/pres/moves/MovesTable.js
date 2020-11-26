@@ -194,8 +194,17 @@ export default class MovesTable extends React.Component {
         </TableRow></TableFooter>
     </Table>
     }
+    highlightArrowFn(move) {
+        return ()=>{
+            this.props.highlightArrow(move)
+        }
+    }
     getMultiItemRow(move, moveIndex) {
-        return <TableRow className={`${this.props.highlightMove === move.san?'bgColor ':''}moveRow`} key = {`m${move.orig}${move.dest}${move.san}`} onClick={this.move(move.san)}>
+        return <TableRow className={`${this.props.highlightMove === move.san?'bgColor ':''}moveRow`} 
+                        key = {`m${move.orig}${move.dest}${move.san}`} 
+                        onClick={this.move(move.san)} 
+                        onMouseOver={this.highlightArrowFn(move).bind(this)} 
+                        onMouseOut={()=>this.props.highlightArrow(null)}>
             <TableCell size="small" className="smallCol">{move.san} </TableCell>
             <TableCell size="small" id={`p${this.props.namespace}${moveIndex}`} className="smallCol" onClick ={this.togglePerformancePopover(moveIndex)}>
                 {simplifyCount(move.moveCount)}{this.getInfoIcon(moveIndex)}
@@ -254,7 +263,11 @@ export default class MovesTable extends React.Component {
         let sampleResultBlack = playerDetails(lastPlayedGame.black, lastPlayedGame.blackElo)
         let sampleResult = lastPlayedGame.result
 
-        return <TableRow className={`${this.props.highlightMove === move.san?'bgColor ':''}moveRow`} key = {`${move.orig}${move.dest}`} onClick={this.move(move.san)}>
+        return <TableRow className={`${this.props.highlightMove === move.san?'bgColor ':''}moveRow`} 
+                key = {`${move.orig}${move.dest}`} 
+                onClick={this.move(move.san)}
+                onMouseOver={this.highlightArrowFn(move).bind(this)} 
+                onMouseOut={()=>this.props.highlightArrow(null)}>
                 <TableCell size="small" className="smallCol">{move.san}</TableCell>
                 <TableCell colSpan = "2">
                         {sampleResultWhite} {sampleResult} {sampleResultBlack} {<FontAwesomeIcon className="pointerExternalLink" onClick ={this.props.launchGame(move.details.lastPlayedGame)} icon={faExternalLinkAlt}/>}

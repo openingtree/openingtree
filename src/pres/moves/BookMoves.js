@@ -49,7 +49,9 @@ export default class BookMove extends React.Component {
                 compareToClicked={this.props.switchToMovesTab}
                 compareToAlt="Indicator for player moves - Click me"
                 settingsChange={this.props.settingsChange}
-                variant={this.props.variant}/>
+                variant={this.props.variant}
+                highlightArrow={this.props.highlightArrow}
+                />
     }
 
     offCard(title, message, action, actionText, actionIcon) {

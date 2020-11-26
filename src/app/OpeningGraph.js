@@ -263,12 +263,12 @@ export default class OpeningGraph {
 
     levelFor(moveCount, maxCount){
         if(maxCount <= 0 ||moveCount/maxCount > 0.8) {
-            return 2
+            return 3
         }
         if(moveCount/maxCount>0.3) {
-            return 1
+            return 2
         }
-        return 0
+        return 1
     }
 
 }

@@ -45,18 +45,20 @@ export default class MainContainer extends React.Component {
         feedbackOpen:false,
         diagnosticsDataOpen:false,
         variant:selectedVariant,
-        update:0//increase count to force update the component
+        update:0,//increase count to force update the component
+        highlightedMove:null
       }
     this.chessboardWidth = this.getChessboardWidth()
 
-    this.forBrushes = ['paleGrey', 'paleGreen', 'green']
-    this.againstBrushes = ['paleRed', 'paleRed', 'red']
+    this.forBrushes = ['blue','paleGrey', 'paleGreen', 'green']
+    this.againstBrushes = ['blue','paleRed', 'paleRed', 'red']
     window.addEventListener('resize', this.handleResize.bind(this))
   }
   handleResize() {
     this.setState({resize:this.state.resize+1})
     this.chessboardWidth = this.getChessboardWidth()
   }
+
 
   getMovesSettingsFromCookie(){
     let settings = cookieManager.getSettingsCookie()
@@ -104,7 +106,7 @@ export default class MainContainer extends React.Component {
       drawable ={{
         enabled: true,
         visible: true,
-        autoShapes: this.autoShapes(playerMoves)
+        autoShapes: this.autoShapes(playerMoves, this.state.highlightedMove)
       }}
       style={{ margin: 'auto' }}
     />
@@ -129,6 +131,7 @@ export default class MainContainer extends React.Component {
                 variant={this.state.variant}
                 variantChange={this.variantChange.bind(this)}
                 forceFetchBookMoves={this.forceFetchBookMoves.bind(this)}
+                highlightArrow={this.highlightArrow.bind(this)}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:"left" }} 
