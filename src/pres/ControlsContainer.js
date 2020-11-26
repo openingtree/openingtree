@@ -167,6 +167,7 @@ export default class ControlsContainer extends React.Component {
               launchGame = {this.launchGame.bind(this)}
               switchToBookTab={this.switchToBookTab.bind(this)}
               highlightMove={this.state.highlightPlayerMove}
+              variant={this.props.variant}
               />
         </TabPane>
         <TabPane tabId="book">
@@ -181,6 +182,7 @@ export default class ControlsContainer extends React.Component {
               switchToMovesTab = {this.switchToMovesTab.bind(this)}
               highlightMove = {this.state.highlightBookMove}
               forceFetchBookMoves = {this.props.forceFetchBookMoves}
+              variant={this.props.variant}
               />
         </TabPane>
         <TabPane tabId="report">

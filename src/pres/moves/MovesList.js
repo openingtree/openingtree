@@ -24,6 +24,7 @@ export default class MovesList extends React.Component {
                 compareToClicked={this.props.switchToBookTab}
                 compareToAlt="Indicator for book moves - Click me"
                 settingsChange={this.props.settingsChange}
+                variant={this.props.variant}
                 />
     }
     resultsTable() {

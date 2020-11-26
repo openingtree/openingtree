@@ -1,8 +1,11 @@
 import request from 'request'
 import * as Common from './Common'
 
-export function fetchBookMoves(fen, variant, ratings, speeds, callback) {
-    let url = `https://explorer.lichess.ovh/master?fen=${fen}&play=&variant=${Common.lichessPerf(variant)}${joinParams('ratings',ratings)}${joinParams('speeds',speeds)}`
+export function fetchBookMoves(fen, variant, bookSettings, callback) {
+    let ratings = bookSettings.openingBookRating
+    let speeds = bookSettings.openingBookTimeControls
+    let bookType = bookSettings.openingBookType
+    let url = `https://explorer.lichess.ovh/${bookType}?fen=${fen}&play=&variant=${Common.lichessPerf(variant)}${joinParams('ratings',ratings)}${joinParams('speeds',speeds)}`
     request.get(url, (error, response) =>{
         if(error) {
             callback({fetch:"failed"})

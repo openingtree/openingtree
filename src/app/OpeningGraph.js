@@ -103,6 +103,9 @@ export default class OpeningGraph {
         let fen = simplifiedFen(fullFen)
         this.graph.book.set(fen, this.transform(book))
     }
+    clearBookNodes(){
+        this.graph.book = new Map()
+    }
     transform(book) {
         if(!book || !book.moves) {
             return book

@@ -169,7 +169,8 @@ export default class MovesTable extends React.Component {
                     toggle={this.toggleMovesSettings.bind(this)}
                     settingsChange={this.props.settingsChange}
                     updateSettings = {this.props.updateSettings}
-                    settings={this.props.settings}/>
+                    settings={this.props.settings}
+                    variant={this.props.variant}/>
             </TableCell>
         </TableRow></TableHead>
         :null}

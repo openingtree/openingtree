@@ -38,7 +38,7 @@ export default class MainContainer extends React.Component {
           orientation:Constants.PLAYER_COLOR_WHITE,
           playerColor:'',
           movesSettings:{
-            openingBookType:Constants.OPENING_BOOK_TYPE_MASTERS,
+            openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
             openingBookRating:Constants.ALL_BOOK_RATINGS,
             openingBookTimeControls:[Constants.TIME_CONTROL_BULLET,
                                     Constants.TIME_CONTROL_BLITZ,

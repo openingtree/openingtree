@@ -72,6 +72,7 @@ export const LICHESS_PERF_RACING_KINGS = "racingKings"
 export const LICHESS_PERF_THREE_CHECK = "threeCheck"
 export const LICHESS_PERF_KING_OF_THE_HILL = "kingOfTheHill"
 export const LICHESS_PERF_CRAZYHOUSE = "crazyhouse"
+export const LICHESS_PERF_STANDARD = "standard"
 
 export const LICHESS_HEADER_RACING_KINGS = "Racing Kings"
 export const LICHESS_HEADER_THREE_CHECK = "Three-check"
@@ -80,7 +81,7 @@ export const LICHESS_HEADER_STANDARD = "Standard"
 export const LICHESS_HEADER_CRAZYHOUSE = "Crazyhouse"
 
 export const OPENING_BOOK_TYPE_OFF = 'off'
-export const OPENING_BOOK_TYPE_MASTERS = 'masters'
+export const OPENING_BOOK_TYPE_MASTERS = 'master'
 export const OPENING_BOOK_TYPE_LICHESS = 'lichess'
 
 export const ALL_BOOK_RATINGS = ['1600','1800','2000','2200','2500']

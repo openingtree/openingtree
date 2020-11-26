@@ -21,7 +21,7 @@ export default class BookMove extends React.Component {
 
     enableBook(){
         let newMovesSettings = Object.assign({},this.props.settings.movesSettings)
-        newMovesSettings.openingBookType = Constants.OPENING_BOOK_TYPE_MASTERS
+        newMovesSettings.openingBookType = Constants.OPENING_BOOK_TYPE_LICHESS
         this.props.settingsChange('movesSettings', newMovesSettings)
     }
 
@@ -48,7 +48,8 @@ export default class BookMove extends React.Component {
                 highlightMove={this.props.highlightMove} 
                 compareToClicked={this.props.switchToMovesTab}
                 compareToAlt="Indicator for player moves - Click me"
-                settingsChange={this.props.settingsChange}/>
+                settingsChange={this.props.settingsChange}
+                variant={this.props.variant}/>
     }
 
     offCard(title, message, action, actionText, actionIcon) {

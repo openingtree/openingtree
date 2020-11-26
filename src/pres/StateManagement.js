@@ -126,6 +126,9 @@ function clear() {
 }
 
 function settingsChange(name, value) {
+    if(name === 'movesSettings') {
+        this.state.openingGraph.clearBookNodes()
+    }
     let settings = this.state.settings
     settings[name] = value;
     this.setState({
@@ -274,7 +277,7 @@ function getBookMoves() {
 }
 
 function forceFetchBookMoves() {
-    let moves = fetchBookMoves(this.state.fen, this.state.variant, ["1600","1800","2000","2200"],["bullet","blitz","rapid","classical"],(moves)=>{
+    let moves = fetchBookMoves(this.state.fen, this.state.variant, this.state.settings.movesSettings, (moves)=>{
         this.state.openingGraph.addBookNode(this.chess.fen(), moves)
         this.setState({update:this.state.update+1})
     })

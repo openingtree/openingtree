@@ -14,11 +14,13 @@ import {
     ToggleButtonGroup,
     ToggleButton
 } from '@material-ui/lab'
+import * as Constants from '../../app/Constants'
 
 export default class MovesSettings extends React.Component {
     constructor(props) {
         super(props)
         let mSettings = Object.assign({},this.props.settings.movesSettings)
+        mSettings.openingBookType = this.getTransformedBookType(mSettings.openingBookType)
         this.state={
             movesSettings: mSettings
         }
@@ -26,6 +28,9 @@ export default class MovesSettings extends React.Component {
 
     updateMoveSetting(key) {
         return (e, value) => {
+            if(Array.isArray(value) && value.length <1) {
+                return
+            }
             let newMovesSettings = Object.assign({},this.state.movesSettings)
             newMovesSettings[key] = value
             this.setState({
@@ -51,8 +56,12 @@ export default class MovesSettings extends React.Component {
             <ModalHeader toggle={this.cancel.bind(this)}>Opening book settings (Work in progress)</ModalHeader>
             <ModalBody>
                 <div className="littlePaddingTop">{this.getOpeningBookType()}</div>
+                {this.state.movesSettings.openingBookType === Constants.OPENING_BOOK_TYPE_LICHESS?
                 <div className="littlePaddingTop">{this.getOpeningBookRating()}</div>
+                :null}   
+                {this.state.movesSettings.openingBookType === Constants.OPENING_BOOK_TYPE_LICHESS?
                 <div className="littlePaddingTop">{this.getOpeningBookTimeControls()}</div>
+                :null}   
                 <div className="littlePaddingTop">{this.getIndicatorSwitch("openingBookWinsIndicator", "Book indicators")}</div>
             </ModalBody>
             <ModalFooter>
@@ -77,15 +86,32 @@ export default class MovesSettings extends React.Component {
       /></div>
     }
 
+    mastersBookAvailable() {
+        // masters book is only available for standard mode
+        return this.props.variant === Constants.VARIANT_STANDARD
+    }
+
+    getTransformedBookType(value){
+        //if masters book is not available, use lichess book
+        if(value === Constants.OPENING_BOOK_TYPE_MASTERS
+            && !this.mastersBookAvailable()) {
+            return Constants.OPENING_BOOK_TYPE_LICHESS
+        }
+        return value
+    }
+
     getOpeningBookType() {
-        return <div>Book type<br/><ToggleButtonGroup size="small" exclusive={true} value={this.state.movesSettings.openingBookType} onChange={this.updateMoveSetting('openingBookType')} aria-label="book type">
-            <ToggleButton value="off" aria-label="off">
+        return <div>Book type<br/><ToggleButtonGroup size="small" exclusive={true} value={this.getTransformedBookType(this.state.movesSettings.openingBookType)} onChange={this.updateMoveSetting('openingBookType')} aria-label="book type">
+            <ToggleButton value={Constants.OPENING_BOOK_TYPE_OFF} aria-label={Constants.OPENING_BOOK_TYPE_OFF}>
                 Off
-            </ToggleButton>
-            <ToggleButton value="masters" aria-label="masters">
-                Masters
-            </ToggleButton>
-            <ToggleButton value="lichess" aria-label="lichess">
+            </ToggleButton> {
+                this.mastersBookAvailable()?
+                <ToggleButton value={Constants.OPENING_BOOK_TYPE_MASTERS} aria-label={Constants.OPENING_BOOK_TYPE_MASTERS}>
+                    Masters
+                </ToggleButton>
+                :null
+            }
+            <ToggleButton value={Constants.OPENING_BOOK_TYPE_LICHESS} aria-label={Constants.OPENING_BOOK_TYPE_LICHESS}>
                 Lichess
             </ToggleButton>
         </ToggleButtonGroup></div>
