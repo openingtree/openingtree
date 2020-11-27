@@ -21,6 +21,12 @@ export default class MovesTable extends React.Component {
             moveSettingsOpen:false
         }
     }
+    isTouchDevice() {
+        return 'ontouchstart' in window;
+    }
+      
+      
+
     componentDidUpdate(prevProps, prevState) {
         if(prevProps.turnColor !== this.props.turnColor) {
             this.setState({
@@ -195,6 +201,9 @@ export default class MovesTable extends React.Component {
     </Table>
     }
     highlightArrowFn(move) {
+        if(this.isTouchDevice()) {
+            return ()=>{return}
+        }
         return ()=>{
             this.props.highlightArrow(move)
         }
