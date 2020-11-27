@@ -53,7 +53,7 @@ export default class MovesSettings extends React.Component {
 
     render() {
         return <Modal isOpen={this.props.isOpen} toggle={this.cancel.bind(this)}>
-            <ModalHeader toggle={this.cancel.bind(this)}>Opening book settings (Work in progress)</ModalHeader>
+            <ModalHeader toggle={this.cancel.bind(this)}>Opening book settings</ModalHeader>
             <ModalBody>
                 <div className="littlePaddingTop">{this.getOpeningBookType()}</div>
                 {this.state.movesSettings.openingBookType === Constants.OPENING_BOOK_TYPE_LICHESS?

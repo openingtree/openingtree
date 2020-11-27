@@ -19,11 +19,13 @@ import {chessLogic} from '../app/chess/ChessLogic'
 
 import {FormControlLabel, Checkbox} from '@material-ui/core'
 import cookieManager from '../app/CookieManager'
+import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
 
 export default class MainContainer extends React.Component {
   
   constructor(props){
     super(props)
+    UserProfile.getUserProfile()
     let urlVariant = new URLSearchParams(window.location.search).get("variant")
     let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_STANDARD
     this.chess = chessLogic(selectedVariant)
@@ -72,7 +74,7 @@ export default class MainContainer extends React.Component {
                                 Constants.TIME_CONTROL_RAPID,
                                 Constants.TIME_CONTROL_CLASSICAL],
         openingBookScoreIndicator:false,
-        openingBookWinsIndicator:true
+        openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
       }
     }
     return settings.movesSettings
