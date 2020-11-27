@@ -202,6 +202,8 @@ export default class MovesTable extends React.Component {
     }
     highlightArrowFn(move) {
         if(this.isTouchDevice()) {
+            // do not highlight on touch screens because it gives weird behavior
+            // single touch just highlights the arrow and user will need to double touch to make the move
             return ()=>{return}
         }
         return ()=>{
