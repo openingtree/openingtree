@@ -12,6 +12,7 @@ import * as Constants from '../app/Constants'
 import ReportControls from './ReportControls'
 import {Modal, ModalHeader, ModalFooter} from 'reactstrap'
 import {Table, TableRow, TableBody, TableCell} from '@material-ui/core'
+import {Badge} from 'reactstrap'
 
 export default class ControlsContainer extends React.Component {
     constructor(props){
@@ -116,7 +117,7 @@ export default class ControlsContainer extends React.Component {
             className={classnames({ active: this.state.activeTab === 'book' })}
             onClick={() => { this.toggle('book'); }}
           >
-            <FontAwesomeIcon icon={faBook} /> {this.state.activeTab === 'book'?"Opening book":""}
+            <FontAwesomeIcon icon={faBook} /> {this.state.activeTab === 'book'?"Opening book":<Badge className="sourceName" color="info">New!</Badge>}
           </NavLink>
         </NavItem>
         <NavItem>

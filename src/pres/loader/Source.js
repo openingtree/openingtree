@@ -41,7 +41,7 @@ export default class Source extends React.Component {
         }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Load <b>.tree</b> file</span></span>
         } else if (source === Constants.SITE_ONLINE_TOURNAMENTS) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}{addNumber?<FontAwesomeIcon icon={faChessRook} className="lowOpacity" />:<Badge className="sourceName" color="info">New!</Badge>}<span className="sourceName"> Lichess tournaments</span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<FontAwesomeIcon icon={faChessRook} className="lowOpacity" /><span className="sourceName"> Lichess tournaments</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }
