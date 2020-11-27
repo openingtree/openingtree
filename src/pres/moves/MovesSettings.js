@@ -15,6 +15,8 @@ import {
     ToggleButton
 } from '@material-ui/lab'
 import * as Constants from '../../app/Constants'
+import { Collapse, CardBody, Card, CardText } from 'reactstrap';
+import Link from '@material-ui/core/Link'
 
 export default class MovesSettings extends React.Component {
     constructor(props) {
@@ -22,7 +24,8 @@ export default class MovesSettings extends React.Component {
         let mSettings = Object.assign({},this.props.settings.movesSettings)
         mSettings.openingBookType = this.getTransformedBookType(mSettings.openingBookType)
         this.state={
-            movesSettings: mSettings
+            movesSettings: mSettings,
+            indicatorInfoOpen:false
         }
     }
 
@@ -51,6 +54,10 @@ export default class MovesSettings extends React.Component {
         this.props.toggle()
     }
 
+    toggleIndicatorInfo(e) {
+        this.setState({indicatorInfoOpen:!this.state.indicatorInfoOpen})
+    }
+
     render() {
         return <Modal isOpen={this.props.isOpen} toggle={this.cancel.bind(this)}>
             <ModalHeader toggle={this.cancel.bind(this)}>Opening book settings</ModalHeader>
@@ -62,7 +69,19 @@ export default class MovesSettings extends React.Component {
                 {this.state.movesSettings.openingBookType === Constants.OPENING_BOOK_TYPE_LICHESS?
                 <div className="littlePaddingTop">{this.getOpeningBookTimeControls()}</div>
                 :null}   
-                <div className="littlePaddingTop">{this.getIndicatorSwitch("openingBookWinsIndicator", "Book indicators")}</div>
+                <div className="littlePaddingTop">{this.getIndicatorSwitch("openingBookWinsIndicator", <span>Book indicators <Link href="#" className="smallText" onClick={this.toggleIndicatorInfo.bind(this)}>whats this?</Link></span>)}</div>
+                <Collapse isOpen={this.state.indicatorInfoOpen}>
+                <Card>
+                    <CardBody className="singlePadding">
+                    <img src="/images/bookIndicator.png" alt="bookIndicator"/>
+                    <CardText className="smallText">
+                        Little triangles indicate the openingbook statistics on the moves tab and the player 
+                        statistics on the openingbook tab. <br/>Everything left of the white triangle is a win for white, 
+                        everything right of the black triangle is a win for black and everything in the middle is a draw.<br/>
+                        If there is only a black triangle and no white, it means there are no draws.</CardText>
+                    </CardBody>
+                    </Card>
+                </Collapse>
             </ModalBody>
             <ModalFooter>
             <Button color="link" onClick={this.cancel.bind(this)}>Cancel</Button>

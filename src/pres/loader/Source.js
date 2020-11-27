@@ -12,7 +12,6 @@ import People from '@material-ui/icons/People';
 import Save from '@material-ui/icons/Save';
 import Divider from '@material-ui/core/Divider';
 import DateRange from '@material-ui/icons/DateRange';
-import {Badge} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChessRook } from '@fortawesome/free-solid-svg-icons'
 import AccordionActions from '@material-ui/core/AccordionActions';
