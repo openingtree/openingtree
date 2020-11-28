@@ -3,6 +3,8 @@ import {trackEvent} from '../app/Analytics'
 import {copyText} from './loader/Common'
 import {chessLogic} from '../app/chess/ChessLogic'
 import OpeningGraph from '../app/OpeningGraph'
+import {fetchBookMoves} from '../app/OpeningBook'
+import CookieManager from '../app/CookieManager'
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -22,6 +24,9 @@ function brushes() {
     }
     return this.againstBrushes
 }
+function highlightArrow(move) {
+    this.setState({highlightedMove:move})
+}
 
 function calcMovable() {
 const dests = {}
@@ -40,15 +45,21 @@ function orientation() {
     return this.state.settings.orientation
 }
 
-function onMove(from, to, san) {
+function onMove(sanOrOrig, dest) {
+    let moveObj = null
+    if(dest) {
+        moveObj = { from:sanOrOrig, to:dest, promotion: 'q'}
+    } else {
+        moveObj = sanOrOrig
+    }
     const chess = this.chess
-    let move = chess.move({ from, to, san, promotion: 'q'})
+    let move = chess.move(moveObj)
     this.setState({ fen: chess.fen(), lastMove: move})
 }
 
 
-function onMoveAction(from, to, san) {
-    this.onMove(from,to, san)
+function onMoveAction(sanOrOrig, dest) {
+    this.onMove(sanOrOrig, dest)
     trackEvent(Constants.EVENT_CATEGORY_CHESSBOARD, "Move")
 }
 
@@ -78,16 +89,33 @@ function moveToShape(move) {
     }
 }
 
-function autoShapes() {
-    var moves = this.movesToShow()
-    if(moves) {
-        var shapes = moves.map(this.moveToShape.bind(this))
-        return this.fillArray(shapes,  25)
+function autoShapes(moves, highlightedMove) {
+    var shapes = []
+    if(highlightedMove) {
+        if(!highlightedMove.orig || !highlightedMove.dest) {
+            let chess = chessLogic(this.state.variant, this.state.fen)
+            let move = chess.move(highlightedMove.san)
+            highlightedMove.orig=move.from
+            highlightedMove.dest=move.to
+        }
+        highlightedMove.level = 0
+        shapes.push(this.moveToShape(highlightedMove))
     }
-    return this.fillArray([], 25) // dummy arrow to clear out existing arrows
+    if(moves) {
+        shapes = shapes.concat(moves.filter((m)=>{
+            if(!highlightedMove) {
+                return true
+            } 
+            if (highlightedMove.orig === m.orig && highlightedMove.dest === m.dest) {
+                return false
+            }
+            return true
+        }).map(this.moveToShape.bind(this)))
+    }
+    return this.fillArray(shapes,  25)
 }
 
-function movesToShow() {
+function getPlayerMoves() {
     if(!this.state.openingGraph.hasMoves) {
         return null;
     }
@@ -120,6 +148,12 @@ function clear() {
 }
 
 function settingsChange(name, value) {
+    if(name === 'movesSettings') {
+        let settingsToPersist = {}
+        settingsToPersist[name] = value
+        CookieManager.setSettingsCookie(settingsToPersist)
+        this.state.openingGraph.clearBookNodes()
+    }
     let settings = this.state.settings
     settings[name] = value;
     this.setState({
@@ -168,6 +202,9 @@ function closeError() {
 function toggleFeedback(diagnosticsOpen) {
     return () => {
         let feedbackOpen = this.state.feedbackOpen
+        if(!feedbackOpen) {
+            trackEvent(Constants.EVENT_CATEGORY_GLOBAL_HEADER, "feedbackOpen")
+        }
         this.closeError()
         this.setState({feedbackOpen:!feedbackOpen,
                 diagnosticsDataOpen:diagnosticsOpen})
@@ -250,6 +287,76 @@ function variantChange(newVariant) {
     setImmediate(this.reset.bind(this))
 }
 
+// fetch the book moves openinggraph directly if they are available
+// otherwise 
+//  1. fetch them from lichess
+//  2. store them in openinggraph
+//  3. update the component so that getBookMoves gets called again
+function getBookMoves() {
+    let moves = this.state.openingGraph.getBookNode(this.chess.fen())
+    if(this.state.settings.movesSettings.openingBookType === Constants.OPENING_BOOK_TYPE_OFF) {
+        return {fetch:'off'}
+    }
+
+    if(!moves) {
+        moves = this.forceFetchBookMoves()
+    }
+    return moves
+}
+
+function forceFetchBookMoves() {
+    let moves = fetchBookMoves(this.state.fen, this.state.variant, this.state.settings.movesSettings, (moves)=>{
+        this.state.openingGraph.addBookNode(this.chess.fen(), moves)
+        this.setState({update:this.state.update+1})
+    })
+    this.state.openingGraph.addBookNode(this.chess.fen(), moves)
+    setImmediate(()=>this.setState({update:this.state.update+1}))
+    return moves
+}
+
+function mergePlayerAndBookMoves(playerMovesToShow, bookMovesToShow) {
+    if(!playerMovesToShow) {
+        return
+    }
+    let bookMovesMap = createMap(bookMovesToShow.moves)
+    playerMovesToShow.forEach((move)=>{
+        let bookMove = bookMovesMap.get(move.san)
+        if(!bookMove) {
+            return
+        }
+        move.compareTo = {
+            bookScore:getCompareScores(bookMove),
+            userScore:getCompareScores(move),
+            values:getCompareToValues(bookMove)
+        }
+        bookMove.compareTo = {
+            bookScore:getCompareScores(bookMove),
+            userScore:getCompareScores(move),
+            values:getCompareToValues(move)
+        }
+    })
+}
+function getCompareScores(move){
+    return (move.details.whiteWins+move.details.draws/2)/move.details.count*100
+}
+
+function getCompareToValues(move) {
+    return [move.details.whiteWins/move.details.count*100, 
+        (move.details.whiteWins+move.details.draws)/move.details.count*100]
+}
+
+function createMap(movesToShow){
+    let map = new Map()
+    if(!movesToShow) {
+        return map
+    }
+    movesToShow.forEach((move)=> {
+        map.set(move.san, move)
+    })
+    return map
+}
+
+
 function addStateManagement(obj){
     obj.orientation  = orientation
     obj.turnColor = turnColor
@@ -266,7 +373,7 @@ function addStateManagement(obj){
     obj.fillArray = fillArray
     obj.brushes = brushes
     obj.moveToShape = moveToShape
-    obj.movesToShow = movesToShow
+    obj.getPlayerMoves = getPlayerMoves
     obj.gameResults = gameResults
     obj.showError = showError
     obj.showInfo = showInfo
@@ -283,6 +390,10 @@ function addStateManagement(obj){
     obj.getBody = getBody.bind(obj)
     obj.getRedditLink = getRedditLink
     obj.variantChange = variantChange
+    obj.getBookMoves = getBookMoves
+    obj.forceFetchBookMoves = forceFetchBookMoves
+    obj.mergePlayerAndBookMoves = mergePlayerAndBookMoves
+    obj.highlightArrow = highlightArrow
 }
 
 export {addStateManagement}

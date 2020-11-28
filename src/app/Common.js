@@ -42,14 +42,16 @@ export function lichessVariantHeader(variant) {
     return Constants.LICHESS_HEADER_STANDARD
 }
 export function lichessPerf(variant) {
-    if(variant === Constants.VARIANT_KING_OF_THE_HILL) {
+    if (variant === Constants.VARIANT_KING_OF_THE_HILL) {
         return Constants.LICHESS_PERF_KING_OF_THE_HILL
-    } else if(variant === Constants.VARIANT_RACING_KINGS) {
+    } else if (variant === Constants.VARIANT_RACING_KINGS) {
         return Constants.LICHESS_PERF_RACING_KINGS
-    } else if(variant === Constants.VARIANT_THREE_CHECK) {
+    } else if (variant === Constants.VARIANT_THREE_CHECK) {
         return Constants.LICHESS_PERF_THREE_CHECK
-    } else if(variant === Constants.VARIANT_CRAZYHOUSE) {
+    } else if (variant === Constants.VARIANT_CRAZYHOUSE) {
         return Constants.LICHESS_PERF_CRAZYHOUSE
+    } else if (variant === Constants.VARIANT_STANDARD) {
+        return Constants.LICHESS_PERF_STANDARD
     }
 }
 export function chessDotComRules(variant) {

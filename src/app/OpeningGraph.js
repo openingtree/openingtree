@@ -99,6 +99,41 @@ export default class OpeningGraph {
         currNode.playedByMax = Math.max(currNode.playedByMax, moveCount)
     }
 
+    addBookNode(fullFen, book) {
+        let fen = simplifiedFen(fullFen)
+        this.graph.book.set(fen, this.transform(book))
+    }
+    clearBookNodes(){
+        this.graph.book = new Map()
+    }
+    transform(book) {
+        if(!book || !book.moves) {
+            return book
+        }
+        return {
+            fetch:"success",
+            moves:book.moves.map((move)=>{
+                let count = move.black+move.white+move.draws
+                return {
+                    san:move.san,
+                    details:{
+                        hasData:true,
+                        blackWins:move.black,
+                        whiteWins:move.white,
+                        draws:move.draws,
+                        count:count,
+                        averageElo:move.averageRating
+                    },
+                    moveCount:count
+                }
+            })
+        }
+    }
+    getBookNode(fullFen) {
+        let fen = simplifiedFen(fullFen)
+        return this.graph.book.get(fen)
+    }
+
     getNodeFromGraph(fullFen, addIfNull) {
         let fen = simplifiedFen(fullFen)
         var currNode = this.graph.nodes.get(fen)
@@ -184,6 +219,7 @@ export default class OpeningGraph {
         currentMoveDetails.whiteWins += whiteWin
         currentMoveDetails.draws += draw
         currentMoveDetails.totalOpponentElo += parseInt(opponentElo)
+        currentMoveDetails.hasData = true
         return currentMoveDetails
     }
 
@@ -227,12 +263,12 @@ export default class OpeningGraph {
 
     levelFor(moveCount, maxCount){
         if(maxCount <= 0 ||moveCount/maxCount > 0.8) {
-            return 2
+            return 3
         }
         if(moveCount/maxCount>0.3) {
-            return 1
+            return 2
         }
-        return 0
+        return 1
     }
 
 }
@@ -241,6 +277,7 @@ export default class OpeningGraph {
 class Graph {
     constructor(arrayEntries, pgnStats){
         this.nodes = new Map()
+        this.book = new Map()
         this.pgnStats = []
         this.playerColor = ''
         if(arrayEntries) {
@@ -262,6 +299,7 @@ class GraphNode {
 
 function emptyDetails() {
     return {
+        hasData:false,
 //        count: 0,
         blackWins: 0,
         whiteWins: 0,

@@ -22,12 +22,18 @@ export const MAX_DOWNLOAD_LIMIT = 2000
 export const MAX_ELO_RATING = 3000
 
 export const EVENT_CATEGORY_PGN_LOADER = "loader"
+export const EVENT_CATEGORY_OPENING_BOOK = "openingBook"
+export const EVENT_CATEGORY_SETTINGS = "settings"
+export const EVENT_CATEGORY_LICHESS_LOGIN = "lichess"
+export const EVENT_CATEGORY_MAIN_ACTION = "mainAction"
+export const EVENT_CATEGORY_SEGMENT = "segment"
 export const EVENT_CATEGORY_MOVES_LIST = "moves"
 export const EVENT_CATEGORY_CONTROLS = "controls"
 export const EVENT_CATEGORY_NAVIGATOR = "navigator"
 export const EVENT_CATEGORY_CHESSBOARD = "chessboard"
 export const EVENT_CATEGORY_ERROR = "error"
 export const EVENT_CATEGORY_MESSAGE_SHOWN = "message"
+export const EVENT_CATEGORY_GLOBAL_HEADER = "globalHeader"
 
 export const ROOT_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
 export const RACING_KINGS_ROOT_FEN="8/8/8/8/8/8/krbnNBRK/qrbnNBRQ w - - 0 1"
@@ -72,9 +78,16 @@ export const LICHESS_PERF_RACING_KINGS = "racingKings"
 export const LICHESS_PERF_THREE_CHECK = "threeCheck"
 export const LICHESS_PERF_KING_OF_THE_HILL = "kingOfTheHill"
 export const LICHESS_PERF_CRAZYHOUSE = "crazyhouse"
+export const LICHESS_PERF_STANDARD = "standard"
 
 export const LICHESS_HEADER_RACING_KINGS = "Racing Kings"
 export const LICHESS_HEADER_THREE_CHECK = "Three-check"
 export const LICHESS_HEADER_KING_OF_THE_HILL = "King of the Hill"
 export const LICHESS_HEADER_STANDARD = "Standard"
 export const LICHESS_HEADER_CRAZYHOUSE = "Crazyhouse"
+
+export const OPENING_BOOK_TYPE_OFF = 'off'
+export const OPENING_BOOK_TYPE_MASTERS = 'master'
+export const OPENING_BOOK_TYPE_LICHESS = 'lichess'
+
+export const ALL_BOOK_RATINGS = ['1600','1800','2000','2200','2500']

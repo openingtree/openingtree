@@ -18,11 +18,17 @@ import {  Modal, ModalBody,
 import {chessLogic} from '../app/chess/ChessLogic'
 
 import {FormControlLabel, Checkbox} from '@material-ui/core'
+import cookieManager from '../app/CookieManager'
+import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
+import {trackEvent} from '../app/Analytics'
 
 export default class MainContainer extends React.Component {
   
   constructor(props){
     super(props)
+    let userProfile = UserProfile.getUserProfile()
+    trackEvent(Constants.EVENT_CATEGORY_SEGMENT, "UserType", `${userProfile.userType}`, userProfile.numVisits)
+    
     let urlVariant = new URLSearchParams(window.location.search).get("variant")
     let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_STANDARD
     this.chess = chessLogic(selectedVariant)
@@ -36,18 +42,21 @@ export default class MainContainer extends React.Component {
         settings:{
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,
-          playerColor:''
+          playerColor:'',
+          movesSettings:this.getMovesSettingsFromCookie()
         },
         message:'',
         downloadingGames:false,
         feedbackOpen:false,
         diagnosticsDataOpen:false,
-        variant:selectedVariant
+        variant:selectedVariant,
+        update:0,//increase count to force update the component
+        highlightedMove:null
       }
     this.chessboardWidth = this.getChessboardWidth()
 
-    this.forBrushes = ['paleGrey', 'paleGreen', 'green']
-    this.againstBrushes = ['paleRed', 'paleRed', 'red']
+    this.forBrushes = ['blue','paleGrey', 'paleGreen', 'green']
+    this.againstBrushes = ['blue','paleRed', 'paleRed', 'red']
     window.addEventListener('resize', this.handleResize.bind(this))
   }
   handleResize() {
@@ -56,9 +65,35 @@ export default class MainContainer extends React.Component {
   }
 
 
+  getMovesSettingsFromCookie(){
+    let settings = cookieManager.getSettingsCookie()
+    if(!settings) {
+      // default settings
+      settings = {
+        movesSettings: {
+          openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
+          openingBookRating:Constants.ALL_BOOK_RATINGS,
+          openingBookTimeControls:[Constants.TIME_CONTROL_BULLET,
+                                  Constants.TIME_CONTROL_BLITZ,
+                                  Constants.TIME_CONTROL_RAPID,
+                                  Constants.TIME_CONTROL_CLASSICAL],
+          openingBookScoreIndicator:false,
+          openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
+        }
+      }
+    }
+    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "winsIndicator", `${settings.movesSettings.openingBookWinsIndicator?"on":"off"}`)
+    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "bookType", settings.movesSettings.openingBookType)
+
+    return settings.movesSettings
+  }
+
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     let snackBarOpen = this.state.message?true:false
+    let playerMoves = this.getPlayerMoves()
+    let bookMoves = this.getBookMoves()
+    this.mergePlayerAndBookMoves(playerMoves, bookMoves)
     return <div className="rootView"> 
         <GlobalHeader toggleFeedback = {this.toggleFeedback(false)}/>
         <Container className="mainContainer">
@@ -79,7 +114,7 @@ export default class MainContainer extends React.Component {
       drawable ={{
         enabled: true,
         visible: true,
-        autoShapes: this.autoShapes()
+        autoShapes: this.autoShapes(playerMoves, this.state.highlightedMove)
       }}
       style={{ margin: 'auto' }}
     />
@@ -90,7 +125,8 @@ export default class MainContainer extends React.Component {
                 settings={this.state.settings}
                 reset={this.reset.bind(this)}
                 clear={this.clear.bind(this)}
-                movesToShow={this.movesToShow()}
+                playerMoves={playerMoves}
+                bookMoves={bookMoves}
                 gameResults={this.gameResults()}
                 onMove={this.onMove.bind(this)}
                 turnColor={this.turnColor()}
@@ -102,6 +138,8 @@ export default class MainContainer extends React.Component {
                 importCallback={this.importGameState.bind(this)}
                 variant={this.state.variant}
                 variantChange={this.variantChange.bind(this)}
+                forceFetchBookMoves={this.forceFetchBookMoves.bind(this)}
+                highlightArrow={this.highlightArrow.bind(this)}
                 /></Col>
     </Row></Container>
     <Snackbar anchorOrigin={{ vertical:'bottom', horizontal:"left" }} 

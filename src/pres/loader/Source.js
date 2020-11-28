@@ -12,7 +12,6 @@ import People from '@material-ui/icons/People';
 import Save from '@material-ui/icons/Save';
 import Divider from '@material-ui/core/Divider';
 import DateRange from '@material-ui/icons/DateRange';
-import {Badge} from 'reactstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChessRook } from '@fortawesome/free-solid-svg-icons'
 import AccordionActions from '@material-ui/core/AccordionActions';
@@ -41,7 +40,7 @@ export default class Source extends React.Component {
         }  else if (source === Constants.SITE_OPENING_TREE_FILE) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Load <b>.tree</b> file</span></span>
         } else if (source === Constants.SITE_ONLINE_TOURNAMENTS) {
-            return <span>{addNumber?getNumberIcon('done', addNumber):null}{addNumber?<FontAwesomeIcon icon={faChessRook} className="lowOpacity" />:<Badge className="sourceName" color="info">New!</Badge>}<span className="sourceName"> Lichess tournaments</span></span>
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<FontAwesomeIcon icon={faChessRook} className="lowOpacity" /><span className="sourceName"> Lichess tournaments</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }

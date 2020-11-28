@@ -1,6 +1,10 @@
 .nav-tabs .nav-link {
     cursor: pointer;
   }
+.pointer {
+    cursor: pointer;
+  }
+
 .settingButton:hover  {
     background-color: #dcdcdc;
 }
@@ -42,11 +46,18 @@
     cursor: pointer;
 }
 
+.moveRow.bgColor:hover  {
+    background-color: lightblue;
+    cursor: pointer;
+}
 .moveRow:hover  {
     background-color: #dcdcdc;
     cursor: pointer;
 }
 
+.bgColor {
+    background-color: lightblue;
+}
 
 .smallCol {
     width: 2rem;
@@ -177,6 +188,9 @@
 .fenDiv {
     padding-top:10px;
 }
+.errorCard {
+    margin-top:10px;
+}
 
 .playernameField {
     width:75%
@@ -297,4 +311,22 @@
 }
 .leftMargin4 {
     margin-left:4px;
+}
+.RSPBprogressBar {
+    background:transparent
+}
+.leftPadding{
+    padding-left:2px;
+}
+.zeroHeight{
+    height:0px;
+}
+.scoresProgress{
+    padding-bottom:2px;
+}
+.littlePaddingTop{
+    padding-top:7px
+}
+.floatRight{
+    float:right
 }
