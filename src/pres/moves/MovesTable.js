@@ -43,6 +43,9 @@ export default class MovesTable extends React.Component {
     }
 
     toggleMovesSettings(){
+        if(!this.state.moveSettingsOpen) {
+            trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "MoveSettingsOpen")
+        }
         this.setState({moveSettingsOpen:!this.state.moveSettingsOpen})
     }
 

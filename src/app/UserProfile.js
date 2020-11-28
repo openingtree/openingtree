@@ -25,7 +25,8 @@ class UserProfile {
             userType = USER_PROFILE_FREQUENT_USER
         }
         this.userProfile = {
-            userType:userType
+            userType:userType,
+            numVisits:visitInfo.numVisits
         }
         return this.userProfile
     }

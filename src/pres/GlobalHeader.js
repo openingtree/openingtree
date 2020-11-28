@@ -5,6 +5,7 @@ import {faComments, faCaretDown, faQuestionCircle} from '@fortawesome/free-solid
 import { faDiscord } from '@fortawesome/free-brands-svg-icons'
 import * as Constants from '../app/Constants'
 import Faq from 'react-faq-component'
+import {trackEvent} from '../app/Analytics'
 
 import {
   Navbar,
@@ -30,13 +31,25 @@ const GlobalHeader = (props) => {
   const toggle = () => setIsOpen(!isOpen)
 
   const [modal, setModal] = useState(false);
-  const toggleModal = () => setModal(!modal)
-
+  const toggleModal = () => {
+    if(!modal) {
+      trackEvent(Constants.EVENT_CATEGORY_GLOBAL_HEADER, "AcknowledgementsOpen")
+    }
+    setModal(!modal)
+  }
   const [isFAQOpen, setFAQOpen] = useState(false);
-  const toggleFAQModal = () => setFAQOpen(!isFAQOpen)
+  const toggleFAQModal = () => {
+    if(!isFAQOpen) {
+      trackEvent(Constants.EVENT_CATEGORY_GLOBAL_HEADER, "FaqOpen")
+    }
+    setFAQOpen(!isFAQOpen)
+  }
 
-  const launch = (url) => {
+  const launch = (url, eventName) => {
     return () => {
+      if(eventName) {
+        trackEvent(Constants.EVENT_CATEGORY_GLOBAL_HEADER, eventName)
+      }
       window.open(url, "_blank")
     }
   }
@@ -50,7 +63,7 @@ const GlobalHeader = (props) => {
       <DropdownItem onClick={toggleFAQModal}>
         FAQ
       </DropdownItem>
-      <DropdownItem onClick={launch("https://www.youtube.com/watch?v=5DOLBfHghaY")}>
+      <DropdownItem onClick={launch("https://www.youtube.com/watch?v=5DOLBfHghaY", "tutorial")}>
         Watch Tutorial
       </DropdownItem>
     </DropdownMenu>
@@ -66,20 +79,20 @@ const GlobalHeader = (props) => {
         <DropdownItem onClick={toggleModal}>
           Acknowledgements
         </DropdownItem>
-        <DropdownItem onClick={launch("https://www.openingtree.com/old")}>
+        <DropdownItem onClick={launch("https://www.openingtree.com/old", "OldVersion")}>
           Old version
         </DropdownItem>
-        <DropdownItem onClick={launch("https://github.com/openingtree/openingtree")}>
+        <DropdownItem onClick={launch("https://github.com/openingtree/openingtree","github")}>
           Github
         </DropdownItem>
         <DropdownItem divider />
-        <DropdownItem onClick={launch("https://lichess.org/")}>
+        <DropdownItem onClick={launch("https://lichess.org/","lichess")}>
           Lichess
         </DropdownItem>
-        <DropdownItem onClick={launch("https://www.lichess4545.com/")}>
+        <DropdownItem onClick={launch("https://www.lichess4545.com/","lichess4545")}>
           Lichess4545
         </DropdownItem>
-        <DropdownItem onClick={launch("https://www.chess.com")}>
+        <DropdownItem onClick={launch("https://www.chess.com","chessDotCom")}>
           Chess.com
         </DropdownItem>
       </DropdownMenu>
@@ -185,10 +198,10 @@ const config = {
         <NavbarToggler onClick={toggle}/>
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-          <NavItem><NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE")}>"It's so powerful" - IM Eric Rosen <span className="smallText">[Watch video]</span></NavLink></NavItem>
+          <NavItem><NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE","mainVideo")}>"It's so powerful" - IM Eric Rosen <span className="smallText">[Watch video]</span></NavLink></NavItem>
           </Nav>
           <Nav className="ml-auto" navbar>
-          <NavItem><NavLink className="navLinkButton" onClick={launch(Constants.OPENING_TREE_DISCORD)}><FontAwesomeIcon icon={faDiscord} className="discordIcon"/> Join our discord</NavLink></NavItem>
+          <NavItem><NavLink className="navLinkButton" onClick={launch(Constants.OPENING_TREE_DISCORD,"discord")}><FontAwesomeIcon icon={faDiscord} className="discordIcon"/> Join our discord</NavLink></NavItem>
           </Nav>
           <Nav className="" navbar>
           <NavItem><NavLink className="navLinkButton" onClick={props.toggleFeedback}><FontAwesomeIcon icon={faComments} className="feedbackIcon"/> Send feedback</NavLink></NavItem>

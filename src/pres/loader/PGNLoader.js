@@ -168,7 +168,7 @@ export default class PGNLoader extends React.Component {
     fetchLichessLoginStatus(){
         let lichessAccessToken = cookieManager.getLichessAccessToken()
         if(lichessAccessToken) {
-            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessTokenFound")
+            trackEvent(Constants.EVENT_CATEGORY_LICHESS_LOGIN, "lichessTokenFound")
 
             this.setState({lichessLoginState:Constants.LICHESS_STATE_PENDING})
             
@@ -180,15 +180,15 @@ export default class PGNLoader extends React.Component {
                             lichessLoginState:Constants.LICHESS_LOGGED_IN,
                             lichessLoginName:responseObj.username
                         })
-                        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessFetchSuccess")
+                        trackEvent(Constants.EVENT_CATEGORY_LICHESS_LOGIN, "lichessFetchSuccess")
                         return
                     } 
                 } 
-                trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessFetchFailed")
+                trackEvent(Constants.EVENT_CATEGORY_LICHESS_LOGIN, "lichessFetchFailed")
                 this.setState({lichessLoginState:Constants.LICHESS_FAILED_FETCH})
             })
         } else {
-            trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessNoToken")
+            trackEvent(Constants.EVENT_CATEGORY_LICHESS_LOGIN, "lichessNoToken")
         }
     }
     logoutOfLichess() {
@@ -197,7 +197,7 @@ export default class PGNLoader extends React.Component {
             lichessLoginState:Constants.LICHESS_NOT_LOGGED_IN,
             lichessLoginName:''
         })
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "lichessLogout")
+        trackEvent(Constants.EVENT_CATEGORY_LICHESS_LOGIN, "lichessLogout")
     }
 
     filtersChange(filters) {

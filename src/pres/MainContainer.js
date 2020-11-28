@@ -20,12 +20,15 @@ import {chessLogic} from '../app/chess/ChessLogic'
 import {FormControlLabel, Checkbox} from '@material-ui/core'
 import cookieManager from '../app/CookieManager'
 import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
+import {trackEvent} from '../app/Analytics'
 
 export default class MainContainer extends React.Component {
   
   constructor(props){
     super(props)
-    UserProfile.getUserProfile()
+    let userProfile = UserProfile.getUserProfile()
+    trackEvent(Constants.EVENT_CATEGORY_SEGMENT, "UserType", `${userProfile.userType}`, userProfile.numVisits)
+    
     let urlVariant = new URLSearchParams(window.location.search).get("variant")
     let selectedVariant = urlVariant?urlVariant:Constants.VARIANT_STANDARD
     this.chess = chessLogic(selectedVariant)
@@ -66,21 +69,24 @@ export default class MainContainer extends React.Component {
     let settings = cookieManager.getSettingsCookie()
     if(!settings) {
       // default settings
-      return {
-        openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
-        openingBookRating:Constants.ALL_BOOK_RATINGS,
-        openingBookTimeControls:[Constants.TIME_CONTROL_BULLET,
-                                Constants.TIME_CONTROL_BLITZ,
-                                Constants.TIME_CONTROL_RAPID,
-                                Constants.TIME_CONTROL_CLASSICAL],
-        openingBookScoreIndicator:false,
-        openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
+      settings = {
+        movesSettings: {
+          openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
+          openingBookRating:Constants.ALL_BOOK_RATINGS,
+          openingBookTimeControls:[Constants.TIME_CONTROL_BULLET,
+                                  Constants.TIME_CONTROL_BLITZ,
+                                  Constants.TIME_CONTROL_RAPID,
+                                  Constants.TIME_CONTROL_CLASSICAL],
+          openingBookScoreIndicator:false,
+          openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
+        }
       }
     }
+    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "winsIndicator", `${settings.movesSettings.openingBookWinsIndicator?"on":"off"}`)
+    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "bookType", settings.movesSettings.openingBookType)
+
     return settings.movesSettings
   }
-
-
 
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null

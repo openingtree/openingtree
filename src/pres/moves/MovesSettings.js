@@ -17,6 +17,7 @@ import {
 import * as Constants from '../../app/Constants'
 import { Collapse, CardBody, Card, CardText } from 'reactstrap';
 import Link from '@material-ui/core/Link'
+import {trackEvent} from '../../app/Analytics'
 
 export default class MovesSettings extends React.Component {
     constructor(props) {
@@ -46,16 +47,21 @@ export default class MovesSettings extends React.Component {
         //reset to original settings
         this.setState({movesSettings: this.props.settings.movesSettings})
         this.props.toggle()
+        trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "MoveSettingsCancel")
     }
 
     set() {
         //reset to  new settings
         this.props.settingsChange('movesSettings', this.state.movesSettings)
         this.props.toggle()
+        trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "MoveSettingsSet")
     }
 
     toggleIndicatorInfo(e) {
         this.setState({indicatorInfoOpen:!this.state.indicatorInfoOpen})
+        if(!this.state.indicatorInfoOpen) {
+            trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "MoveSettingsIndicatorInfo")
+        }
     }
 
     render() {

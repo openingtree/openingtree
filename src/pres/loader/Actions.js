@@ -42,7 +42,7 @@ export default class Actions extends React.Component {
     }
     importTreeClicked() {
         this.setState({exportingInProgress:true})
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "LoadTree", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
+        trackEvent(Constants.EVENT_CATEGORY_MAIN_ACTION, "LoadTree", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
         setImmediate(this.importOpeningTree.bind(this))
     }
     importOpeningTree() {
@@ -62,7 +62,7 @@ export default class Actions extends React.Component {
     }
     exportTreeClicked() {
         this.setState({exportingInProgress:true})
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "SaveTree", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
+        trackEvent(Constants.EVENT_CATEGORY_MAIN_ACTION, "SaveTree", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
         setImmediate(this.exportOpeningTree.bind(this))
     }
     exportOpeningTree() {
@@ -135,7 +135,7 @@ export default class Actions extends React.Component {
     }
     download() {
         this.readPgn(true)
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Download", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
+        trackEvent(Constants.EVENT_CATEGORY_MAIN_ACTION, "Download", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
 
     }
 
@@ -159,14 +159,14 @@ export default class Actions extends React.Component {
         this.props.onChange("playerColor", this.props.playerColor)
         this.readPgn(false)
         this.props.setDownloading(true)
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "Load", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
+        trackEvent(Constants.EVENT_CATEGORY_MAIN_ACTION, "Load", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
     }
     stopDownloading() {
         this.props.setDownloading(false)
     }
     stopDownloadingAction() {
         this.stopDownloading()
-        trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "StopDownloading", this.props.site)
+        trackEvent(Constants.EVENT_CATEGORY_MAIN_ACTION, "StopDownloading", this.props.site)
     }
     openingTreeLoadActions() {
         return <div className="pgnloadersection">

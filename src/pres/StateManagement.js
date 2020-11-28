@@ -202,6 +202,9 @@ function closeError() {
 function toggleFeedback(diagnosticsOpen) {
     return () => {
         let feedbackOpen = this.state.feedbackOpen
+        if(!feedbackOpen) {
+            trackEvent(Constants.EVENT_CATEGORY_GLOBAL_HEADER, "feedbackOpen")
+        }
         this.closeError()
         this.setState({feedbackOpen:!feedbackOpen,
                 diagnosticsDataOpen:diagnosticsOpen})
