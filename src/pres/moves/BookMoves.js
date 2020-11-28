@@ -31,14 +31,18 @@ export default class BookMove extends React.Component {
         }
         if(this.props.bookMoves.fetch === "off") {
             return this.offCard('Opening book is disabled',
-            'Click the button below to enable it',
-            this.enableBook.bind(this),'Enable opening book', <Cached />)
+                'Click the button below to enable it',
+                this.enableBook.bind(this),'Enable opening book', <Cached />)
         }
 
         if(this.props.bookMoves.fetch === "failed") {
             return this.offCard('Failed to fetch book moves',
-            'Please check your internet connection. Lichess could also be down.',
-            this.props.forceFetchBookMoves,'Try again', <Cached />)
+                'Please check your internet connection. Lichess could also be down.',
+                this.props.forceFetchBookMoves,'Try again', <Cached />)
+        }
+        if(this.props.bookMoves.moves.length === 0) {
+            return this.offCard('No moves found',
+                'The opening book does not have any moves in this position')
         }
 
         return <MovesTable movesToShow={this.props.bookMoves.moves} namespace='book'
@@ -60,7 +64,8 @@ export default class BookMove extends React.Component {
         <CardText className="smallText">
             {message}
             <br/>
-            <br/><MaterialUIButton
+            <br/>
+            {actionText?<MaterialUIButton
             onClick={action}
             variant="contained"
             color="default"
@@ -68,7 +73,7 @@ export default class BookMove extends React.Component {
             startIcon={actionIcon}
             >
                 {actionText}
-            </MaterialUIButton>
+            </MaterialUIButton>:null}
         </CardText>
         </CardBody>
         </Card>
