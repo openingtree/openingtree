@@ -7931,6 +7931,10 @@ react-error-overlay@^6.0.7:
   version "6.0.7"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-6.0.7.tgz#1dcfb459ab671d53f660a991513cb2f0a0553108"
 
+react-faq-component@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/react-faq-component/-/react-faq-component-1.2.1.tgz#f22e69a880898b996c51893f21f6a588ddcaa70e"
+
 react-ga@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/react-ga/-/react-ga-2.7.0.tgz#24328f157f31e8cffbf4de74a3396536679d8d7c"
