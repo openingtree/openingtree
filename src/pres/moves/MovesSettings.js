@@ -79,7 +79,7 @@ export default class MovesSettings extends React.Component {
                 <Collapse isOpen={this.state.indicatorInfoOpen}>
                 <Card>
                     <CardBody className="singlePadding">
-                    <img src="/images/bookIndicator.png" alt="bookIndicator"/>
+                    <img src="./images/bookIndicator.png" alt="bookIndicator"/>
                     <CardText className="smallText">
                         Little triangles indicate the openingbook statistics on the moves tab and the player 
                         statistics on the openingbook tab. <br/>Everything left of the white triangle is a win for white, 
