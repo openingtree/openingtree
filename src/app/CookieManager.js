@@ -34,7 +34,7 @@ class CookieManager {
         let visitsCookie = Cookies.get('vcnt')
         let firstVisitCookie = Cookies.get('fst')
         let lastVisit = lastVisitCookie?parseInt(lastVisitCookie):null
-        let timesVisited = visitsCookie?parseInt(visitsCookie):null
+        let timesVisited = visitsCookie?parseInt(visitsCookie):0
         let firstVisit = firstVisitCookie?parseInt(firstVisitCookie):null
         let currDate = new Date().getTime()
         this.currentVisit = {
@@ -44,7 +44,7 @@ class CookieManager {
             numVisits: timesVisited,
             
         }
-        if(lastVisit == null || currDate-lastVisit>1000*60*60*24){
+        if(lastVisit === null || currDate-lastVisit>1000*60*60*24){
             // increment count if visit in more than an day
             Cookies.set('lst', currDate);
             Cookies.set('vcnt', timesVisited+1)
