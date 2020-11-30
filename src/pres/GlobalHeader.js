@@ -63,7 +63,7 @@ const GlobalHeader = (props) => {
       <DropdownItem onClick={toggleFAQModal}>
         FAQ
       </DropdownItem>
-      <DropdownItem onClick={launch("https://www.youtube.com/watch?v=5DOLBfHghaY", "tutorial")}>
+      <DropdownItem onClick={launch("https://youtu.be/9w7GdGuJoyk", "tutorial")}>
         Watch Tutorial
       </DropdownItem>
     </DropdownMenu>
