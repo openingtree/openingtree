@@ -40,7 +40,13 @@ export default class ControlsContainer extends React.Component {
         this.setState({activeGame:game})
       })
     }
-
+    shouldComponentUpdate(newProps){
+      if(this.props.resize !== newProps.resize) {
+        // dont update component on resize
+        return false
+      }
+      return true
+    }
     toggle(tab) {
         if(this.state.activeTab !== tab) {
             this.setState({activeTab:tab})
