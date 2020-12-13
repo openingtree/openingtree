@@ -226,6 +226,9 @@ function copyDiagnostics() {
 
 
 function importGameState(importState) {
+    let newSettings=importState.settings
+    //transfer objects from current settings that do not need serialization
+    newSettings.movesSettings=this.state.settings.movesSettings
     this.setState({
       settings:importState.settings,
       openingGraph:importState.openingGraph,
