@@ -1,7 +1,6 @@
 import React from 'react'
 import {getNumberIcon} from './Common'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
+import { AccordionDetails, AccordionSummary } from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Divider from '@material-ui/core/Divider';
 import AccordionActions from '@material-ui/core/AccordionActions';
@@ -100,21 +99,23 @@ export default class User extends React.Component {
             }
             if(!deepEqual(this.props.advancedFilters[key], value)) {
                 return true
-            } 
+            }
         }
         return false
     }
 
-    
+
     render(){
         let isDisabled = !SitePolicy.isFilterPanelEnabled(this.props.site, this.props.playerName, this.props.selectedNotablePlayer)
         return <Accordion expanded={this.props.expandedPanel === 'filters'}
-                    TransitionComponent={MuiCollapse}
-                    TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
+            TransitionComponent={MuiCollapse}
+            TransitionProps={{timeout:Constants.LOADER_ANIMATION_DURATION_MS}}
             onChange={this.props.handleExpansionChange}
             disabled={isDisabled}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon />}>{this.getSummary(isDisabled)}</AccordionSummary>
-            <ExpansionPanelDetails>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                {this.getSummary(isDisabled)}
+            </AccordionSummary>
+            <AccordionDetails>
                 <div className="pgnloaderfirstsection">
                 <FormControl component="fieldset" error={!!this.state.colorError}>
                     <FormLabel component="legend">Games where <b>{this.props.playerName}</b> is playing as:</FormLabel>
@@ -139,11 +140,12 @@ export default class User extends React.Component {
                             />
                     </Collapse>
                 </div>:null}
-                </ExpansionPanelDetails>
-                <Divider />
-                <AccordionActions>
-                    <MaterialUIButton size="small" color="primary" onClick={this.setFilters.bind(this)}>Continue</MaterialUIButton>
-                </AccordionActions></Accordion>
-    
+            </AccordionDetails>
+            <Divider />
+            <AccordionActions>
+                <MaterialUIButton size="small" color="primary" onClick={this.setFilters.bind(this)}>Continue</MaterialUIButton>
+            </AccordionActions>
+        </Accordion>
+
     }
 }
