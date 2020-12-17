@@ -8,6 +8,7 @@
 .settingButton {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    justify-items: center;
     align-items: center;
     grid-gap: 5px;
 }
@@ -37,8 +38,7 @@
 }
 
 .navSection {
-    padding: 0px;
-    margin-right: 0;
+    padding:0px;
 }
 .navCol {
     padding-left:0px;
