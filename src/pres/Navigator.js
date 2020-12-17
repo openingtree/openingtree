@@ -8,30 +8,29 @@ import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
 
 export default class Navigator extends React.Component {
-    
+
     constructor(props){
         super(props)
         this.openingManager = new OpeningManager(this.props.variant)
         this.state = {
             currentMove:0,
-          }      
-          window.addEventListener("keydown",this.keyHandler.bind(this))
-  
+        }
+        window.addEventListener("keydown",this.keyHandler.bind(this))
+
     }
     keyHandler(e){
         switch(e.keyCode) {
-          case 37:
-            this.previous(e, "keyboard")
-          break
-          case 39:
-            this.next(e, "keyboard")
-            break
-          default:
-            break
-
+            case 37:
+                this.previous(e, "keyboard");
+                break
+            case 39:
+                this.next(e, "keyboard")
+                break
+            default:
+                break
         }
-      }
-    
+    }
+
     shouldComponentUpdate(newProps) {
         //console.log(newProps)
         if(newProps.variant !== this.props.variant) {
@@ -54,8 +53,10 @@ export default class Navigator extends React.Component {
     previous(e, device) {
         let newState = this.openingManager.moveBack()
         this.props.onChange(newState.fen, newState.move)
-        this.setState({currentMove:this.openingManager.currentMove()})
-        trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "Previous", device?device:"mouse")
+        this.setState({
+            currentMove: this.openingManager.currentMove()
+        })
+        trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "Previous", device ? device : "mouse")
     }
 
     next(e, device) {
@@ -67,7 +68,7 @@ export default class Navigator extends React.Component {
 
     moveTo(index) {
         return () => {
-            let newState = this.openingManager.moveTo(index*2+1)
+            let newState = this.openingManager.moveTo(index+1)
             this.props.onChange(newState.fen, newState.move)
             this.setState({currentMove:this.openingManager.currentMove()})
             trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "move", null, index)
@@ -85,13 +86,39 @@ export default class Navigator extends React.Component {
         }
         return <Container>
             <Row>
-            <Col lg="6" className="navSection"><Button color="" className= "settingButton" onClick= {this.previous.bind(this)}><FontAwesomeIcon icon={faStepBackward} /> prev</Button> </Col>
-            <Col lg="6" className="navSection"><Button color="" className= "settingButton" onClick = {this.next.bind(this)}>next <FontAwesomeIcon icon={faStepForward} /></Button></Col></Row>
+                <Col lg="6" className="navSection">
+                    <Button color="" className= "settingButton" onClick= {this.previous.bind(this)}>
+                        <FontAwesomeIcon icon={faStepBackward} />
+                        <span>prev</span>
+                    </Button>
+                </Col>
+                <Col lg="6" className="navSection">
+                    <Button color="" className= "settingButton" onClick = {this.next.bind(this)}>
+                        <span>next</span>
+                        <FontAwesomeIcon icon={faStepForward} />
+                    </Button>
+                </Col>
+            </Row>
             <Row className="greyText">{this.openingCode}: {this.opening}</Row>
             {
                 this.openingManager.pgnListSoFar().map((move, index)=>
-                    <Row key={`${move.moveNumber}`} onClick={this.moveTo(index).bind(this)} className={`navCol ${this.openingManager.currentMove() === index? 'selectedMove':''}`}>
-                        <Col sm="12" className = "navMove border">{`${move.moveNumber}. ${move.whitePly} ${move.blackPly}`}</Col>
+                    <Row key={`${move.moveNumber}`} className="navCol">
+                        <Col sm="4" className = "navItem border">
+                            {`${move.moveNumber}.`}
+                        </Col>
+                        <Col sm="4"
+                            index={index*2}
+                            className = {`navItem navMove border ${this.openingManager.currentIndex-1 === index*2 ? 'selectedMove':''}`}
+                            onClick={this.moveTo(index*2).bind(this)}>
+                            {`${move.whitePly}`}
+                        </Col>
+                        <Col sm="4"
+                            index={index*2 + 1}
+                            className = {`navItem navMove border ${this.openingManager.currentIndex-1 === index*2+1 ? 'selectedMove':''}`}
+                            onClick={
+                                this.moveTo(index*2+1).bind(this)}>
+                            {`${move.blackPly}`}
+                        </Col>
                     </Row>)
             }
         </Container>

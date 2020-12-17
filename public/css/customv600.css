@@ -1,9 +1,16 @@
 .nav-tabs .nav-link {
     cursor: pointer;
-  }
+}
 .pointer {
     cursor: pointer;
-  }
+}
+
+.settingButton {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    grid-gap: 5px;
+}
 
 .settingButton:hover  {
     background-color: #dcdcdc;
@@ -18,15 +25,20 @@
     color:#555555;
 }
 
-.navMove {
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.navItem {
+    display: grid;
+    justify-content: center;
+    align-items: center;
 }
 
+.navMove:hover {
+    background-color: #dcdcdc;
+    cursor: pointer;
+}
 
 .navSection {
-    padding:0px;
+    padding: 0px;
+    margin-right: 0;
 }
 .navCol {
     padding-left:0px;
@@ -39,11 +51,6 @@
 
 .selectedMove {
     background-color:rgba(173, 216, 230,0.4);
-}
-
-.navCol:hover  {
-    background-color: #dcdcdc;
-    cursor: pointer;
 }
 
 .moveRow.bgColor:hover  {
