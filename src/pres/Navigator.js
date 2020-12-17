@@ -16,7 +16,6 @@ export default class Navigator extends React.Component {
             currentMove:0,
         }
         window.addEventListener("keydown",this.keyHandler.bind(this))
-
     }
     keyHandler(e){
         switch(e.keyCode) {
@@ -28,6 +27,18 @@ export default class Navigator extends React.Component {
                 break
             default:
                 break
+        }
+    }
+
+    scrollHandler(e) {
+        e.preventDefault();
+
+        if (e.deltaY > 0) {
+            this.next(e, "wheel");
+        }
+
+        else if (e.deltaY < 0) {
+            this.previous(e, "wheel");
         }
     }
 
@@ -84,7 +95,7 @@ export default class Navigator extends React.Component {
         if(!this.openingManager.pgnListSoFar()) {
             return <div></div>
         }
-        return <Container>
+        return <Container id="navigator">
             <Row>
                 <Col lg="6" className="navSection">
                     <Button color="" className= "settingButton" onClick= {this.previous.bind(this)}>
@@ -120,5 +131,13 @@ export default class Navigator extends React.Component {
                     </Row>)
             }
         </Container>
+    }
+
+    componentDidUpdate () {
+        const chessBoard = document.querySelector('cg-board');
+        const navigator = document.querySelector('#navigator');
+
+        if (chessBoard) chessBoard.onwheel = this.scrollHandler.bind(this);
+        if (navigator) navigator.onwheel = this.scrollHandler.bind(this);
     }
 }
