@@ -18,10 +18,10 @@ import {
 import {
     Backup,
     DateRange,
+    ExpandMore,
     People,
     Save
 } from '@material-ui/icons';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChessRook } from '@fortawesome/free-solid-svg-icons';
@@ -72,7 +72,7 @@ export default class Source extends React.Component {
             expanded={this.props.expandedPanel === 'source'}
             onChange={this.props.handleExpansionChange}>
             <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMore />}
                 aria-controls="panel1c-content"
                 id="panel1c-header"
             >
