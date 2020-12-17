@@ -107,13 +107,11 @@ export default class Navigator extends React.Component {
                             {`${move.moveNumber}.`}
                         </Col>
                         <Col sm="4"
-                            index={index*2}
                             className = {`navItem navMove border ${this.openingManager.currentIndex-1 === index*2 ? 'selectedMove':''}`}
                             onClick={this.moveTo(index*2).bind(this)}>
                             {`${move.whitePly}`}
                         </Col>
                         <Col sm="4"
-                            index={index*2 + 1}
                             className = {`navItem navMove border ${this.openingManager.currentIndex-1 === index*2+1 ? 'selectedMove':''}`}
                             onClick={
                                 this.moveTo(index*2+1).bind(this)}>
