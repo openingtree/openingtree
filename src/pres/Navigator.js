@@ -67,14 +67,14 @@ export default class Navigator extends React.Component {
         this.setState({
             currentMove: this.openingManager.currentMove()
         })
-        trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "Previous", device ? device : "mouse")
+        trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "Previous", device || "mouse")
     }
 
     next(e, device) {
         let newState = this.openingManager.moveForward()
         this.props.onChange(newState.fen, newState.move)
         this.setState({currentMove:this.openingManager.currentMove()})
-        trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "Next", device?device:"mouse")
+        trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "Next", device || "mouse")
     }
 
     moveTo(index) {
