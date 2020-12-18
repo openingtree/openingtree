@@ -254,6 +254,9 @@
     text-align: center;
 }
 
+coord {
+    font-size: 0.75rem;
+}
 
 .profilePicture {
     border-radius: 50%;
