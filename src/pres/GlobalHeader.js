@@ -1,12 +1,5 @@
-import React, { useState } from 'react'
-import 'bootstrap/dist/css/bootstrap.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {faComments, faCaretDown, faQuestionCircle} from '@fortawesome/free-solid-svg-icons'
-import { faDiscord } from '@fortawesome/free-brands-svg-icons'
-import * as Constants from '../app/Constants'
-import Faq from 'react-faq-component'
-import {trackEvent} from '../app/Analytics'
-
+import React, { useState } from 'react';
+import Faq from 'react-faq-component';
 import {
   Navbar,
   NavbarBrand,
@@ -24,7 +17,15 @@ import {
   ListGroup,
   ListGroupItem,
   NavItem, NavLink, ModalBody
-} from 'reactstrap'
+} from 'reactstrap';
+
+import 'bootstrap/dist/css/bootstrap.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faComments, faCaretDown, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faDiscord } from '@fortawesome/free-brands-svg-icons';
+
+import * as Constants from '../app/Constants';
+import {trackEvent} from '../app/Analytics';
 
 const GlobalHeader = (props) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -68,9 +69,9 @@ const GlobalHeader = (props) => {
       </DropdownItem>
     </DropdownMenu>
   </UncontrolledDropdown>
-  
-}
-  const getMoreDropDown = ()=>{
+  }
+
+  const getMoreDropDown = ()=> {
       return <UncontrolledDropdown>
       <DropdownToggle className="bootNavColor" nav>
       <FontAwesomeIcon icon={faCaretDown} className="moreIcon"/>More
@@ -97,11 +98,11 @@ const GlobalHeader = (props) => {
         </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
-    
+
   }
 
-const data = {
-  rows: [
+  const data = {
+    rows: [
       {
           title: "What is OpeningTree.com?",
           content: `OpeningTree.com is an open source website that helps you analyze anyone's lichess or chess.com games. You can use it to prepare for your opponents, improve your own game or learn from openings that grandmasters play.`,
@@ -114,7 +115,7 @@ const data = {
         title: "What are some of the advanced features of OpeningTree?",
         content: `You can analyze games of notable grandmasters from Morphy to Nakamura. You can also analyze games from lichess tournaments to see which moves are being played by others. You can also save openingtree files locally and load them fast or load them from pgn files.`,
       },
-      
+
       {
         title: "Do I need to login to lichess?",
         content: `You dont need to, but logging in increases the speed of download of games from lichess. So if you plan on processing hundreds of games, it is recommended that you login.`,
@@ -136,60 +137,64 @@ const data = {
       {
           title: "Whenever i click on a square, openingtree selects one square to the left of it.",
           content: `This is a know bug with a component that I am using. You can work around it by resizing your browser window, or zooming in and back out. It should resolve the issue.`,
-      },
+      }
+    ]
+  };
 
-  ],
-};
+  const styles = {
+    // bgColor: 'white',
+    rowTitleColor: "black",
+    rowContentColor: 'grey',
+    rowTitleTextSize:'small',
+    rowContentTextSize:'small',
+    rowContentPaddingTop:'1'
+    // arrowColor: "red",
+  };
 
-const styles = {
-  // bgColor: 'white',
-  rowTitleColor: "black",
-   rowContentColor: 'grey',
-   rowTitleTextSize:'small',
-   rowContentTextSize:'small',
-   rowContentPaddingTop:'1'
-  // arrowColor: "red",
-};
+  const config = {
+    // animate: true,
+    // arrowIcon: "V",
+    // tabFocus: true
+  };
 
-const config = {
-  // animate: true,
-  // arrowIcon: "V",
-  // tabFocus: true
-};
-  const getFAQModal = ()=>{
+  const getFAQModal = ()=> {
     return <Modal isOpen={isFAQOpen} toggle={toggleFAQModal}>
-    <ModalHeader toggle={toggleFAQModal}>Frequently asked questions</ModalHeader>
-    <ModalBody>
-    <Faq data={data} styles={styles} config={config} />
-    </ModalBody>
-    <ModalFooter>
-      <Button color="secondary" onClick={toggleFAQModal}>Done</Button>
-    </ModalFooter>
-  </Modal>
-  }
-  const getAcknowledgementsModal = ()=>{
+      <ModalHeader toggle={toggleFAQModal}>Frequently asked questions</ModalHeader>
+      <ModalBody>
+      <Faq data={data} styles={styles} config={config} />
+      </ModalBody>
+      <ModalFooter>
+        <Button color="secondary" onClick={toggleFAQModal}>Done</Button>
+      </ModalFooter>
+    </Modal>
+  };
+
+  const getAcknowledgementsModal = ()=> {
     return <Modal isOpen={modal} toggle={toggleModal}>
-    <ModalHeader toggle={toggleModal}>Acknowledgements</ModalHeader>
-    <ListGroup className="acknowledgement">
-    <ListGroupItem tag="a" href="https://lichess.org/api" target="_blank" action>Lichess API</ListGroupItem>
-    <ListGroupItem tag="a" href="https://www.chess.com/club/chess-com-developer-community" target="_blank" action>Chess.com API</ListGroupItem>
-    <ListGroupItem tag="a" href="https://github.com/ruilisi/react-chessground" target="_blank" action>ChessGround</ListGroupItem>
-    <ListGroupItem tag="a" href="https://github.com/jhlywa/chess.js" target="_blank" action>Chess.js</ListGroupItem>
-    <ListGroupItem tag="a" href="https://github.com/niklasf/eco" target="_blank" action>Eco</ListGroupItem>
-    <ListGroupItem tag="a" href="https://github.com/jimmywarting/StreamSaver.js" target="_blank" action>StreamSaver.js</ListGroupItem>
-    <ListGroupItem tag="a" href="https://www.flaticon.com/authors/google/" target="_blank" action>Icons made by google</ListGroupItem>
-    <ListGroupItem tag="a" href="https://www.flaticon.com/" target="_blank" action>FlatIcons.com</ListGroupItem>
-    <ListGroupItem tag="a" href="https://www.freelogodesign.org" target="_blank" action>Free logo design</ListGroupItem>
-    <ListGroupItem tag="a" href="https://github.com/kevinludwig/pgn-parser" target="_blank" action>PGN Parser</ListGroupItem>
-    <ListGroupItem tag="a" href="https://www.npmjs.com/package/material-ui-dropzone" target="_blank" action>Dropzone</ListGroupItem>
-    <ListGroupItem tag="a" href="https://www.pgnmentor.com" target="_blank" action>PGN Mentor</ListGroupItem>
-    <ListGroupItem tag="a" href="https://www.twitch.tv/imrosen" target="_blank" action>IM Eric Rosen</ListGroupItem>
-    </ListGroup>
-    <ModalFooter>
-      <Button color="secondary" onClick={toggleModal}>Done</Button>
-    </ModalFooter>
-  </Modal>
+      <ModalHeader toggle={toggleModal}>Acknowledgements</ModalHeader>
+      <ListGroup className="acknowledgement">
+        <ListGroupItem tag="a" href="https://lichess.org/api" target="_blank" action>Lichess API</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.chess.com/club/chess-com-developer-community" target="_blank" action>Chess.com API</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/ruilisi/react-chessground" target="_blank" action>ChessGround</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/jhlywa/chess.js" target="_blank" action>Chess.js</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/niklasf/eco" target="_blank" action>Eco</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/jimmywarting/StreamSaver.js" target="_blank" action>StreamSaver.js</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.flaticon.com/authors/google/" target="_blank" action>Icons made by google</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.flaticon.com/" target="_blank" action>FlatIcons.com</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.freelogodesign.org" target="_blank" action>Free logo design</ListGroupItem>
+        <ListGroupItem tag="a" href="https://github.com/kevinludwig/pgn-parser" target="_blank" action>PGN Parser</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.npmjs.com/package/material-ui-dropzone" target="_blank" action>Dropzone</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.pgnmentor.com" target="_blank" action>PGN Mentor</ListGroupItem>
+        <ListGroupItem tag="a" href="https://www.twitch.tv/imrosen" target="_blank" action>IM Eric Rosen</ListGroupItem>
+      </ListGroup>
+      <ModalFooter>
+        <Button color="secondary" onClick={toggleModal}>
+          Done
+        </Button>
+      </ModalFooter>
+    </Modal>
   }
+
   return (
     <div>
       <Navbar color="light" light expand="md">
@@ -198,19 +203,36 @@ const config = {
         <NavbarToggler onClick={toggle}/>
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-          <NavItem><NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE","mainVideo")}>"It's so powerful" - IM Eric Rosen <span className="smallText">[Watch video]</span></NavLink></NavItem>
+            <NavItem>
+              <NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE","mainVideo")}>
+                "It's so powerful" - IM Eric Rosen
+                <span className="smallText">
+                  [Watch video]
+                </span>
+              </NavLink>
+            </NavItem>
           </Nav>
           <Nav className="ml-auto" navbar>
-          <NavItem><NavLink className="navLinkButton" onClick={launch(Constants.OPENING_TREE_DISCORD,"discord")}><FontAwesomeIcon icon={faDiscord} className="discordIcon"/> Join our discord</NavLink></NavItem>
+            <NavItem>
+              <NavLink className="navLinkButton" onClick={launch(Constants.OPENING_TREE_DISCORD,"discord")}>
+                <FontAwesomeIcon icon={faDiscord} className="discordIcon"/>
+                Join our discord
+              </NavLink>
+            </NavItem>
           </Nav>
           <Nav className="" navbar>
-          <NavItem><NavLink className="navLinkButton" onClick={props.toggleFeedback}><FontAwesomeIcon icon={faComments} className="feedbackIcon"/> Send feedback</NavLink></NavItem>
+            <NavItem>
+              <NavLink className="navLinkButton" onClick={props.toggleFeedback}>
+                <FontAwesomeIcon icon={faComments} className="feedbackIcon"/>
+                Send feedback
+              </NavLink>
+            </NavItem>
           </Nav>
           {getHelpDropDown()}
           {getMoreDropDown()}
         </Collapse>
       </Navbar>
-      
+
       {getAcknowledgementsModal()}
       {getFAQModal()}
     </div>
