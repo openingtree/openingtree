@@ -205,7 +205,9 @@ const GlobalHeader = (props) => {
           <Nav className="mr-auto" navbar>
             <NavItem>
               <NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE","mainVideo")}>
-                "It's so powerful" - IM Eric Rosen
+                <span>
+                  "It's so powerful" - IM Eric Rosen
+                </span>
                 <span className="smallText">
                   [Watch video]
                 </span>
@@ -216,7 +218,9 @@ const GlobalHeader = (props) => {
             <NavItem>
               <NavLink className="navLinkButton" onClick={launch(Constants.OPENING_TREE_DISCORD,"discord")}>
                 <FontAwesomeIcon icon={faDiscord} className="discordIcon"/>
-                Join our discord
+                <span>
+                  Join our discord
+                </span>
               </NavLink>
             </NavItem>
           </Nav>
@@ -224,7 +228,9 @@ const GlobalHeader = (props) => {
             <NavItem>
               <NavLink className="navLinkButton" onClick={props.toggleFeedback}>
                 <FontAwesomeIcon icon={faComments} className="feedbackIcon"/>
-                Send feedback
+                <span>
+                  Send feedback
+                </span>
               </NavLink>
             </NavItem>
           </Nav>
