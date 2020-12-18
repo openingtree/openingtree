@@ -75,7 +75,7 @@ function updateProcessedGames(downloadLimit, n, parsedGame) {
         gamesProcessed: totalGamesProcessed,
         downloadingGames: (totalGamesProcessed<downloadLimit || downloadLimit>=Constants.MAX_DOWNLOAD_LIMIT)?this.state.downloadingGames:false
     })
-    // continue to download games if 
+    // continue to download games if
     // 1. we have not reached download limit OR
     //    there is no download limit set (downloadLimit>MAX condition)
     // 2. user did not hit stop button
@@ -105,7 +105,7 @@ function autoShapes(moves, highlightedMove) {
         shapes = shapes.concat(moves.filter((m)=>{
             if(!highlightedMove) {
                 return true
-            } 
+            }
             if (highlightedMove.orig === m.orig && highlightedMove.dest === m.dest) {
                 return false
             }
@@ -235,9 +235,9 @@ function importGameState(importState) {
     setImmediate(this.reset.bind(this))// setImmediate because we want the variant change to take effect
   }
   function getChessboardWidth(){
-    // getting nearest multiple of 8 because chessground has 
+    // getting nearest multiple of 8 because chessground has
     // css alignment issues if board width is not a multple of 8
-    
+
     return `${nearestMultipleOf8(getChessboardWidthInternal())}px`
   }
   function nearestMultipleOf8(n){
@@ -268,7 +268,7 @@ function getDiagnosticsValue() {
   `
 }
 function getRedditLink() {
-    return `https://www.reddit.com/message/compose/?to=${Constants.OPENNIG_TREE_REDDIT}&subject=${this.getSubject()}&message=%0D%0A%0D%0A%0D%0A${this.getBody()}`
+    return `https://www.reddit.com/message/compose/?to=${Constants.OPENING_TREE_REDDIT}&subject=${this.getSubject()}&message=%0D%0A%0D%0A%0D%0A${this.getBody()}`
 }
 
 function getEmailLink() {
@@ -288,7 +288,7 @@ function variantChange(newVariant) {
 }
 
 // fetch the book moves openinggraph directly if they are available
-// otherwise 
+// otherwise
 //  1. fetch them from lichess
 //  2. store them in openinggraph
 //  3. update the component so that getBookMoves gets called again
@@ -341,7 +341,7 @@ function getCompareScores(move){
 }
 
 function getCompareToValues(move) {
-    return [move.details.whiteWins/move.details.count*100, 
+    return [move.details.whiteWins/move.details.count*100,
         (move.details.whiteWins+move.details.draws)/move.details.count*100]
 }
 
