@@ -337,3 +337,34 @@
 .floatRight{
     float:right
 }
+
+/* Dark theme styles */
+
+body.dark-theme {
+    background-color: #333;
+}
+
+body.dark-theme button:hover,
+body.dark-theme .nav-item .active.nav-link,
+body.dark-theme nav.navbar,
+body.dark-theme #navigator .selectedMove {
+    background-color: #555;
+}
+
+body.dark-theme .nav-link:hover,
+body.dark-theme #navigator .navMove:hover {
+    color: #777;
+}
+
+body.dark-theme coord,
+body.dark-theme button span,
+body.dark-theme button svg,
+body.dark-theme nav.navbar,
+body.dark-theme .nav-link,
+/* body.dark-theme .nav-item .nav-link, */
+body.dark-theme #navigator,
+body.dark-theme #navigator .greyText,
+body.dark-theme tr.moveRow td,
+body.dark-theme th {
+    color: #DDD;
+}
