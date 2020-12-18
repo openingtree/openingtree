@@ -91,3 +91,5 @@ export const OPENING_BOOK_TYPE_MASTERS = 'master'
 export const OPENING_BOOK_TYPE_LICHESS = 'lichess'
 
 export const ALL_BOOK_RATINGS = ['1600','1800','2000','2200','2500']
+
+export const DARK_MODE_COOKIE = 'dark-mode';
