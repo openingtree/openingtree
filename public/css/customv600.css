@@ -355,8 +355,13 @@ body.dark-theme button:hover,
 body.dark-theme .nav-item .active.nav-link,
 body.dark-theme nav.navbar,
 body.dark-theme #navigator .selectedMove,
+body.dark-theme div.card,
 body.dark-theme .MuiPaper-root {
     background-color: #555;
+}
+
+body.dark-theme .MuiButtonBase-root.mainButton {
+    background-color: #777;
 }
 
 body.dark-theme coord,
@@ -373,8 +378,10 @@ body.dark-theme tr.moveRow td,
 body.dark-theme th,
 body.dark-theme .fenDiv textarea,
 body.dark-theme .fenDiv label,
+body.dark-theme input,
 body.dark-theme .MuiPaper-root,
-body.dark-theme .MuiRadio-colorPrimary {
+body.dark-theme .MuiRadio-colorPrimary,
+body.dark-theme .MuiInputLabel-formControl {
     color: #DDD;
 }
 
