@@ -1,9 +1,17 @@
 .nav-tabs .nav-link {
     cursor: pointer;
-  }
+}
 .pointer {
     cursor: pointer;
-  }
+}
+
+.settingButton {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: center;
+    align-items: center;
+    grid-gap: 5px;
+}
 
 .settingButton:hover  {
     background-color: #dcdcdc;
@@ -13,17 +21,21 @@
     margin-top:10px;
     color:#555555;
 }
-.pgnloaderfirstsection {
-    margin-top:0px;
-    color:#555555;
+
+.navItem {
+    display: grid;
+    justify-content: center;
+    align-items: center;
 }
 
-.navMove {
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.navItem.border {
+    border-color: #f1f1f1 !important;
 }
 
+.navMove:hover {
+    background-color: #dcdcdc;
+    cursor: pointer;
+}
 
 .navSection {
     padding:0px;
@@ -39,11 +51,6 @@
 
 .selectedMove {
     background-color:rgba(173, 216, 230,0.4);
-}
-
-.navCol:hover  {
-    background-color: #dcdcdc;
-    cursor: pointer;
 }
 
 .moveRow.bgColor:hover  {
@@ -89,6 +96,10 @@
 .navLinkButton {
     color:#202529;
     cursor:pointer;
+}
+
+.navLinkButton span {
+    margin: 4px;
 }
 
 .fullWidth {
@@ -206,6 +217,11 @@
     display: block;
 }
 
+.MuiAccordionDetails-root {
+    display: flex;
+    flex-flow: column;
+}
+
 .styledNumbers {
     padding-right:10px
 }
@@ -243,6 +259,9 @@
     text-align: center;
 }
 
+coord {
+    font-size: 0.75rem;
+}
 
 .profilePicture {
     border-radius: 50%;
@@ -329,4 +348,125 @@
 }
 .floatRight{
     float:right
+}
+
+/* Dark theme styles */
+
+body.dark-theme {
+    background-color: #333;
+}
+
+body.dark-theme .performanceOverlay th {
+    background-color: #444;
+}
+
+body.dark-theme button:hover,
+body.dark-theme .nav-item .active.nav-link,
+body.dark-theme nav.navbar,
+body.dark-theme #navigator .selectedMove,
+body.dark-theme div.card,
+body.dark-theme .MuiPaper-root:not([class*=" SnackbarContentWrapper-"]),
+body.dark-theme .moveRow:hover,
+body.dark-theme .performanceOverlay tr,
+body.dark-theme .list-group-item {
+    background-color: #555;
+}
+
+body.dark-theme .modal-content,
+body.dark-theme .dropdown-menu,
+body.dark-theme .faq-row {
+    background-color: #666;
+}
+
+body.dark-theme .mainButton {
+    background-color: #777;
+}
+
+body.dark-theme .navItem.border {
+    border-color: #999 !important;
+}
+
+body.dark-theme .MuiSwitch-thumb {
+    background-color: white;
+}
+
+body.dark-theme .linkStyle,
+body.dark-theme a,
+body.dark-theme a:hover,
+body.dark-theme .MuiTypography-colorPrimary,
+body.dark-theme .MuiTypography-colorPrimary:hover,
+body.dark-theme .btn-link,
+body.dark-theme .btn-primary:hover {
+    color: #66E1FF;
+}
+
+body.dark-theme coord,
+body.dark-theme p,
+body.dark-theme button span,
+body.dark-theme button svg,
+body.dark-theme nav.navbar,
+body.dark-theme .nav-link,
+body.dark-theme .nav-item .nav-link,
+body.dark-theme .infoMessage,
+body.dark-theme .infoMessage .navLinkButton,
+body.dark-theme #navigator,
+body.dark-theme #navigator .greyText,
+body.dark-theme tr.moveRow td,
+body.dark-theme th,
+body.dark-theme textarea,
+body.dark-theme .fenDiv label,
+body.dark-theme input,
+body.dark-theme .MuiPaper-root,
+body.dark-theme .MuiRadio-colorPrimary,
+body.dark-theme .MuiInputLabel-formControl,
+body.dark-theme .MuiFormControlLabel-label,
+body.dark-theme .MuiTableCell-footer,
+body.dark-theme legend.MuiFormLabel-root,
+body.dark-theme .pgnloadersection,
+body.dark-theme .modal-content,
+body.dark-theme .dropdown-menu,
+body.dark-theme .MuiCheckbox-colorPrimary.Mui-checked,
+body.dark-theme .MuiSlider-thumb,
+body.dark-theme .MuiSlider-markLabel,
+body.dark-theme .performanceRatingRow,
+body.dark-theme .list-group-item {
+    color: #DDD;
+}
+
+body.dark-theme .faq-row .row-title-text {
+    color: white;
+}
+
+body.dark-theme .btn-primary,
+body.dark-theme input[type="search"] {
+    color: #333;
+}
+
+body.dark-theme .MuiButton-containedPrimary {
+    background-color: #3f51b5;
+}
+
+body.dark-theme .MuiButton-containedPrimary:hover {
+    background-color: #303f9f;
+}
+
+body.dark-theme .MuiFormHelperText-root.Mui-error {
+    color: #FF5D50;
+}
+
+body.dark-theme .MuiSlider-root {
+    color: #66E1FF;
+}
+
+body.dark-theme .nav-link:hover,
+body.dark-theme #navigator .navMove:hover {
+    color: #999;
+}
+
+body.dark-theme .cg-wrap {
+    filter: grayscale(20%);
+}
+
+body.dark-theme .dropzone {
+    background-color: #777;
 }

@@ -1,7 +1,20 @@
 import React from 'react'
 import PGNLoader from './loader/PGNLoader'
 import SettingsView from './Settings'
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col,Button } from 'reactstrap';
+import {
+  Badge,
+  Button,
+  Col,
+  Modal,
+  ModalFooter,
+  ModalHeader,
+  Nav,
+  NavItem,
+  NavLink,
+  Row,
+  TabContent,
+  TabPane
+} from 'reactstrap';
 import classnames from 'classnames';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser, faList, faCog, faChartBar, faBook } from '@fortawesome/free-solid-svg-icons'
@@ -10,9 +23,7 @@ import BookMoves from './moves/BookMoves'
 import {trackEvent} from '../app/Analytics'
 import * as Constants from '../app/Constants'
 import ReportControls from './ReportControls'
-import {Modal, ModalHeader, ModalFooter} from 'reactstrap'
-import {Table, TableRow, TableBody, TableCell} from '@material-ui/core'
-import {Badge} from 'reactstrap'
+import { Table, TableRow, TableBody, TableCell } from '@material-ui/core'
 
 export default class ControlsContainer extends React.Component {
     constructor(props){
@@ -25,7 +36,6 @@ export default class ControlsContainer extends React.Component {
         this.setState({activeGame:null})
       }
     }
-    
 
     launchGame(game) {
       if(game.url) {
@@ -85,7 +95,6 @@ export default class ControlsContainer extends React.Component {
               <ModalHeader toggle={this.toggleModal}>Game details</ModalHeader>
               {!this.state.activeGame?null:
               <Table>
-                
                 <TableBody>
                   {
                     Object.entries(this.state.activeGame.headers).map((entry)=>!entry[1]?null:<TableRow className="performanceRatingRow">
@@ -93,7 +102,6 @@ export default class ControlsContainer extends React.Component {
                         <TableCell className="performanceRatingRow">{entry[1]}</TableCell>
                     </TableRow>
                     )}
-                  
                 </TableBody>
               </Table>
               }
@@ -145,12 +153,12 @@ export default class ControlsContainer extends React.Component {
       </Nav>
       <TabContent activeTab={this.state.activeTab}>
         <TabPane tabId="user">
-            <PGNLoader 
-              switchToMovesTab={this.switchToMovesTab.bind(this)} 
-              clear = {this.props.clear} 
-              gamesProcessed = {this.props.gamesProcessed} 
-              settings = {this.props.settings} 
-              onChange = {this.props.settingsChange} 
+            <PGNLoader
+              switchToMovesTab={this.switchToMovesTab.bind(this)}
+              clear = {this.props.clear}
+              gamesProcessed = {this.props.gamesProcessed}
+              settings = {this.props.settings}
+              onChange = {this.props.settingsChange}
               notify = {this.props.updateProcessedGames}
               showError = {this.props.showError}
               showInfo = {this.props.showInfo}
@@ -163,9 +171,9 @@ export default class ControlsContainer extends React.Component {
               />
             </TabPane>
         <TabPane tabId="moves">
-            <MovesList 
-              switchToUserTab={this.switchToUserTab.bind(this)} 
-              playerMoves={this.props.playerMoves} 
+            <MovesList
+              switchToUserTab={this.switchToUserTab.bind(this)}
+              playerMoves={this.props.playerMoves}
               gameResults={this.props.gameResults}
               onMove={this.props.onMove}
               settings={this.props.settings}
@@ -179,8 +187,8 @@ export default class ControlsContainer extends React.Component {
             />
         </TabPane>
         <TabPane tabId="book">
-            <BookMoves 
-              bookMoves={this.props.bookMoves} 
+            <BookMoves
+              bookMoves={this.props.bookMoves}
               gameResults={this.props.bookResults}
               onMove={this.props.onMove}
               settings={this.props.settings}
@@ -198,15 +206,20 @@ export default class ControlsContainer extends React.Component {
           <ReportControls fen={this.props.fen} simplifiedView = {false}
             moveDetails = {this.props.openingGraph.getDetailsForFen(this.props.fen)}
             launchGame={this.launchGame.bind(this)} settings={this.props.settings}
-            switchToUserTab={this.switchToUserTab.bind(this)} 
+            switchToUserTab={this.switchToUserTab.bind(this)}
             isOpen = {this.state.activeTab === "report"}
             showInfo = {this.props.showInfo} reportFooter={this.reportFooter()}/>
         </TabPane>
         <TabPane tabId="settings">
           <Row>
             <Col sm="6">
-            <SettingsView fen={this.props.fen} settings={this.props.settings} isOpen = {true} clear = {this.props.clear} reset = {this.props.reset} onChange = {this.props.settingsChange}/>
-            
+            <SettingsView
+              fen={this.props.fen}
+              settings={this.props.settings}
+              isOpen = {true}
+              clear = {this.props.clear}
+              reset = {this.props.reset}
+              onChange = {this.props.settingsChange} />
             </Col>
           </Row>
         </TabPane>
