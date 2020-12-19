@@ -364,6 +364,10 @@ body.dark-theme .MuiPaper-root {
     background-color: #555;
 }
 
+body.dark-theme .modal-content {
+    background-color: #666;
+}
+
 body.dark-theme .MuiButtonBase-root.mainButton {
     background-color: #777;
 }
@@ -372,7 +376,28 @@ body.dark-theme .navItem.border {
     border-color: #999 !important;
 }
 
+body.dark-theme .MuiSwitch-thumb {
+    background-color: white;
+}
+
+body.dark-theme .linkStyle,
+body.dark-theme a,
+body.dark-theme a:hover,
+body.dark-theme .MuiTypography-colorPrimary,
+body.dark-theme .MuiTypography-colorPrimary:hover,
+body.dark-theme .btn-link,
+body.dark-theme .btn-primary:hover {
+    color: #66E1FF;
+}
+
+body.dark-theme .btn-primary {
+    color: #333;
+    background-color: #66E1FF;
+    border-color: #66E1FF;
+}
+
 body.dark-theme coord,
+body.dark-theme p,
 body.dark-theme button span,
 body.dark-theme button svg,
 body.dark-theme nav.navbar,
@@ -391,7 +416,10 @@ body.dark-theme .MuiPaper-root,
 body.dark-theme .MuiRadio-colorPrimary,
 body.dark-theme .MuiInputLabel-formControl,
 body.dark-theme .MuiFormControlLabel-label,
-body.dark-theme legend.MuiFormLabel-root {
+body.dark-theme .MuiTableCell-footer,
+body.dark-theme legend.MuiFormLabel-root,
+body.dark-theme .pgnloadersection,
+body.dark-theme .modal-content {
     color: #DDD;
 }
 
@@ -406,4 +434,8 @@ body.dark-theme .moveRow:hover {
 
 body.dark-theme .cg-wrap {
     filter: grayscale(20%);
+}
+
+body.dark-theme .dropzone {
+    background-color: #777;
 }
