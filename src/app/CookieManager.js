@@ -1,16 +1,18 @@
 import Cookies from 'js-cookie'
 
 class CookieManager {
-    
     getLichessAccessToken() {
         return Cookies.get('at')
     }
+
     deleteLichessAccessToken() {
         Cookies.remove('at', { path: '/', domain:'www.openingtree.com' })
     }
+
     setSettingsCookie(settings) {
         Cookies.set('set',JSON.stringify(settings))
     }
+
     getSettingsCookie() {
         let settingsCookie = null
         try{
@@ -24,7 +26,9 @@ class CookieManager {
         }
         return JSON.parse(settingsCookie)
     }
+
     currentVisit = null
+
     getVisitInfo(){
         if(this.currentVisit) {
             return this.currentVisit
@@ -42,13 +46,12 @@ class CookieManager {
             lastVisit: lastVisit,
             currentVisit: currDate,
             numVisits: timesVisited,
-            
         }
         if(lastVisit === null || currDate-lastVisit>1000*60*60*24){
             // increment count if visit in more than an day
             Cookies.set('lst', currDate);
             Cookies.set('vcnt', timesVisited+1)
-        } 
+        }
         if(firstVisit === null) {
             Cookies.set('fst', currDate);
         }

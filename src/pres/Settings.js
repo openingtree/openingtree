@@ -2,7 +2,6 @@ import React from 'react';
 import { Button, Col, Container, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop, faFastBackward, faMoon, faRetweet, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
-import Cookies from 'js-cookie';
 
 import { trackEvent } from '../app/Analytics';
 import * as Constants from '../app/Constants';
@@ -14,23 +13,37 @@ export default class SettingsView extends React.Component {
     }
 
     keyHandler(e){
-        if(e.srcElement && e.srcElement.tagName === 'INPUT') {
-            return
+        if (e.srcElement && e.srcElement.tagName === 'INPUT') {
+            return;
         }
+
         switch(e.keyCode) {
             case 70: // F key
-            this.toggle('orientation')()
-            break
+                this.toggle('orientation')();
+                break;
             default:
-                break
+                break;
         }
     }
 
-    toggle(eventName){
-        return (()=> {
-            let newValue = this.props.settings[eventName] === Constants.PLAYER_COLOR_WHITE ? Constants.PLAYER_COLOR_BLACK:Constants.PLAYER_COLOR_WHITE
-            this.props.onChange(eventName, newValue)
-            trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "ChangeOrientation")
+    toggle(eventName) {
+        return (() => {
+            let newValue;
+            switch (eventName) {
+                case 'orientation':
+                    newValue = this.props.settings[eventName] === Constants.PLAYER_COLOR_WHITE
+                        ? Constants.PLAYER_COLOR_BLACK
+                        : Constants.PLAYER_COLOR_WHITE;
+                    trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "ChangeOrientation")
+                    break;
+                case 'darkMode':
+                    newValue = !this.props.settings[eventName];
+                    trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "DarkMode");
+                    break;
+                default:
+                    break;
+            }
+            this.props.onChange(eventName, newValue);
         })
     }
 
@@ -47,46 +60,6 @@ export default class SettingsView extends React.Component {
     clearAction() {
         this.props.clear()
         trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "Clear")
-    }
-
-    manualToggleDarkMode () {
-        // Cookie value should be 'true' or 'false', but if not then it will be overwritten with a valid value anyway.
-        const darkModeCookie = Cookies.get(Constants.DARK_MODE_COOKIE) === 'true';
-        const newCookieValue = darkModeCookie ? 'false' : 'true';
-
-        Cookies.set(Constants.DARK_MODE_COOKIE, newCookieValue, { expires: 365 });
-
-        this.alignDarkModeStylingWithCookie();
-    }
-
-    alignDarkModeStylingWithCookie () {
-        const darkModeThemeIsCurrentlySet = document.body.classList.contains('dark-theme');
-        const darkModeCookie = Cookies.get(Constants.DARK_MODE_COOKIE) === 'true';
-
-        if (darkModeCookie !== darkModeThemeIsCurrentlySet) {
-            this.toggleDarkModeStyles();
-        }
-    }
-
-    toggleDarkModeStyles () {
-        const navBar = document.querySelector('nav');
-        navBar.classList.toggle('navbar-light');
-        navBar.classList.toggle('navbar-dark');
-        navBar.classList.toggle('bg-dark');
-        navBar.classList.toggle('bg-light');
-
-        this.toggleLogo();
-
-        document.body.classList.toggle('dark-theme');
-    }
-
-    toggleLogo () {
-        const darkModeThemeIsCurrentlySet = document.body.classList.contains('dark-theme');
-        const logo = document.querySelector('nav.navbar img');
-
-        const logoSrc = darkModeThemeIsCurrentlySet ? '/opening-tree-logo.png' : '/opening-tree-logo-white.png';
-
-        logo.setAttribute('src', logoSrc);
     }
 
     render() {
@@ -134,7 +107,7 @@ export default class SettingsView extends React.Component {
                         </Button>
                     </Col>
                     <Col sm="6">
-                        <Button className="settingButton" onClick={this.manualToggleDarkMode.bind(this)} color="">
+                        <Button className="settingButton" onClick={this.toggle('darkMode')} color="">
                             <h3>
                                 <FontAwesomeIcon icon={faMoon} />
                             </h3>
@@ -146,9 +119,5 @@ export default class SettingsView extends React.Component {
                 </Row>
             </Container>
         </div>
-    }
-
-    componentDidMount () {
-        this.alignDarkModeStylingWithCookie();
     }
 }

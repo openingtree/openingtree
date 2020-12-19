@@ -24,6 +24,7 @@ import * as Constants from '../app/Constants'
 import OpeningGraph from '../app/OpeningGraph'
 import { chessLogic } from '../app/chess/ChessLogic'
 import cookieManager from '../app/CookieManager'
+import { handleDarkMode } from '../pres/DarkMode';
 import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
 import {trackEvent} from '../app/Analytics'
 
@@ -53,7 +54,8 @@ export default class MainContainer extends React.Component {
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,
           playerColor:'',
-          movesSettings:this.getMovesSettingsFromCookie()
+          movesSettings:this.getMovesSettingsFromCookie(),
+          darkMode: this.getDarkModeSettingFromCookie()
         },
         message:'',
         downloadingGames:false,
@@ -74,27 +76,33 @@ export default class MainContainer extends React.Component {
     this.chessboardWidth = this.getChessboardWidth()
   }
 
-  getMovesSettingsFromCookie(){
-    let settings = cookieManager.getSettingsCookie()
-    if(!settings) {
+  getMovesSettingsFromCookie() {
+    let { movesSettings } = cookieManager.getSettingsCookie() || {};
+
+    if (!movesSettings) {
       // default settings
-      settings = {
-        movesSettings: {
+      movesSettings = {
           openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
           openingBookRating:Constants.ALL_BOOK_RATINGS,
-          openingBookTimeControls:[Constants.TIME_CONTROL_BULLET,
-                                  Constants.TIME_CONTROL_BLITZ,
-                                  Constants.TIME_CONTROL_RAPID,
-                                  Constants.TIME_CONTROL_CLASSICAL],
+          openingBookTimeControls: [
+            Constants.TIME_CONTROL_BULLET,
+            Constants.TIME_CONTROL_BLITZ,
+            Constants.TIME_CONTROL_RAPID,
+            Constants.TIME_CONTROL_CLASSICAL
+          ],
           openingBookScoreIndicator:false,
           openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
         }
-      }
     }
-    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "winsIndicator", `${settings.movesSettings.openingBookWinsIndicator?"on":"off"}`)
-    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "bookType", settings.movesSettings.openingBookType)
+    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "winsIndicator", `${movesSettings.openingBookWinsIndicator?"on":"off"}`)
+    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "bookType", movesSettings.openingBookType)
 
-    return settings.movesSettings
+    return movesSettings;
+  }
+
+  getDarkModeSettingFromCookie () {
+    const settings = cookieManager.getSettingsCookie();
+    return Boolean(settings && settings.darkMode);
   }
 
   render() {
@@ -209,5 +217,9 @@ export default class MainContainer extends React.Component {
         </ModalFooter>
       </Modal>
     </div>
+  }
+
+  componentDidMount() {
+      handleDarkMode();
   }
 }

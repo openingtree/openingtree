@@ -5,6 +5,7 @@ import {chessLogic} from '../app/chess/ChessLogic'
 import OpeningGraph from '../app/OpeningGraph'
 import {fetchBookMoves} from '../app/OpeningBook'
 import CookieManager from '../app/CookieManager'
+import { handleDarkMode } from './DarkMode';
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -123,8 +124,6 @@ function getPlayerMoves() {
     return moves?moves.sort((a,b)=>b.moveCount-a.moveCount):[]
 }
 
-
-
 function gameResults() {
     return this.state.openingGraph.gameResultsForFen(this.chess.fen())
 }
@@ -148,7 +147,7 @@ function clear() {
 }
 
 function settingsChange(name, value) {
-    if(name === 'movesSettings') {
+    if(name === 'movesSettings' || name === 'darkMode') {
         let settingsToPersist = {}
         settingsToPersist[name] = value
         CookieManager.setSettingsCookie(settingsToPersist)
@@ -156,16 +155,18 @@ function settingsChange(name, value) {
     }
     let settings = this.state.settings
     settings[name] = value;
-    this.setState({
-        'settings':settings
-    })
+    this.setState({ settings });
+
+    if (name === 'darkMode') {
+        handleDarkMode();
+    }
 }
 
 function launch(url) {
     return () => {
-      window.open(url, "_blank")
+        window.open(url, "_blank")
     }
-  }
+}
 
 
 function showError(message, trackingEvent, subMessage, action, severity) {
@@ -193,7 +194,6 @@ function showInfo(message, trackingLabel) {
     trackEvent(Constants.EVENT_CATEGORY_MESSAGE_SHOWN,"infoShown",
         trackingLabel?trackingLabel:message)
 }
-
 
 function closeError() {
     this.setState({message:'', subMessage:''})
