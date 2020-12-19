@@ -367,11 +367,14 @@ body.dark-theme #navigator .selectedMove,
 body.dark-theme div.card,
 body.dark-theme .MuiPaper-root:not([class*=" SnackbarContentWrapper-"]),
 body.dark-theme .moveRow:hover,
-body.dark-theme .performanceOverlay tr {
+body.dark-theme .performanceOverlay tr,
+body.dark-theme .list-group-item {
     background-color: #555;
 }
 
-body.dark-theme .modal-content {
+body.dark-theme .modal-content,
+body.dark-theme .dropdown-menu,
+body.dark-theme .faq-row {
     background-color: #666;
 }
 
@@ -410,7 +413,7 @@ body.dark-theme #navigator,
 body.dark-theme #navigator .greyText,
 body.dark-theme tr.moveRow td,
 body.dark-theme th,
-body.dark-theme .fenDiv textarea,
+body.dark-theme textarea,
 body.dark-theme .fenDiv label,
 body.dark-theme input,
 body.dark-theme .MuiPaper-root,
@@ -421,11 +424,17 @@ body.dark-theme .MuiTableCell-footer,
 body.dark-theme legend.MuiFormLabel-root,
 body.dark-theme .pgnloadersection,
 body.dark-theme .modal-content,
+body.dark-theme .dropdown-menu,
 body.dark-theme .MuiCheckbox-colorPrimary.Mui-checked,
 body.dark-theme .MuiSlider-thumb,
 body.dark-theme .MuiSlider-markLabel,
-body.dark-theme .performanceRatingRow {
+body.dark-theme .performanceRatingRow,
+body.dark-theme .list-group-item {
     color: #DDD;
+}
+
+body.dark-theme .faq-row .row-title-text {
+    color: white;
 }
 
 body.dark-theme .btn-primary,

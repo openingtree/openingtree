@@ -19,6 +19,8 @@ import {
   NavItem, NavLink, ModalBody
 } from 'reactstrap';
 
+import CookieManager from '../app/CookieManager';
+
 import 'bootstrap/dist/css/bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faComments, faCaretDown, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
@@ -62,10 +64,14 @@ const GlobalHeader = (props) => {
     </DropdownToggle>
     <DropdownMenu right>
       <DropdownItem onClick={toggleFAQModal}>
-        FAQ
+        <span>
+          FAQ
+        </span>
       </DropdownItem>
       <DropdownItem onClick={launch("https://youtu.be/9w7GdGuJoyk", "tutorial")}>
-        Watch Tutorial
+        <span>
+          Watch Tutorial
+        </span>
       </DropdownItem>
     </DropdownMenu>
   </UncontrolledDropdown>
@@ -78,23 +84,35 @@ const GlobalHeader = (props) => {
       </DropdownToggle>
       <DropdownMenu right>
         <DropdownItem onClick={toggleModal}>
-          Acknowledgements
+          <span>
+            Acknowledgements
+          </span>
         </DropdownItem>
         <DropdownItem onClick={launch("https://www.openingtree.com/old", "OldVersion")}>
-          Old version
+          <span>
+            Old version
+          </span>
         </DropdownItem>
         <DropdownItem onClick={launch("https://github.com/openingtree/openingtree","github")}>
-          Github
+          <span>
+            Github
+          </span>
         </DropdownItem>
         <DropdownItem divider />
         <DropdownItem onClick={launch("https://lichess.org/","lichess")}>
-          Lichess
+          <span>
+            Lichess
+          </span>
         </DropdownItem>
         <DropdownItem onClick={launch("https://www.lichess4545.com/","lichess4545")}>
-          Lichess4545
+          <span>
+            Lichess4545
+          </span>
         </DropdownItem>
         <DropdownItem onClick={launch("https://www.chess.com","chessDotCom")}>
-          Chess.com
+          <span>
+            Chess.com
+          </span>
         </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
@@ -144,7 +162,7 @@ const GlobalHeader = (props) => {
   const styles = {
     // bgColor: 'white',
     rowTitleColor: "black",
-    rowContentColor: 'grey',
+    rowContentColor: CookieManager.getSettingsCookie().darkMode ? 'white' : 'grey',
     rowTitleTextSize:'small',
     rowContentTextSize:'small',
     rowContentPaddingTop:'1'
