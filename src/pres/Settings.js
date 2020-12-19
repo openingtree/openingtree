@@ -69,13 +69,24 @@ export default class SettingsView extends React.Component {
     }
 
     toggleDarkModeStyles () {
-        document.body.classList.toggle('dark-theme');
-
         const navBar = document.querySelector('nav');
         navBar.classList.toggle('navbar-light');
         navBar.classList.toggle('navbar-dark');
         navBar.classList.toggle('bg-dark');
         navBar.classList.toggle('bg-light');
+
+        this.toggleLogo();
+
+        document.body.classList.toggle('dark-theme');
+    }
+
+    toggleLogo () {
+        const darkModeThemeIsCurrentlySet = document.body.classList.contains('dark-theme');
+        const logo = document.querySelector('nav.navbar img');
+
+        const logoSrc = darkModeThemeIsCurrentlySet ? '/opening-tree-logo.png' : '/opening-tree-logo-white.png';
+
+        logo.setAttribute('src', logoSrc);
     }
 
     render() {
