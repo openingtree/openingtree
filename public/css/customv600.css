@@ -356,13 +356,18 @@ body.dark-theme {
     background-color: #333;
 }
 
+body.dark-theme .performanceOverlay th {
+    background-color: #444;
+}
+
 body.dark-theme button:hover,
 body.dark-theme .nav-item .active.nav-link,
 body.dark-theme nav.navbar,
 body.dark-theme #navigator .selectedMove,
 body.dark-theme div.card,
 body.dark-theme .MuiPaper-root,
-body.dark-theme .moveRow:hover {
+body.dark-theme .moveRow:hover,
+body.dark-theme .performanceOverlay tr {
     background-color: #555;
 }
 
@@ -423,7 +428,8 @@ body.dark-theme .performanceRatingRow {
     color: #DDD;
 }
 
-body.dark-theme .btn-primary {
+body.dark-theme .btn-primary,
+body.dark-theme input[type="search"] {
     color: #333;
 }
 
