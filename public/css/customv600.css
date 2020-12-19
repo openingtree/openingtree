@@ -389,7 +389,9 @@ body.dark-theme .fenDiv label,
 body.dark-theme input,
 body.dark-theme .MuiPaper-root,
 body.dark-theme .MuiRadio-colorPrimary,
-body.dark-theme .MuiInputLabel-formControl {
+body.dark-theme .MuiInputLabel-formControl,
+body.dark-theme .MuiFormControlLabel-label,
+body.dark-theme legend.MuiFormLabel-root {
     color: #DDD;
 }
 
