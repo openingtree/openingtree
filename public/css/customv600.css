@@ -21,9 +21,9 @@
     margin-top:10px;
     color:#555555;
 }
-.pgnloaderfirstsection {
-    margin-top:0px;
-    color:#555555;
+
+.pgnloadersection:first-child {
+    margin-top: 0;
 }
 
 .navItem {
