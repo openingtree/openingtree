@@ -44,7 +44,7 @@ export const PLAYER_COLOR_BLACK = 'black'
 export const LOADER_ANIMATION_DURATION_MS = 500
 
 export const OPENING_TREE_EMAIL = 'feedback@openingtree.com'
-export const OPENNIG_TREE_REDDIT = 'opening_tree'
+export const OPENING_TREE_REDDIT = 'opening_tree'
 export const OPENING_TREE_LICHESS = 'vannooz'
 export const OPENING_TREE_CHESS_COM = 'vannooz'
 export const OPENING_TREE_DISCORD = 'https://discord.gg/hCwKkN8'
@@ -91,3 +91,5 @@ export const OPENING_BOOK_TYPE_MASTERS = 'master'
 export const OPENING_BOOK_TYPE_LICHESS = 'lichess'
 
 export const ALL_BOOK_RATINGS = ['1600','1800','2000','2200','2500']
+
+export const DARK_MODE_COOKIE = 'dark-mode';

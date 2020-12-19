@@ -1,22 +1,30 @@
-import React from 'react'
-import {getNumberIcon} from './Common'
-import { Radio, FormControlLabel, RadioGroup } from '@material-ui/core';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import Collapse from '@material-ui/core/Collapse';
-import {Accordion} from './Common'
-import * as Constants from '../../app/Constants'
-import Backup from '@material-ui/icons/Backup';
-import People from '@material-ui/icons/People';
-import Save from '@material-ui/icons/Save';
-import Divider from '@material-ui/core/Divider';
-import DateRange from '@material-ui/icons/DateRange';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChessRook } from '@fortawesome/free-solid-svg-icons'
-import AccordionActions from '@material-ui/core/AccordionActions';
-import { Button as MaterialUIButton } from '@material-ui/core'
+import { Accordion, getNumberIcon } from './Common';
+import * as Constants from '../../app/Constants';
 
+import React from 'react';
+
+import {
+    AccordionActions,
+    AccordionDetails,
+    AccordionSummary,
+    Button as MaterialUIButton,
+    Collapse,
+    Divider,
+    FormControlLabel,
+    Radio,
+    RadioGroup
+} from '@material-ui/core';
+
+import {
+    Backup,
+    DateRange,
+    ExpandMore,
+    People,
+    Save
+} from '@material-ui/icons';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faChessRook } from '@fortawesome/free-solid-svg-icons';
 
 const SOURCE_VARIANT_COMBINATION = {
     [Constants.VARIANT_RACING_KINGS]:[Constants.SITE_LICHESS, Constants.SITE_ONLINE_TOURNAMENTS, Constants.SITE_OPENING_TREE_FILE, Constants.SITE_PGN_FILE],
@@ -64,7 +72,7 @@ export default class Source extends React.Component {
             expanded={this.props.expandedPanel === 'source'}
             onChange={this.props.handleExpansionChange}>
             <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+                expandIcon={<ExpandMore />}
                 aria-controls="panel1c-content"
                 id="panel1c-header"
             >
@@ -94,17 +102,17 @@ export default class Source extends React.Component {
                 null
             }
         </Accordion>
-        
+
     }
 
     getSourceRadio(source) {
         if(!this.isSourceAvailable(source,this.props.variant)) {
             return null
         }
-        return <FormControlLabel 
-                className="sitelabel" 
-                value={source} 
-                control={<Radio color="primary" />} 
+        return <FormControlLabel
+                className="sitelabel"
+                value={source}
+                control={<Radio color="primary" />}
                 label={this.getSourceOption(source)} />
     }
 }

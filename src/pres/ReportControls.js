@@ -24,11 +24,11 @@ export default class ReportControls extends React.Component {
                 multiline
                 label="FEN"
                 rowsMax="2"
-                value={this.props.fen} 
+                value={this.props.fen}
                 inputProps={{
                     style: {fontSize: 12},
                     spellCheck: false,
-                  }} 
+                  }}
                   variant="outlined"
                 className="fenField"
                 margin="dense"
@@ -36,31 +36,35 @@ export default class ReportControls extends React.Component {
                 /></div>
     }
 
-      
+
     render() {
         let moveDetails = this.props.moveDetails
         if(!moveDetails.hasData) {
-            return <div>{this.getFenField()}<div className = "infoMessage" >No data to show. Please enter a lichess or chess.com user name in the 
+            return <div>{this.getFenField()}<div className = "infoMessage" >No data to show. Please enter a lichess or chess.com user name in the
                 <span className = "navLinkButton" onClick={()=>this.props.switchToUserTab()}> <FontAwesomeIcon icon={faUser} /> User</span> tab and click "Load"</div>
                 </div>
         }
         let performanceDetails = {}
         if(this.props.isOpen) {
-            performanceDetails = getPerformanceDetails(moveDetails.totalOpponentElo, 
+            performanceDetails = getPerformanceDetails(moveDetails.totalOpponentElo,
                                                         moveDetails.averageElo,
-                                                        moveDetails.whiteWins, 
-                                                        moveDetails.draws, 
-                                                        moveDetails.blackWins, 
+                                                        moveDetails.whiteWins,
+                                                        moveDetails.draws,
+                                                        moveDetails.blackWins,
                                                         this.props.settings.playerColor)
-        } 
+        }
 
-        return <div>
+        return <div class="performanceOverlay">
             {this.getFenField()}
             <Table onClick={this.eatClicks}>
-            {!performanceDetails.performanceRating || (isNaN(performanceDetails.performanceRating) || !this.props.settings.playerName)?null:            <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}><TableRow>
+            {!performanceDetails.performanceRating || (isNaN(performanceDetails.performanceRating) || !this.props.settings.playerName)?
+            null:
+            <TableHead className={`performanceRatingRow${this.props.simplifiedView?" performanceHeader":""}`}>
+                <TableRow>
                 <TableCell className="performanceRatingRow"><b>Performance</b></TableCell>
                 <TableCell className="performanceRatingRow"><b>{performanceDetails.performanceRating}</b></TableCell>
-                </TableRow></TableHead>}
+                </TableRow>
+            </TableHead>}
             <TableBody>
             <TableRow className="performanceRatingRow">
                 <TableCell className="performanceRatingRow">Results</TableCell>
