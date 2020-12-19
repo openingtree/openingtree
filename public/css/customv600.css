@@ -7,7 +7,7 @@
 
 .settingButton {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     justify-items: center;
     align-items: center;
     grid-gap: 5px;
@@ -20,10 +20,6 @@
 .pgnloadersection {
     margin-top:10px;
     color:#555555;
-}
-
-.pgnloadersection:first-child {
-    margin-top: 0;
 }
 
 .navItem {
@@ -374,7 +370,7 @@ body.dark-theme .modal-content {
     background-color: #666;
 }
 
-body.dark-theme .MuiButtonBase-root.mainButton {
+body.dark-theme .mainButton {
     background-color: #777;
 }
 
@@ -394,12 +390,6 @@ body.dark-theme .MuiTypography-colorPrimary:hover,
 body.dark-theme .btn-link,
 body.dark-theme .btn-primary:hover {
     color: #66E1FF;
-}
-
-body.dark-theme .btn-primary {
-    color: #333;
-    background-color: #66E1FF;
-    border-color: #66E1FF;
 }
 
 body.dark-theme coord,
@@ -428,8 +418,21 @@ body.dark-theme .pgnloadersection,
 body.dark-theme .modal-content,
 body.dark-theme .MuiCheckbox-colorPrimary.Mui-checked,
 body.dark-theme .MuiSlider-thumb,
-body.dark-theme .MuiSlider-markLabel {
+body.dark-theme .MuiSlider-markLabel,
+body.dark-theme .performanceRatingRow {
     color: #DDD;
+}
+
+body.dark-theme .btn-primary {
+    color: #333;
+}
+
+body.dark-theme .MuiButton-containedPrimary {
+    background-color: #3f51b5;
+}
+
+body.dark-theme .MuiButton-containedPrimary:hover {
+    background-color: #303f9f;
 }
 
 body.dark-theme .MuiFormHelperText-root.Mui-error {
