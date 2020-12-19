@@ -365,7 +365,7 @@ body.dark-theme .nav-item .active.nav-link,
 body.dark-theme nav.navbar,
 body.dark-theme #navigator .selectedMove,
 body.dark-theme div.card,
-body.dark-theme .MuiPaper-root,
+body.dark-theme .MuiPaper-root:not([class*=" SnackbarContentWrapper-"]),
 body.dark-theme .moveRow:hover,
 body.dark-theme .performanceOverlay tr {
     background-color: #555;
