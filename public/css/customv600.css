@@ -32,6 +32,10 @@
     align-items: center;
 }
 
+.navItem.border {
+    border-color: #f1f1f1 !important;
+}
+
 .navMove:hover {
     background-color: #dcdcdc;
     cursor: pointer;
@@ -362,6 +366,10 @@ body.dark-theme .MuiPaper-root {
 
 body.dark-theme .MuiButtonBase-root.mainButton {
     background-color: #777;
+}
+
+body.dark-theme .navItem.border {
+    border-color: #999 !important;
 }
 
 body.dark-theme coord,
