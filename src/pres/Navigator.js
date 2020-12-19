@@ -30,17 +30,18 @@ export default class Navigator extends React.Component {
         }
     }
 
-    scrollHandler(e) {
-        e.preventDefault();
+    // TODO: Put scroll handler behind setting
+    // scrollHandler(e) {
+    //     e.preventDefault();
 
-        if (e.deltaY > 0) {
-            this.next(e, "wheel");
-        }
+    //     if (e.deltaY > 0) {
+    //         this.next(e, "wheel");
+    //     }
 
-        else if (e.deltaY < 0) {
-            this.previous(e, "wheel");
-        }
-    }
+    //     else if (e.deltaY < 0) {
+    //         this.previous(e, "wheel");
+    //     }
+    // }
 
     shouldComponentUpdate(newProps) {
         //console.log(newProps)
@@ -133,11 +134,12 @@ export default class Navigator extends React.Component {
         </Container>
     }
 
-    componentDidUpdate () {
-        const chessBoard = document.querySelector('cg-board');
-        const navigator = document.querySelector('#navigator');
+    // TODO: Put scroll handler behind setting
+    // componentDidUpdate () {
+    //     const chessBoard = document.querySelector('cg-board');
+    //     const navigator = document.querySelector('#navigator');
 
-        if (chessBoard) chessBoard.onwheel = this.scrollHandler.bind(this);
-        if (navigator) navigator.onwheel = this.scrollHandler.bind(this);
-    }
+    //     if (chessBoard) chessBoard.onwheel = this.scrollHandler.bind(this);
+    //     if (navigator) navigator.onwheel = this.scrollHandler.bind(this);
+    // }
 }
