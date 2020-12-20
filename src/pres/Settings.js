@@ -112,7 +112,7 @@ export default class SettingsView extends React.Component {
                                 <FontAwesomeIcon icon={faMoon} />
                             </h3>
                             <span>
-                                Toggle dark mode
+                                Dark mode
                             </span>
                         </Button>
                     </Col>

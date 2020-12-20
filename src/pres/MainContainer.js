@@ -102,7 +102,10 @@ export default class MainContainer extends React.Component {
 
   getDarkModeSettingFromCookie () {
     const settings = cookieManager.getSettingsCookie();
-    return Boolean(settings && settings.darkMode);
+    if(!settings || settings.darMode === null) {
+      return true// default value
+    }
+    return Boolean(settings.darkMode);
   }
 
   render() {
