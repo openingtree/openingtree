@@ -114,7 +114,8 @@ export default class MainContainer extends React.Component {
     this.mergePlayerAndBookMoves(playerMoves, bookMoves)
 
     return <div className="rootView">
-      <GlobalHeader toggleFeedback = {this.toggleFeedback(false)}/>
+      <GlobalHeader settings={this.state.settings} 
+              toggleFeedback = {this.toggleFeedback(false)}/>
       <Container className="mainContainer">
         <Row>
           <Col lg={{order:0, size:2}} xs={{order:2}}>
@@ -220,6 +221,6 @@ export default class MainContainer extends React.Component {
   }
 
   componentDidMount() {
-      handleDarkMode();
+      handleDarkMode(this.state.settings.darkMode);
   }
 }

@@ -1,11 +1,10 @@
 import CookieManager from '../app/CookieManager';
 
-export const handleDarkMode = () => {
+export const handleDarkMode = (darkMode) => {
     const darkModeThemeIsCurrentlySet = document.body.classList.contains('dark-theme');
 
-    const settings = CookieManager.getSettingsCookie() || {};
 
-    if (settings.darkMode !== darkModeThemeIsCurrentlySet) {
+    if (darkMode !== darkModeThemeIsCurrentlySet) {
         toggleDarkModeStyles();
     }
 };

@@ -162,7 +162,7 @@ const GlobalHeader = (props) => {
   const styles = {
     // bgColor: 'white',
     rowTitleColor: "black",
-    rowContentColor: CookieManager.getSettingsCookie().darkMode ? 'white' : 'grey',
+    rowContentColor: props.settings.darkMode ? 'white' : 'grey',
     rowTitleTextSize:'small',
     rowContentTextSize:'small',
     rowContentPaddingTop:'1'

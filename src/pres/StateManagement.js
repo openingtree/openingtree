@@ -158,7 +158,7 @@ function settingsChange(name, value) {
     this.setState({ settings });
 
     if (name === 'darkMode') {
-        handleDarkMode();
+        setImmediate(()=>handleDarkMode(value));
     }
 }
 
