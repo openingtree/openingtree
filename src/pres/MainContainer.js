@@ -225,6 +225,6 @@ export default class MainContainer extends React.Component {
 
   componentDidMount() {
       handleDarkMode(this.state.settings.darkMode);
-      setImmediate(this.handleResize)
+      setImmediate(this.handleResize.bind(this))
   }
 }
