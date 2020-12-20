@@ -225,6 +225,9 @@ export default class MainContainer extends React.Component {
 
   componentDidMount() {
       handleDarkMode(this.state.settings.darkMode);
+      
+      // hack to fix https://github.com/openingtree/openingtree/issues/243
+      // refreshing the chessboard after its initial render seems to fix this issue
       setImmediate(this.handleResize.bind(this))
   }
 }
