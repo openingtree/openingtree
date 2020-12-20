@@ -1,5 +1,3 @@
-import CookieManager from '../app/CookieManager';
-
 export const handleDarkMode = (darkMode) => {
     const darkModeThemeIsCurrentlySet = document.body.classList.contains('dark-theme');
 
