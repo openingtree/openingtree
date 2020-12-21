@@ -19,7 +19,7 @@ import {
   NavItem, NavLink, ModalBody
 } from 'reactstrap';
 
-import CookieManager from '../app/CookieManager';
+import {logoName, rowContentColor} from './DarkMode';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -30,6 +30,7 @@ import * as Constants from '../app/Constants';
 import {trackEvent} from '../app/Analytics';
 
 const GlobalHeader = (props) => {
+  const darkMode = props.settings.darkMode
   const [isOpen, setIsOpen] = useState(false)
   const toggle = () => setIsOpen(!isOpen)
 
@@ -162,7 +163,7 @@ const GlobalHeader = (props) => {
   const styles = {
     // bgColor: 'white',
     rowTitleColor: "black",
-    rowContentColor: props.settings.darkMode ? 'white' : 'grey',
+    rowContentColor: rowContentColor(darkMode),
     rowTitleTextSize:'small',
     rowContentTextSize:'small',
     rowContentPaddingTop:'1'
@@ -216,7 +217,7 @@ const GlobalHeader = (props) => {
   return (
     <div>
       <Navbar color="light" light expand="md">
-        <img src="/opening-tree-logo.png" height="32px" width="32px" alt="Logo"/>
+        <img src={logoName(darkMode)} height="32px" width="32px" alt="Logo"/>
         <NavbarBrand href="/">&nbsp;OpeningTree.com</NavbarBrand>
         <NavbarToggler onClick={toggle}/>
         <Collapse isOpen={isOpen} navbar>
