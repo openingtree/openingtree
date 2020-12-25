@@ -106,8 +106,8 @@ export default class Navigator extends React.Component {
                 </Col>
                 <Col lg="6" className="navSection">
                     <Button color="" className= "settingButton" onClick = {this.next.bind(this)}>
-                        <span>next</span>
                         <FontAwesomeIcon icon={faStepForward} />
+                        <span>next</span>
                     </Button>
                 </Col>
             </Row>
@@ -115,7 +115,7 @@ export default class Navigator extends React.Component {
             {
                 this.openingManager.pgnListSoFar().map((move, index)=>
                     <Row key={`${move.moveNumber}`} className="navCol">
-                        <Col sm="2" className = "navItem navMoveNumber border">
+                        <Col sm="2" className = "navItem navMoveNumber">
                             {`${move.moveNumber}.`}
                         </Col>
                         <Col sm="5"
