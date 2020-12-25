@@ -216,12 +216,12 @@ const GlobalHeader = (props) => {
 
   return (
     <div>
-      <Navbar color="light" light expand="md">
+      <Navbar color={darkMode?"dark":"light"} dark={darkMode} light={!darkMode} expand="md">
         <img src={logoName(darkMode)} height="32px" width="32px" alt="Logo"/>
         <NavbarBrand href="/">&nbsp;OpeningTree.com</NavbarBrand>
         <NavbarToggler onClick={toggle}/>
         <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
+          <Nav className={`mr-auto`} navbar>
             <NavItem>
               <NavLink className="navLinkButton" onClick={launch("https://www.youtube.com/watch?v=AJ66-HqdpXE","mainVideo")}>
                 <span>
