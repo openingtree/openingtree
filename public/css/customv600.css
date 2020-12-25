@@ -31,6 +31,9 @@
 .navItem.border {
     border-color: #f1f1f1 !important;
 }
+.navMoveNumber {
+    background-color: #EEEEEE;
+}
 
 .navMove:hover {
     background-color: #dcdcdc;
@@ -461,6 +464,10 @@ body.dark-theme .MuiSlider-root {
 body.dark-theme .nav-link:hover,
 body.dark-theme #navigator .navMove:hover {
     color: #999;
+}
+
+body.dark-theme .navMoveNumber {
+    background-color: #777777;
 }
 
 body.dark-theme .cg-wrap {

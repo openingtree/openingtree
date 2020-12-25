@@ -115,15 +115,15 @@ export default class Navigator extends React.Component {
             {
                 this.openingManager.pgnListSoFar().map((move, index)=>
                     <Row key={`${move.moveNumber}`} className="navCol">
-                        <Col sm="4" className = "navItem border">
+                        <Col sm="2" className = "navItem navMoveNumber border">
                             {`${move.moveNumber}.`}
                         </Col>
-                        <Col sm="4"
+                        <Col sm="5"
                             className = {`navItem navMove border ${this.openingManager.currentIndex-1 === index*2 ? 'selectedMove':''}`}
                             onClick={this.moveTo(index*2).bind(this)}>
                             {`${move.whitePly}`}
                         </Col>
-                        <Col sm="4"
+                        <Col sm="5"
                             className = {`navItem navMove border ${this.openingManager.currentIndex-1 === index*2+1 ? 'selectedMove':''}`}
                             onClick={
                                 this.moveTo(index*2+1).bind(this)}>

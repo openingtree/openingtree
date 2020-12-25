@@ -54,7 +54,7 @@ export default class ReportControls extends React.Component {
                                                         this.props.settings.playerColor)
         }
 
-        return <div class="performanceOverlay">
+        return <div className="performanceOverlay">
             {this.getFenField()}
             <Table onClick={this.eatClicks}>
             {!performanceDetails.performanceRating || (isNaN(performanceDetails.performanceRating) || !this.props.settings.playerName)?
