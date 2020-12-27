@@ -147,7 +147,7 @@ function clear() {
 }
 
 function settingsChange(name, value) {
-    if(name === 'movesSettings' || name === 'darkMode') {
+    if(name === Constants.SETTING_NAME_MOVES_SETTINGS || name === Constants.SETTING_NAME_DARK_MODE) {
         let settingsToPersist = {}
         settingsToPersist[name] = value
         CookieManager.setSettingsCookie(settingsToPersist)
@@ -157,7 +157,7 @@ function settingsChange(name, value) {
     settings[name] = value;
     this.setState({ settings });
 
-    if (name === 'darkMode') {
+    if (name === Constants.SETTING_NAME_DARK_MODE) {
         setImmediate(()=>handleDarkMode(value));
     }
 }

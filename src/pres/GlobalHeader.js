@@ -23,7 +23,7 @@ import {logoName, rowContentColor} from './DarkMode';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretDown, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faLightbulb, faCaretDown, faQuestionCircle, faMoon } from '@fortawesome/free-solid-svg-icons';
 import { faDiscord, faYoutube} from '@fortawesome/free-brands-svg-icons';
 
 import * as Constants from '../app/Constants';
@@ -41,6 +41,11 @@ const GlobalHeader = (props) => {
     }
     setModal(!modal)
   }
+  const toggleDarkMode = () => {
+    trackEvent(Constants.EVENT_CATEGORY_GLOBAL_HEADER, "DarkModeToggle")
+    props.settingsChange(Constants.SETTING_NAME_DARK_MODE, !darkMode)
+  }
+
   const [isFAQOpen, setFAQOpen] = useState(false);
   const toggleFAQModal = () => {
     if(!isFAQOpen) {
@@ -74,6 +79,11 @@ const GlobalHeader = (props) => {
           Send feedback
         </span>
       </DropdownItem>
+      <DropdownItem onClick={launch("https://www.openingtree.com/old", "OldVersion")}>
+          <span>
+            Old version
+          </span>
+        </DropdownItem>
     </DropdownMenu>
   </UncontrolledDropdown>
   }
@@ -89,11 +99,6 @@ const GlobalHeader = (props) => {
             Acknowledgements
           </span>
         </DropdownItem>
-        <DropdownItem onClick={launch("https://www.openingtree.com/old", "OldVersion")}>
-          <span>
-            Old version
-          </span>
-        </DropdownItem>
         <DropdownItem onClick={launch("https://github.com/openingtree/openingtree","github")}>
           <span>
             Github
@@ -102,7 +107,7 @@ const GlobalHeader = (props) => {
         <DropdownItem divider />
         <DropdownItem onClick={launch("https://lichess.org/","lichess")}>
           <span>
-            Lichess
+            Lichess.org
           </span>
         </DropdownItem>
         <DropdownItem onClick={launch("https://www.lichess4545.com/","lichess4545")}>
@@ -231,8 +236,18 @@ const GlobalHeader = (props) => {
           </Nav>
           <Nav className="ml-auto" navbar>
             <NavItem>
+              <NavLink className="navLinkButton" onClick={toggleDarkMode}>
+                <FontAwesomeIcon icon={darkMode?faLightbulb:faMoon} className="largeHeaderIcon"/>
+                <span>
+                  {darkMode?"Light mode":"Dark mode"}
+                </span>
+              </NavLink>
+            </NavItem>
+          </Nav>
+          <Nav className="" navbar>
+            <NavItem>
               <NavLink className="navLinkButton" onClick={launch("https://youtu.be/9w7GdGuJoyk", "tutorial")}>
-                <FontAwesomeIcon icon={faYoutube} className="feedbackIcon"/>
+                <FontAwesomeIcon icon={faYoutube} className="largeHeaderIcon"/>
                 <span>
                   Tutorial
                 </span>

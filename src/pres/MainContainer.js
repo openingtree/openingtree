@@ -118,7 +118,8 @@ export default class MainContainer extends React.Component {
 
     return <div className="rootView">
       <GlobalHeader settings={this.state.settings} 
-              toggleFeedback = {this.toggleFeedback(false)}/>
+                    settingsChange={this.settingsChange.bind(this)}
+                    toggleFeedback = {this.toggleFeedback(false)}/>
       <Container className="mainContainer">
         <Row>
           <Col lg={{order:0, size:2}} xs={{order:2}}>

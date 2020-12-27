@@ -22,7 +22,7 @@ export default class BookMove extends React.Component {
     enableBook(){
         let newMovesSettings = Object.assign({},this.props.settings.movesSettings)
         newMovesSettings.openingBookType = Constants.OPENING_BOOK_TYPE_LICHESS
-        this.props.settingsChange('movesSettings', newMovesSettings)
+        this.props.settingsChange(Constants.SETTING_NAME_MOVES_SETTINGS, newMovesSettings)
     }
 
     movesTable() {

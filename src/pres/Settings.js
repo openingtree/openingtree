@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Col, Container, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDesktop, faFastBackward, faMoon, faRetweet, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faDesktop, faFastBackward, faMoon, faLightbulb, faRetweet, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { trackEvent } from '../app/Analytics';
 import * as Constants from '../app/Constants';
@@ -19,7 +19,7 @@ export default class SettingsView extends React.Component {
 
         switch(e.keyCode) {
             case 70: // F key
-                this.toggle('orientation')();
+                this.toggle(Constants.SETTING_NAME_ORIENTATION)();
                 break;
             default:
                 break;
@@ -30,13 +30,13 @@ export default class SettingsView extends React.Component {
         return (() => {
             let newValue;
             switch (eventName) {
-                case 'orientation':
+                case Constants.SETTING_NAME_ORIENTATION:
                     newValue = this.props.settings[eventName] === Constants.PLAYER_COLOR_WHITE
                         ? Constants.PLAYER_COLOR_BLACK
                         : Constants.PLAYER_COLOR_WHITE;
                     trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "ChangeOrientation")
                     break;
-                case 'darkMode':
+                case Constants.SETTING_NAME_DARK_MODE:
                     newValue = !this.props.settings[eventName];
                     trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "DarkMode");
                     break;
@@ -67,7 +67,7 @@ export default class SettingsView extends React.Component {
             <Container>
                 <Row sm="12">
                     <Col sm="6">
-                        <Button className="settingButton" onClick = {this.toggle('orientation')} color="">
+                        <Button className="settingButton" onClick = {this.toggle(Constants.SETTING_NAME_ORIENTATION)} color="">
                             <h3>
                                 <FontAwesomeIcon icon={faRetweet} />
                             </h3>
@@ -107,12 +107,12 @@ export default class SettingsView extends React.Component {
                         </Button>
                     </Col>
                     <Col sm="6">
-                        <Button className="settingButton" onClick={this.toggle('darkMode')} color="">
+                        <Button className="settingButton" onClick={this.toggle(Constants.SETTING_NAME_DARK_MODE)} color="">
                             <h3>
-                                <FontAwesomeIcon icon={faMoon} />
+                                <FontAwesomeIcon icon={this.props.settings.darkMode?faLightbulb:faMoon} />
                             </h3>
                             <span>
-                                Dark mode
+                                {this.props.settings.darkMode?"Light mode":"Dark mode"}
                             </span>
                         </Button>
                     </Col>

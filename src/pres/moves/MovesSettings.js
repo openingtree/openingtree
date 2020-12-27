@@ -52,7 +52,7 @@ export default class MovesSettings extends React.Component {
 
     set() {
         //reset to  new settings
-        this.props.settingsChange('movesSettings', this.state.movesSettings)
+        this.props.settingsChange(Constants.SETTING_NAME_MOVES_SETTINGS, this.state.movesSettings)
         this.props.toggle()
         trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "MoveSettingsSet")
     }
