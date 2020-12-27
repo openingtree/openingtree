@@ -152,10 +152,6 @@ const GlobalHeader = (props) => {
         content: `Little triangles indicate the openingbook statistics on the moves tab and the player statistics on the openingbook tab.
         Everything left of the white triangle is a win for white, everything right of the black triangle is a win for black and everything in the middle is a draw.
         If there is only a black triangle and no white, it means there are no draws.`,
-      },
-      {
-          title: "Whenever i click on a square, openingtree selects one square to the left of it.",
-          content: `This is a know bug with a component that I am using. You can work around it by resizing your browser window, or zooming in and back out. It should resolve the issue.`,
       }
     ]
   };
