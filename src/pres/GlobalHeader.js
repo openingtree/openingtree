@@ -23,8 +23,8 @@ import {logoName, rowContentColor} from './DarkMode';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faComments, faCaretDown, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import { faDiscord } from '@fortawesome/free-brands-svg-icons';
+import { faCaretDown, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
+import { faDiscord, faYoutube} from '@fortawesome/free-brands-svg-icons';
 
 import * as Constants from '../app/Constants';
 import {trackEvent} from '../app/Analytics';
@@ -71,7 +71,7 @@ const GlobalHeader = (props) => {
       </DropdownItem>
       <DropdownItem onClick={launch("https://youtu.be/9w7GdGuJoyk", "tutorial")}>
         <span>
-          Watch Tutorial
+          Send feedback
         </span>
       </DropdownItem>
     </DropdownMenu>
@@ -228,27 +228,27 @@ const GlobalHeader = (props) => {
                   "It's so powerful" - IM Eric Rosen
                 </span>
                 <span className="smallText">
-                  [Watch video]
+                  [Video]
                 </span>
               </NavLink>
             </NavItem>
           </Nav>
           <Nav className="ml-auto" navbar>
             <NavItem>
-              <NavLink className="navLinkButton" onClick={launch(Constants.OPENING_TREE_DISCORD,"discord")}>
-                <FontAwesomeIcon icon={faDiscord} className="discordIcon"/>
+              <NavLink className="navLinkButton" onClick={launch("https://youtu.be/9w7GdGuJoyk", "tutorial")}>
+                <FontAwesomeIcon icon={faYoutube} className="feedbackIcon"/>
                 <span>
-                  Join our discord
+                  Tutorial
                 </span>
               </NavLink>
             </NavItem>
           </Nav>
           <Nav className="" navbar>
             <NavItem>
-              <NavLink className="navLinkButton" onClick={props.toggleFeedback}>
-                <FontAwesomeIcon icon={faComments} className="feedbackIcon"/>
+              <NavLink className="navLinkButton" onClick={launch(Constants.OPENING_TREE_DISCORD,"discord")}>
+                <FontAwesomeIcon icon={faDiscord} className="discordIcon"/>
                 <span>
-                  Send feedback
+                  Discord
                 </span>
               </NavLink>
             </NavItem>
