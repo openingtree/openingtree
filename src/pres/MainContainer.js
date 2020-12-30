@@ -26,7 +26,7 @@ import { chessLogic } from '../app/chess/ChessLogic'
 import cookieManager from '../app/CookieManager'
 import { handleDarkMode } from '../pres/DarkMode';
 import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
-import {trackEvent} from '../app/Analytics'
+import {initializeAnalytics} from '../app/Analytics'
 
 import Navigator from './Navigator'
 import GlobalHeader from './GlobalHeader'
@@ -37,8 +37,6 @@ export default class MainContainer extends React.Component {
 
   constructor(props){
     super(props)
-    let userProfile = UserProfile.getUserProfile()
-    trackEvent(Constants.EVENT_CATEGORY_SEGMENT, "UserType", `${userProfile.userType}`, userProfile.numVisits)
 
     let urlVariant = new URLSearchParams(window.location.search).get("variant")
     let selectedVariant = urlVariant || Constants.VARIANT_STANDARD
@@ -70,6 +68,10 @@ export default class MainContainer extends React.Component {
     this.forBrushes = ['blue','paleGrey', 'paleGreen', 'green']
     this.againstBrushes = ['blue','paleRed', 'paleRed', 'red']
     window.addEventListener('resize', this.handleResize.bind(this))
+    let userProfile = UserProfile.getUserProfile()
+    initializeAnalytics(userProfile.userTypeDesc, this.state.settings.darkMode?"dark":"light", 
+      this.state.settings.movesSettings.openingBookType)
+
   }
   handleResize() {
     this.setState({resize:this.state.resize+1})
@@ -94,9 +96,6 @@ export default class MainContainer extends React.Component {
           openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
         }
     }
-    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "winsIndicator", `${movesSettings.openingBookWinsIndicator?"on":"off"}`)
-    trackEvent(Constants.EVENT_CATEGORY_SETTINGS, "bookType", movesSettings.openingBookType)
-
     return movesSettings;
   }
 
