@@ -147,12 +147,15 @@ function clear() {
 }
 
 function settingsChange(name, value) {
-    if(name === Constants.SETTING_NAME_MOVES_SETTINGS || name === Constants.SETTING_NAME_DARK_MODE) {
+    if(name === Constants.SETTING_NAME_MOVES_SETTINGS ) {
         let settingsToPersist = {}
         settingsToPersist[name] = value
         CookieManager.setSettingsCookie(settingsToPersist)
         this.state.openingGraph.clearBookNodes()
+    } else if (name === Constants.SETTING_NAME_DARK_MODE) {
+        CookieManager.setDarkModeCookie(value)
     }
+
     let settings = this.state.settings
     settings[name] = value;
     this.setState({ settings });

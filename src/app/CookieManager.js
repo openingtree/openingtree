@@ -13,9 +13,17 @@ class CookieManager {
         Cookies.set('set',JSON.stringify(settings))
     }
 
+    setDarkModeCookie(darkMode) {
+        Cookies.set('dm',darkMode)
+    }
+    getDarkModeCookie() {
+        return Cookies.get('dm')
+
+    }
+
     getSettingsCookie() {
         let settingsCookie = null
-        try{
+        try {
             settingsCookie = Cookies.get('set')
         } catch (e) {
             console.log(e)
