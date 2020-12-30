@@ -99,15 +99,15 @@ export default class Navigator extends React.Component {
         return <Container id="navigator">
             <Row>
                 <Col lg="6" className="navSection">
-                    <Button color="" className= "settingButton" onClick= {this.previous.bind(this)}>
-                        <FontAwesomeIcon icon={faStepBackward} />
+                    <Button color="" onClick= {this.previous.bind(this)}>
+                        <FontAwesomeIcon icon={faStepBackward} />&nbsp;
                         <span>prev</span>
                     </Button>
                 </Col>
                 <Col lg="6" className="navSection">
-                    <Button color="" className= "settingButton" onClick = {this.next.bind(this)}>
-                        <FontAwesomeIcon icon={faStepForward} />
-                        <span>next</span>
+                    <Button color="" onClick = {this.next.bind(this)}>
+                        <span>next</span>&nbsp;
+                        <FontAwesomeIcon icon={faStepForward} /> 
                     </Button>
                 </Col>
             </Row>
