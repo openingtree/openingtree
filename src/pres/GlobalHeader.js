@@ -74,7 +74,7 @@ const GlobalHeader = (props) => {
           FAQ
         </span>
       </DropdownItem>
-      <DropdownItem onClick={launch("https://youtu.be/9w7GdGuJoyk", "tutorial")}>
+      <DropdownItem onClick={props.toggleFeedback}>
         <span>
           Send feedback
         </span>
