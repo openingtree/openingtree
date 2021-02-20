@@ -115,6 +115,11 @@ const GlobalHeader = (props) => {
             Lichess4545
           </span>
         </DropdownItem>
+        <DropdownItem onClick={launch("https://www.chess.com","chessDotCom")}>
+          <span>
+            Chess.com
+          </span>
+        </DropdownItem>
         <DropdownItem onClick={launch("https://www.youtube.com/watch?v=_UdkngeabWI","chilledChess")}>
           <span>
             Chilled Chess
