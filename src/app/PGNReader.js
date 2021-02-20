@@ -68,7 +68,12 @@ export default class PGNReader {
         }
         var pgn = pgnArray[index]
 
-        if(pgn.moves.length>2 && pgn.moves[0] && pgn.moves[0].move_number === 1) {
+        // ignore pgn files with no moves, or less than 2 moves played
+        // ignore pgn files that do not start with move 1. these are mostly "from position tournaments in lichess"
+        // for this, we need to check that the move number actually exists and is not 1.
+        // there are some pgns that do not have any move numbers and we should assume they start with move 1
+        if(pgn.moves.length>2 && pgn.moves[0] && 
+            (pgn.moves[0].move_number == null || pgn.moves[0].move_number === 1)) {
             let chess = chessLogic(this.variant)
             let pgnParseFailed = false;
             let parsedMoves = []
