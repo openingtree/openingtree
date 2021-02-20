@@ -19,7 +19,7 @@ import {
   NavItem, NavLink, ModalBody
 } from 'reactstrap';
 
-import {logoName, rowContentColor} from './DarkMode';
+import {logoName, rowContentColor} from './Theme';
 
 import 'bootstrap/dist/css/bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

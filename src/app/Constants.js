@@ -95,3 +95,5 @@ export const ALL_BOOK_RATINGS = ['1600','1800','2000','2200','2500']
 export const SETTING_NAME_ORIENTATION = 'orientation'
 export const SETTING_NAME_DARK_MODE = 'darkMode'
 export const SETTING_NAME_MOVES_SETTINGS = 'movesSettings'
+export const SETTING_NAME_BOARD_THEME = 'boardTheme'
+export const SETTING_NAME_PIECE_SET = 'pieceSet'

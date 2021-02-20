@@ -10,3 +10,22 @@ export const logoName = (darkMode) => {
 export const rowContentColor = (darkMode) => {
     return darkMode ? 'white' : 'grey'
 }
+
+export const toggleBoardTheme = () => {
+
+}
+
+export const togglePieceSet = () => {
+    
+}
+
+setPieceSet = (newPieceSet) => {
+    let root = document.documentElement.style
+    let currentPieceSet = root.getProperty("--piece-set");
+    if (currentPieceSet === newPieceSet) {
+        return
+    }
+
+    root.setProperty("--piece-w","url()");
+
+}

@@ -1,0 +1,63 @@
+/*
+ * Board
+ */
+ :root {
+    --board-theme:"default";
+    --board-url: url('./images/board/brown.svg');
+
+    --piece-set:"default";
+    --piece-wP: url('./images/pieces/merida/wP.svg');
+    --piece-wB: url('./images/pieces/merida/wB.svg');
+    --piece-wN: url('./images/pieces/merida/wN.svg');
+    --piece-wR: url('./images/pieces/merida/wR.svg');
+    --piece-wQ: url('./images/pieces/merida/wQ.svg');
+    --piece-wK: url('./images/pieces/merida/wK.svg');
+
+    --piece-bP: url('./images/pieces/merida/bP.svg');
+    --piece-bB: url('./images/pieces/merida/bB.svg');
+    --piece-bN: url('./images/pieces/merida/bN.svg');
+    --piece-bR: url('./images/pieces/merida/bR.svg');
+    --piece-bQ: url('./images/pieces/merida/bQ.svg');
+    --piece-bK: url('./images/pieces/merida/bK.svg');
+}
+
+.cg-wrap {
+  background-image: var(--board-url);
+}
+
+.cg-wrap piece.pawn.white {
+  background-image: var(--piece-wP);
+}
+.cg-wrap piece.bishop.white {
+  background-image: var(--piece-wB);
+}
+.cg-wrap piece.knight.white {
+  background-image: var(--piece-wN);
+}
+.cg-wrap piece.rook.white {
+  background-image: var(--piece-wR);
+}
+.cg-wrap piece.queen.white {
+  background-image: var(--piece-wQ);
+}
+.cg-wrap piece.king.white {
+  background-image: var(--piece-wK);
+}
+.cg-wrap piece.pawn.black {
+  background-image: var(--piece-bP);
+}
+.cg-wrap piece.bishop.black {
+  background-image: var(--piece-bB);
+}
+.cg-wrap piece.knight.black {
+  background-image: var(--piece-bN);
+}
+.cg-wrap piece.rook.black {
+  background-image: var(--piece-bR);
+}
+.cg-wrap piece.queen.black {
+  background-image: var(--piece-bQ);
+}
+.cg-wrap piece.king.black {
+  background-image: var(--piece-bK);
+}

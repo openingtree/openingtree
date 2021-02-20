@@ -1,6 +1,8 @@
 import React from 'react'
 import Chessground from 'react-chessground'
-import 'react-chessground/dist/styles/chessground.css'
+import '../styles/chessground.css'
+import '../styles/chessground-theme.css'
+
 import {
   Button,
   Col,
@@ -24,7 +26,7 @@ import * as Constants from '../app/Constants'
 import OpeningGraph from '../app/OpeningGraph'
 import { chessLogic } from '../app/chess/ChessLogic'
 import cookieManager from '../app/CookieManager'
-import { handleDarkMode } from '../pres/DarkMode';
+import { handleDarkMode } from './Theme';
 import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
 import {initializeAnalytics} from '../app/Analytics'
 
@@ -53,7 +55,7 @@ export default class MainContainer extends React.Component {
           orientation:Constants.PLAYER_COLOR_WHITE,
           playerColor:'',
           movesSettings:this.getMovesSettingsFromCookie(),
-          darkMode: this.getDarkModeSettingFromCookie()
+          themeSettings: this.getThemeSettingFromCookie()
         },
         message:'',
         downloadingGames:false,
@@ -77,6 +79,7 @@ export default class MainContainer extends React.Component {
     this.setState({resize:this.state.resize+1})
     this.chessboardWidth = this.getChessboardWidth()
   }
+
 
   getMovesSettingsFromCookie() {
     let { movesSettings } = cookieManager.getSettingsCookie() || {};
@@ -229,5 +232,6 @@ export default class MainContainer extends React.Component {
       // hack to fix https://github.com/openingtree/openingtree/issues/243
       // refreshing the chessboard after its initial render seems to fix this issue
       setImmediate(this.handleResize.bind(this))
+
   }
 }

@@ -5,7 +5,7 @@ import {chessLogic} from '../app/chess/ChessLogic'
 import OpeningGraph from '../app/OpeningGraph'
 import {fetchBookMoves} from '../app/OpeningBook'
 import CookieManager from '../app/CookieManager'
-import { handleDarkMode } from './DarkMode';
+import { handleDarkMode } from './Theme';
 
 function turnColor() {
     return fullTurnName(this.chess.turn())
@@ -154,6 +154,10 @@ function settingsChange(name, value) {
         this.state.openingGraph.clearBookNodes()
     } else if (name === Constants.SETTING_NAME_DARK_MODE) {
         CookieManager.setDarkModeCookie(value)
+    } else if (name === Constants.SETTING_NAME_BOARD_THEME) {
+        CookieManager.setBoardThemeCookie(value)
+    } else if (name === Constants.SETTING_NAME_PIECE_SET) {
+        CookieManager.setPieceSetCookie(value)
     }
 
     let settings = this.state.settings

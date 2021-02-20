@@ -1,0 +1,153 @@
+.cg-wrap {
+    width: 512px;
+    height: 512px;
+    position: relative;
+    display: block;
+  }
+  cg-helper {
+    position: absolute;
+    width: 12.5%;
+    padding-bottom: 12.5%;
+    display: table; /* hack: round to full pixel size in chrome */
+    bottom: 0;
+  }
+  
+  cg-container {
+    position: absolute;
+    width: 800%;
+    height: 800%;
+    display: block;
+    bottom: 0;
+  }
+  
+  cg-board {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    line-height: 0;
+    background-size: cover;
+    cursor: pointer;
+  }
+  cg-board square {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12.5%;
+    height: 12.5%;
+    pointer-events: none;
+  }
+  cg-board square.move-dest {
+    background: radial-gradient(rgba(20, 85, 30, 0.5) 22%, #208530 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0);
+    pointer-events: auto;
+  }
+  cg-board square.premove-dest {
+    background: radial-gradient(rgba(20, 30, 85, 0.5) 22%, #203085 0, rgba(0, 0, 0, 0.3) 0, rgba(0, 0, 0, 0) 0);
+  }
+  cg-board square.oc.move-dest {
+    background: radial-gradient(transparent 0%, transparent 80%, rgba(20, 85, 0, 0.3) 80%);
+  }
+  cg-board square.oc.premove-dest {
+    background: radial-gradient(transparent 0%, transparent 80%, rgba(20, 30, 85, 0.2) 80%);
+  }
+  cg-board square.move-dest:hover {
+    background: rgba(20, 85, 30, 0.3);
+  }
+  cg-board square.premove-dest:hover {
+    background: rgba(20, 30, 85, 0.2);
+  }
+  cg-board square.last-move {
+    will-change: transform;
+    background-color: rgba(155, 199, 0, 0.41);
+  }
+  cg-board square.selected {
+    background-color: rgba(20, 85, 30, 0.5);
+  }
+  cg-board square.check {
+    background: radial-gradient(ellipse at center, rgba(255, 0, 0, 1) 0%, rgba(231, 0, 0, 1) 25%, rgba(169, 0, 0, 0) 89%, rgba(158, 0, 0, 0) 100%);
+  }
+  cg-board square.current-premove {
+    background-color: rgba(20, 30, 85, 0.5);
+  }
+  .cg-wrap piece {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12.5%;
+    height: 12.5%;
+    background-size: cover;
+    z-index: 2;
+    will-change: transform;
+    pointer-events: none;
+  }
+  cg-board piece.dragging {
+    cursor: move;
+    z-index: 9;
+  }
+  cg-board piece.anim {
+    z-index: 8;
+  }
+  cg-board piece.fading {
+    z-index: 1;
+    opacity: 0.5;
+  }
+  .cg-wrap square.move-dest:hover {
+    background-color: rgba(20, 85, 30, 0.3);
+  }
+  .cg-wrap piece.ghost {
+    opacity: 0.3;
+  }
+  .cg-wrap svg {
+    overflow: hidden;
+    position: relative;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 2;
+    opacity: 0.6;
+  }
+  .cg-wrap svg image {
+    opacity: 0.5;
+  }
+  .cg-wrap coords {
+    position: absolute;
+    display: flex;
+    pointer-events: none;
+    opacity: 0.8;
+    font-size: 9px;
+  }
+  .cg-wrap coords.ranks {
+    right: -15px;
+    top: 0;
+    flex-flow: column-reverse;
+    height: 100%;
+    width: 12px;
+  }
+  .cg-wrap coords.ranks.black {
+    flex-flow: column;
+  }
+  .cg-wrap coords.files {
+    bottom: -16px;
+    left: 0;
+    flex-flow: row;
+    width: 100%;
+    height: 16px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .cg-wrap coords.files.black {
+    flex-flow: row-reverse;
+  }
+  .cg-wrap coords coord {
+    flex: 1 1 auto;
+  }
+  .cg-wrap coords.ranks coord {
+    transform: translateY(39%);
+  }

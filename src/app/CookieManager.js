@@ -13,14 +13,6 @@ class CookieManager {
         Cookies.set('set',JSON.stringify(settings))
     }
 
-    setDarkModeCookie(darkMode) {
-        Cookies.set('dm',darkMode)
-    }
-    getDarkModeCookie() {
-        return Cookies.get('dm')
-
-    }
-
     getSettingsCookie() {
         let settingsCookie = null
         try {
@@ -33,6 +25,26 @@ class CookieManager {
             return null
         }
         return JSON.parse(settingsCookie)
+    }
+
+    setDarkModeCookie(darkMode) {
+        Cookies.set('dm',darkMode)
+    }
+    getDarkModeCookie() {
+        return Cookies.get('dm')
+    }
+
+    getBoardThemeCookie() {
+        return Cookies.get('thBrd')
+    }
+    setBoardThemeCookie(b) {
+        Cookies.set('thBrd',b);
+    }
+    getPieceSetCookie() {
+        return Cookies.get('thPc')
+    }
+    setPieceSetCookie(p) {
+        Cookies.set('thPc',p);
     }
 
     currentVisit = null
