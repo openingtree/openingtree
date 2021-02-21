@@ -5,10 +5,13 @@ import React from 'react'
 import {Collapse, Container, Row, Col} from 'reactstrap'
 import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../../app/Constants'
-import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel, opponentNameLabel} from './FilterLabels'
+import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, 
+    getDownloadLimitLabel, opponentNameLabel, getFromDateLabel, getToDateLabel} from './FilterLabels'
 import * as Common from '../../app/Common'
-import {trackEvent} from '../../app/Analytics'
-import {TextField } from '@material-ui/core'
+import { trackEvent } from '../../app/Analytics'
+import { TextField } from '@material-ui/core'
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css";
 
 export default class AdvancedFilters extends React.Component {
     constructor(props) {
@@ -67,6 +70,17 @@ export default class AdvancedFilters extends React.Component {
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
                     {this.getTimeFrameFilters()}
                 </Collapse>)}
+            {this.subSectionComponent('From Date', getFromDateLabel(this.props.advancedFilters[Constants.FILTER_NAME_FROM_DATE]), 
+                this.setCurrentlyOpenAdvancedFilter('fromDate').bind(this),
+                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'fromDate'}>
+                    {this.getFromDateFilter()}
+                </Collapse>)}
+            {this.subSectionComponent('To Date', getToDateLabel(this.props.advancedFilters[Constants.FILTER_NAME_TO_DATE]), 
+            this.setCurrentlyOpenAdvancedFilter('toDate').bind(this),
+            <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'toDate'}>
+                {this.getToDateFilter()}
+            </Collapse>)}
+
             {this.subSectionComponent('Opponent elo range', getELORangeLabel(this.props.advancedFilters[Constants.FILTER_NAME_ELO_RANGE]), 
                 this.setCurrentlyOpenAdvancedFilter('eloRange').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'eloRange'}>
@@ -77,7 +91,6 @@ export default class AdvancedFilters extends React.Component {
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'opponent'}>
                     {this.getOpponentNameFilter()}
                 </Collapse>)}
-
             {this.subSectionComponent('Download limit', getDownloadLimitLabel(this.props.advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT]), 
                 this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'downloadLimit'}>
@@ -98,7 +111,14 @@ export default class AdvancedFilters extends React.Component {
             max={Constants.MAX_DOWNLOAD_LIMIT}
         />
     }
-
+    getFromDateFilter() {
+        return <DatePicker placeholderText = "mm/dd/yyyy" selected={this.props.advancedFilters[Constants.FILTER_NAME_FROM_DATE]}
+                            onChange={this.props.handleFromDate}/>
+    }
+    getToDateFilter() {
+        return <DatePicker placeholderText = "mm/dd/yyyy" selected={this.props.advancedFilters[Constants.FILTER_NAME_TO_DATE]}
+                            onChange={this.props.handleToDate}/>
+    }
     getTimeFrameFilters() {
         return <Slider className = "sliderCustom"
             value={this.props.advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME]}

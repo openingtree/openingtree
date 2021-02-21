@@ -10,6 +10,8 @@ export const FILTER_NAME_SELECTED_TIMEFRAME = "selectedTimeframe"
 export const FILTER_NAME_DOWNLOAD_LIMIT = "downloadLimit"
 export const FILTER_NAME_OPPONENT = "opponent"
 export const FILTER_NAME_ELO_RANGE = "eloRange"
+export const FILTER_NAME_FROM_DATE = "fromDate"
+export const FILTER_NAME_TO_DATE = "toDate"
 
 export const SITE_LICHESS = "lichess"
 export const SITE_CHESS_DOT_COM = "chesscom"

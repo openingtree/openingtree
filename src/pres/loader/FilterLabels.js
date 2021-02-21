@@ -36,3 +36,11 @@ export function opponentNameLabel(value) {
 export function getDownloadLimitLabel(downloadLimit) {
     return downloadLimit>= Constants.MAX_DOWNLOAD_LIMIT?"No limit":`${downloadLimit} games`
 }
+
+export function getFromDateLabel(date) {
+    return date?date.toLocaleDateString('en-US'): 'Big Bang'
+}
+
+export function getToDateLabel(date) {
+    return date?date.toLocaleDateString('en-US'): 'Now'
+}

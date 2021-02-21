@@ -73,6 +73,13 @@ export default class User extends React.Component {
     handleOpponentNameChange(event) {
         this.setState({[Constants.FILTER_NAME_OPPONENT]: event.target.value})
     }
+    handleFromDate(date) {
+        this.setState({[Constants.FILTER_NAME_FROM_DATE]: date})
+    }
+    handleToDate(date) {
+        this.setState({[Constants.FILTER_NAME_TO_DATE]: date})
+    }
+
 
     setFilters(){
         if(!this.state.playerColor) {
@@ -141,6 +148,8 @@ export default class User extends React.Component {
                                 handleOpponentNameChange={this.handleOpponentNameChange.bind(this)}
                                 timeframeSteps={this.timeframeSteps}
                                 handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
+                                handleFromDate={this.handleFromDate.bind(this)}
+                                handleToDate={this.handleToDate.bind(this)}
                                 advancedFilters={advancedFilters(this.state)}
                             />
                     </Collapse>
