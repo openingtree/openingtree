@@ -59,7 +59,8 @@ export default class PGNLoader extends React.Component {
             Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
             Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
             Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT,
-            Constants.FILTER_NAME_ELO_RANGE, Constants.FILTER_NAME_OPPONENT])
+            Constants.FILTER_NAME_ELO_RANGE, Constants.FILTER_NAME_OPPONENT,
+            Constants.FILTER_NAME_FROM_DATE, Constants.FILTER_NAME_TO_DATE])
     }
 
 
