@@ -29,6 +29,10 @@ export function getELORangeLabel(selectedEloRange) {
         return `Between ${selectedEloRange[0]} and ${selectedEloRange[1]}`
     }
 }
+
+export function opponentNameLabel(value) {
+    return value?value:"All opponents"
+}
 export function getDownloadLimitLabel(downloadLimit) {
     return downloadLimit>= Constants.MAX_DOWNLOAD_LIMIT?"No limit":`${downloadLimit} games`
 }

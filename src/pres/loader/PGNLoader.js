@@ -30,7 +30,8 @@ export default class PGNLoader extends React.Component {
             selectedNotableEvent:{},
             selectedNotablePlayer:{},
             lichessLoginState: Constants.LICHESS_NOT_LOGGED_IN,
-            lichessLoginName: null
+            lichessLoginName: null,
+            [Constants.FILTER_NAME_OPPONENT]:''
 
         }
         if(selectedSite === Constants.SITE_LICHESS) {
@@ -58,7 +59,7 @@ export default class PGNLoader extends React.Component {
             Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
             Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
             Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT,
-            Constants.FILTER_NAME_ELO_RANGE])
+            Constants.FILTER_NAME_ELO_RANGE, Constants.FILTER_NAME_OPPONENT])
     }
 
 

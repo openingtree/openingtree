@@ -25,6 +25,7 @@ export default class User extends React.Component {
         this.state = {
             playerColor: this.props.playerColor,
             isAdvancedFiltersOpen: false
+
         }
         this.timeframeSteps=this.props.timeframeSteps
         Object.assign(this.state, this.props.advancedFilters)
@@ -68,6 +69,9 @@ export default class User extends React.Component {
     }
     handleDownloadLimitChange(event, newValue) {
         this.setState({ [Constants.FILTER_NAME_DOWNLOAD_LIMIT]: newValue });
+    }
+    handleOpponentNameChange(event) {
+        this.setState({[Constants.FILTER_NAME_OPPONENT]: event.target.value})
     }
 
     setFilters(){
@@ -134,6 +138,7 @@ export default class User extends React.Component {
                                 handleTimeControlChange={this.handleTimeControlChange.bind(this)}
                                 handleTimeframeChange={this.handleTimeframeChange.bind(this)}
                                 handleEloRangeChange={this.handleEloRangeChange.bind(this)}
+                                handleOpponentNameChange={this.handleOpponentNameChange.bind(this)}
                                 timeframeSteps={this.timeframeSteps}
                                 handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
                                 advancedFilters={advancedFilters(this.state)}

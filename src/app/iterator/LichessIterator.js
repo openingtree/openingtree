@@ -16,7 +16,8 @@ export default class LichessIterator {
         let selectedTimeControls = getTimeControlsArray(Constants.SITE_LICHESS, advancedFilters, true)
         let perfs =this.getPerfs(variant,selectedTimeControls)
         let perfFilter = perfs?`&perfType=${perfs}`:''
-        let url = lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter
+        let vsFilter = advancedFilters[Constants.FILTER_NAME_OPPONENT] ?`&vs=${advancedFilters[Constants.FILTER_NAME_OPPONENT]}`: ''
+        let url = lichessBaseURL+playerNameFilter+colorFilter+ratedFilter+perfFilter+timeSinceFilter+timeUntilFilter+vsFilter
         new BaseLichessIterator(accessToken, url, ready, showError, 
             (pgn)=>{
                 if(!pgn || pgn.headers.Variant !== Common.lichessVariantHeader(variant)

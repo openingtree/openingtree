@@ -32,7 +32,7 @@ export function advancedFilters(state) {
         Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
         Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
         Constants.FILTER_NAME_SELECTED_TIMEFRAME, Constants.FILTER_NAME_DOWNLOAD_LIMIT,
-        Constants.FILTER_NAME_ELO_RANGE])
+        Constants.FILTER_NAME_ELO_RANGE, Constants.FILTER_NAME_OPPONENT])
 }
 
 export function copyText(elementId) {

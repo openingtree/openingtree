@@ -5,9 +5,10 @@ import React from 'react'
 import {Collapse, Container, Row, Col} from 'reactstrap'
 import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../../app/Constants'
-import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel} from './FilterLabels'
+import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel, opponentNameLabel} from './FilterLabels'
 import * as Common from '../../app/Common'
 import {trackEvent} from '../../app/Analytics'
+import {TextField } from '@material-ui/core'
 
 export default class AdvancedFilters extends React.Component {
     constructor(props) {
@@ -71,6 +72,12 @@ export default class AdvancedFilters extends React.Component {
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'eloRange'}>
                     {this.getEloRangeFilters()}
                 </Collapse>)}
+            {this.subSectionComponent('Opponent name', opponentNameLabel(this.props.advancedFilters[Constants.FILTER_NAME_OPPONENT]), 
+                this.setCurrentlyOpenAdvancedFilter('opponent').bind(this),
+                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'opponent'}>
+                    {this.getOpponentNameFilter()}
+                </Collapse>)}
+
             {this.subSectionComponent('Download limit', getDownloadLimitLabel(this.props.advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT]), 
                 this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'downloadLimit'}>
@@ -114,6 +121,12 @@ export default class AdvancedFilters extends React.Component {
             min={0}
             max={Constants.MAX_ELO_RATING}
         />
+    }
+    getOpponentNameFilter() {
+        return <TextField
+            className="playernameField" name="opponentName" id="opponentNameTextBox" 
+            margin="dense" onChange={this.props.handleOpponentNameChange}
+            label={"Opponent Name"} variant="outlined" value={this.props.advancedFilters[Constants.FILTER_NAME_OPPONENT]}/>
     }
 
     getTimeControlFilters(site){
