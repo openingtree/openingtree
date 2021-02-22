@@ -81,7 +81,7 @@ export default class MainContainer extends React.Component {
   getMovesSettingsFromCookie() {
     let { movesSettings } = cookieManager.getSettingsCookie() || {};
 
-    if (!movesSettings) {
+    if (!movesSettings || !movesSettings.openingBookType) {
       // default settings
       movesSettings = {
           openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
