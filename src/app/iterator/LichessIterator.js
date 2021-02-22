@@ -10,9 +10,10 @@ export default class LichessIterator {
         let playerNameFilter = encodeURIComponent(playerName)
         let colorFilter = `?color=${playerColor}`
         let ratedFilter = `${advancedFilters[Constants.FILTER_NAME_RATED]==="all"?"":`&rated=${advancedFilters[Constants.FILTER_NAME_RATED]==="rated"?"true":"false"}`}`
-        let selectedTimeFrameData = getSelectedTimeFrameData(advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME], getTimeframeSteps())
-        let timeSinceFilter = `${selectedTimeFrameData.fromTimeStamp?`&since=${selectedTimeFrameData.fromTimeStamp}`:""}`
-        let timeUntilFilter = `${selectedTimeFrameData.toTimeStamp?`&until=${selectedTimeFrameData.toTimeStamp}`:""}`
+        let fromDateFilter = advancedFilters[Constants.FILTER_NAME_FROM_DATE]
+        let toDateFilter = advancedFilters[Constants.FILTER_NAME_TO_DATE]
+        let timeSinceFilter = `${fromDateFilter?`&since=${fromDateFilter.getTime()}`:""}`
+        let timeUntilFilter = `${toDateFilter?`&until=${toDateFilter.getTime()+Constants.MILLISECS_IN_DAY}`:""}`
         let selectedTimeControls = getTimeControlsArray(Constants.SITE_LICHESS, advancedFilters, true)
         let perfs =this.getPerfs(variant,selectedTimeControls)
         let perfFilter = perfs?`&perfType=${perfs}`:''

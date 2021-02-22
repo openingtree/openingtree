@@ -22,49 +22,6 @@ export function getTimeControlsArray(site,timeControlState, selected) {
         Common.LICHESS_TIME_CONTROLS : Common.CHESS_DOT_COM_TIME_CONTROLS
     return allTimeControls.filter((timeControl)=>!!timeControlState[timeControl] === selected)
 }
-let monthLabels = [
-    "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-]
-export function getTimeframeSteps() {
-    let steps = [{
-        year:2007,
-        value:0
-    }]
-    let value = 1;
-    let startYear = 2010
-    let currentYear = new Date().getFullYear()
-    let currentMonth = new Date().getMonth()
-    while(startYear < currentYear-1) {
-        steps.push({
-            toLongLabel:`${monthLabels[11]} ${startYear}`,
-            fromLongLabel:`${monthLabels[0]} ${startYear}`,
-            year:startYear,
-            value:value
-        })
-        startYear++
-        value++
-    }
-    for(let i=11;i>0;i--) {
-
-        let month = (currentMonth+12-i)%12
-        let year = month<currentMonth?currentYear:currentYear-1
-        steps.push({
-            fromLongLabel: `${monthLabels[month]} ${year}`,
-            toLongLabel: `${monthLabels[month]} ${year}`,
-            month:month,
-            year: year,
-            value:value
-        })
-        value++
-    }
-    steps.push({
-        month:12,
-        year: currentYear,
-        value:value
-    })
-    return steps
-}
-
 
 export function simplifyCount(count){
     if(count>=1000000){
@@ -75,70 +32,6 @@ export function simplifyCount(count){
     }
 
     return count
-}
-
-export function getSelectedTimeFrameData(timeframe, timeframeSteps) {
-    let fromIndex = timeframe[0]
-    let toIndex = timeframe[1]
-    let fromTimeframe = timeframeSteps[fromIndex]
-    let toTimeframe = timeframeSteps[toIndex]
-    
-    if(fromIndex === timeframeSteps.length-1 && toIndex === timeframeSteps.length-1) {
-        let currentDate = new Date()
-        return {
-            label:"Current month",
-            fromMonth:currentDate.getMonth(),
-            fromYear:currentDate.getFullYear(),
-            fromTimeStamp:getTimeStampInfoFor(currentDate.getMonth(), currentDate.getFullYear(), "min")
-        }
-    }
-    if(fromIndex === 0 && toIndex === 0) {
-        return {label:"Anytime"}
-    }
-    if(fromIndex === 0 && toIndex === timeframeSteps.length-1) {
-        return {label:"Anytime"}
-    }
-    if(toIndex === timeframeSteps.length-1) {
-        let month = fromTimeframe.month ? fromTimeframe.month : 0
-        return {
-            label:`Since ${fromTimeframe.fromLongLabel}`,
-            fromYear: fromTimeframe.year,
-            fromMonth: month,
-            fromTimeStamp: getTimeStampInfoFor(month, fromTimeframe.year, "min")
-        }
-    }
-    if(fromIndex === 0) {
-        let month = toTimeframe.month ? toTimeframe.month : 11
-        return {
-            label:`Until ${toTimeframe.toLongLabel}`,
-            toYear: toTimeframe.year,
-            toMonth: month,
-            toTimeStamp: getTimeStampInfoFor(month, toTimeframe.year, "max")
-        }
-    }
-    let fromMonth = fromTimeframe.month ? fromTimeframe.month : 0
-    let toMonth = toTimeframe.month ? toTimeframe.month : 11
-    return {
-        label:`From ${fromTimeframe.fromLongLabel} to ${toTimeframe.toLongLabel}`,
-        fromYear: fromTimeframe.year,
-        fromMonth: fromMonth,
-        fromTimeStamp: getTimeStampInfoFor(fromMonth, fromTimeframe.year, "min"),
-        toYear: toTimeframe.year,
-        toMonth: toMonth,
-        toTimeStamp: getTimeStampInfoFor(toMonth, toTimeframe.year, "max")
-    }
-}
-
-function getTimeStampInfoFor(month, year, minOrMax) {
-    if(minOrMax === "min") {
-        return new Date(year, month).getTime()
-    } else {
-        return new Date(year,month,getDaysInMonth(year, month)).getTime()
-    }
-}
-
-function getDaysInMonth(year,month) {
-    return new Date(year, month + 1, 0).getDate();
 }
 
 export function getPerformanceDetails(totalOpponentElo, averageElo, white, draws, black, playerColor) {

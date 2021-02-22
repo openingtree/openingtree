@@ -27,7 +27,6 @@ export default class User extends React.Component {
             isAdvancedFiltersOpen: false
 
         }
-        this.timeframeSteps=this.props.timeframeSteps
         Object.assign(this.state, this.props.advancedFilters)
         this.defaultAdvancedFilters = this.props.advancedFilters
     }
@@ -60,9 +59,6 @@ export default class User extends React.Component {
 }
     handleTimeControlChange(event) {
         this.setState({ [event.target.name]: event.target.checked });
-    }
-    handleTimeframeChange(event, newValue) {
-        this.setState({ [Constants.FILTER_NAME_SELECTED_TIMEFRAME]: newValue });
     }
     handleEloRangeChange(event, newValue) {
         this.setState({ [Constants.FILTER_NAME_ELO_RANGE]: newValue });
@@ -143,10 +139,8 @@ export default class User extends React.Component {
                                 site={this.props.site}
                                 toggleRated={this.toggleRated.bind(this)}
                                 handleTimeControlChange={this.handleTimeControlChange.bind(this)}
-                                handleTimeframeChange={this.handleTimeframeChange.bind(this)}
                                 handleEloRangeChange={this.handleEloRangeChange.bind(this)}
                                 handleOpponentNameChange={this.handleOpponentNameChange.bind(this)}
-                                timeframeSteps={this.timeframeSteps}
                                 handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
                                 handleFromDate={this.handleFromDate.bind(this)}
                                 handleToDate={this.handleToDate.bind(this)}

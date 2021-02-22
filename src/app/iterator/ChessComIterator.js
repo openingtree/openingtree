@@ -3,7 +3,7 @@ import { parse }  from '../PGNParser'
 import request from 'request'
 import * as Constants from '../Constants'
 import * as Common from '../Common'
-import {isOpponentEloInSelectedRange, getTimeframeSteps, getSelectedTimeFrameData} from '../util'
+import {isOpponentEloInSelectedRange} from '../util'
 import {trackEvent} from '../Analytics'
 import {normalizePGN} from './IteratorUtils'
 
@@ -82,14 +82,13 @@ export default class ChessComIterator {
             console.log("should not happen")
             return true
         }
-        let selectedTimeFrameData = getSelectedTimeFrameData(advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME], getTimeframeSteps())
         let fetchAllGames = function(responseBody) {
             responseBody.archives.reverse().forEach((archiveUrl)=>{
 
                 let components=archiveUrl.split('/')
                 let year=components[components.length-2]
                 let month=components[components.length-1]
-                if(shouldFetchGamesFromArchive(month,year, selectedTimeFrameData)) {
+                if(shouldFetchGamesFromArchive(month,year)) {
                     pendingRequests++
                     chessAPI.dispatch(chessAPI.getPlayerCompleteMonthlyArchives, parseGames, [playerName, year, month]);
                 }

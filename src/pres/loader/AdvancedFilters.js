@@ -5,7 +5,7 @@ import React from 'react'
 import {Collapse, Container, Row, Col} from 'reactstrap'
 import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../../app/Constants'
-import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, 
+import {getTimeControlLabel, getELORangeLabel, getRatedLabel, 
     getDownloadLimitLabel, opponentNameLabel, getFromDateLabel, getToDateLabel} from './FilterLabels'
 import * as Common from '../../app/Common'
 import { trackEvent } from '../../app/Analytics'
@@ -19,14 +19,6 @@ export default class AdvancedFilters extends React.Component {
         this.state = {
             currentlyOpenAdvancedFilter:'',
         }
-        this.timeframeMarks=[
-            {
-                value:0,
-                label:"Big bang"
-            }, {
-                value:props.timeframeSteps.length-1,
-                label:"Now"
-            }]
         this.downloadLimitMarks=[
             {
                 value:0,
@@ -65,11 +57,6 @@ export default class AdvancedFilters extends React.Component {
                     {this.getTimeControlFilters(site, 4)}
                 </Collapse>
             )}
-            {this.subSectionComponent('When played', getWhenPlayedLabel(this.props.advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME], this.props.timeframeSteps), 
-                this.setCurrentlyOpenAdvancedFilter('whenPlayed').bind(this),
-                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
-                    {this.getTimeFrameFilters()}
-                </Collapse>)}
             {this.subSectionComponent('From Date', getFromDateLabel(this.props.advancedFilters[Constants.FILTER_NAME_FROM_DATE]), 
                 this.setCurrentlyOpenAdvancedFilter('fromDate').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'fromDate'}>
@@ -118,18 +105,6 @@ export default class AdvancedFilters extends React.Component {
     getToDateFilter() {
         return <DatePicker placeholderText = "mm/dd/yyyy" selected={this.props.advancedFilters[Constants.FILTER_NAME_TO_DATE]}
                             onChange={this.props.handleToDate}/>
-    }
-    getTimeFrameFilters() {
-        return <Slider className = "sliderCustom"
-            value={this.props.advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME]}
-            onChange={this.props.handleTimeframeChange}
-            valueLabelDisplay="off"
-            valueLabelFormat={(val)=>this.props.timeframeSteps[val].label}
-            step={1}
-            marks={this.timeframeMarks}
-            min={0}
-            max={this.props.timeframeSteps.length-1}
-        />
     }
 
     getEloRangeFilters() {
