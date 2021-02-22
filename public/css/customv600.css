@@ -481,3 +481,11 @@ body.dark-theme .dropzone {
 body.dark-theme div.react-datepicker__input-container > input{
     color:#222
 }
+
+body.dark-theme input.select-search-box__search::placeholder{
+    color: #999999
+}
+
+body.dark-theme span.MuiChip-label{
+    color:#DDD
+}
