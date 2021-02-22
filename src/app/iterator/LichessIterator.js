@@ -1,4 +1,4 @@
-import {getTimeControlsArray, getTimeframeSteps, getSelectedTimeFrameData, isOpponentEloInSelectedRange} from '../util'
+import {getTimeControlsArray, isOpponentEloInSelectedRange} from '../util'
 import * as Constants from '../Constants'
 import * as Common from '../Common'
 import BaseLichessIterator from './BaseLichessIterator'
