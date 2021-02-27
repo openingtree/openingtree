@@ -65,8 +65,8 @@ export default class SettingsView extends React.Component {
     render() {
         return <div>
             <Container>
-                <Row sm="12">
-                    <Col sm="6">
+                <Row>
+                    <Col xs="4">
                         <Button className="settingButton" onClick = {this.toggle(Constants.SETTING_NAME_ORIENTATION)} color="">
                             <h3>
                                 <FontAwesomeIcon icon={faRetweet} />
@@ -76,7 +76,7 @@ export default class SettingsView extends React.Component {
                             </span>
                         </Button>
                     </Col>
-                    <Col sm="6">
+                    <Col xs="4">
                         <Button className="settingButton" onClick = {this.clearAction.bind(this)} color="">
                             <h3>
                                 <FontAwesomeIcon icon={faTrashAlt} />
@@ -86,7 +86,7 @@ export default class SettingsView extends React.Component {
                             </span>
                         </Button>
                     </Col>
-                    <Col sm="6">
+                    <Col xs="4">
                         <Button className="settingButton" onClick = {this.resetAction.bind(this)} color="">
                             <h3>
                                 <FontAwesomeIcon icon={faFastBackward} />
@@ -96,7 +96,7 @@ export default class SettingsView extends React.Component {
                             </span>
                         </Button>
                     </Col>
-                    <Col sm="6">
+                    <Col xs="4">
                         <Button className="settingButton" onClick = {this.analyse.bind(this)} color="">
                             <h3>
                                 <FontAwesomeIcon icon={faDesktop} />
@@ -106,7 +106,7 @@ export default class SettingsView extends React.Component {
                             </span>
                         </Button>
                     </Col>
-                    <Col sm="6">
+                    <Col xs="4">
                         <Button className="settingButton" onClick={this.toggle(Constants.SETTING_NAME_DARK_MODE)} color="">
                             <h3>
                                 <FontAwesomeIcon icon={this.props.settings.darkMode?faLightbulb:faMoon} />

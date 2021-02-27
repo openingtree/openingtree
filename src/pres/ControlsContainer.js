@@ -211,7 +211,7 @@ export default class ControlsContainer extends React.Component {
         </TabPane>
         <TabPane tabId="settings">
           <Row>
-            <Col sm="6">
+            <Col md="9" xs="12">
             <SettingsView
               fen={this.props.fen}
               settings={this.props.settings}
