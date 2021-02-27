@@ -68,7 +68,7 @@ export default class AdvancedFilters extends React.Component {
                 {this.getToDateFilter()}
             </Collapse>, true)}
 
-            {this.subSectionComponent('Opponent elo range', getELORangeLabel(this.props.advancedFilters[Constants.FILTER_NAME_ELO_RANGE]), 
+            {this.subSectionComponent('Opponent rating range', getELORangeLabel(this.props.advancedFilters[Constants.FILTER_NAME_ELO_RANGE]), 
                 this.setCurrentlyOpenAdvancedFilter('eloRange').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'eloRange'}>
                     {this.getEloRangeFilters()}

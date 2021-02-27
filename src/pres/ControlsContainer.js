@@ -227,6 +227,6 @@ export default class ControlsContainer extends React.Component {
     }
 
     reportFooter(){
-      return <span>Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></span>
+      return <span>Performance rating calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></span>
     }
 }

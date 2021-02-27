@@ -49,8 +49,8 @@ export function getPerformanceDetails(totalOpponentElo, averageElo, white, draws
     return {
         results:`+${simplifyCount(playerWins)}-${simplifyCount(playerLosses)}=${simplifyCount(draws)}`,
         performanceRating:performanceRating,
-        averageOpponentElo: averageOpponentElo,// avg elo rating of opponents only
-        averageElo:averageElo, // avg elo rating of all players
+        averageOpponentElo: averageOpponentElo,// avg rating of opponents only
+        averageElo:averageElo, // avg rating of all players
         score:`${Number.isInteger(scorePercentage)?scorePercentage:scorePercentage.toFixed(1)}% for ${playerColor === Constants.PLAYER_COLOR_BLACK?'black':'white'}`,
         ratingChange:`${ratingChange===0?'':(ratingChange>0?'+':'-')}${Math.abs(ratingChange)}`
     }

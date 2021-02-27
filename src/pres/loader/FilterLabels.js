@@ -15,7 +15,7 @@ export function getRatedLabel(rated) {
 
 export function getELORangeLabel(selectedEloRange) {
     if(selectedEloRange[0] === 0 && selectedEloRange[1]===Constants.MAX_ELO_RATING) {
-        return "All elo ratings"
+        return "Any rating"
     } else if (selectedEloRange[0] === 0) {
         return `Below ${selectedEloRange[1]}`
     } else if (selectedEloRange[1] === Constants.MAX_ELO_RATING) {

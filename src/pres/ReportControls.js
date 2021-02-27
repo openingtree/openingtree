@@ -77,7 +77,7 @@ export default class ReportControls extends React.Component {
             </TableRow>}
             {(isNaN(performanceDetails.averageElo))?null:
             <TableRow className="performanceRatingRow">
-                <TableCell className="performanceRatingRow">Avg Elo</TableCell>
+                <TableCell className="performanceRatingRow">Avg Rating</TableCell>
                 <TableCell className="performanceRatingRow">{performanceDetails.averageElo}</TableCell>
             </TableRow>}
             <TableRow className="performanceRatingRow">
