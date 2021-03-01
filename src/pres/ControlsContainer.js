@@ -2,7 +2,6 @@ import React from 'react'
 import PGNLoader from './loader/PGNLoader'
 import SettingsView from './Settings'
 import {
-  Badge,
   Button,
   Col,
   Modal,
@@ -131,7 +130,7 @@ export default class ControlsContainer extends React.Component {
             className={classnames({ active: this.state.activeTab === 'book' })}
             onClick={() => { this.toggle('book'); }}
           >
-            <FontAwesomeIcon icon={faBook} /> {this.state.activeTab === 'book'?"Opening book":<Badge className="sourceName" color="info">New!</Badge>}
+            <FontAwesomeIcon icon={faBook} /> {this.state.activeTab === 'book'?"Opening book":""}
           </NavLink>
         </NavItem>
         <NavItem>
@@ -212,7 +211,7 @@ export default class ControlsContainer extends React.Component {
         </TabPane>
         <TabPane tabId="settings">
           <Row>
-            <Col sm="6">
+            <Col md="9" xs="12">
             <SettingsView
               fen={this.props.fen}
               settings={this.props.settings}
@@ -228,6 +227,6 @@ export default class ControlsContainer extends React.Component {
     }
 
     reportFooter(){
-      return <span>Calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></span>
+      return <span>Performance rating calculated based on <a href="https://handbook.fide.com/chapter/B022017" target="_blank" rel="noopener noreferrer">FIDE regulations</a></span>
     }
 }

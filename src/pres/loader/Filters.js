@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import AccordionActions from '@material-ui/core/AccordionActions';
 import {Accordion} from './Common'
 import * as Constants from '../../app/Constants'
-import { Collapse } from 'reactstrap'
+import { Collapse, Badge } from 'reactstrap'
 import { trackEvent } from '../../app/Analytics'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'
@@ -25,8 +25,8 @@ export default class User extends React.Component {
         this.state = {
             playerColor: this.props.playerColor,
             isAdvancedFiltersOpen: false
+
         }
-        this.timeframeSteps=this.props.timeframeSteps
         Object.assign(this.state, this.props.advancedFilters)
         this.defaultAdvancedFilters = this.props.advancedFilters
     }
@@ -60,15 +60,22 @@ export default class User extends React.Component {
     handleTimeControlChange(event) {
         this.setState({ [event.target.name]: event.target.checked });
     }
-    handleTimeframeChange(event, newValue) {
-        this.setState({ [Constants.FILTER_NAME_SELECTED_TIMEFRAME]: newValue });
-    }
     handleEloRangeChange(event, newValue) {
         this.setState({ [Constants.FILTER_NAME_ELO_RANGE]: newValue });
     }
     handleDownloadLimitChange(event, newValue) {
         this.setState({ [Constants.FILTER_NAME_DOWNLOAD_LIMIT]: newValue });
     }
+    handleOpponentNameChange(event) {
+        this.setState({[Constants.FILTER_NAME_OPPONENT]: event.target.value})
+    }
+    handleFromDate(date) {
+        this.setState({[Constants.FILTER_NAME_FROM_DATE]: date})
+    }
+    handleToDate(date) {
+        this.setState({[Constants.FILTER_NAME_TO_DATE]: date})
+    }
+
 
     setFilters(){
         if(!this.state.playerColor) {
@@ -126,16 +133,17 @@ export default class User extends React.Component {
                         <FormHelperText>{this.state.colorError}</FormHelperText>
                     </FormControl>
                 </div>
-                {SitePolicy.isAdvancedFiltersEnabled(this.props.site)?<div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /></span>
+    {SitePolicy.isAdvancedFiltersEnabled(this.props.site)?<div className="pgnloadersection"><span className="linkStyle" onClick={this.toggleState('isAdvancedFiltersOpen').bind(this)}>Advanced filters <FontAwesomeIcon icon={this.state.isAdvancedFiltersOpen ? faCaretUp : faCaretDown} /> {this.state.isAdvancedFiltersOpen?null:<Badge className="sourceName" color="info">New!</Badge>}</span>
                     <Collapse isOpen={this.state.isAdvancedFiltersOpen}>
                             <AdvancedFilters
                                 site={this.props.site}
                                 toggleRated={this.toggleRated.bind(this)}
                                 handleTimeControlChange={this.handleTimeControlChange.bind(this)}
-                                handleTimeframeChange={this.handleTimeframeChange.bind(this)}
                                 handleEloRangeChange={this.handleEloRangeChange.bind(this)}
-                                timeframeSteps={this.timeframeSteps}
+                                handleOpponentNameChange={this.handleOpponentNameChange.bind(this)}
                                 handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}
+                                handleFromDate={this.handleFromDate.bind(this)}
+                                handleToDate={this.handleToDate.bind(this)}
                                 advancedFilters={advancedFilters(this.state)}
                             />
                     </Collapse>

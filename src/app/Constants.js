@@ -6,9 +6,11 @@ export const TIME_CONTROL_CLASSICAL = "classical"
 export const TIME_CONTROL_CORRESPONDENCE = "correspondence"
 export const TIME_CONTROL_DAILY = "daily"
 export const FILTER_NAME_RATED = "rated"
-export const FILTER_NAME_SELECTED_TIMEFRAME = "selectedTimeframe"
 export const FILTER_NAME_DOWNLOAD_LIMIT = "downloadLimit"
+export const FILTER_NAME_OPPONENT = "opponent"
 export const FILTER_NAME_ELO_RANGE = "eloRange"
+export const FILTER_NAME_FROM_DATE = "fromDate"
+export const FILTER_NAME_TO_DATE = "toDate"
 
 export const SITE_LICHESS = "lichess"
 export const SITE_CHESS_DOT_COM = "chesscom"
@@ -95,3 +97,5 @@ export const ALL_BOOK_RATINGS = ['1600','1800','2000','2200','2500']
 export const SETTING_NAME_ORIENTATION = 'orientation'
 export const SETTING_NAME_DARK_MODE = 'darkMode'
 export const SETTING_NAME_MOVES_SETTINGS = 'movesSettings'
+
+export const MILLISECS_IN_DAY = 1000 * 60 * 60 * 24;

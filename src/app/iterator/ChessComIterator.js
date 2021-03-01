@@ -3,7 +3,7 @@ import { parse }  from '../PGNParser'
 import request from 'request'
 import * as Constants from '../Constants'
 import * as Common from '../Common'
-import {isOpponentEloInSelectedRange, getTimeframeSteps, getSelectedTimeFrameData} from '../util'
+import {isOpponentEloInSelectedRange} from '../util'
 import {trackEvent} from '../Analytics'
 import {normalizePGN} from './IteratorUtils'
 
@@ -14,10 +14,32 @@ export default class ChessComIterator {
             queue: true,
         });
         let pendingRequests = 0;
+        
+        let filterFromDate = advancedFilters[Constants.FILTER_NAME_FROM_DATE]
+        let filterToDate = advancedFilters[Constants.FILTER_NAME_TO_DATE]
+        let fromYear = filterFromDate? filterFromDate.getFullYear() : 1970
+        let fromMonth = filterFromDate? filterFromDate.getMonth()+1 : 1
+        let toYear = filterToDate? filterToDate.getFullYear() : Number.MAX_SAFE_INTEGER
+        let toMonth = filterToDate? filterToDate.getMonth()+1 : 1
+        let minEpochTimeInSeconds = (filterFromDate?filterFromDate.getTime():0)/1000
+        let maxEpochTimeInSeconds = (filterToDate?filterToDate.getTime()+Constants.MILLISECS_IN_DAY:Number.MAX_SAFE_INTEGER)/1000
+
+        // since current month's games can be in the next month's archives
+        // add one month to get one additional archive
+        if(toMonth == 12) {
+            toMonth = 1
+            toYear++
+        } else {
+            toMonth++
+        }
+
         let parseGames= (archiveResponse)=>{
             pendingRequests--
             let continueProcessing = ready(archiveResponse.body.games.filter(
                 game=>{
+                    if(game.end_time < minEpochTimeInSeconds || game.end_time > maxEpochTimeInSeconds) {
+                        return false
+                    }
                     if(game.rules!==Common.chessDotComRules(variant) || game[playerColor].username.toLowerCase() !== playerName.toLowerCase()) {
                         return false
                     }
@@ -30,6 +52,14 @@ export default class ChessComIterator {
                     if(!advancedFilters[game.time_class]) {
                         return false
                     }
+                    let opponentFilter = advancedFilters[Constants.FILTER_NAME_OPPONENT]
+                    if(opponentFilter) {
+                        let opponent = playerColor === Constants.PLAYER_COLOR_WHITE?game.black.username:game.white.username
+                        if(opponentFilter.toLowerCase() !== opponent.toLowerCase()) {
+                            return false
+                        }
+                    }
+                    
                     let opponentElo = playerColor === Constants.PLAYER_COLOR_WHITE?game.black.rating:game.white.rating
                     if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
                         return false
@@ -53,12 +83,13 @@ export default class ChessComIterator {
                 ready([],false)
             }
         }
-        let shouldFetchGamesFromArchive = (archiveMonth,archiveYear, selectedTimeFrameData) => {
-            let fromYear = selectedTimeFrameData.fromYear || 1970
-            let toYear = selectedTimeFrameData.toYear || 10000
-            let fromMonth = selectedTimeFrameData.fromYear || 0
-            let toMonth = selectedTimeFrameData.toYear || 11
+
+
+        let shouldFetchGamesFromArchive = (archiveMonthString,archiveYearString, ) => {
+
     
+            let archiveYear = parseInt(archiveYearString)
+            let archiveMonth = parseInt(archiveMonthString)
             if(archiveYear>fromYear && archiveYear<toYear) {
                 return true
             }
@@ -74,14 +105,13 @@ export default class ChessComIterator {
             console.log("should not happen")
             return true
         }
-        let selectedTimeFrameData = getSelectedTimeFrameData(advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME], getTimeframeSteps())
         let fetchAllGames = function(responseBody) {
             responseBody.archives.reverse().forEach((archiveUrl)=>{
 
                 let components=archiveUrl.split('/')
                 let year=components[components.length-2]
                 let month=components[components.length-1]
-                if(shouldFetchGamesFromArchive(month,year, selectedTimeFrameData)) {
+                if(shouldFetchGamesFromArchive(month,year)) {
                     pendingRequests++
                     chessAPI.dispatch(chessAPI.getPlayerCompleteMonthlyArchives, parseGames, [playerName, year, month]);
                 }

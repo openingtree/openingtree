@@ -2,12 +2,16 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react'
-import {Collapse, Container, Row, Col} from 'reactstrap'
+import {Collapse, Container, Row, Col, Badge} from 'reactstrap'
 import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../../app/Constants'
-import {getTimeControlLabel, getELORangeLabel, getRatedLabel, getWhenPlayedLabel, getDownloadLimitLabel} from './FilterLabels'
+import {getTimeControlLabel, getELORangeLabel, getRatedLabel, 
+    getDownloadLimitLabel, opponentNameLabel, getFromDateLabel, getToDateLabel} from './FilterLabels'
 import * as Common from '../../app/Common'
-import {trackEvent} from '../../app/Analytics'
+import { trackEvent } from '../../app/Analytics'
+import { TextField } from '@material-ui/core'
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css";
 
 export default class AdvancedFilters extends React.Component {
     constructor(props) {
@@ -15,14 +19,6 @@ export default class AdvancedFilters extends React.Component {
         this.state = {
             currentlyOpenAdvancedFilter:'',
         }
-        this.timeframeMarks=[
-            {
-                value:0,
-                label:"Big bang"
-            }, {
-                value:props.timeframeSteps.length-1,
-                label:"Now"
-            }]
         this.downloadLimitMarks=[
             {
                 value:0,
@@ -61,16 +57,27 @@ export default class AdvancedFilters extends React.Component {
                     {this.getTimeControlFilters(site, 4)}
                 </Collapse>
             )}
-            {this.subSectionComponent('When played', getWhenPlayedLabel(this.props.advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME], this.props.timeframeSteps), 
-                this.setCurrentlyOpenAdvancedFilter('whenPlayed').bind(this),
-                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'whenPlayed'}>
-                    {this.getTimeFrameFilters()}
-                </Collapse>)}
-            {this.subSectionComponent('Opponent elo range', getELORangeLabel(this.props.advancedFilters[Constants.FILTER_NAME_ELO_RANGE]), 
+            {this.subSectionComponent('From Date', getFromDateLabel(this.props.advancedFilters[Constants.FILTER_NAME_FROM_DATE]), 
+                this.setCurrentlyOpenAdvancedFilter('fromDate').bind(this),
+                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'fromDate'}>
+                    {this.getFromDateFilter()}
+                </Collapse>, true)}
+            {this.subSectionComponent('To Date', getToDateLabel(this.props.advancedFilters[Constants.FILTER_NAME_TO_DATE]), 
+            this.setCurrentlyOpenAdvancedFilter('toDate').bind(this),
+            <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'toDate'}>
+                {this.getToDateFilter()}
+            </Collapse>, true)}
+
+            {this.subSectionComponent('Opponent rating range', getELORangeLabel(this.props.advancedFilters[Constants.FILTER_NAME_ELO_RANGE]), 
                 this.setCurrentlyOpenAdvancedFilter('eloRange').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'eloRange'}>
                     {this.getEloRangeFilters()}
                 </Collapse>)}
+            {this.subSectionComponent('Opponent name', opponentNameLabel(this.props.advancedFilters[Constants.FILTER_NAME_OPPONENT]), 
+                this.setCurrentlyOpenAdvancedFilter('opponent').bind(this),
+                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'opponent'}>
+                    {this.getOpponentNameFilter()}
+                </Collapse>, true)}
             {this.subSectionComponent('Download limit', getDownloadLimitLabel(this.props.advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT]), 
                 this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'downloadLimit'}>
@@ -91,18 +98,13 @@ export default class AdvancedFilters extends React.Component {
             max={Constants.MAX_DOWNLOAD_LIMIT}
         />
     }
-
-    getTimeFrameFilters() {
-        return <Slider className = "sliderCustom"
-            value={this.props.advancedFilters[Constants.FILTER_NAME_SELECTED_TIMEFRAME]}
-            onChange={this.props.handleTimeframeChange}
-            valueLabelDisplay="off"
-            valueLabelFormat={(val)=>this.props.timeframeSteps[val].label}
-            step={1}
-            marks={this.timeframeMarks}
-            min={0}
-            max={this.props.timeframeSteps.length-1}
-        />
+    getFromDateFilter() {
+        return <DatePicker placeholderText = "mm/dd/yyyy" selected={this.props.advancedFilters[Constants.FILTER_NAME_FROM_DATE]}
+                            onChange={this.props.handleFromDate}/>
+    }
+    getToDateFilter() {
+        return <DatePicker placeholderText = "mm/dd/yyyy" selected={this.props.advancedFilters[Constants.FILTER_NAME_TO_DATE]}
+                            onChange={this.props.handleToDate}/>
     }
 
     getEloRangeFilters() {
@@ -114,6 +116,12 @@ export default class AdvancedFilters extends React.Component {
             min={0}
             max={Constants.MAX_ELO_RATING}
         />
+    }
+    getOpponentNameFilter() {
+        return <TextField
+            className="playernameField" name="opponentName" id="opponentNameTextBox" 
+            margin="dense" onChange={this.props.handleOpponentNameChange}
+            label={"Opponent Name"} variant="outlined" value={this.props.advancedFilters[Constants.FILTER_NAME_OPPONENT]}/>
     }
 
     getTimeControlFilters(site){
@@ -162,10 +170,10 @@ export default class AdvancedFilters extends React.Component {
           /></Col>)}</Row>
     }
 
-    subSectionComponent(title, label, changeCallback, children) {
-        return <div className="pgnloadersection">{title}: <span className="smallText">[<span className="linkStyle" onClick={changeCallback}>change</span>]</span>
-        <div><b>{label}</b></div>{children}
-        </div>
+    subSectionComponent(title, label, changeCallback, children, newBadge) {
+        return <div className="pgnloadersection">{title}: <span className="smallText">[<span className="linkStyle" onClick={changeCallback}>change</span>]</span> {newBadge?<Badge className="sourceName" color="info">New!</Badge>:null}
+            <div><b>{label}</b></div>{children}
+            </div>
     }
 
 
