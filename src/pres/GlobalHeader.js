@@ -120,9 +120,9 @@ const GlobalHeader = (props) => {
             Chess.com
           </span>
         </DropdownItem>
-        <DropdownItem onClick={launch("https://www.youtube.com/watch?v=_UdkngeabWI","chilledChess")}>
+        <DropdownItem onClick={launch("https://www.youtube.com/channel/UCqGhULGgnf6IbY5JXWuVVtQ/live","chilledChess")}>
           <span>
-            Chilled Chess
+            ChilledChess
           </span>
         </DropdownItem>
       </DropdownMenu>
