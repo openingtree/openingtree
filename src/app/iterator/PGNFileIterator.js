@@ -4,7 +4,7 @@ import {trackEvent} from '../Analytics'
 import {normalizePGN} from './IteratorUtils'
 import {trimString} from '../Common'
 
-export default class LichessIterator {
+export default class PGNFileIterator {
 
     constructor(playerName, files, playerColor, advancedFilters, ready, showError) {
         files.forEach((file)=>{
