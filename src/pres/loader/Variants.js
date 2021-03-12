@@ -19,7 +19,7 @@ import { ExpandMore } from '@material-ui/icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFlagCheckered, faChessKing, faDiceThree, faMountain, faHouseDamage } from '@fortawesome/free-solid-svg-icons';
 
-export default class Source extends React.Component {
+export default class Variants extends React.Component {
 
 
     getVariantOption(variant, addNumber) {
