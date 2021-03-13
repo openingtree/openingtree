@@ -18,6 +18,8 @@ export default class PGNLoader extends React.Component {
         let selectedSite = new URLSearchParams(window.location.search).get("source")
         let playerName = new URLSearchParams(window.location.search).get("playerName")
         let color = new URLSearchParams(window.location.search).get("color") // 'white' | 'black'
+        // 'all' | 'rated' | 'casual' (corresponds to Filters.toggleRated)
+        let ratedMode = new URLSearchParams(window.location.search).get("ratedMode")
 
         this.state = {
             playerName: playerName?playerName:'',
@@ -45,7 +47,7 @@ export default class PGNLoader extends React.Component {
         this.state[Constants.TIME_CONTROL_CLASSICAL] = true
         this.state[Constants.TIME_CONTROL_CORRESPONDENCE] = true
         this.state[Constants.TIME_CONTROL_DAILY] = true
-        this.state[Constants.FILTER_NAME_RATED] = "all"
+        this.state[Constants.FILTER_NAME_RATED] = ratedMode ? ratedMode : "all"
         this.state[Constants.FILTER_NAME_ELO_RANGE] = [0, Constants.MAX_ELO_RATING]
         this.state[Constants.FILTER_NAME_OPPONENT] = ''
     }
