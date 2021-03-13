@@ -20,6 +20,7 @@ export default class PGNLoader extends React.Component {
         let color = new URLSearchParams(window.location.search).get("color") // 'white' | 'black'
         // 'all' | 'rated' | 'casual' (corresponds to Filters.toggleRated)
         let ratedMode = new URLSearchParams(window.location.search).get("ratedMode")
+        let timeControls = this.getTimeControls()
 
         this.state = {
             playerName: playerName?playerName:'',
@@ -34,19 +35,13 @@ export default class PGNLoader extends React.Component {
             selectedNotableEvent:{},
             selectedNotablePlayer:{},
             lichessLoginState: Constants.LICHESS_NOT_LOGGED_IN,
-            lichessLoginName: null
+            lichessLoginName: null,
+            ...timeControls
         }
         if(selectedSite === Constants.SITE_LICHESS) {
             this.fetchLichessLoginStatus()
         }
         this.state[Constants.FILTER_NAME_DOWNLOAD_LIMIT] = Constants.MAX_DOWNLOAD_LIMIT
-        this.state[Constants.TIME_CONTROL_ULTRA_BULLET] = true
-        this.state[Constants.TIME_CONTROL_BULLET] = true
-        this.state[Constants.TIME_CONTROL_BLITZ] = true
-        this.state[Constants.TIME_CONTROL_RAPID] = true
-        this.state[Constants.TIME_CONTROL_CLASSICAL] = true
-        this.state[Constants.TIME_CONTROL_CORRESPONDENCE] = true
-        this.state[Constants.TIME_CONTROL_DAILY] = true
         this.state[Constants.FILTER_NAME_RATED] = ratedMode ? ratedMode : "all"
         this.state[Constants.FILTER_NAME_ELO_RANGE] = [0, Constants.MAX_ELO_RATING]
         this.state[Constants.FILTER_NAME_OPPONENT] = ''
@@ -219,6 +214,34 @@ export default class PGNLoader extends React.Component {
             return 'user'
         } else {
             return 'filters'
+        }
+    }
+    getTimeControls() {
+        let selectedChoices = new URLSearchParams(window.location.search).get("timeControls")
+
+        const allChoices = [
+            Constants.TIME_CONTROL_ULTRA_BULLET,
+            Constants.TIME_CONTROL_BULLET,
+            Constants.TIME_CONTROL_BLITZ,
+            Constants.TIME_CONTROL_RAPID,
+            Constants.TIME_CONTROL_CLASSICAL,
+            Constants.TIME_CONTROL_CORRESPONDENCE,
+            Constants.TIME_CONTROL_DAILY
+        ]
+
+        if (!selectedChoices) {
+            const result = {}
+            for (const choice of allChoices) {
+                result[choice] = true
+            }
+            return result
+        } else {
+            selectedChoices = selectedChoices.split(',')
+            const result = {}
+            for (const choice of allChoices) {
+                result[choice] = selectedChoices.includes(choice)
+            }
+            return result
         }
     }
 
