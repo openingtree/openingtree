@@ -17,11 +17,12 @@ export default class PGNLoader extends React.Component {
         super(props)
         let selectedSite = new URLSearchParams(window.location.search).get("source")
         let playerName = new URLSearchParams(window.location.search).get("playerName")
+        let color = new URLSearchParams(window.location.search).get("color") // 'white' | 'black'
 
         this.state = {
             playerName: playerName?playerName:'',
             site: selectedSite?selectedSite:'',
-            playerColor: this.props.settings.playerColor,
+            playerColor: color ? color : this.props.settings.playerColor,
             isAdvancedFiltersOpen: false,
             isGamesSubsectionOpen: false,
             expandedPanel: this.getInitiallyExpandedPanel(selectedSite, playerName),
