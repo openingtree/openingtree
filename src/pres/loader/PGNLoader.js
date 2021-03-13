@@ -16,14 +16,15 @@ export default class PGNLoader extends React.Component {
     constructor(props) {
         super(props)
         let selectedSite = new URLSearchParams(window.location.search).get("source")
+        let playerName = new URLSearchParams(window.location.search).get("playerName")
 
         this.state = {
-            playerName: '',
+            playerName: playerName?playerName:'',
             site: selectedSite?selectedSite:'',
             playerColor: this.props.settings.playerColor,
             isAdvancedFiltersOpen: false,
             isGamesSubsectionOpen: false,
-            expandedPanel: selectedSite?'user':'source',
+            expandedPanel: this.getInitiallyExpandedPanel(selectedSite, playerName),
             notablePlayers:null,
             notableEvents:null,
             files:[],
@@ -207,6 +208,15 @@ export default class PGNLoader extends React.Component {
         this.setState({expandedPanel:'source'})
         this.props.variantChange(newVariant)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "VariantChange", newVariant)
+    }
+    getInitiallyExpandedPanel(selectedSite, playerName) {
+        if (!selectedSite) {
+            return 'source'
+        } else if (!playerName) {
+            return 'user'
+        } else {
+            return 'filters'
+        }
     }
 
     render() {
