@@ -73,3 +73,16 @@ export function isDateMoreRecentThan(date, than) {
     } 
     return new Date(date)>new Date(than)
 }
+
+// Expects an ISO 8601 date i.e. YYYY-MM-DD
+// If invalid, returns null
+export function parseDate(dateString) {
+    const pattern = /^(\d{4})-(\d{2})-(\d{2})$/
+    const matchResult = dateString.match(pattern)
+    if (!matchResult) {
+        return null
+    }
+    let [year, month, date] = matchResult.map(n => +n).slice(1);
+    month = month - 1
+    return new Date(year, month, date)
+}

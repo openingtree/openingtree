@@ -1,5 +1,5 @@
 import React from 'react'
-import { createSubObjectWithProperties } from '../../app/util'
+import { createSubObjectWithProperties, parseDate } from '../../app/util'
 import * as Constants from '../../app/Constants'
 import { trackEvent } from '../../app/Analytics'
 import Source from './Source'
@@ -20,6 +20,8 @@ export default class PGNLoader extends React.Component {
         let color = new URLSearchParams(window.location.search).get("color") // 'white' | 'black'
         // 'all' | 'rated' | 'casual' (corresponds to Filters.toggleRated)
         let ratedMode = new URLSearchParams(window.location.search).get("ratedMode")
+        let fromDate = new URLSearchParams(window.location.search).get("fromDate") // YYYY-MM-DD
+        let toDate = new URLSearchParams(window.location.search).get("toDate") // YYYY-MM-DD
         let timeControls = this.getTimeControls()
 
         this.state = {
@@ -45,6 +47,8 @@ export default class PGNLoader extends React.Component {
         this.state[Constants.FILTER_NAME_RATED] = ratedMode ? ratedMode : "all"
         this.state[Constants.FILTER_NAME_ELO_RANGE] = [0, Constants.MAX_ELO_RATING]
         this.state[Constants.FILTER_NAME_OPPONENT] = ''
+        this.state[Constants.FILTER_NAME_FROM_DATE] = fromDate ? parseDate(fromDate) : null
+        this.state[Constants.FILTER_NAME_TO_DATE] = toDate ? parseDate(toDate) : null
     }
 
 
