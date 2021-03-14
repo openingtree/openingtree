@@ -121,7 +121,12 @@ function getPlayerMoves() {
         return null;
     }
     var moves = this.state.openingGraph.movesForFen(this.chess.fen())
-    return moves?moves.sort((a,b)=>b.moveCount-a.moveCount):[]
+    return moves?moves.sort((a,b)=>{
+        if(a.moveCount === b.moveCount) {
+            return b.details.count - a.details.count
+        }
+        return b.moveCount-a.moveCount
+    }):[]
 }
 
 function gameResults() {
