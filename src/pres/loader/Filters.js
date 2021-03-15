@@ -23,11 +23,9 @@ export default class User extends React.Component {
     constructor(props) {
         super(props)
 
-        let isAdvancedFiltersOpen = new URLSearchParams(window.location.search).get("advanced") === 'true'
-
         this.state = {
             playerColor: this.props.playerColor,
-            isAdvancedFiltersOpen: isAdvancedFiltersOpen
+            isAdvancedFiltersOpen: this.props.isAdvancedFiltersOpen
         }
         Object.assign(this.state, this.props.advancedFilters)
         this.defaultAdvancedFilters = this.props.advancedFilters

@@ -1,5 +1,5 @@
 import React from 'react'
-import { createSubObjectWithProperties, parseDate } from '../../app/util'
+import { createSubObjectWithProperties } from '../../app/util'
 import * as Constants from '../../app/Constants'
 import { trackEvent } from '../../app/Analytics'
 import Source from './Source'
@@ -15,22 +15,15 @@ export default class PGNLoader extends React.Component {
 
     constructor(props) {
         super(props)
-        let selectedSite = new URLSearchParams(window.location.search).get("source")
-        let playerName = new URLSearchParams(window.location.search).get("playerName")
-        let color = new URLSearchParams(window.location.search).get("color") // 'white' | 'black'
-        // 'all' | 'rated' | 'casual' (corresponds to Filters.toggleRated)
-        let ratedMode = new URLSearchParams(window.location.search).get("ratedMode")
-        let fromDate = new URLSearchParams(window.location.search).get("fromDate") // YYYY-MM-DD
-        let toDate = new URLSearchParams(window.location.search).get("toDate") // YYYY-MM-DD
-        let timeControls = this.getTimeControls()
 
+        const urlSettings = this.props.urlSettings
         this.state = {
-            playerName: playerName?playerName:'',
-            site: selectedSite?selectedSite:'',
-            playerColor: color ? color : this.props.settings.playerColor,
-            isAdvancedFiltersOpen: false,
+            playerName: urlSettings.playerName,
+            site: urlSettings.site,
+            playerColor: urlSettings.color || this.props.settings.playerColor,
+            isAdvancedFiltersOpen: urlSettings.isAdvancedFiltersOpen,
             isGamesSubsectionOpen: false,
-            expandedPanel: this.getInitiallyExpandedPanel(selectedSite, playerName),
+            expandedPanel: this.getInitiallyExpandedPanel(urlSettings.site, urlSettings.playerName),
             notablePlayers:null,
             notableEvents:null,
             files:[],
@@ -38,17 +31,17 @@ export default class PGNLoader extends React.Component {
             selectedNotablePlayer:{},
             lichessLoginState: Constants.LICHESS_NOT_LOGGED_IN,
             lichessLoginName: null,
-            ...timeControls
+            ...urlSettings.timeControls
         }
-        if(selectedSite === Constants.SITE_LICHESS) {
+        if(urlSettings.site === Constants.SITE_LICHESS) {
             this.fetchLichessLoginStatus()
         }
         this.state[Constants.FILTER_NAME_DOWNLOAD_LIMIT] = Constants.MAX_DOWNLOAD_LIMIT
-        this.state[Constants.FILTER_NAME_RATED] = ratedMode ? ratedMode : "all"
+        this.state[Constants.FILTER_NAME_RATED] = urlSettings.ratedMode
         this.state[Constants.FILTER_NAME_ELO_RANGE] = [0, Constants.MAX_ELO_RATING]
         this.state[Constants.FILTER_NAME_OPPONENT] = ''
-        this.state[Constants.FILTER_NAME_FROM_DATE] = fromDate ? parseDate(fromDate) : null
-        this.state[Constants.FILTER_NAME_TO_DATE] = toDate ? parseDate(toDate) : null
+        this.state[Constants.FILTER_NAME_FROM_DATE] = urlSettings.fromDate
+        this.state[Constants.FILTER_NAME_TO_DATE] = urlSettings.toDate
     }
 
 
@@ -220,34 +213,6 @@ export default class PGNLoader extends React.Component {
             return 'filters'
         }
     }
-    getTimeControls() {
-        let selectedChoices = new URLSearchParams(window.location.search).get("timeControls")
-
-        const allChoices = [
-            Constants.TIME_CONTROL_ULTRA_BULLET,
-            Constants.TIME_CONTROL_BULLET,
-            Constants.TIME_CONTROL_BLITZ,
-            Constants.TIME_CONTROL_RAPID,
-            Constants.TIME_CONTROL_CLASSICAL,
-            Constants.TIME_CONTROL_CORRESPONDENCE,
-            Constants.TIME_CONTROL_DAILY
-        ]
-
-        if (!selectedChoices) {
-            const result = {}
-            for (const choice of allChoices) {
-                result[choice] = true
-            }
-            return result
-        } else {
-            selectedChoices = selectedChoices.split(',')
-            const result = {}
-            for (const choice of allChoices) {
-                result[choice] = selectedChoices.includes(choice)
-            }
-            return result
-        }
-    }
 
     render() {
         return <div><div className="pgnloadersection">
@@ -269,6 +234,7 @@ export default class PGNLoader extends React.Component {
             />
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
+                isAdvancedFiltersOpen={this.state.isAdvancedFiltersOpen}
                 site={this.state.site} playerName={this.state.playerName} advancedFilters={this.advancedFilters()}
                 filtersChange={this.filtersChange.bind(this)}
                 selectedNotablePlayer={this.state.selectedNotablePlayer} />
