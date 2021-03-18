@@ -9,7 +9,7 @@ import "react-step-progress-bar/styles.css";
 import {trackEvent} from '../../app/Analytics'
 import * as Constants from '../../app/Constants'
 import { ProgressBar,Step } from "react-step-progress-bar";
-import {playerDetails} from './MovesCommon'
+import {playerDetails, offCard} from './MovesCommon'
 import {simplifyCount} from '../../app/util'
 import MovesSettings from './MovesSettings'
 
@@ -165,8 +165,20 @@ export default class MovesTable extends React.Component {
 
     render() {
         let hasMoves = (this.props.movesToShow && this.props.movesToShow.length>0)
+        if (!hasMoves)
+            return offCard(
+                'No moves found',
+                'The opening book does not have any moves in this position',
+                this.toggleMovesSettings.bind(this),
+                <b>Modify Book Settings
+                    <MovesSettings isOpen={this.state.moveSettingsOpen}
+                                   toggle={this.toggleMovesSettings.bind(this)}
+                                   settingsChange={this.props.settingsChange}
+                                   updateSettings={this.props.updateSettings}
+                                   settings={this.props.settings}
+                                   variant={this.props.variant}/></b>)
+
         return <Table>
-            {hasMoves?
         <TableHead>
         <TableRow>
             <TableCell size="small" className="smallCol"><b>Move</b></TableCell>
@@ -182,8 +194,6 @@ export default class MovesTable extends React.Component {
                     variant={this.props.variant}/>
             </TableCell>
         </TableRow></TableHead>
-        :null}
-        {hasMoves?
         <TableBody>
         {
         this.props.movesToShow.map((move, moveIndex) => {
@@ -195,7 +205,6 @@ export default class MovesTable extends React.Component {
             }
         )}
     </TableBody>
-    :null}
         <TableFooter><TableRow>
             <TableCell colSpan="3">
                 {this.props.tableFooter}
