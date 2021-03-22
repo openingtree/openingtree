@@ -145,7 +145,7 @@ export default class MovesTable extends React.Component {
         let currMove = this.props.movesToShow[moveIndex]
 
         if(this.getTranspositionWarningLevel(moveIndex)!=='none') {
-            return <div>{this.getInfoIcon(moveIndex)}<b> This move has transpositions</b> <div>{currMove.san} has been played only {currMove.moveCount} times but the resulting position has appeared {currMove.details.count} times through other move orders.</div></div>
+            return <div>{this.getInfoIcon(moveIndex)}<b> This move has transpositions</b> <div>{currMove.san} has been played {currMove.moveCount === 1? `once`:`${currMove.moveCount} times`}  in this position but the resulting position has appeared {currMove.details.count} times through other move orders.</div></div>
         }
     }
 
@@ -154,7 +154,9 @@ export default class MovesTable extends React.Component {
         let targetCount = currMove.details.count
         let difference = targetCount - currMove.moveCount
         if (difference>0) {
-            if(difference>10 && difference/targetCount>0.1) {
+            if(currMove.moveCount === 1) {
+                return "warning"
+            } else if(difference>10 && difference/targetCount>0.1) {
                 return "warning"
             } else {
                 return "info"
@@ -198,7 +200,7 @@ export default class MovesTable extends React.Component {
         {
         this.props.movesToShow.map((move, moveIndex) => {
             let lastPlayedGame = move.details.lastPlayedGame
-            return lastPlayedGame && move.moveCount === 1?
+            return lastPlayedGame && move.details.count === 1?
                 this.getSingleItemRow(move,lastPlayedGame):
                 this.getMultiItemRow(move, moveIndex)
                 
