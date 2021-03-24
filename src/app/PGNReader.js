@@ -79,27 +79,24 @@ export default class PGNReader {
             let parsedMoves = []
             var moves=pgn.moves.map(i=>i.move).join(" ")
             
-            chess.load_pgn(moves, {sloppy: false});
-            console.log(JSON.stringify(chess.history({verbose: true})))
+            chess.load_pgn(moves, {sloppy: true});
 
             var items=chess.history({verbose:true})
-            // console.log(items)
             chess = chessLogic(this.variant)
             items.forEach((element, idx) => {
                 let sourceFen=""
                 if(idx===0) {
                     sourceFen=chess.fen();
                 } else {
-                    sourceFen = items[idx].targetFen
-                    items[idx]
+                    sourceFen = parsedMoves[idx-1].targetFen
                 }
                 let targetFen = element.fen
-                parsedMoves.push({
+                var item={
                     sourceFen:sourceFen,
                     targetFen:targetFen,
                     moveSan:element.san
-                })
-                
+                }
+                parsedMoves.push(item)
             })
             if(pgnParseFailed) {
                 showError("Failed to load a game", `${playerName}:${playerColor}`)

@@ -13,7 +13,7 @@ export function chessLogic(variant, fen) {
     if(variant === Constants.VARIANT_CRAZYHOUSE) {
         return new CrazyhouseChess(fen)
     }
-    return new Chess.Chess(fen)
+    return new Chess(fen)
 }
 
 export function rootFen(variant) {
