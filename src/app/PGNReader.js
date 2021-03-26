@@ -14,7 +14,7 @@ export default class PGNReader {
         this.pendingDownloads = true;
         this.variant = variant;
         this.chess= chessLogic(this.variant);
-        this.fen=this.chess.fen()
+        this.fen=this.chess.fen();
     }
 
 
