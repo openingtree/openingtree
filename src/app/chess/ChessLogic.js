@@ -2,7 +2,6 @@ import * as Constants from '../Constants'
 import Chess from 'chess.js'
 import RacingKingsChess from './RacingKingsChess'
 import CrazyhouseChess from './CrazyhouseChess'
-
 export function chessLogic(variant, fen) {
     if(!fen) {
         fen = rootFen(variant)

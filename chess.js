@@ -1587,7 +1587,7 @@ var Chess = function(fen) {
         .replace(/,,+/g, ',')
         .split(',')
       var move = ''
-      console.log("start"+ new Date().getTime())
+      // console.log("start"+ new Date().getTime())
 
       for (var half_move = 0; half_move < moves.length - 1; half_move++) {
         move = move_from_san(moves[half_move], sloppy)
@@ -1604,7 +1604,7 @@ var Chess = function(fen) {
 
         }
       }
-      console.log("end"+ new Date().getTime())
+      // console.log("end"+ new Date().getTime())
 
 
       /* examine last move */
