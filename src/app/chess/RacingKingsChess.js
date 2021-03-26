@@ -1,4 +1,4 @@
-import Chess from 'chess.js'
+import Chess from '@gorilla_12/chess'
 
 export default class RacingKingsChess {
     constructor(fen){

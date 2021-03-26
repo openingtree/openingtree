@@ -1,5 +1,5 @@
 import * as Constants from '../Constants'
-import Chess from 'chess.js'
+import Chess from '@gorilla_12/chess'
 import RacingKingsChess from './RacingKingsChess'
 import CrazyhouseChess from './CrazyhouseChess'
 
