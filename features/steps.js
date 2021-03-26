@@ -8,7 +8,7 @@ MAFWhen('convert pgn {jsonObject} to json', function(obj) {
 global.FileReader=require('filereader')
 MAFWhen('load single pgn from {jsonObject}', function(obj) {
     var obj=performJSONObjectTransform.call(this, obj)
-    var Chess=require('chess.js').Chess
+    var Chess=require('@gorilla_12/chess').Chess
     chess=new Chess();
     console.log(JSON.stringify(chess.load_pgn(obj)))
     console.log(JSON.stringify(chess.history({verbose: true})))
