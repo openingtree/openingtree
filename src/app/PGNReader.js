@@ -87,7 +87,7 @@ export default class PGNReader {
                 let targetFen = chess.fen()
                 if(!move){
                     if(!pgnParseFailed) {
-                        console.log('failed to load game ',  pgn.moves, element.move)
+                        console.log('failed to load game ',  pgn, element.move)
                     }
                     pgnParseFailed=true
                     return
