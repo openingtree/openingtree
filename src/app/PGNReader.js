@@ -80,7 +80,6 @@ export default class PGNReader {
             chess.load(this.fen)
             let pgnParseFailed = false;
             let parsedMoves = []
-
             pgn.moves.forEach(element => {
                 let sourceFen = chess.fen()
                 let move = chess.move(element.move, {sloppy: true})
