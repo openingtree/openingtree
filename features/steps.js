@@ -22,8 +22,8 @@ MAFWhen('load single pgn from {jsonObject}', function(obj) {
     return chess
 })
 MAFWhen('load pgn file {string}', async function(obj) {
-    console.log(File)
-    var Constants=require('../dist/app/Constants')
+    const {numGames}=this.results
+ var Constants=require('../dist/app/Constants')
 
     var MakeFile=require('@davidwu226/file-api').File
     var filters=[Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
@@ -49,8 +49,7 @@ MAFWhen('load pgn file {string}', async function(obj) {
     function updateProcessedGames(downloadLimit, n, parsedGame) {
         gamesProcessed+=n
         var res=true
-        console.log(gamesProcessed)
-        if(gamesProcessed>=1000) {
+        if(gamesProcessed>=numGames) {
             res=false;
             prom.resolve(true)
 

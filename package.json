@@ -93,7 +93,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "cucumber-js $REPORT $EXTRAS; node node_modules/@ln-maf/core/multiReport"
+    "test": "export NODE_ENV=test; npx babel ./src --out-dir dist && cucumber-js $REPORT -t 'not @skipTests' $EXTRAS"
   },
   "browserslist": {
     "production": [
