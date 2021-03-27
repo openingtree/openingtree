@@ -1,4 +1,8 @@
 const { MAFWhen, performJSONObjectTransform } = require('@ln-maf/core')
+var {setDefaultTimeout} = require('@cucumber/cucumber');
+
+setDefaultTimeout(60 * 1000);
+
 MAFWhen('convert pgn {jsonObject} to json', function(obj) {
     var obj=performJSONObjectTransform.call(this, obj)
     const pgnParser=require('../src/app/PGNParser')
@@ -6,6 +10,7 @@ MAFWhen('convert pgn {jsonObject} to json', function(obj) {
     return res
 })
 global.FileReader=require('filereader')
+global.Chess=require('@gorilla_12/chess').Chess
 MAFWhen('load single pgn from {jsonObject}', function(obj) {
     var obj=performJSONObjectTransform.call(this, obj)
     var Chess=require('@gorilla_12/chess').Chess
@@ -16,11 +21,11 @@ MAFWhen('load single pgn from {jsonObject}', function(obj) {
     console.log(chess.history())
     return chess
 })
-MAFWhen('load pgn file {string}', function(obj) {
+MAFWhen('load pgn file {string}', async function(obj) {
     console.log(File)
     var Constants=require('../dist/app/Constants')
 
-    var MakeFile=require('file-api').File
+    var MakeFile=require('@davidwu226/file-api').File
     var filters=[Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
         Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
         Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
@@ -32,24 +37,36 @@ MAFWhen('load pgn file {string}', function(obj) {
     // var obj=performJSONObjectTransform.call(this, obj)
     var PGNReader=require('../dist/app/PGNReader')
     const { player, color} = this.results
-    console.log(obj)
     var file=new MakeFile(obj)
     var reader=new PGNReader.default([])
     var gamesProcessed=0;
+    var prom={
+        
+    }
+    prom.p=new Promise(resolve=> {
+        prom.resolve=resolve  
+    })
     function updateProcessedGames(downloadLimit, n, parsedGame) {
         gamesProcessed+=n
+        var res=true
         console.log(gamesProcessed)
+        if(gamesProcessed>=1000) {
+            res=false;
+            prom.resolve(true)
+
+        }
         // continue to download games if
         // 1. we have not reached download limit OR
         //    there is no download limit set (downloadLimit>MAX condition)
         // 2. user did not hit stop button
         return new Promise(resolve => {
-            resolve(true);
+            resolve(res);
           });
         
     }
     
     reader.fetchPGNFromSite(player, color, "pgnfile", null,null,null,null,filters,updateProcessedGames,null,null,[file],null,null)
-    return "hi"
+    await prom.p
+    return "done"
 })
 

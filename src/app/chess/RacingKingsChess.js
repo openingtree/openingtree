@@ -2,7 +2,11 @@ import Chess from '@gorilla_12/chess'
 
 export default class RacingKingsChess {
     constructor(fen){
-        this.chess = new Chess(fen);
+        if(process.env.NODE_ENV==="test") {
+            this.chess=new (Chess.Chess)(fen);
+        } else {
+            this.chess = new Chess(fen);
+        }
         this.SQUARES = this.chess.SQUARES
     }
     fen(){

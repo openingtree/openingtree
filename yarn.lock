@@ -2054,6 +2054,39 @@
   resolved "https://registry.yarnpkg.com/@cucumber/tag-expressions/-/tag-expressions-2.0.4.tgz#ad4f43bb567e5046ada6e94ad681087c536dc123"
   integrity sha512-HiNncmg/gS34yNpMFAeoIyUHqLFFN92MXIj3rs+BKo7vn16SxvYsigDvd2PAHyjSIThsp9TO1XDtl0SLKVB58g==
 
+"@davidwu226/file-api@^0.11.1":
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/@davidwu226/file-api/-/file-api-0.11.1.tgz#11f36253a9e213f67133e075875a98de7f86a09c"
+  integrity sha512-EMjSUyQKcJGTl/TGS1C2nC9rURxjN0DAZdAjWSUFzn/SgKjeRqKgco9Wl2diEOE/6yxkri2fgFFfmwYdwNQijQ==
+  dependencies:
+    "@davidwu226/file" "^0.11.0"
+    "@davidwu226/formdata" "^0.11.1"
+    FileList "^0.10.2"
+    bufferjs "^2.0.0"
+    file-error "^0.10.2"
+    filereader "^0.10.3"
+    mime "^1.2.11"
+    remedial "^1.0.7"
+
+"@davidwu226/file@^0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@davidwu226/file/-/file-0.11.0.tgz#d785eb5288f86d3e75b3cbd183ce5836534382ef"
+  integrity sha512-ayH0hEA4cW1ZMgQ60TgwE/KWI1yq824stRmBC7EfDEfbX552vspA8vFKWLZjJOqmkx23ejweMcnpDU6JP4zNgA==
+  dependencies:
+    mime "^1.2.11"
+
+"@davidwu226/formdata@^0.11.1":
+  version "0.11.1"
+  resolved "https://registry.yarnpkg.com/@davidwu226/formdata/-/formdata-0.11.1.tgz#7e14b6048c2159d7368c4a0604902246adab8782"
+  integrity sha512-Pv+GNE3TPLvILuTXmuhB6ToHYO9IeA0FK0AA5eOFhreFsy3xI2vj5TSTQy9c3PmRCVNfZnLdP88aPgBZ6uOTqA==
+  dependencies:
+    "@davidwu226/file" "^0.11.0"
+    FileList "^0.10.2"
+    bufferjs "^2.0.0"
+    filereader "^0.10.3"
+    foreachasync "^3.0.0"
+    remedial "^1.0.7"
+
 "@emotion/hash@^0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@emotion/hash/-/hash-0.8.0.tgz#bbbff68978fefdbe68ccb533bc8cbe1d1afb5413"
@@ -5754,7 +5787,7 @@ file-entry-cache@^5.0.1:
   dependencies:
     flat-cache "^2.0.1"
 
-"file-error@>= 0.10.0":
+"file-error@>= 0.10.0", file-error@^0.10.2:
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/file-error/-/file-error-0.10.2.tgz#963b48b9273b3d4b84b400ee571bc78b1739724a"
   integrity sha1-ljtIuSc7PUuEtADuVxvHixc5cko=
@@ -8278,12 +8311,7 @@ mime-types@^2.1.12, mime-types@~2.1.17, mime-types@~2.1.19, mime-types@~2.1.24:
   dependencies:
     mime-db "1.44.0"
 
-mime@1.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/mime/-/mime-1.0.0.tgz#0650d4779569617b3ee8bec7b8b7522e74af05be"
-  integrity sha1-BlDUd5VpYXs+6L7HuLdSLnSvBb4=
-
-mime@1.6.0:
+mime@1.6.0, mime@^1.2.11:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/mime/-/mime-1.6.0.tgz#32cd9e5c64553bd58d19a568af452acff04981b1"
 

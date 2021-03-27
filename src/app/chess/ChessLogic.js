@@ -12,6 +12,9 @@ export function chessLogic(variant, fen) {
     if(variant === Constants.VARIANT_CRAZYHOUSE) {
         return new CrazyhouseChess(fen)
     }
+    if(process.env.NODE_ENV==="test") {
+        return new (Chess.Chess)(fen)
+    } 
     return new Chess(fen)
 }
 

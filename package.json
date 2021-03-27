@@ -5,6 +5,7 @@
   "homepage": "./",
   "dependencies": {
     "@babel/cli": "^7.13.10",
+    "@davidwu226/file-api": "^0.11.1",
     "@fortawesome/fontawesome-svg-core": "^1.2.27",
     "@fortawesome/free-brands-svg-icons": "^5.13.0",
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
@@ -53,7 +54,6 @@
     "js-cookie": "^2.2.1",
     "jsdom-global": "^3.0.2",
     "material-ui-dropzone": "^2.5.0",
-    "mime": "1.0",
     "mini-css-extract-plugin": "0.9.0",
     "normalize-newline": "^3.0.0",
     "optimize-css-assets-webpack-plugin": "5.0.3",
