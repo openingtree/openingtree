@@ -1,56 +1,51 @@
 const { MAFWhen, performJSONObjectTransform } = require('@ln-maf/core')
-var {setDefaultTimeout} = require('@cucumber/cucumber');
+var { setDefaultTimeout } = require('@cucumber/cucumber');
 
 setDefaultTimeout(60 * 1000);
 
-MAFWhen('convert pgn {jsonObject} to json', function(obj) {
-    var obj=performJSONObjectTransform.call(this, obj)
-    const pgnParser=require('../src/app/PGNParser')
-    var res=pgnParser.parse(obj)
+MAFWhen('convert pgn {jsonObject} to json', function (obj) {
+    var obj = performJSONObjectTransform.call(this, obj)
+    const pgnParser = require('../src/app/PGNParser')
+    var res = pgnParser.parse(obj)
     return res
 })
-global.FileReader=require('filereader')
-global.Chess=require('@gorilla_12/chess').Chess
-MAFWhen('load single pgn from {jsonObject}', function(obj) {
-    var obj=performJSONObjectTransform.call(this, obj)
-    var Chess=require('@gorilla_12/chess').Chess
-    chess=new Chess();
-    console.log(JSON.stringify(chess.load_pgn(obj)))
-    console.log(JSON.stringify(chess.history({verbose: true})))
-
-    console.log(chess.history())
+global.FileReader = require('filereader')
+global.Chess = require('@gorilla_12/chess').Chess
+MAFWhen('load single pgn from {jsonObject}', function (obj) {
+    var obj = performJSONObjectTransform.call(this, obj)
+    var Chess = require('@gorilla_12/chess').Chess
+    chess = new Chess();
     return chess
 })
-MAFWhen('load pgn file {string}', async function(obj) {
-    const {numGames}=this.results
- var Constants=require('../dist/app/Constants')
+MAFWhen('load pgn file {string}', async function (obj) {
+    var Constants = require('../dist/app/Constants')
 
-    var MakeFile=require('@davidwu226/file-api').File
-    var filters=[Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
-        Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
-        Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
-        Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
-        Constants.FILTER_NAME_DOWNLOAD_LIMIT,
-        Constants.FILTER_NAME_ELO_RANGE, Constants.FILTER_NAME_OPPONENT,
-        Constants.FILTER_NAME_FROM_DATE, Constants.FILTER_NAME_TO_DATE]
+    var MakeFile = require('@davidwu226/file-api').File
+    var filters = [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
+    Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
+    Constants.TIME_CONTROL_CORRESPONDENCE, Constants.TIME_CONTROL_DAILY,
+    Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
+    Constants.FILTER_NAME_DOWNLOAD_LIMIT,
+    Constants.FILTER_NAME_ELO_RANGE, Constants.FILTER_NAME_OPPONENT,
+    Constants.FILTER_NAME_FROM_DATE, Constants.FILTER_NAME_TO_DATE]
 
     // var obj=performJSONObjectTransform.call(this, obj)
-    var PGNReader=require('../dist/app/PGNReader')
-    const { player, color} = this.results
-    var file=new MakeFile(obj)
-    var reader=new PGNReader.default([])
-    var gamesProcessed=0;
-    var prom={
-        
+    var PGNReader = require('../dist/app/PGNReader')
+    const { numGames, player, color } = this.results
+    var file = new MakeFile(obj)
+    var reader = new PGNReader.default([])
+    var gamesProcessed = 0;
+    var prom = {
+
     }
-    prom.p=new Promise(resolve=> {
-        prom.resolve=resolve  
+    prom.p = new Promise(resolve => {
+        prom.resolve = resolve
     })
     function updateProcessedGames(downloadLimit, n, parsedGame) {
-        gamesProcessed+=n
-        var res=true
-        if(gamesProcessed>=numGames) {
-            res=false;
+        gamesProcessed += n
+        var res = true
+        if (gamesProcessed >= numGames) {
+            res = false;
             prom.resolve(true)
 
         }
@@ -60,11 +55,11 @@ MAFWhen('load pgn file {string}', async function(obj) {
         // 2. user did not hit stop button
         return new Promise(resolve => {
             resolve(res);
-          });
-        
+        });
+
     }
-    
-    reader.fetchPGNFromSite(player, color, "pgnfile", null,null,null,null,filters,updateProcessedGames,null,null,[file],null,null)
+
+    reader.fetchPGNFromSite(player, color, "pgnfile", null, null, null, null, filters, updateProcessedGames, null, null, [file], null, null)
     await prom.p
     return "done"
 })
