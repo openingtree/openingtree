@@ -15,10 +15,6 @@ MAFWhen('load single pgn from {jsonObject}', function (obj) {
     var obj = performJSONObjectTransform.call(this, obj)
     var Chess = require('chess.js').Chess
     chess = new Chess();
-    console.log(JSON.stringify(chess.load_pgn(obj)))
-    console.log(JSON.stringify(chess.history({ verbose: true })))
-
-    console.log(chess.history())
     return chess
 })
 MAFWhen('load pgn file {string}', async function (obj) {
