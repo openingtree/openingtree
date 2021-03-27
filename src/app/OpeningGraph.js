@@ -246,7 +246,6 @@ export default class OpeningGraph {
         if(currNode && currNode.playedBy) {
             return Array.from(Object.entries(currNode.playedBy)).map((entry)=> {
                 let chess = chessLogic(this.variant, fullFen)
-                console.log("HOW OFTEN DO WE MOVE?")
                 let move = chess.move(entry[0], {sloppy: true})
                 let targetNodeDetails = this.getDetailsForFen(chess.fen())
                 return {

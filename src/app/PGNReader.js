@@ -13,8 +13,6 @@ export default class PGNReader {
         this.pendingGames = 0;
         this.pendingDownloads = true;
         this.variant = variant;
-        this.chess= chessLogic(this.variant)
-
     }
 
 
@@ -69,37 +67,31 @@ export default class PGNReader {
             return
         }
         var pgn = pgnArray[index]
-        let chess=this.chess
+
         // ignore pgn files with no moves, or less than 2 moves played
         // ignore pgn files that do not start with move 1. these are mostly "from position tournaments in lichess"
         // for this, we need to check that the move number actually exists and is not 1.
         // there are some pgns that do not have any move numbers and we should assume they start with move 1
         if(pgn.moves.length>2 && pgn.moves[0] && 
             (pgn.moves[0].move_number == null || pgn.moves[0].move_number === 1)) {
+            let chess = chessLogic(this.variant)
             let pgnParseFailed = false;
             let parsedMoves = []
-            let moves=pgn.moves.map(i=>i.move).join(" ")
-            chess.clear()
-            chess.load_pgn(moves, {sloppy: true})
-            let lastFen=chess.fen()
-            let items =chess.history({verbose: true})
-            chess.clear()
-            items.forEach((el, idx) => {
-                let sourceFen = el.fen
-                if(!sourceFen) {
-                     sourceFen=lastFen
-                }
-                let targetFen=5
-                if(idx!==0) {   
-                  targetFen = parsedMoves[idx-1].sourceFen
-                } else {
-                  targetFen = chess.fen()
-
+            pgn.moves.forEach(element => {
+                let sourceFen = chess.fen()
+                let move = chess.move(element.move, {sloppy: true})
+                let targetFen = chess.fen()
+                if(!move){
+                    if(!pgnParseFailed) {
+                        console.log('failed to load game ',  pgn, element.move)
+                    }
+                    pgnParseFailed=true
+                    return
                 }
                 parsedMoves.push({
                     sourceFen:sourceFen,
                     targetFen:targetFen,
-                    moveSan:items[idx].san
+                    moveSan:move.san
                 })
             })
             if(pgnParseFailed) {
@@ -115,7 +107,7 @@ export default class PGNReader {
                 notify(advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT],1, parsedPGNDetails).then((continueProcessingGames)=>{
                     this.continueProcessingGames = continueProcessingGames
                 })
-            } 
+            }
         }
         setTimeout(()=>{this.parsePGNTimed(site, pgnArray, index+1, advancedFilters, playerColor, playerName, notify, showError, stopDownloading)},1)
 
