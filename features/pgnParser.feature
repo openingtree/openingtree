@@ -9,7 +9,6 @@
 @skipTests
 Feature: Grammar for pgn-parser
   Scenario:  Able to parse large pgn
-
     When convert pgn file "features/gorilla_176_Games.pgn" to json
     Then item "lastRun.length" > 1000
 
