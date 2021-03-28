@@ -1,0 +1,5 @@
+{
+    "api": "",
+    "url": "${playerInfo.pgnUrl}",
+    "method": "GET"
+}

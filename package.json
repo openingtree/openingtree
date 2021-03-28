@@ -11,7 +11,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.12.1",
     "@fortawesome/react-fontawesome": "^0.1.8",
-    "@gorilla_12/chess": "^0.11.0",
+    "@gorilla_12/chess": "0.12.0",
     "@material-ui/core": "^4.9.3",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.45",
@@ -28,6 +28,8 @@
     "case-sensitive-paths-webpack-plugin": "2.3.0",
     "chess-eco-codes": "git+https://git@github.com/vjuneja/chess-eco-codes.git",
     "chess-web-api": "^1.0.10",
+    "chess.js": "^0.11.0",
+    "clipboardy": "^2.3.0",
     "comlink": "^4.3.0",
     "css-loader": "3.4.2",
     "deep-equal": "^2.0.3",
@@ -78,6 +80,7 @@
     "resolve": "1.15.0",
     "resolve-url-loader": "3.1.1",
     "sass-loader": "8.0.2",
+    "selenium-webdriver": "^4.0.0-beta.2",
     "semver": "6.3.0",
     "streamsaver": "^2.0.4",
     "style-loader": "0.23.1",
@@ -93,7 +96,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "export NODE_ENV=test; npx babel ./src --out-dir dist && cucumber-js $REPORT -t 'not @skipTests' $EXTRAS"
+    "test": "export NODE_ENV=test; npx babel ./src --out-dir dist && cucumber-js tests/functionalTests $REPORT -t 'not @skipTests' $EXTRAS",
+    "testUI": "cucumber-js tests/uiTests $REPORT $EXTRAS"
   },
   "browserslist": {
     "production": [
@@ -167,6 +171,7 @@
     "**/@babel/runtime": "7.13.10"
   },
   "devDependencies": {
+    "@ln-maf/api": "^1.3.12",
     "@babel/runtime": "^7.13.10",
     "@cucumber/cucumber": "^7.0.0",
     "@ln-maf/core": "^1.3.10",
