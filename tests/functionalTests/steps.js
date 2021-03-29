@@ -13,7 +13,7 @@ global.FileReader = require('filereader')
 global.Chess = require('chess.js').Chess
 MAFWhen('load single pgn from {jsonObject}', function (obj) {
     var obj = performJSONObjectTransform.call(this, obj)
-    var Chess = require('@chess.js').Chess
+    var Chess = require('chess.js').Chess
     chess = new Chess();
     return chess
 })
