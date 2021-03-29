@@ -9,8 +9,6 @@ Feature: Iterate over a pgn file
     When api request from file "getPlayer.json" is performed
     And set "playerInfo" to "${response.list.filter(i=>i.name===Name)[0]}"
     When api request from file "loadGames.json" is performed
-    Given url "${playerInfo.pgnUrl}"
-    When method get
     And load pgn item "response"
 
   @chess.js
