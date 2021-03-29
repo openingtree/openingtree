@@ -2131,11 +2131,6 @@
   dependencies:
     prop-types "^15.7.2"
 
-"@gorilla_12/chess@0.12.0":
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/@gorilla_12/chess/-/chess-0.12.0.tgz#d75fd479a98f395d5afe5f871e0d7787e4e13618"
-  integrity sha512-3AIG74l3ipy46E6MeO0Rc498l51Ru1Bp7dD2rlH4Ssb5+PMOcufCx3Cr+3QGBxOsXrkAti4k0GiOn31N/1On1Q==
-
 "@hapi/address@2.x.x":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.1.4.tgz#5d67ed43f3fd41a69d4b9ff7b56e7c0d1d0a81e5"

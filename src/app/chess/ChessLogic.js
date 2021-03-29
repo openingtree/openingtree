@@ -1,5 +1,5 @@
 import * as Constants from '../Constants'
-import Chess from '@gorilla_12/chess'
+import Chess from 'chess.js'
 import RacingKingsChess from './RacingKingsChess'
 import CrazyhouseChess from './CrazyhouseChess'
 export function chessLogic(variant, fen) {

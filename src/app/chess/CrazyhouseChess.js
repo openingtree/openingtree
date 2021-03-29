@@ -1,4 +1,4 @@
-import Chess from '@gorilla_12/chess'
+import Chess from 'chess.js'
 
 export default class CrazyhouseChess {
     constructor(fen){
@@ -18,7 +18,9 @@ export default class CrazyhouseChess {
     moves(options) {
         return this.chess.moves(options)
     }
-
+    load(fen) {
+        this.chess.load(fen)
+    }
     move(moveObject, options) {
         let move = this.chess.move(moveObject, options)
         if(move) {

@@ -1,4 +1,4 @@
-import Chess from '@gorilla_12/chess'
+import Chess from 'chess.js'
 
 export default class RacingKingsChess {
     constructor(fen){
@@ -14,6 +14,9 @@ export default class RacingKingsChess {
     }
     turn() {
         return this.chess.turn()
+    }
+    load(fen) {
+        this.chess.load(fen)
     }
     moves(options) {
         // checks are not allowed in racing kings 
