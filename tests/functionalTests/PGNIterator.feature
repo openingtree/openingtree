@@ -1,7 +1,7 @@
 @iterate
 Feature: Iterate over a pgn file
   Background:
-    When set "directory" to "tests/functionalTests/features"
+    When set "directory" to "tests/functionalTests"
   Scenario: Iterate a pgn file
     When set:
       | color | Name               | numGames |

@@ -18,10 +18,10 @@ MAFWhen('load single pgn from {jsonObject}', function (obj) {
     return chess
 })
 MAFWhen('load pgn {jsonObject}', async function (obj) {
-    var Constants = require('../../../dist/app/Constants')
+    var Constants = require('../../dist/app/Constants')
     var obj = performJSONObjectTransform.call(this, obj)
     const fs = require('fs')
-    fs.writeFileSync('test/tmp.pgn', obj, 'utf8')
+    fs.writeFileSync('test_tmp.pgn', obj, 'utf8')
     var MakeFile = require('@davidwu226/file-api').File
     var filters = [Constants.TIME_CONTROL_ULTRA_BULLET, Constants.TIME_CONTROL_BULLET,
     Constants.TIME_CONTROL_BLITZ, Constants.TIME_CONTROL_RAPID,
@@ -32,9 +32,9 @@ MAFWhen('load pgn {jsonObject}', async function (obj) {
     Constants.FILTER_NAME_FROM_DATE, Constants.FILTER_NAME_TO_DATE]
 
     // var obj=performJSONObjectTransform.call(this, obj)
-    var PGNReader = require('../../../dist/app/PGNReader')
+    var PGNReader = require('../../dist/app/PGNReader')
     const { numGames, player, color } = this.results
-    var file = new MakeFile('test/tmp.pgn')
+    var file = new MakeFile('test_tmp.pgn')
     var reader = new PGNReader.default([])
     var gamesProcessed = 0;
     var prom = {

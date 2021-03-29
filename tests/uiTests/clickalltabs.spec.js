@@ -11,10 +11,8 @@ BeforeAll( async function() {
 })
 When('switch tab {int}', async function(tab) {
   let handles = await driver.getAllWindowHandles();
-  // console.log('TabId 1:'+browser.getCurrentTabId());
   var item=driver.switchTo()
   await item.window(handles[tab])
-// console.log('TabId 2:'+browser.getCurrentTabId());
   await takeScreenshot.call(this)
 })
 When('open', async function() {
