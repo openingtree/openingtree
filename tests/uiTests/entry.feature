@@ -111,5 +111,3 @@ Feature: Opening Tree Entry
       | Standard rules   | EricRosen   | White | lichess  | 30       |
       | Standard rules   | IMRosen     | Black | chesscom | 5        |
       | Crazyhouse       | blitzbullet | White | lichess  | 10       |
-      | Three check      | catask      | White | lichess  | 5        |
-      | King of the hill | Shprot86    | White | lichess  | 5        |
