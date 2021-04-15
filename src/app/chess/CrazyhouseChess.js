@@ -2,7 +2,11 @@ import Chess from 'chess.js'
 
 export default class CrazyhouseChess {
     constructor(fen){
-        this.chess = new Chess(fen);
+        if(process.env.NODE_ENV==="test") {
+            this.chess= new (Chess.Chess)(fen)
+        } else {
+            this.chess = new Chess(fen);
+        }
         this.SQUARES = this.chess.SQUARES
     }
     fen(){
@@ -14,7 +18,9 @@ export default class CrazyhouseChess {
     moves(options) {
         return this.chess.moves(options)
     }
-
+    load(fen) {
+        this.chess.load(fen)
+    }
     move(moveObject, options) {
         let move = this.chess.move(moveObject, options)
         if(move) {

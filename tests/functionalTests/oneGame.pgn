@@ -1,0 +1,19 @@
+[Event "Rated Blitz game"]
+[Site "https://lichess.org/RztNuxA1"]
+[Date "2021.03.08"]
+[White "gorilla_12"]
+[Black "audayhabboush"]
+[Result "1-0"]
+[UTCDate "2021.03.08"]
+[UTCTime "20:36:55"]
+[WhiteElo "2040"]
+[BlackElo "2129"]
+[WhiteRatingDiff "+7"]
+[BlackRatingDiff "-7"]
+[Variant "Standard"]
+[TimeControl "180+2"]
+[ECO "C69"]
+[Termination "Normal"]
+
+1. e4 e5 2. Nf3 Nc6 3. Bb5 a6 4. Bxc6 dxc6 5. O-O Bg4 6. h3 Bxf3 7. Qxf3 Bd6 8. c3 Qe7 9. d4 h6 10. Nd2 Nf6 11. Nc4 O-O-O 12. dxe5 Bxe5 13. Qf5+ Nd7 14. Nxe5 Qxe5 15. Qxf7 Qxe4 16. Qxg7 Rhg8 17. f3 Rxg7 18. fxe4 Re7 19. Re1 h5 20. Bg5 Rde8 21. Bxe7 Rxe7 22. Re2 Nf6 23. Rae1 Kd7 24. e5 Nd5 25. g4 hxg4 26. hxg4 Rg7 27. Rg2 Ke6 28. Kh2 Rg5 29. c4 Nf4 30. Rf2 Rxg4 31. Re4 Nd3 32. Rf6+ Ke7 33. Rxg4 Nxe5 34. Rff4 1-0
+

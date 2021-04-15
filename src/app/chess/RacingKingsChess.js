@@ -2,7 +2,11 @@ import Chess from 'chess.js'
 
 export default class RacingKingsChess {
     constructor(fen){
-        this.chess = new Chess(fen);
+        if(process.env.NODE_ENV==="test") {
+            this.chess=new (Chess.Chess)(fen);
+        } else {
+            this.chess = new Chess(fen);
+        }
         this.SQUARES = this.chess.SQUARES
     }
     fen(){
@@ -10,6 +14,9 @@ export default class RacingKingsChess {
     }
     turn() {
         return this.chess.turn()
+    }
+    load(fen) {
+        this.chess.load(fen)
     }
     moves(options) {
         // checks are not allowed in racing kings 
