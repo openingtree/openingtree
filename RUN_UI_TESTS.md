@@ -33,3 +33,13 @@ HOST=http://localhost:3000 npm run testUI
 ```
 
 
+## Reporting
+To create a report please add the following variable before running the tests
+```
+export REPORT="-f json:test/report/report.json"
+```
+To build the html report please run:
+
+```
+node report.js
+```
