@@ -4,6 +4,8 @@ This document is created to show how to run the UI Tests on the opening tree app
 ## Necessary dependencies:
 There are some depencies needed to run this
  *  `geckodriver`(https://github.com/mozilla/geckodriver/releases) 
+ *  `FireFox`(https://www.mozilla.org/en-US/firefox/new/)
+
 
 Please make sure the `geckodriver` is on your path
 ```
@@ -15,9 +17,18 @@ geckodriver 0.29.0 (cf6956a5ec8e 2021-01-14 10:31 +0200)
 ```
 
 ## Build the application.  
+
 ```
 yarn
 ```
+
+## Deploy the application
+
+Do this prior to setting the "HOST" environment variable below.  Otherwise `yarn start` will clash.
+```
+yarn start
+```
+
 
 ## Set necessary environment variables
 
@@ -41,5 +52,5 @@ export REPORT="-f json:test/report/report.json"
 To build the html report please run:
 
 ```
-node report.js
+npx multiReport
 ```
