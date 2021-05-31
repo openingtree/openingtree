@@ -110,4 +110,4 @@ Feature: Opening Tree Entry
       | Racing kings     | royalmaniac | White | lichess  | 20       |
       | Standard rules   | EricRosen   | White | lichess  | 30       |
       | Standard rules   | IMRosen     | Black | chesscom | 5        |
-      | Crazyhouse       | blitzbullet | White | lichess  | 10       |
+      | Crazyhouse       | JannLee     | White | lichess  | 1       |
