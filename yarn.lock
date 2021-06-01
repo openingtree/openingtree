@@ -4009,6 +4009,11 @@ chess.js@^0.11.0:
   resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-0.11.0.tgz#e1802179b944eab5daf11b5d4bce08cdcadbeffa"
   integrity sha512-yTpi6XbRMkBtnjSvbt6wEp9Y7JzhJl1MC3GNn67q5ClyccXxCRf5cMPSUg4OblrUapg1kLHm7WzxxEVp20NK1Q==
 
+chess.js@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/chess.js/-/chess.js-0.12.0.tgz#ffca1773b93a4aa044891de81286e264ca229b00"
+  integrity sha512-eF1xf4j88r/AwIRxqV1FXZbVgMt4yUx05xrL+ZMqUrY+snFrUxGVHs0VgEd3AvngujDE9th7XZqqCwEKEQ7mWQ==
+
 chessground@^7.6.12:
   version "7.7.2"
   resolved "https://registry.yarnpkg.com/chessground/-/chessground-7.7.2.tgz#bded8da6fb582ed256e882dde3b09bdcec4709f1"
