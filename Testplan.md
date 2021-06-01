@@ -7,7 +7,7 @@
  * Copy fen to make sure it copies to clipboard
  * Flip board
  * Computer analysis should go to lichess with starting position
- * More dropdown in heaer should work and all links working
+ * More dropdown in header should work and all links working
 
 ## Navigator
  * Make moves on the chessboard
