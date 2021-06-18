@@ -426,13 +426,15 @@ body.dark-theme .MuiTableCell-footer,
 body.dark-theme legend.MuiFormLabel-root,
 body.dark-theme .pgnloadersection,
 body.dark-theme .modal-content,
+:not(body.dark-theme .modal-content .rdrDateRangePickerWrapper),
 body.dark-theme .dropdown-menu,
 body.dark-theme .MuiCheckbox-colorPrimary.Mui-checked,
 body.dark-theme .MuiSlider-thumb,
 body.dark-theme .MuiSlider-markLabel,
 body.dark-theme .performanceRatingRow,
 body.dark-theme .list-group-item, 
-body.dark-theme .card-body {
+body.dark-theme .card-body
+{
     color: #DDD;
 }
 

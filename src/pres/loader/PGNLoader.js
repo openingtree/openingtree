@@ -10,6 +10,7 @@ import Variants from './Variants'
 import request from 'request'
 import * as SitePolicy from '../../app/SitePolicy'
 import cookieManager from '../../app/CookieManager'
+import { addDays } from 'date-fns';
 
 export default class PGNLoader extends React.Component {
 
@@ -46,6 +47,9 @@ export default class PGNLoader extends React.Component {
         this.state[Constants.FILTER_NAME_RATED] = "all"
         this.state[Constants.FILTER_NAME_ELO_RANGE] = [0, Constants.MAX_ELO_RATING]
         this.state[Constants.FILTER_NAME_OPPONENT] = ''
+        this.state[Constants.FILTER_NAME_FROM_DATE] = new Date()
+        this.state[Constants.FILTER_NAME_TO_DATE] = addDays(new Date, 7)
+        
     }
 
 

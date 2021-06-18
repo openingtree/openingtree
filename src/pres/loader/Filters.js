@@ -69,8 +69,10 @@ export default class Filters extends React.Component {
     handleOpponentNameChange(event) {
         this.setState({[Constants.FILTER_NAME_OPPONENT]: event.target.value})
     }
-    handleFromDate(date) {
-        this.setState({[Constants.FILTER_NAME_FROM_DATE]: date})
+    handleFromDate(dates) {
+        console.log(dates)
+        this.setState({[Constants.FILTER_NAME_FROM_DATE]: dates.selection.startDate,
+                        [Constants.FILTER_NAME_TO_DATE]: dates.selection.endDate})
     }
     handleToDate(date) {
         this.setState({[Constants.FILTER_NAME_TO_DATE]: date})

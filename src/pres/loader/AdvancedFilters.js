@@ -2,7 +2,7 @@ import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import React from 'react'
-import {Collapse, Container, Row, Col, Badge} from 'reactstrap'
+import {Collapse, Container, Row, Col, Badge, Modal, ModalHeader} from 'reactstrap'
 import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../../app/Constants'
 import {getTimeControlLabel, getELORangeLabel, getRatedLabel, 
@@ -10,9 +10,47 @@ import {getTimeControlLabel, getELORangeLabel, getRatedLabel,
 import * as Common from '../../app/Common'
 import { trackEvent } from '../../app/Analytics'
 import { TextField } from '@material-ui/core'
-import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css";
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main css file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
+import {
+    addDays,
+    endOfDay,
+    startOfMonth,
+    endOfMonth,
+    addMonths,
+    startOfWeek,
+    endOfWeek,
+    isSameDay
+    
+  } from 'date-fns'; 
+  
+const defineds = {
+    startOfWeek: startOfWeek(new Date()),
+    startOfLastWeek: startOfWeek(addDays(new Date(), -7)),
+    endOfLastWeek: endOfWeek(addDays(new Date(), -7)),
+    endOfToday: endOfDay(new Date()),
+    startOfMonth: startOfMonth(new Date()),
+    startOfLastMonth: startOfMonth(addMonths(new Date(), -1)),
+    endOfLastMonth: endOfMonth(addMonths(new Date(), -1)),
+};
+
+const staticRangeHandler = {
+    range: {},
+    isSelected(range) {
+      const definedRange = this.range();
+      return (
+        isSameDay(range.startDate, definedRange.startDate) &&
+        isSameDay(range.endDate, definedRange.endDate)
+      );
+    },
+  };
+  
+  export function createStaticRanges(ranges) {
+    return ranges.map(range => ({ ...staticRangeHandler, ...range }));
+  }
+  
 export default class AdvancedFilters extends React.Component {
     constructor(props) {
         super(props)
@@ -59,14 +97,10 @@ export default class AdvancedFilters extends React.Component {
             )}
             {this.subSectionComponent('From Date', getFromDateLabel(this.props.advancedFilters[Constants.FILTER_NAME_FROM_DATE]), 
                 this.setCurrentlyOpenAdvancedFilter('fromDate').bind(this),
-                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'fromDate'}>
+                <Modal isOpen={this.state.currentlyOpenAdvancedFilter === 'fromDate'} toggle={()=>this.setState({currentlyOpenAdvancedFilter:""})}>
+                  <ModalHeader toggle={()=>this.setState({currentlyOpenAdvancedFilter:""})}>Date selection</ModalHeader>
                     {this.getFromDateFilter()}
-                </Collapse>, true)}
-            {this.subSectionComponent('To Date', getToDateLabel(this.props.advancedFilters[Constants.FILTER_NAME_TO_DATE]), 
-            this.setCurrentlyOpenAdvancedFilter('toDate').bind(this),
-            <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'toDate'}>
-                {this.getToDateFilter()}
-            </Collapse>, true)}
+                  </Modal>,true)}
 
             {this.subSectionComponent('Opponent rating range', getELORangeLabel(this.props.advancedFilters[Constants.FILTER_NAME_ELO_RANGE]), 
                 this.setCurrentlyOpenAdvancedFilter('eloRange').bind(this),
@@ -99,12 +133,86 @@ export default class AdvancedFilters extends React.Component {
         />
     }
     getFromDateFilter() {
-        return <DatePicker placeholderText = "mm/dd/yyyy" selected={this.props.advancedFilters[Constants.FILTER_NAME_FROM_DATE]}
-                            onChange={this.props.handleFromDate}/>
+        return <DateRangePicker
+        onChange={this.props.handleFromDate}
+        showSelectionPreview={true}
+        moveRangeOnFirstSelection={false}
+        months={1}
+        ranges={[{
+            startDate: this.props.advancedFilters[Constants.FILTER_NAME_FROM_DATE],
+            endDate: this.props.advancedFilters[Constants.FILTER_NAME_TO_DATE],
+            key: 'selection'
+          }]}
+        minDate= {new Date(2007,1,1)}
+        maxDate={new Date()}
+        direction="horizontal"
+        
+        staticRanges={createStaticRanges([
+              {
+                label: 'All Time',
+                range: () => ({
+                  startDate: defineds.startOfWeek,
+                  endDate: defineds.endOfToday,
+                }),
+              },
+              {
+              label: 'This Week',
+              range: () => ({
+                startDate: defineds.startOfWeek,
+                endDate: defineds.endOfToday,
+              }),
+            },
+            {
+              label: 'Last Week',
+              range: () => ({
+                startDate: defineds.startOfLastWeek,
+                endDate: defineds.endOfLastWeek,
+              }),
+            },
+            {
+              label: 'This Month',
+              range: () => ({
+                startDate: defineds.startOfMonth,
+                endDate: defineds.endOfToday,
+              }),
+            },
+            {
+              label: 'Last Month',
+              range: () => ({
+                startDate: defineds.startOfLastMonth,
+                endDate: defineds.endOfLastMonth,
+              }),
+            },
+            {
+                label: 'Past 3 Months',
+                range: () => ({
+                  startDate: defineds.startOfLastMonth,
+                  endDate: defineds.endOfLastMonth,
+                }),
+            },
+            {
+                label: 'This Year',
+                range: () => ({
+                  startDate: defineds.startOfLastMonth,
+                  endDate: defineds.endOfLastMonth,
+                }),
+            },
+            {
+                label: 'Last Year',
+                range: () => ({
+                  startDate: defineds.startOfLastMonth,
+                  endDate: defineds.endOfLastMonth,
+                }),
+            },
+          ])}
+      />
+//        return <DatePicker placeholderText = "mm/dd/yyyy" selected={this.props.advancedFilters[Constants.FILTER_NAME_FROM_DATE]}
+//                            onChange={this.props.handleFromDate}/>
     }
     getToDateFilter() {
-        return <DatePicker placeholderText = "mm/dd/yyyy" selected={this.props.advancedFilters[Constants.FILTER_NAME_TO_DATE]}
-                            onChange={this.props.handleToDate}/>
+        return <DateRangePicker/>
+//        return <DatePicker placeholderText = "mm/dd/yyyy" selected={this.props.advancedFilters[Constants.FILTER_NAME_TO_DATE]}
+//                            onChange={this.props.handleToDate}/>
     }
 
     getEloRangeFilters() {
