@@ -107,7 +107,7 @@ Feature: Opening Tree Entry
     Then item "numGames" > <minGames>
     Examples:
       | gameType         | playerName  | color | source   | minGames |
-      | Racing kings     | royalmaniac | White | lichess  | 20       |
-      | Standard rules   | EricRosen   | White | lichess  | 30       |
-      | Standard rules   | IMRosen     | Black | chesscom | 5        |
-      | Crazyhouse       | JannLee     | White | lichess  | 1       |
+      | Racing kings     | royalmaniac | White | lichess  | 1        |
+      | Standard rules   | EricRosen   | White | lichess  | 1        |
+      | Standard rules   | IMRosen     | Black | chesscom | 1        |
+      | Crazyhouse       | JannLee     | White | lichess  | 1        |
