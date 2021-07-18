@@ -23,7 +23,7 @@ export default class User extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            playerName:'',
+            playerName:this.props.playerName,
             tournamentUrl:'',
             files:[],
             selectedPlayer:{},

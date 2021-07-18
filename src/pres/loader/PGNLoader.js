@@ -15,37 +15,33 @@ export default class PGNLoader extends React.Component {
 
     constructor(props) {
         super(props)
-        let selectedSite = new URLSearchParams(window.location.search).get("source")
 
+        const urlSettings = this.props.urlSettings
         this.state = {
-            playerName: '',
-            site: selectedSite?selectedSite:'',
-            playerColor: this.props.settings.playerColor,
-            isAdvancedFiltersOpen: false,
+            playerName: urlSettings.playerName,
+            site: urlSettings.site,
+            playerColor: urlSettings.color || this.props.settings.playerColor,
+            isAdvancedFiltersOpen: urlSettings.isAdvancedFiltersOpen,
             isGamesSubsectionOpen: false,
-            expandedPanel: selectedSite?'user':'source',
+            expandedPanel: this.getInitiallyExpandedPanel(urlSettings.site, urlSettings.playerName),
             notablePlayers:null,
             notableEvents:null,
             files:[],
             selectedNotableEvent:{},
             selectedNotablePlayer:{},
             lichessLoginState: Constants.LICHESS_NOT_LOGGED_IN,
-            lichessLoginName: null
+            lichessLoginName: null,
+            ...urlSettings.timeControls
         }
-        if(selectedSite === Constants.SITE_LICHESS) {
+        if(urlSettings.site === Constants.SITE_LICHESS) {
             this.fetchLichessLoginStatus()
         }
         this.state[Constants.FILTER_NAME_DOWNLOAD_LIMIT] = Constants.MAX_DOWNLOAD_LIMIT
-        this.state[Constants.TIME_CONTROL_ULTRA_BULLET] = true
-        this.state[Constants.TIME_CONTROL_BULLET] = true
-        this.state[Constants.TIME_CONTROL_BLITZ] = true
-        this.state[Constants.TIME_CONTROL_RAPID] = true
-        this.state[Constants.TIME_CONTROL_CLASSICAL] = true
-        this.state[Constants.TIME_CONTROL_CORRESPONDENCE] = true
-        this.state[Constants.TIME_CONTROL_DAILY] = true
-        this.state[Constants.FILTER_NAME_RATED] = "all"
+        this.state[Constants.FILTER_NAME_RATED] = urlSettings.ratedMode
         this.state[Constants.FILTER_NAME_ELO_RANGE] = [0, Constants.MAX_ELO_RATING]
         this.state[Constants.FILTER_NAME_OPPONENT] = ''
+        this.state[Constants.FILTER_NAME_FROM_DATE] = urlSettings.fromDate
+        this.state[Constants.FILTER_NAME_TO_DATE] = urlSettings.toDate
     }
 
 
@@ -208,6 +204,15 @@ export default class PGNLoader extends React.Component {
         this.props.variantChange(newVariant)
         trackEvent(Constants.EVENT_CATEGORY_PGN_LOADER, "VariantChange", newVariant)
     }
+    getInitiallyExpandedPanel(selectedSite, playerName) {
+        if (!selectedSite) {
+            return 'source'
+        } else if (!playerName) {
+            return 'user'
+        } else {
+            return 'filters'
+        }
+    }
 
     render() {
         return <div><div className="pgnloadersection">
@@ -229,6 +234,7 @@ export default class PGNLoader extends React.Component {
             />
             <Filters expandedPanel={this.state.expandedPanel} playerColor={this.state.playerColor}
                 handleExpansionChange={this.handleExpansionChange('filters').bind(this)}
+                isAdvancedFiltersOpen={this.state.isAdvancedFiltersOpen}
                 site={this.state.site} playerName={this.state.playerName} advancedFilters={this.advancedFilters()}
                 filtersChange={this.filtersChange.bind(this)}
                 selectedNotablePlayer={this.state.selectedNotablePlayer} />

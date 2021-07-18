@@ -27,6 +27,7 @@ import cookieManager from '../app/CookieManager'
 import { handleDarkMode } from '../pres/DarkMode';
 import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
 import {initializeAnalytics} from '../app/Analytics'
+import { parseDate } from '../app/util'
 
 import Navigator from './Navigator'
 import GlobalHeader from './GlobalHeader'
@@ -38,16 +39,15 @@ export default class MainContainer extends React.Component {
   constructor(props){
     super(props)
 
-    let urlVariant = new URLSearchParams(window.location.search).get("variant")
-    let selectedVariant = urlVariant || Constants.VARIANT_STANDARD
-    this.chess = chessLogic(selectedVariant)
+    const urlSettings = this.getSettingsFromUrlParams()
+    this.chess = chessLogic(urlSettings.variant)
     addStateManagement(this)
     this.state = {
         resize:0,
         fen: this.chess.fen(),
         lastMove: null,
         gamesProcessed:0,
-        openingGraph:new OpeningGraph(selectedVariant),
+        openingGraph:new OpeningGraph(urlSettings.variant),
         settings:{
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,
@@ -55,11 +55,12 @@ export default class MainContainer extends React.Component {
           movesSettings:this.getMovesSettingsFromCookie(),
           darkMode: this.getDarkModeSettingFromCookie()
         },
+        urlSettings,
         message:'',
         downloadingGames:false,
         feedbackOpen:false,
         diagnosticsDataOpen:false,
-        variant:selectedVariant,
+        variant:urlSettings.variant,
         update:0,//increase count to force update the component
         highlightedMove:null
       }
@@ -107,6 +108,74 @@ export default class MainContainer extends React.Component {
     return darkModeCookie === 'true';
   }
 
+  getSettingsFromUrlParams() {
+    const params = new URLSearchParams(window.location.search)
+
+    // Step 0: Variant
+    const variant = params.get("variant") || Constants.VARIANT_STANDARD
+
+    // Step 1: Source
+    const site = params.get("source") || ''
+
+    // Step 2: Player details
+    const playerName = params.get("playerName") || ''
+
+    // Step 3: Color and filters
+    const isAdvancedFiltersOpen = params.get("advanced") === 'true'
+    // 'white' | 'black'
+    const color = params.get("color") || ''
+    // 'all' | 'rated' | 'casual' (corresponds to Filters.toggleRated)
+    const ratedMode = params.get("ratedMode") || "all"
+    // See parseTimeControls. Defaults to all time controls.
+    const timeControls = this.parseTimeControls(params.get("timeControls"))
+    // YYYY-MM-DD
+    const fromDate = params.get("fromDate") ? parseDate(params.get("fromDate")) : null
+    // YYYY-MM-DD
+    const toDate = params.get("toDate") ? parseDate(params.get("toDate")) : null
+
+    return {
+      // Steps 0-2
+      variant,
+      site,
+      playerName,
+
+      // Step 3
+      isAdvancedFiltersOpen,
+      color,
+      ratedMode,
+      timeControls,
+      fromDate,
+      toDate,
+    }
+  }
+
+  parseTimeControls(selectedChoices) {
+    const allChoices = [
+        Constants.TIME_CONTROL_ULTRA_BULLET,
+        Constants.TIME_CONTROL_BULLET,
+        Constants.TIME_CONTROL_BLITZ,
+        Constants.TIME_CONTROL_RAPID,
+        Constants.TIME_CONTROL_CLASSICAL,
+        Constants.TIME_CONTROL_CORRESPONDENCE,
+        Constants.TIME_CONTROL_DAILY
+    ]
+
+    if (!selectedChoices) {
+      const result = {}
+      for (const choice of allChoices) {
+          result[choice] = true
+      }
+      return result
+    } else {
+      selectedChoices = selectedChoices.split(',')
+      const result = {}
+      for (const choice of allChoices) {
+          result[choice] = selectedChoices.includes(choice)
+      }
+      return result
+    }
+  }
+
   render() {
     let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
     let snackBarOpen = Boolean(this.state.message)
@@ -151,6 +220,7 @@ export default class MainContainer extends React.Component {
               updateProcessedGames={this.updateProcessedGames.bind(this)}
               settingsChange={this.settingsChange.bind(this)}
               settings={this.state.settings}
+              urlSettings={this.state.urlSettings}
               reset={this.reset.bind(this)}
               clear={this.clear.bind(this)}
               playerMoves={playerMoves}
