@@ -27,6 +27,7 @@ import cookieManager from '../app/CookieManager'
 import { handleDarkMode } from '../pres/DarkMode';
 import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
 import {initializeAnalytics} from '../app/Analytics'
+import OpeningManager from '../app/OpeningManager'
 
 import Navigator from './Navigator'
 import GlobalHeader from './GlobalHeader'
@@ -43,33 +44,34 @@ export default class MainContainer extends React.Component {
     this.chess = chessLogic(selectedVariant)
     addStateManagement(this)
     this.state = {
-        resize:0,
-        fen: this.chess.fen(),
-        lastMove: null,
-        gamesProcessed:0,
-        openingGraph:new OpeningGraph(selectedVariant),
-        settings:{
-          playerName:'',
-          orientation:Constants.PLAYER_COLOR_WHITE,
-          playerColor:'',
-          movesSettings:this.getMovesSettingsFromCookie(),
-          darkMode: this.getDarkModeSettingFromCookie()
-        },
-        message:'',
-        downloadingGames:false,
-        feedbackOpen:false,
-        diagnosticsDataOpen:false,
-        variant:selectedVariant,
-        update:0,//increase count to force update the component
-        highlightedMove:null
-      }
+      resize:0,
+      fen: this.chess.fen(),
+      lastMove: null,
+      gamesProcessed:0,
+      openingGraph:new OpeningGraph(selectedVariant),
+      settings:{
+        playerName:'',
+        orientation:Constants.PLAYER_COLOR_WHITE,
+        playerColor:'',
+        movesSettings:this.getMovesSettingsFromCookie(),
+        darkMode: this.getDarkModeSettingFromCookie()
+      },
+      message:'',
+      downloadingGames:false,
+      feedbackOpen:false,
+      diagnosticsDataOpen:false,
+      variant:selectedVariant,
+      update:0,//increase count to force update the component
+      highlightedMove:null,
+      openingManager: new OpeningManager(selectedVariant)
+    }
     this.chessboardWidth = this.getChessboardWidth()
 
     this.forBrushes = ['blue','paleGrey', 'paleGreen', 'green']
     this.againstBrushes = ['blue','paleRed', 'paleRed', 'red']
     window.addEventListener('resize', this.handleResize.bind(this))
     let userProfile = UserProfile.getUserProfile()
-    initializeAnalytics(userProfile.userTypeDesc, this.state.settings.darkMode?"dark":"light", 
+    initializeAnalytics(userProfile.userTypeDesc, this.state.settings.darkMode?"dark":"light",
       this.state.settings.movesSettings.openingBookType)
 
   }
@@ -84,17 +86,17 @@ export default class MainContainer extends React.Component {
     if (!movesSettings || !movesSettings.openingBookType) {
       // default settings
       movesSettings = {
-          openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
-          openingBookRating:Constants.ALL_BOOK_RATINGS,
-          openingBookTimeControls: [
-            Constants.TIME_CONTROL_BULLET,
-            Constants.TIME_CONTROL_BLITZ,
-            Constants.TIME_CONTROL_RAPID,
-            Constants.TIME_CONTROL_CLASSICAL
-          ],
-          openingBookScoreIndicator:false,
-          openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
-        }
+        openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
+        openingBookRating:Constants.ALL_BOOK_RATINGS,
+        openingBookTimeControls: [
+          Constants.TIME_CONTROL_BULLET,
+          Constants.TIME_CONTROL_BLITZ,
+          Constants.TIME_CONTROL_RAPID,
+          Constants.TIME_CONTROL_CLASSICAL
+        ],
+        openingBookScoreIndicator:false,
+        openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
+      }
     }
     return movesSettings;
   }
@@ -116,15 +118,16 @@ export default class MainContainer extends React.Component {
     this.mergePlayerAndBookMoves(playerMoves, bookMoves)
 
     return <div className="rootView">
-      <GlobalHeader settings={this.state.settings} 
-                    settingsChange={this.settingsChange.bind(this)}
+      <GlobalHeader settings={this.state.settings}
+        settingsChange={this.settingsChange.bind(this)}
                     toggleFeedback = {this.toggleFeedback(false)}/>
       <Container className="mainContainer">
         <Row>
           <Col lg={{order:0, size:2}} xs={{order:2}}>
             <Navigator fen = {this.state.fen} move={this.state.lastMove}
               onChange ={this.navigateTo.bind(this)}
-              variant = {this.state.variant} />
+              variant = {this.state.variant}
+              openingManager={this.state.openingManager} />
           </Col>
           <Col lg="6">
             <Chessground key={this.state.resize}
@@ -168,6 +171,7 @@ export default class MainContainer extends React.Component {
               variantChange={this.variantChange.bind(this)}
               forceFetchBookMoves={this.forceFetchBookMoves.bind(this)}
               highlightArrow={this.highlightArrow.bind(this)}
+              openingManager={this.state.openingManager}
             />
           </Col>
         </Row>
@@ -212,8 +216,8 @@ export default class MainContainer extends React.Component {
           />
           <Collapse isOpen={this.state.diagnosticsDataOpen}>
             <TextField id="diagnosticsText" label="Click to copy." variant="outlined"
-            className="fullWidth" value={this.getDiagnosticsValue()}
-            rowsMax={4} onClick={this.copyDiagnostics} multiline />
+              className="fullWidth" value={this.getDiagnosticsValue()}
+              rowsMax={4} onClick={this.copyDiagnostics} multiline />
           </Collapse>
         </ModalBody>
         <ModalFooter>
@@ -224,10 +228,10 @@ export default class MainContainer extends React.Component {
   }
 
   componentDidMount() {
-      handleDarkMode(this.state.settings.darkMode);
-      
-      // hack to fix https://github.com/openingtree/openingtree/issues/243
-      // refreshing the chessboard after its initial render seems to fix this issue
-      setImmediate(this.handleResize.bind(this))
+    handleDarkMode(this.state.settings.darkMode);
+
+    // hack to fix https://github.com/openingtree/openingtree/issues/243
+    // refreshing the chessboard after its initial render seems to fix this issue
+    setImmediate(this.handleResize.bind(this))
   }
 }

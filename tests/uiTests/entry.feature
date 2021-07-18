@@ -77,6 +77,13 @@ Feature: Opening Tree Entry
     And click it
     And switch tab 0
 
+  @opening-theory
+  Scenario Outline: Click Opening theory
+    When get tab 5
+    And click it
+    And get element from text "Opening theory"
+    And click it
+
   @loadGameTypes
   Scenario Outline: Load at least <minGames> games for variant <gameType>
     When get tab 1
