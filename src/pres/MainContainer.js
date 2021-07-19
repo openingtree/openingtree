@@ -44,26 +44,26 @@ export default class MainContainer extends React.Component {
     this.chess = chessLogic(selectedVariant)
     addStateManagement(this)
     this.state = {
-      resize:0,
-      fen: this.chess.fen(),
-      lastMove: null,
-      gamesProcessed:0,
-      openingGraph:new OpeningGraph(selectedVariant),
-      settings:{
-        playerName:'',
-        orientation:Constants.PLAYER_COLOR_WHITE,
-        playerColor:'',
-        movesSettings:this.getMovesSettingsFromCookie(),
-        darkMode: this.getDarkModeSettingFromCookie()
-      },
-      message:'',
-      downloadingGames:false,
-      feedbackOpen:false,
-      diagnosticsDataOpen:false,
-      variant:selectedVariant,
-      update:0,//increase count to force update the component
-      highlightedMove:null,
-      openingManager: new OpeningManager(selectedVariant)
+        resize:0,
+        fen: this.chess.fen(),
+        lastMove: null,
+        gamesProcessed:0,
+        openingGraph:new OpeningGraph(selectedVariant),
+        settings:{
+          playerName:'',
+          orientation:Constants.PLAYER_COLOR_WHITE,
+          playerColor:'',
+          movesSettings:this.getMovesSettingsFromCookie(),
+          darkMode: this.getDarkModeSettingFromCookie()
+        },
+        message:'',
+        downloadingGames:false,
+        feedbackOpen:false,
+        diagnosticsDataOpen:false,
+        variant:selectedVariant,
+        update:0,//increase count to force update the component
+        highlightedMove:null,
+        openingManager: new OpeningManager(selectedVariant)
     }
     this.chessboardWidth = this.getChessboardWidth()
 
