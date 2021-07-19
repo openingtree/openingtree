@@ -44,13 +44,13 @@ export default class Navigator extends React.Component {
 
     shouldComponentUpdate(newProps) {
         //console.log(newProps)
-        if (newProps.variant !== this.props.variant) {
+        if(newProps.variant !== this.props.variant) {
             this.props.openingManager = new OpeningManager(newProps.variant)
             return true
 
         }
-        if (newProps.fen !== this.props.openingManager.fen()) {
-            if (newProps.move === null) {
+        if(newProps.fen !== this.props.openingManager.fen()) {
+            if(newProps.move === null) {
                 // called when "clear" or "starting position" actions are hit
                 this.props.openingManager = new OpeningManager(newProps.variant)
                 return true
@@ -79,7 +79,7 @@ export default class Navigator extends React.Component {
 
     moveTo(index) {
         return () => {
-            let newState = this.props.openingManager.moveTo(index + 1)
+            let newState = this.props.openingManager.moveTo(index+1)
             this.props.onChange(newState.fen, newState.move)
             this.setState({currentMove:this.props.openingManager.currentMove()})
             trackEvent(Constants.EVENT_CATEGORY_NAVIGATOR, "move", null, index)
@@ -92,7 +92,7 @@ export default class Navigator extends React.Component {
             this.opening = opening.name
             this.openingCode = opening.code
         }
-        if (!this.props.openingManager.pgnListSoFar()) {
+        if(!this.props.openingManager.pgnListSoFar()) {
             return <div></div>
         }
         return <Container id="navigator">
@@ -106,7 +106,7 @@ export default class Navigator extends React.Component {
                 <Col lg="6" className="navSection">
                     <Button color="" onClick = {this.next.bind(this)}>
                         <span>next</span>&nbsp;
-                        <FontAwesomeIcon icon={faStepForward} />
+                        <FontAwesomeIcon icon={faStepForward} /> 
                     </Button>
                 </Col>
             </Row>
