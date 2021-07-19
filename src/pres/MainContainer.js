@@ -71,7 +71,7 @@ export default class MainContainer extends React.Component {
     this.againstBrushes = ['blue','paleRed', 'paleRed', 'red']
     window.addEventListener('resize', this.handleResize.bind(this))
     let userProfile = UserProfile.getUserProfile()
-    initializeAnalytics(userProfile.userTypeDesc, this.state.settings.darkMode?"dark":"light",
+    initializeAnalytics(userProfile.userTypeDesc, this.state.settings.darkMode?"dark":"light", 
       this.state.settings.movesSettings.openingBookType)
 
   }
