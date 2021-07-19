@@ -1,10 +1,61 @@
 import React from 'react';
 import { Button, Col, Container, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDesktop, faFastBackward, faMoon, faLightbulb, faRetweet, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import { faDesktop, faFastBackward, faMoon, faLightbulb, faRetweet, faTrashAlt, faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import useSWR from 'swr';
 
 import { trackEvent } from '../app/Analytics';
 import * as Constants from '../app/Constants';
+
+function OpeningTheory({openingManager}) {
+    const lastMoveNumber = Math.ceil(openingManager.currentIndex / 2)
+
+    const {data: url} = useSWR(openingManager.currentIndex > 0 ? `Chess Opening Theory/${openingManager.pgnListSoFar().slice(0, lastMoveNumber).map(({whitePly, blackPly, moveNumber}) => {
+        const whitePart = `${moveNumber}. ${whitePly}`
+
+        if (!blackPly || (moveNumber === lastMoveNumber && openingManager.currentIndex % 2 !== 0)) {
+            return whitePart
+        }
+
+        const blackPart = `${moveNumber}...${blackPly}`
+
+        return `${whitePart}/${blackPart}`
+    }).join("/")}` : "Chess Opening Theory", async title => {
+        const {
+            data: {
+                query: {
+                    pages
+                }
+            }
+        } = await axios("https://en.wikibooks.org/w/api.php", {
+            params: {
+                action: "query",
+                prop: "info",
+                inprop: "url",
+                format: "json",
+                titles: title,
+                origin: "*",
+            }
+        })
+
+        return !pages[-1] && `https://en.wikibooks.org/wiki/${title.replace(/ /g, "_")}`
+    })
+
+    return <Col xs="4">
+        <Button className="settingButton" onClick={() => {
+            window.open(url, '_blank');
+            trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "OpenTheory")
+        }} color="" disabled={!url}>
+            <h3>
+                <FontAwesomeIcon icon={faBookOpen} />
+            </h3>
+            <span>
+                Opening theory
+            </span>
+        </Button>
+    </Col>
+}
 
 export default class SettingsView extends React.Component {
     constructor(props){
@@ -106,6 +157,7 @@ export default class SettingsView extends React.Component {
                             </span>
                         </Button>
                     </Col>
+                    <OpeningTheory openingManager={this.props.openingManager} />
                     <Col xs="4">
                         <Button className="settingButton" onClick={this.toggle(Constants.SETTING_NAME_DARK_MODE)} color="">
                             <h3>
