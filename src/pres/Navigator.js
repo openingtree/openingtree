@@ -112,7 +112,7 @@ export default class Navigator extends React.Component {
             </Row>
             <Row className="greyText">{this.openingCode}: {this.opening}</Row>
             {
-                this.props.openingManager.pgnListSoFar().map((move, index) =>
+                this.props.openingManager.pgnListSoFar().map((move, index)=>
                     <Row key={`${move.moveNumber}`} className="navCol">
                         <Col sm="2" className = "navItem navMoveNumber">
                             {`${move.moveNumber}.`}
