@@ -64,7 +64,7 @@ export default class MainContainer extends React.Component {
         update:0,//increase count to force update the component
         highlightedMove:null,
         openingManager: new OpeningManager(selectedVariant)
-    }
+      }
     this.chessboardWidth = this.getChessboardWidth()
 
     this.forBrushes = ['blue','paleGrey', 'paleGreen', 'green']
@@ -86,17 +86,17 @@ export default class MainContainer extends React.Component {
     if (!movesSettings || !movesSettings.openingBookType) {
       // default settings
       movesSettings = {
-        openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
-        openingBookRating:Constants.ALL_BOOK_RATINGS,
-        openingBookTimeControls: [
-          Constants.TIME_CONTROL_BULLET,
-          Constants.TIME_CONTROL_BLITZ,
-          Constants.TIME_CONTROL_RAPID,
-          Constants.TIME_CONTROL_CLASSICAL
-        ],
-        openingBookScoreIndicator:false,
-        openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
-      }
+          openingBookType:Constants.OPENING_BOOK_TYPE_LICHESS,
+          openingBookRating:Constants.ALL_BOOK_RATINGS,
+          openingBookTimeControls: [
+            Constants.TIME_CONTROL_BULLET,
+            Constants.TIME_CONTROL_BLITZ,
+            Constants.TIME_CONTROL_RAPID,
+            Constants.TIME_CONTROL_CLASSICAL
+          ],
+          openingBookScoreIndicator:false,
+          openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER
+        }
     }
     return movesSettings;
   }
@@ -118,8 +118,8 @@ export default class MainContainer extends React.Component {
     this.mergePlayerAndBookMoves(playerMoves, bookMoves)
 
     return <div className="rootView">
-      <GlobalHeader settings={this.state.settings}
-        settingsChange={this.settingsChange.bind(this)}
+      <GlobalHeader settings={this.state.settings} 
+                    settingsChange={this.settingsChange.bind(this)}
                     toggleFeedback = {this.toggleFeedback(false)}/>
       <Container className="mainContainer">
         <Row>
@@ -216,8 +216,8 @@ export default class MainContainer extends React.Component {
           />
           <Collapse isOpen={this.state.diagnosticsDataOpen}>
             <TextField id="diagnosticsText" label="Click to copy." variant="outlined"
-              className="fullWidth" value={this.getDiagnosticsValue()}
-              rowsMax={4} onClick={this.copyDiagnostics} multiline />
+            className="fullWidth" value={this.getDiagnosticsValue()}
+            rowsMax={4} onClick={this.copyDiagnostics} multiline />
           </Collapse>
         </ModalBody>
         <ModalFooter>
@@ -228,10 +228,10 @@ export default class MainContainer extends React.Component {
   }
 
   componentDidMount() {
-    handleDarkMode(this.state.settings.darkMode);
-
-    // hack to fix https://github.com/openingtree/openingtree/issues/243
-    // refreshing the chessboard after its initial render seems to fix this issue
-    setImmediate(this.handleResize.bind(this))
+      handleDarkMode(this.state.settings.darkMode);
+      
+      // hack to fix https://github.com/openingtree/openingtree/issues/243
+      // refreshing the chessboard after its initial render seems to fix this issue
+      setImmediate(this.handleResize.bind(this))
   }
 }
