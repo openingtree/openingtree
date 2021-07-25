@@ -17,6 +17,7 @@ import {
 
 import {
     Backup,
+    Bookmark,
     DateRange,
     ExpandMore,
     People,
@@ -49,6 +50,8 @@ export default class Source extends React.Component {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<Save className="lowOpacity"/><span className="sourceName"> Load <b>.tree</b> file</span></span>
         } else if (source === Constants.SITE_ONLINE_TOURNAMENTS) {
             return <span>{addNumber?getNumberIcon('done', addNumber):null}<FontAwesomeIcon icon={faChessRook} className="lowOpacity" /><span className="sourceName"> Lichess tournaments</span></span>
+        } else if (source === Constants.SITE_BROWSER_SAVED_OPENING_TREE) {
+            return <span>{addNumber?getNumberIcon('done', addNumber):null}<Bookmark className="lowOpacity" /><span className="sourceName">Restore saved session</span></span>
         }
         return <span>{getNumberIcon(1, addNumber)}Select a source</span>
     }
@@ -86,6 +89,7 @@ export default class Source extends React.Component {
                 {this.getSourceRadio(Constants.SITE_CHESS_DOT_COM)}
                 {this.getSourceRadio(Constants.SITE_ONLINE_TOURNAMENTS)}
                 {this.getSourceRadio(Constants.SITE_OPENING_TREE_FILE)}
+                {this.getSourceRadio(Constants.SITE_BROWSER_SAVED_OPENING_TREE)}
                 {this.props.variant === Constants.VARIANT_STANDARD?<Divider className="dividerMargin"/>:null}
                 {this.getSourceRadio(Constants.SITE_PLAYER_DB)}
                 {this.getSourceRadio(Constants.SITE_EVENT_DB)}

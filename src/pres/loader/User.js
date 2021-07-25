@@ -18,6 +18,7 @@ import LockOpen from '@material-ui/icons/Lock'
 import ExitToApp from '@material-ui/icons/ExitToApp'
 import {Spinner} from 'reactstrap'
 import { trackEvent } from '../../app/Analytics'
+import * as BrowserStorage from '../../app/BrowserStorage'
 
 export default class User extends React.Component {
     constructor(props) {
@@ -156,6 +157,10 @@ export default class User extends React.Component {
                     tournamentType:tournamentType
                 
                 }
+            }
+        } else if (this.props.site === Constants.SITE_BROWSER_SAVED_OPENING_TREE) {
+            if (!BrowserStorage.loadOpeningTree()) {
+                return false
             }
         }
         return true
@@ -405,6 +410,36 @@ export default class User extends React.Component {
         </div>
     }
 
+    getSavedSession() {
+        const savedSession = BrowserStorage.loadOpeningTree()
+        const { header } = savedSession || {}
+
+        return <div>
+            <Card>
+                <CardBody className="singlePadding">
+                <CardTitle className="smallBottomMargin"><FontAwesomeIcon icon={faInfoCircle} className="lowOpacity"/> How it works</CardTitle>
+                <CardText className="smallText">
+                    If you plan to revisit the same player, you can save your session to the browser by loading a tree and then clicking <i>"Save session to browser"</i>.
+                </CardText>
+                </CardBody>
+                </Card><br/>
+            <div>
+                {!savedSession ?
+                    <div>
+                        You do not have a saved session on OpeningTree. Please select another source.
+                    </div>
+                    : <div>
+                        You have a previously saved session with details:
+                        <p>Player Name: {header.settings.playerName}</p>
+                        <p>Player Color: {header.settings.playerColor}</p>
+                        <p>Site: {header.site}</p>
+                        <p>Timestamp: {(new Date(header.timestamp * 1000)).toLocaleString()}</p>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
     getInputsToShow() {
         if(this.props.site === Constants.SITE_PGN_FILE) {
             return this.getPgnFileSelection()
@@ -420,6 +455,8 @@ export default class User extends React.Component {
             return this.getOpeningTreeSelection()
         } else if(this.props.site === Constants.SITE_ONLINE_TOURNAMENTS) {
             return this.getOnlineTournamentSelection()
+        } else if (this.props.site === Constants.SITE_BROWSER_SAVED_OPENING_TREE) {
+            return this.getSavedSession()
         }
         return <div/>
     }

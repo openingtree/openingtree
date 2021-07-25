@@ -110,6 +110,11 @@ export default class PGNLoader extends React.Component {
         return true
     }
 
+    saveSessionInBrowser(openingTreeSave) {
+        // same logic
+        this.importOpeningTreeObject(openingTreeSave)
+    }
+
     playerDetailsChange(playerName, files, selectedNotableEvent, selectedNotablePlayer, selectedOnlineTournament) {
         this.setState({
             playerName: playerName,
@@ -241,6 +246,7 @@ export default class PGNLoader extends React.Component {
                 selectedNotablePlayer={this.state.selectedNotablePlayer} selectedNotableEvent={this.state.selectedNotableEvent}
                 exportOpeningTreeObject={this.exportOpeningTreeObject.bind(this)} showInfo={this.props.showInfo}
                 importOpeningTreeObject={this.importOpeningTreeObject.bind(this)} selectedOnlineTournament={this.state.selectedOnlineTournament}
+                saveSessionInBrowser={this.saveSessionInBrowser.bind(this)}
                 variant={this.props.variant}/>
         </div>
     }

@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button as MaterialUIButton } from '@material-ui/core'
 import PGNReader from '../../app/PGNReaderWorker'
 import { faList} from '@fortawesome/free-solid-svg-icons'
+import Bookmark from '@material-ui/icons/Bookmark'
 import GetApp from '@material-ui/icons/GetApp'
 import Equalizer from '@material-ui/icons/Equalizer'
 import Fade from '@material-ui/core/Fade'
@@ -16,13 +17,15 @@ import {serializeOpeningTree, deserializeOpeningTree} from '../../app/OpeningTre
 import {proxy} from 'comlink'
 import streamsaver from 'streamsaver'
 import cookieManager from '../../app/CookieManager'
+import * as BrowserStorage from '../../app/BrowserStorage'
 
 export default class Actions extends React.Component {
     constructor(props) {
         super(props) 
         this.state = {
             isGamesSubsectionOpen : false,
-            exportingInProgress : false
+            exportingInProgress : false,
+            saveSessionInProgress : false
         }
         streamsaver.mitm = "download/download-mitm.html"
         this.encoder = new TextEncoder()
@@ -45,6 +48,16 @@ export default class Actions extends React.Component {
         trackEvent(Constants.EVENT_CATEGORY_MAIN_ACTION, "LoadTree", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
         setImmediate(this.importOpeningTree.bind(this))
     }
+    loadSessionClicked() {
+        this.setState({exportingInProgress:true})
+        trackEvent(Constants.EVENT_CATEGORY_MAIN_ACTION, "LoadTreeSession", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
+        const data = BrowserStorage.loadOpeningTree()
+        let success = this.props.importOpeningTreeObject(data)
+        if(success) {
+            this.props.showInfo("Successfuly loaded openingtree")
+        }
+        this.setState({exportingInProgress:false})
+    }
     importOpeningTree() {
         deserializeOpeningTree(this.props.files[0], 
             (err,data, subMesage)=> {
@@ -64,6 +77,18 @@ export default class Actions extends React.Component {
         this.setState({exportingInProgress:true})
         trackEvent(Constants.EVENT_CATEGORY_MAIN_ACTION, "SaveTree", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
         setImmediate(this.exportOpeningTree.bind(this))
+    }
+    saveSessionClicked() {
+        this.setState({exportingInProgress:true})
+        trackEvent(Constants.EVENT_CATEGORY_MAIN_ACTION, "SaveTreeSession", this.props.site, this.props.playerColor === Constants.PLAYER_COLOR_WHITE ? 1 : 0)
+        setImmediate(this.exportOpeningTree.bind(this))
+    }
+    saveSession() {
+        this.setState({exportingInProgress:true})
+        const openingTreeObject = this.props.exportOpeningTreeObject()
+        BrowserStorage.saveOpeningTree(openingTreeObject)
+        this.setState({exportingInProgress:false})
+        this.props.showInfo("Successfully saved openingtree data to browser")
     }
     exportOpeningTree() {
         serializeOpeningTree(this.props.exportOpeningTreeObject(), 
@@ -181,6 +206,19 @@ export default class Actions extends React.Component {
                 {this.state.exportingInProgress?"Loading from file":"Load openingtree"}
         </MaterialUIButton></div>
     }
+    savedSessionLoadActions() {
+        return <div className="pgnloadersection">
+            <MaterialUIButton
+            onClick={this.loadSessionClicked.bind(this)}
+            variant="contained"
+            color="primary"
+            startIcon={this.state.exportingInProgress?<HourglassEmptyIcon/>:<GetApp/>}
+            className="mainButton" disableElevation
+            disabled={this.state.exportingInProgress}
+            >
+                {this.state.exportingInProgress?"Loading session from browser":"Load session from browser"}
+        </MaterialUIButton></div>
+    }
     regularActions() {
         let downloadDisabledReason = SitePolicy.treeSaveDisabledReason(
                                         this.state.loadedSite, 
@@ -220,6 +258,19 @@ export default class Actions extends React.Component {
                 </MaterialUIButton></span></Tooltip></div>
             }
         {
+            <div className="pgnloadersection"><Tooltip placement="top" title={downloadDisabledReason||"Save your session in the browser for faster reload later"}>
+                <span><MaterialUIButton
+                    onClick={this.saveSession.bind(this)}
+                    variant="contained"
+                    color="default"
+                    startIcon={this.state.exportingInProgress?<HourglassEmptyIcon/>:<Bookmark/>}
+                    className="mainButton" disableElevation
+                    disabled={!!downloadDisabledReason || this.state.exportingInProgress}
+                >
+                    {this.state.exportingInProgress?"Saving session to browser":"Save session to browser"}
+                </MaterialUIButton></span></Tooltip></div>
+        }
+        {
             this.state.isGamesSubsectionOpen ?
                 <div>
                     <div className="pgnloadersection">
@@ -236,6 +287,8 @@ export default class Actions extends React.Component {
     mainComponent() {
         if(this.props.site === Constants.SITE_OPENING_TREE_FILE) {
             return this.openingTreeLoadActions()
+        } else if (this.props.site === Constants.SITE_BROWSER_SAVED_OPENING_TREE) {
+            return this.savedSessionLoadActions()
         }
         return this.regularActions()
     }

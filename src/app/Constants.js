@@ -19,6 +19,7 @@ export const SITE_EVENT_DB = "eventdb"
 export const SITE_PLAYER_DB = "playerdb"
 export const SITE_OPENING_TREE_FILE = "opntfile"
 export const SITE_ONLINE_TOURNAMENTS = "tournament"
+export const SITE_BROWSER_SAVED_OPENING_TREE = "opntbrowser"
 
 export const MAX_DOWNLOAD_LIMIT = 2000
 export const MAX_ELO_RATING = 3000
@@ -99,3 +100,4 @@ export const SETTING_NAME_DARK_MODE = 'darkMode'
 export const SETTING_NAME_MOVES_SETTINGS = 'movesSettings'
 
 export const MILLISECS_IN_DAY = 1000 * 60 * 60 * 24;
+export const SAVED_TREE_LOCALSTORAGE_KEY = "savedtree"
