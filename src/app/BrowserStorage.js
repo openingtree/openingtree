@@ -1,10 +1,14 @@
 import { SAVED_TREE_LOCALSTORAGE_KEY } from '../app/Constants'
 
 export function saveOpeningTree(openingTreeObject) {
-    window.localStorage.setItem(
-        SAVED_TREE_LOCALSTORAGE_KEY,
-        JSON.stringify(openingTreeObject)
-    )
+    try {
+        window.localStorage.setItem(
+            SAVED_TREE_LOCALSTORAGE_KEY,
+            JSON.stringify(openingTreeObject)
+        )
+    } catch (err) {
+        alert(`Error: ${err.message}`)
+    }
 }
 
 export function loadOpeningTree() {
@@ -13,6 +17,6 @@ export function loadOpeningTree() {
             window.localStorage.getItem(SAVED_TREE_LOCALSTORAGE_KEY)
         )
     } catch (err) {
-        return null
+        alert(`Error: ${err.message}`)
     }
 }
