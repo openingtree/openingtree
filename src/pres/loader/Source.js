@@ -89,7 +89,7 @@ export default class Source extends React.Component {
                 {this.getSourceRadio(Constants.SITE_CHESS_DOT_COM)}
                 {this.getSourceRadio(Constants.SITE_ONLINE_TOURNAMENTS)}
                 {this.getSourceRadio(Constants.SITE_OPENING_TREE_FILE)}
-                {this.getSourceRadio(Constants.SITE_BROWSER_SAVED_OPENING_TREE)}
+                {Constants.STORAGE_USABLE && this.getSourceRadio(Constants.SITE_BROWSER_SAVED_OPENING_TREE)}
                 {this.props.variant === Constants.VARIANT_STANDARD?<Divider className="dividerMargin"/>:null}
                 {this.getSourceRadio(Constants.SITE_PLAYER_DB)}
                 {this.getSourceRadio(Constants.SITE_EVENT_DB)}

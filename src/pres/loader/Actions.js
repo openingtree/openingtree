@@ -258,6 +258,7 @@ export default class Actions extends React.Component {
                 </MaterialUIButton></span></Tooltip></div>
             }
         {
+          Constants.STORAGE_USABLE &&
             <div className="pgnloadersection"><Tooltip placement="top" title={downloadDisabledReason||"Save your session in the browser for faster reload later"}>
                 <span><MaterialUIButton
                     onClick={this.saveSession.bind(this)}

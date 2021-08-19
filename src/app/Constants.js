@@ -101,3 +101,4 @@ export const SETTING_NAME_MOVES_SETTINGS = 'movesSettings'
 
 export const MILLISECS_IN_DAY = 1000 * 60 * 60 * 24;
 export const SAVED_TREE_LOCALSTORAGE_KEY = "savedtree"
+export const STORAGE_USABLE = typeof Storage !== 'undefined'
