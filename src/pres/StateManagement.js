@@ -7,6 +7,8 @@ import {fetchBookMoves} from '../app/OpeningBook'
 import CookieManager from '../app/CookieManager'
 import { handleDarkMode } from './DarkMode';
 
+var maxArrowsDrawn = 0
+
 function turnColor() {
     return fullTurnName(this.chess.turn())
 }
@@ -113,7 +115,8 @@ function autoShapes(moves, highlightedMove) {
             return true
         }).map(this.moveToShape.bind(this)))
     }
-    return this.fillArray(shapes,  25)
+    maxArrowsDrawn = Math.max(maxArrowsDrawn, shapes.length)
+    return this.fillArray(shapes,  maxArrowsDrawn)
 }
 
 function getPlayerMoves() {
