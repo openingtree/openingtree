@@ -247,6 +247,11 @@ export default class OpeningGraph {
             return Array.from(Object.entries(currNode.playedBy)).map((entry)=> {
                 let chess = chessLogic(this.variant, fullFen)
                 let move = chess.move(entry[0], {sloppy: true})
+                if(!move) {
+                    // certain moves are not legal because of transposition
+                    // like en passant. fail safely in those cases. issue #306
+                    return null;
+                }
                 let targetNodeDetails = this.getDetailsForFen(chess.fen())
                 return {
                     orig:move.from,
@@ -256,7 +261,7 @@ export default class OpeningGraph {
                     details:targetNodeDetails,
                     moveCount:entry[1]
                 }
-            })
+            }).filter(e=>!!e) // filter out moves that are null because of issue #306
         }        
         return null
     }

@@ -66,7 +66,8 @@ rank = [a-h]
 file = [1-8]
 check = "+"
 checkmate = "#"
-capture = [x@]
+capture = "x"
+drop = "@"
 period = "."
 result = "1-0" / "0-1" / "*" / "1/2-1/2"
 move_number = mn:integer period? (period period)? {return mn}
@@ -83,12 +84,15 @@ pawn_half_move = (r:rank c:capture)? square promotion?
 piece_half_move = piece capture? square
 piece_disambiguation_half_move = piece (rank / file) capture? square
 castle_half_move = ("O-O-O" / "O-O")
+drop_half_move = piece? drop square
+
 
 half_move = m:(continuation? 
     (castle_half_move / 
      piece_disambiguation_half_move / 
      piece_half_move / 
-     pawn_half_move) 
+     pawn_half_move /
+     drop_half_move) 
     (check / checkmate)? 
     nag_alts?) {return flatten(m).join('');}
 

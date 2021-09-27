@@ -140,7 +140,7 @@ function chunk(treeData) {
 function chunkArray(array, chunkSize, startIndex) {
     let chunkedArray=[]
     
-    for (let i=0, chunkIndex=1; i<array.length; i+=chunkSize, chunkIndex++) {
+    for (let i=0, chunkIndex=0; i<array.length; i+=chunkSize, chunkIndex++) {
         chunkedArray.push({chunk:array.slice(i,i+chunkSize), index:startIndex+chunkIndex});
     }
     return chunkedArray
