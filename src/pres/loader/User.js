@@ -237,7 +237,7 @@ export default class User extends React.Component {
             Constants.EVENT_CATEGORY_LICHESS_LOGIN, "lichessLogin")
         setTimeout(()=>{
             window.location.href = 
-                'https://oauth.lichess.org/oauth/authorize?response_type=code&client_id=EBXrB9R9OXpaRvOU&scope=preference:read&redirect_uri=https%3A%2F%2Flichesslogin.openingtree.com&state='+window.location.pathname
+                'https://oauth.lichess.org/oauth/authorize?response_type=code&client_id=EBXrB9R9OXpaRvOU&redirect_uri=https%3A%2F%2Flichesslogin.openingtree.com&state='+window.location.pathname
             }, 150)
         }
     getLichessSelection() {
