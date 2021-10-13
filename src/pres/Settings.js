@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop, faFastBackward, faMoon, faLightbulb, faRetweet, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
 
 import { trackEvent } from '../app/Analytics';
+import { lichessPerf } from '../app/Common';
 import * as Constants from '../app/Constants';
 
 export default class SettingsView extends React.Component {
@@ -48,7 +49,7 @@ export default class SettingsView extends React.Component {
     }
 
     analyse() {
-        window.open(`https://www.lichess.org/analysis/standard/${this.props.fen}`, '_blank');
+        window.open(`https://www.lichess.org/analysis/${lichessPerf(this.props.settings.variant)}/${this.props.fen}`, '_blank');
         trackEvent(Constants.EVENT_CATEGORY_CONTROLS, "AnalyzeGame")
     }
 

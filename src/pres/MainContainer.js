@@ -49,6 +49,7 @@ export default class MainContainer extends React.Component {
         gamesProcessed:0,
         openingGraph:new OpeningGraph(selectedVariant),
         settings:{
+          variant:selectedVariant,
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,
           playerColor:'',

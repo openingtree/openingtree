@@ -298,6 +298,7 @@ function getBody() {
 
 function variantChange(newVariant) {
     this.setState({variant:newVariant, openingGraph:new OpeningGraph(newVariant)})
+    this.settingsChange("variant", newVariant)
     setImmediate(this.reset.bind(this))
 }
 
