@@ -5,7 +5,7 @@ export function fetchBookMoves(fen, variant, bookSettings, callback) {
     let ratings = bookSettings.openingBookRating
     let speeds = bookSettings.openingBookTimeControls
     let bookType = bookSettings.openingBookType
-    let url = `https://explorer.lichess.ovh/${bookType}?fen=${fen}&play=&variant=${Common.lichessPerf(variant)}${joinParams('ratings',ratings)}${joinParams('speeds',speeds)}`
+    let url = `https://explorer.lichess.ovh/${bookType}?fen=${fen}&play=&variant=${Common.lichessPerf(variant)}&ratings=${joinParams(ratings)}&speeds=${joinParams(speeds)}`
     request.get(url, (error, response) =>{
         if(error) {
             callback({fetch:"failed"})
@@ -24,6 +24,6 @@ export function fetchBookMoves(fen, variant, bookSettings, callback) {
 
 }
 
-function joinParams(paramName, ratings) {
-    return ratings.map(r=>`&${paramName}[]=${r}`).join('')
+function joinParams(paramValues) {
+    return paramValues.join(',')
 }

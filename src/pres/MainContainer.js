@@ -90,7 +90,8 @@ export default class MainContainer extends React.Component {
             Constants.TIME_CONTROL_BULLET,
             Constants.TIME_CONTROL_BLITZ,
             Constants.TIME_CONTROL_RAPID,
-            Constants.TIME_CONTROL_CLASSICAL
+            Constants.TIME_CONTROL_CLASSICAL,
+            Constants.TIME_CONTROL_CORRESPONDENCE,
           ],
           openingBookScoreIndicator:false,
           openingBookWinsIndicator:UserProfile.getUserProfile().userType>USER_PROFILE_NEW_USER

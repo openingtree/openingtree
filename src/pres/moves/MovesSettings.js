@@ -175,6 +175,9 @@ export default class MovesSettings extends React.Component {
             <ToggleButton value="classical" aria-label="classical">
             Classical
             </ToggleButton>
+            <ToggleButton value="correspondence" aria-label="correspondence">
+            Correspondence
+            </ToggleButton>
         </ToggleButtonGroup></div>
     }
 
