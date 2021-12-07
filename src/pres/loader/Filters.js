@@ -57,7 +57,7 @@ export default class Filters extends React.Component {
             setImmediate(this.setFilters.bind(this))
         }
 }
-    handleTimeControlChange(event) {
+    handleRootLevelChange(event) {
         this.setState({ [event.target.name]: event.target.checked });
     }
     handleEloRangeChange(event, newValue) {
@@ -138,7 +138,7 @@ export default class Filters extends React.Component {
                             <AdvancedFilters
                                 site={this.props.site}
                                 toggleRated={this.toggleRated.bind(this)}
-                                handleTimeControlChange={this.handleTimeControlChange.bind(this)}
+                                handleRootLevelChange={this.handleRootLevelChange.bind(this)}
                                 handleEloRangeChange={this.handleEloRangeChange.bind(this)}
                                 handleOpponentNameChange={this.handleOpponentNameChange.bind(this)}
                                 handleDownloadLimitChange={this.handleDownloadLimitChange.bind(this)}

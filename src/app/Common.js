@@ -25,6 +25,18 @@ export const TIME_CONTROL_LABELS = {
     [Constants.TIME_CONTROL_DAILY]: "Daily"
 }
 
+export const OUTCOMES = [
+    Constants.OUTCOME_LOSE,
+    Constants.OUTCOME_DRAW,
+    Constants.OUTCOME_WIN
+]
+
+export const OUTCOME_LABELS = {
+    [Constants.OUTCOME_LOSE]: "Lost",
+    [Constants.OUTCOME_DRAW]: "Draw",
+    [Constants.OUTCOME_WIN]: "Won",
+}
+
 export function trimString(str) {
     return str.replace(/^\s+|\s+$/g, '')
 }
