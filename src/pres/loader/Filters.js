@@ -22,10 +22,10 @@ export default class Filters extends React.Component {
 
     constructor(props) {
         super(props)
+
         this.state = {
             playerColor: this.props.playerColor,
-            isAdvancedFiltersOpen: false
-
+            isAdvancedFiltersOpen: this.props.isAdvancedFiltersOpen
         }
         Object.assign(this.state, this.props.advancedFilters)
         this.defaultAdvancedFilters = this.props.advancedFilters

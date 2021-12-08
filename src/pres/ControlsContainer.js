@@ -157,6 +157,7 @@ export default class ControlsContainer extends React.Component {
               clear = {this.props.clear}
               gamesProcessed = {this.props.gamesProcessed}
               settings = {this.props.settings}
+              urlSettings = {this.props.urlSettings}
               onChange = {this.props.settingsChange}
               notify = {this.props.updateProcessedGames}
               showError = {this.props.showError}
