@@ -1,20 +1,47 @@
+import ChessEcoCodes from 'chess-eco-codes'
 import {simplifiedFen, isDateMoreRecentThan} from './util'
 import * as Constants from './Constants'
 import {chessLogic, rootFen} from '../app/chess/ChessLogic'
 
+class Game {
+    constructor(headers, moves) {
+        this.headers = headers
+        this.moves = moves
+        this.opening = undefined
+    }
+
+    getOpening() {
+        if (this.opening === undefined) {
+            for (var ply = 1; ply < this.moves.length; ply++) {
+                let opening = ChessEcoCodes(this.moves[ply].sourceFen)
+                if (!opening) {
+                    break
+                }
+                this.opening = opening
+            }
+        }
+        return this.opening
+    }
+}
+
 export default class OpeningGraph {
     constructor(variant) {
-        this.graph=new Graph()
+        this.graph = new Graph()
+        this.games = []
         this.hasMoves = false
         this.variant = variant
     }
+
     setEntries(arrayEntries, pgnStats){
-        this.graph=new Graph(arrayEntries, pgnStats)
+        this.graph = new Graph(arrayEntries, pgnStats)
+        // .tree files don't preserve game history
+        this.games = undefined
         this.hasMoves = true
     }
 
     clear() {
         this.graph = new Graph()
+        this.games = []
         this.hasMoves = false
     }
 
@@ -24,10 +51,11 @@ export default class OpeningGraph {
         this.graph.playerColor = playerColor
         this.hasMoves = true
         parsedMoves.forEach(parsedMove => {
-            this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.moveSan, pgnStats)
+            this.addMoveForFen(parsedMove.sourceFen, parsedMove.targetFen, parsedMove.move.san, pgnStats)
         })
         this.addGameResultOnFen(lastFen, pgnStats.index)
         this.addStatsToRoot(pgnStats, this.variant)
+        this.games.push(new Game(pgnStats.headers, parsedMoves))
     }
 
     addGameResultOnFen(fullFen, resultIndex) {

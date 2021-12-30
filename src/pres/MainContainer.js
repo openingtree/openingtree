@@ -21,8 +21,8 @@ import {
 } from '@material-ui/core'
 
 import * as Constants from '../app/Constants'
+import GameState from '../app/GameState'
 import OpeningGraph from '../app/OpeningGraph'
-import { chessLogic } from '../app/chess/ChessLogic'
 import cookieManager from '../app/CookieManager'
 import { handleDarkMode } from '../pres/DarkMode';
 import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
@@ -40,14 +40,16 @@ export default class MainContainer extends React.Component {
 
     let urlVariant = new URLSearchParams(window.location.search).get("variant")
     let selectedVariant = urlVariant || Constants.VARIANT_STANDARD
-    this.chess = chessLogic(selectedVariant)
+    this.game = new GameState(selectedVariant)
     addStateManagement(this)
     this.state = {
         resize:0,
-        fen: this.chess.fen(),
-        lastMove: null,
+        fen:this.game.getFen(),
+        ply:this.game.getPly(),
+        moves:this.game.getMoves(),
         gamesProcessed:0,
         openingGraph:new OpeningGraph(selectedVariant),
+        dataSourceKey:0,
         settings:{
           playerName:'',
           orientation:Constants.PLAYER_COLOR_WHITE,
@@ -61,8 +63,8 @@ export default class MainContainer extends React.Component {
         diagnosticsDataOpen:false,
         variant:selectedVariant,
         update:0,//increase count to force update the component
-        highlightedMove:null
-      }
+        highlightedMove:null,
+    }
     this.chessboardWidth = this.getChessboardWidth()
 
     this.forBrushes = ['blue','paleGrey', 'paleGreen', 'green']
@@ -109,7 +111,12 @@ export default class MainContainer extends React.Component {
   }
 
   render() {
-    let lastMoveArray = this.state.lastMove ? [this.state.lastMove.from, this.state.lastMove.to] : null
+    let lastMove = this.state.ply > 0
+        ? this.state.moves[this.state.ply - 1]
+        : null
+    let lastMoveArray = lastMove
+        ? [lastMove.from, lastMove.to]
+        : null
     let snackBarOpen = Boolean(this.state.message)
 
     let playerMoves = this.getPlayerMoves()
@@ -123,9 +130,13 @@ export default class MainContainer extends React.Component {
       <Container className="mainContainer">
         <Row>
           <Col lg={{order:0, size:2}} xs={{order:2}}>
-            <Navigator fen = {this.state.fen} move={this.state.lastMove}
-              onChange ={this.navigateTo.bind(this)}
-              variant = {this.state.variant} />
+            <Navigator
+              fen={this.state.fen}
+              ply={this.state.ply}
+              moves={this.state.moves}
+              opening={this.state.opening}
+              navigateToMove={this.navigateToMove.bind(this)}
+            />
           </Col>
           <Col lg="6">
             <Chessground key={this.state.resize}
@@ -158,6 +169,7 @@ export default class MainContainer extends React.Component {
               bookMoves={bookMoves}
               gameResults={this.gameResults()}
               onMove={this.onMove.bind(this)}
+              navigateToGame={this.navigateToGame.bind(this)}
               turnColor={this.turnColor()}
               showError={this.showError.bind(this)}
               showInfo={this.showInfo.bind(this)}
@@ -169,6 +181,7 @@ export default class MainContainer extends React.Component {
               variantChange={this.variantChange.bind(this)}
               forceFetchBookMoves={this.forceFetchBookMoves.bind(this)}
               highlightArrow={this.highlightArrow.bind(this)}
+              dataSourceKey={this.state.dataSourceKey}
             />
           </Col>
         </Row>
