@@ -2,6 +2,7 @@ import * as Constants from '../app/Constants'
 import {trackEvent} from '../app/Analytics'
 import {copyText} from './loader/Common'
 import {chessLogic} from '../app/chess/ChessLogic'
+import GameState from '../app/GameState'
 import OpeningGraph from '../app/OpeningGraph'
 import {fetchBookMoves} from '../app/OpeningBook'
 import CookieManager from '../app/CookieManager'
@@ -10,7 +11,7 @@ import { handleDarkMode } from './DarkMode';
 var maxArrowsDrawn = 0
 
 function turnColor() {
-    return fullTurnName(this.chess.turn())
+    return fullTurnName(this.game.getTurn())
 }
 
 function fullTurnName(shortName) {
@@ -32,9 +33,9 @@ function highlightArrow(move) {
 }
 
 function calcMovable() {
-const dests = {}
-    this.chess.SQUARES.forEach(s => {
-        const ms = this.chess.moves({square: s, verbose: true})
+    let dests = {}
+    this.game.chess.SQUARES.forEach(s => {
+        let ms = this.game.chess.moves({square: s, verbose: true})
         if (ms.length) dests[s] = ms.map(m => m.to)
     })
     return {
@@ -48,6 +49,15 @@ function orientation() {
     return this.state.settings.orientation
 }
 
+function updateGameState() {
+    this.setState({
+        fen: this.game.getFen(),
+        ply: this.game.getPly(),
+        moves: this.game.getMoves(),
+        opening: this.game.getOpening(),
+    })
+}
+
 function onMove(sanOrOrig, dest) {
     let moveObj = null
     if(dest) {
@@ -55,21 +65,25 @@ function onMove(sanOrOrig, dest) {
     } else {
         moveObj = sanOrOrig
     }
-    const chess = this.chess
-    let move = chess.move(moveObj)
-    this.setState({ fen: chess.fen(), lastMove: move})
+    this.game.makeMove(moveObj)
+    this.updateGameState()
 }
-
 
 function onMoveAction(sanOrOrig, dest) {
     this.onMove(sanOrOrig, dest)
     trackEvent(Constants.EVENT_CATEGORY_CHESSBOARD, "Move")
 }
 
-function navigateTo(fen, previousMove){
-    this.chess = chessLogic(this.state.variant, fen)
-    this.setState({fen:fen, lastMove:previousMove})
+function navigateToMove(ply) {
+    this.game.navigateToMove(ply)
+    this.updateGameState()
 }
+
+function navigateToGame(game) {
+    this.game = game
+    this.updateGameState()
+}
+
 function updateProcessedGames(downloadLimit, n, parsedGame) {
     let totalGamesProcessed = this.state.gamesProcessed+n
     this.state.openingGraph.addPGN(parsedGame.pgnStats, parsedGame.parsedMoves,
@@ -123,7 +137,7 @@ function getPlayerMoves() {
     if(!this.state.openingGraph.hasMoves) {
         return null;
     }
-    var moves = this.state.openingGraph.movesForFen(this.chess.fen())
+    var moves = this.state.openingGraph.movesForFen(this.game.getFen())
     return moves?moves.sort((a,b)=>{
         if(a.moveCount === b.moveCount) {
             return b.details.count - a.details.count
@@ -133,7 +147,7 @@ function getPlayerMoves() {
 }
 
 function gameResults() {
-    return this.state.openingGraph.gameResultsForFen(this.chess.fen())
+    return this.state.openingGraph.gameResultsForFen(this.game.getFen())
 }
 
 function fillArray(arr, len) {
@@ -144,8 +158,9 @@ function fillArray(arr, len) {
 }
 
 function reset() {
-    this.chess = chessLogic(this.state.variant)
-    this.setState({fen: this.chess.fen(), lastMove:null})
+    this.setState({dataSourceKey: this.state.dataSourceKey + 1})
+    this.game = new GameState(this.state.variant)
+    this.updateGameState()
 }
 
 function clear() {
@@ -307,7 +322,7 @@ function variantChange(newVariant) {
 //  2. store them in openinggraph
 //  3. update the component so that getBookMoves gets called again
 function getBookMoves() {
-    let moves = this.state.openingGraph.getBookNode(this.chess.fen())
+    let moves = this.state.openingGraph.getBookNode(this.game.getFen())
     if(this.state.settings.movesSettings.openingBookType === Constants.OPENING_BOOK_TYPE_OFF) {
         return {fetch:'off'}
     }
@@ -319,11 +334,13 @@ function getBookMoves() {
 }
 
 function forceFetchBookMoves() {
-    let moves = fetchBookMoves(this.state.fen, this.state.variant, this.state.settings.movesSettings, (moves)=>{
-        this.state.openingGraph.addBookNode(this.chess.fen(), moves)
+    let fen = this.state.fen
+    let moves = fetchBookMoves(
+    fen, this.state.variant, this.state.settings.movesSettings, (moves) => {
+        this.state.openingGraph.addBookNode(fen, moves)
         this.setState({update:this.state.update+1})
     })
-    this.state.openingGraph.addBookNode(this.chess.fen(), moves)
+    this.state.openingGraph.addBookNode(fen, moves)
     setImmediate(()=>this.setState({update:this.state.update+1}))
     return moves
 }
@@ -382,7 +399,9 @@ function addStateManagement(obj){
     obj.settingsChange = settingsChange
     obj.reset = reset
     obj.clear = clear
-    obj.navigateTo = navigateTo
+    obj.updateGameState = updateGameState
+    obj.navigateToMove = navigateToMove
+    obj.navigateToGame = navigateToGame
     obj.playerColor = playerColor
     obj.fillArray = fillArray
     obj.brushes = brushes

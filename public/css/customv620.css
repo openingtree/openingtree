@@ -202,6 +202,21 @@
 .fenDiv {
     padding-top:10px;
 }
+
+.searchSettingsIcon {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.searchGridDiv {
+    /* XXX: ideally we'd make this responsive based on the grid layout */
+    height: 400px;
+}
+
+.searchResultPositionCell {
+    font-size: 13px;
+}
+
 .errorCard {
     margin-top:10px;
 }
@@ -430,6 +445,9 @@ body.dark-theme .dropdown-menu,
 body.dark-theme .MuiCheckbox-colorPrimary.Mui-checked,
 body.dark-theme .MuiSlider-thumb,
 body.dark-theme .MuiSlider-markLabel,
+body.dark-theme .MuiDataGrid-root,
+body.dark-theme .searchSettingsIcon,
+body.dark-theme .searchResultLink,
 body.dark-theme .performanceRatingRow,
 body.dark-theme .list-group-item, 
 body.dark-theme .card-body {
@@ -443,6 +461,10 @@ body.dark-theme .faq-row .row-title-text {
 body.dark-theme .btn-primary,
 body.dark-theme input[type="search"] {
     color: #333;
+}
+
+body.dark-theme button:disabled span {
+    color: #777;
 }
 
 body.dark-theme .MuiButton-containedPrimary {
@@ -488,4 +510,15 @@ body.dark-theme input.select-search-box__search::placeholder{
 
 body.dark-theme span.MuiChip-label{
     color:#DDD
+}
+
+body.dark-theme .MuiDataGrid-overlay {
+    background-color: #333;
+}
+
+body.dark-theme .MuiDataGrid-columnHeader:focus,
+body.dark-theme .MuiDataGrid-cell:focus,
+body.dark-theme .MuiDataGrid-columnHeader:focus-within,
+body.dark-theme .MuiDataGrid-cell:focus-within {
+    outline: none;
 }

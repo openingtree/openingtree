@@ -95,7 +95,7 @@ export default class PGNReader {
                 parsedMoves.push({
                     sourceFen:sourceFen,
                     targetFen:targetFen,
-                    moveSan:move.san
+                    move:move,
                 })
             })
             if(pgnParseFailed) {
@@ -124,10 +124,6 @@ export default class PGNReader {
         } else if(site === Constants.SITE_LICHESS || site === Constants.SITE_ONLINE_TOURNAMENTS) {
             url = pgn.headers.Site
         }
-        let headers=null
-        if(!url) {
-            headers = pgn.headers
-        }
         return {
             result:pgn.result,
             white:pgn.headers.White,
@@ -136,7 +132,7 @@ export default class PGNReader {
             blackElo:pgn.headers.BlackElo,
             url:url,
             date:pgn.headers.Date,
-            headers:headers,
+            headers:pgn.headers,
             numberOfPlys:pgn.moves.length
         }
     }
