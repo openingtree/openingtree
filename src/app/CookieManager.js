@@ -5,6 +5,10 @@ class CookieManager {
         return Cookies.get('at')
     }
 
+    setLichessAccessToken(value) {
+        Cookies.set('at', value, {expires: 365})
+    }
+
     deleteLichessAccessToken() {
         Cookies.remove('at', { path: '/', domain:'www.openingtree.com' })
     }
