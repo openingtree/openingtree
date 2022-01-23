@@ -82,7 +82,7 @@ export default class MainContainer extends React.Component {
     let clientUrl = (() => {
       const url = new URL(window.location.href);
       url.search = '';
-      return url.href;
+      return `${url.href}?source=lichess`;
     })();
     this.oauth = new OAuth2AuthCodePKCE({
       authorizationUrl: `${Constants.LICHESS_HOST}/oauth`,
@@ -103,7 +103,7 @@ export default class MainContainer extends React.Component {
     }).then( (accessToken)=> {
       cookieManager.setLichessAccessToken(accessToken.token.value)
       console.log("access token", accessToken)
-      window.location.replace(`${clientUrl}?source=lichess`)      
+      window.location.replace(clientUrl)      
     }).catch((error) => {
       console.log("error", error)
     })
