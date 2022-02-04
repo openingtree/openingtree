@@ -88,19 +88,21 @@ export default class MainContainer extends React.Component {
       authorizationUrl: `${Constants.LICHESS_HOST}/oauth`,
       tokenUrl: `${Constants.LICHESS_HOST}/api/token`,
       clientId: Constants.LICHESS_CLIENT_ID,
-      scopes: ['email:read'],
+      scopes: [],
       redirectUrl: clientUrl,
       onAccessTokenExpiry: refreshAccessToken => refreshAccessToken(),
       onInvalidGrant: _retry => {},
     })
 
     this.oauth.isReturningFromAuthServer().then( (hasAuthCode) => {
-      console.log("Returned from lichess", this.oauth.getAccessToken())
       if (hasAuthCode) {
         return this.oauth.getAccessToken()
       }
       return ""
     }).then( (accessToken)=> {
+      if(!accessToken) {
+        return
+      }
       cookieManager.setLichessAccessToken(accessToken.token.value)
       console.log("access token", accessToken)
       window.location.replace(clientUrl)      
