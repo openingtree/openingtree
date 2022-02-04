@@ -1,6 +1,8 @@
 import React from 'react'
 import Chessground from 'react-chessground'
 import 'react-chessground/dist/styles/chessground.css'
+import { AccessContext, HttpClient, OAuth2AuthCodePKCE } from '@bity/oauth2-auth-code-pkce';
+
 import {
   Button,
   Col,
@@ -37,7 +39,7 @@ export default class MainContainer extends React.Component {
 
   constructor(props){
     super(props)
-
+  
     let urlVariant = new URLSearchParams(window.location.search).get("variant")
     let selectedVariant = urlVariant || Constants.VARIANT_STANDARD
     this.chess = chessLogic(selectedVariant)
@@ -65,12 +67,50 @@ export default class MainContainer extends React.Component {
       }
     this.chessboardWidth = this.getChessboardWidth()
 
+    this.initializeOauth()
+
     this.forBrushes = ['blue','paleGrey', 'paleGreen', 'green']
     this.againstBrushes = ['blue','paleRed', 'paleRed', 'red']
     window.addEventListener('resize', this.handleResize.bind(this))
     let userProfile = UserProfile.getUserProfile()
     initializeAnalytics(userProfile.userTypeDesc, this.state.settings.darkMode?"dark":"light", 
       this.state.settings.movesSettings.openingBookType)
+
+  }
+
+  initializeOauth() {
+    let clientUrl = (() => {
+      const url = new URL(window.location.href);
+      url.search = '';
+      return `${url.href}?source=lichess`;
+    })();
+    this.oauth = new OAuth2AuthCodePKCE({
+      authorizationUrl: `${Constants.LICHESS_HOST}/oauth`,
+      tokenUrl: `${Constants.LICHESS_HOST}/api/token`,
+      clientId: Constants.LICHESS_CLIENT_ID,
+      scopes: [],
+      redirectUrl: clientUrl,
+      onAccessTokenExpiry: refreshAccessToken => refreshAccessToken(),
+      onInvalidGrant: _retry => {},
+    })
+
+    this.oauth.isReturningFromAuthServer().then( (hasAuthCode) => {
+      if (hasAuthCode) {
+        return this.oauth.getAccessToken()
+      }
+      return ""
+    }).then( (accessToken)=> {
+      if(!accessToken) {
+        return
+      }
+      cookieManager.setLichessAccessToken(accessToken.token.value)
+      console.log("access token", accessToken)
+      window.location.replace(clientUrl)      
+    }).catch((error) => {
+      console.log("error", error)
+    })
+      
+    
 
   }
   handleResize() {
@@ -169,6 +209,7 @@ export default class MainContainer extends React.Component {
               variantChange={this.variantChange.bind(this)}
               forceFetchBookMoves={this.forceFetchBookMoves.bind(this)}
               highlightArrow={this.highlightArrow.bind(this)}
+              oauthManager={this.oauth}
             />
           </Col>
         </Row>

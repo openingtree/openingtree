@@ -20,6 +20,7 @@ import {Spinner} from 'reactstrap'
 import { trackEvent } from '../../app/Analytics'
 
 export default class User extends React.Component {
+
     constructor(props) {
         super(props)
         this.state = {
@@ -30,8 +31,10 @@ export default class User extends React.Component {
             selectedEvent:{}
         }
         
+        
     }
-
+    
+    
     editPlayerName(event) {
         this.setState({
             playerName: event.target.value,
@@ -235,10 +238,9 @@ export default class User extends React.Component {
     launchLichessOauth() {
         trackEvent(
             Constants.EVENT_CATEGORY_LICHESS_LOGIN, "lichessLogin")
-        setTimeout(()=>{
-            window.location.href = 
-                'https://oauth.lichess.org/oauth/authorize?response_type=code&client_id=EBXrB9R9OXpaRvOU&redirect_uri=https%3A%2F%2Flichesslogin.openingtree.com&state='+window.location.pathname
-            }, 150)
+        console.log(this)
+        setTimeout(
+            this.props.oauthManager.fetchAuthorizationCode.bind(this.props.oauthManager), 150)
         }
     getLichessSelection() {
         return <div>
@@ -266,7 +268,7 @@ export default class User extends React.Component {
             </CardTitle>
     
                     <MaterialUIButton
-                onClick={this.launchLichessOauth}
+                onClick={this.launchLichessOauth.bind(this)}
                 variant="contained"
                 color="default"
                 className="mainButton" disableElevation
@@ -303,7 +305,7 @@ export default class User extends React.Component {
             Recommended for viewing your own games or when your opponent has lots of games.
         </CardText>
         <MaterialUIButton
-                onClick={this.launchLichessOauth}
+                onClick={this.launchLichessOauth.bind(this)}
                 variant="contained"
                 color="default"
                 className="mainButton" disableElevation

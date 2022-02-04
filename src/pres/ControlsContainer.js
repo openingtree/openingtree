@@ -167,6 +167,7 @@ export default class ControlsContainer extends React.Component {
               importCallback={this.props.importCallback}
               variant={this.props.variant}
               variantChange={this.props.variantChange}
+              oauthManager={this.props.oauthManager}
               />
             </TabPane>
         <TabPane tabId="moves">
