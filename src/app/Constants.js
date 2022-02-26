@@ -99,3 +99,6 @@ export const SETTING_NAME_DARK_MODE = 'darkMode'
 export const SETTING_NAME_MOVES_SETTINGS = 'movesSettings'
 
 export const MILLISECS_IN_DAY = 1000 * 60 * 60 * 24;
+
+export const LICHESS_HOST = 'https://lichess.org';
+export const LICHESS_CLIENT_ID = 'openingtree.com';

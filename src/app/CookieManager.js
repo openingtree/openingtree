@@ -5,8 +5,16 @@ class CookieManager {
         return Cookies.get('at')
     }
 
+    setLichessAccessToken(value) {
+        Cookies.set('at', value, {expires: 365})
+    }
+
     deleteLichessAccessToken() {
+        // delete cookie set by cloudflare worker
+        // This is only for older logins.
         Cookies.remove('at', { path: '/', domain:'www.openingtree.com' })
+        //delete cookie set by pkce
+        Cookies.remove('at')
     }
 
     setSettingsCookie(settings) {
