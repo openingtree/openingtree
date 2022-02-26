@@ -23,6 +23,24 @@ export function getTimeControlsArray(site,timeControlState, selected) {
     return allTimeControls.filter((timeControl)=>!!timeControlState[timeControl] === selected)
 }
 
+export function isAcceptedOutcome(outcome, acceptedOutcomes) {
+    let isWin = outcome === "1-0"
+    let isLose = outcome === "0-1"
+
+    if (isLose && acceptedOutcomes.indexOf(Constants.OUTCOME_LOSE) === -1) {
+        return false
+    } else if (isWin && acceptedOutcomes.indexOf(Constants.OUTCOME_WIN) === -1) {
+        return false
+    } else if (!isLose && !isWin && acceptedOutcomes.indexOf(Constants.OUTCOME_DRAW) === -1) {
+        return false
+    }
+    return true
+}
+
+export function getOutcomesArray(outcomeState) {
+    return Common.OUTCOMES.filter((timeControl)=>!!outcomeState[timeControl])
+}
+
 export function simplifyCount(count){
     if(count>=1000000){
         return `${(count/1000000).toFixed(1)}M`

@@ -1,4 +1,4 @@
-import {getTimeControlsArray, isOpponentEloInSelectedRange} from '../util'
+import {getOutcomesArray, getTimeControlsArray, isAcceptedOutcome, isOpponentEloInSelectedRange} from '../util'
 import * as Constants from '../Constants'
 import * as Common from '../Common'
 import BaseLichessIterator from './BaseLichessIterator'
@@ -28,6 +28,13 @@ export default class LichessIterator {
                 let opponentElo = playerColor === Constants.PLAYER_COLOR_WHITE?pgn.headers.BlackElo:pgn.headers.WhiteElo
                 if(!isOpponentEloInSelectedRange(opponentElo, advancedFilters[Constants.FILTER_NAME_ELO_RANGE])) {
                     return false
+                }
+
+                let outcomesArray = getOutcomesArray(advancedFilters)
+                if (pgn && pgn.headers.Result && outcomesArray && outcomesArray.length > 0) {
+                    if (!isAcceptedOutcome(pgn.headers.Result, outcomesArray)) {
+                        return false
+                    }
                 }
                 return true
             },
