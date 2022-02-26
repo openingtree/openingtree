@@ -219,7 +219,8 @@ export default class ControlsContainer extends React.Component {
               isOpen = {true}
               clear = {this.props.clear}
               reset = {this.props.reset}
-              onChange = {this.props.settingsChange} />
+              onChange = {this.props.settingsChange}
+              openingManager={this.props.openingManager} />
             </Col>
           </Row>
         </TabPane>
