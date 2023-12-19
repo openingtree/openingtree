@@ -15,8 +15,9 @@ export default class PGNLoader extends React.Component {
 
     constructor(props) {
         super(props)
-        let selectedSite = new URLSearchParams(window.location.search).get("source")
-        let selectedUsername = new URLSearchParams(window.location.search).get("username")
+        const queryParams = new URLSearchParams(window.location.search)
+        let selectedSite = queryParams.get("source")
+        let selectedUsername = queryParams.get("username")
 
         this.state = {
             playerName: selectedUsername ?? '',
