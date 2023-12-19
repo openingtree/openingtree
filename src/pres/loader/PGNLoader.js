@@ -16,9 +16,10 @@ export default class PGNLoader extends React.Component {
     constructor(props) {
         super(props)
         let selectedSite = new URLSearchParams(window.location.search).get("source")
+        let selectedUsername = new URLSearchParams(window.location.search).get("username")
 
         this.state = {
-            playerName: '',
+            playerName: selectedUsername ?? '',
             site: selectedSite?selectedSite:'',
             playerColor: this.props.settings.playerColor,
             isAdvancedFiltersOpen: false,
