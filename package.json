@@ -94,6 +94,8 @@
     "worker-plugin": "^4.0.3"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "NODE_OPTIONS=--openssl-legacy-provider node scripts/start.js",
     "build": "NODE_OPTIONS=--openssl-legacy-provider node scripts/build.js",
     "test": "export NODE_ENV=test; npx babel ./src --out-dir dist && cucumber-js tests/functionalTests $REPORT -t 'not @skipTests' $EXTRAS",
@@ -178,6 +180,7 @@
     "@ln-maf/core": "^1.4.3",
     "@ln-maf/validations": "^1.3.10",
     "filereader": "^0.10.3",
+    "gh-pages": "^6.1.0",
     "multiple-cucumber-html-reporter": "^1.18.0",
     "request": "^2.88.2"
   }
