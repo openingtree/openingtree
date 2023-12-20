@@ -182,6 +182,7 @@
     "filereader": "^0.10.3",
     "gh-pages": "^6.1.0",
     "multiple-cucumber-html-reporter": "^1.18.0",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "vercel": "^33.0.0"
   }
 }

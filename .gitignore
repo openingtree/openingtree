@@ -4,3 +4,4 @@ build/
 test/
 dist/
 yarn-error.log
+.vercel
