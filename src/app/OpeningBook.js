@@ -1,15 +1,28 @@
 import request from 'request'
 import * as Common from './Common'
+import CookieManager from './CookieManager'
 
 export function fetchBookMoves(fen, variant, bookSettings, callback) {
     let ratings = bookSettings.openingBookRating
     let speeds = bookSettings.openingBookTimeControls
     let bookType = bookSettings.openingBookType
+    let lichessAuthToken = CookieManager.getLichessAccessToken()
     let url = `https://explorer.lichess.ovh/${bookType}?fen=${fen}&play=&variant=${Common.lichessPerf(variant)}&ratings=${joinParams(ratings)}&speeds=${joinParams(speeds)}`
-    request.get(url, (error, response) =>{
+    const options = {
+        url: url,
+        headers: {
+            'Authorization': 'Bearer '+lichessAuthToken,
+        }
+    };
+    request.get(options, (error, response) =>{
         if(error) {
-            callback({fetch:"failed"})
+            callback({fetch:"unauthorized"})
             return 
+        }
+        const statusCode = response.statusCode; 
+        if(statusCode === 401) {
+            callback({fetch:"unauthorized"})
+            return
         }
         try{
             callback(JSON.parse(response.body))

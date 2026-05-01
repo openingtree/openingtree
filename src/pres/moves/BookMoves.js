@@ -3,8 +3,10 @@ import MovesTable from './MovesTable'
 import ResultsTable from './ResultsTable';
 import { Spinner } from 'reactstrap';
 import Cached from '@material-ui/icons/Cached'
+import LockOpen from '@material-ui/icons/Lock'
 import * as Constants from '../../app/Constants'
 import { offCard } from './MovesCommon'
+import { trackEvent } from '../../app/Analytics'
 
 export default class BookMove extends React.Component {
 
@@ -40,7 +42,16 @@ export default class BookMove extends React.Component {
                            'Try again',
                            <Cached />)
         }
-
+        if(this.props.bookMoves.fetch === "unauthorized") {
+            return offCard('Unauthorized to fetch book moves',
+                           'Please login to Lichess to access book moves.',
+                           () => { 
+                               trackEvent(Constants.EVENT_CATEGORY_LICHESS_LOGIN, "lichessLogin")
+                               setTimeout(() => this.props.oauthManager.fetchAuthorizationCode(), 150) 
+                           },
+                           'Login to Lichess',
+                           <LockOpen />)
+        }
         return <MovesTable movesToShow={this.props.bookMoves.moves} namespace='book'
                 launchGame={this.props.launchGame} settings={this.props.settings}
                 turnColor={this.props.turnColor} onMove={this.props.onMove}
