@@ -200,6 +200,7 @@ export default class ControlsContainer extends React.Component {
               forceFetchBookMoves = {this.props.forceFetchBookMoves}
               variant={this.props.variant}
               highlightArrow={this.props.highlightArrow}
+              oauthManager={this.props.oauthManager}
               />
         </TabPane>
         <TabPane tabId="report">
