@@ -33,7 +33,11 @@ export function advancedFilters(state) {
         Constants.TIME_CONTROL_CLASSICAL, Constants.FILTER_NAME_RATED,
         Constants.FILTER_NAME_DOWNLOAD_LIMIT,
         Constants.FILTER_NAME_ELO_RANGE, Constants.FILTER_NAME_OPPONENT,
-        Constants.FILTER_NAME_FROM_DATE, Constants.FILTER_NAME_TO_DATE])
+        Constants.FILTER_NAME_FROM_DATE, Constants.FILTER_NAME_TO_DATE,
+        Constants.OUTCOME_DRAW,
+        Constants.OUTCOME_LOSE,
+        Constants.OUTCOME_WIN,
+    ])
 }
 
 export function copyText(elementId) {
