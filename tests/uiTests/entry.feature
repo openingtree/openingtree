@@ -86,6 +86,7 @@ Feature: Opening Tree Entry
     And get element from text "<gameType>"
     And click it
     And select source "<source>"
+    And wait 1000 milliseconds
     And get id "playerNameTextBox"
     And set text "<playerName>" to it
     And get continue element 3
@@ -107,7 +108,7 @@ Feature: Opening Tree Entry
     Then item "numGames" > <minGames>
     Examples:
       | gameType         | playerName  | color | source   | minGames |
+      | Standard rules   | IMRosen     | Black | chesscom | 1        |
       | Racing kings     | royalmaniac | White | lichess  | 1        |
       | Standard rules   | EricRosen   | White | lichess  | 1        |
-      | Standard rules   | IMRosen     | Black | chesscom | 1        |
       | Crazyhouse       | JannLee     | White | lichess  | 1        |
