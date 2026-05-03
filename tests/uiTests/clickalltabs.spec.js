@@ -16,7 +16,7 @@ When('switch tab {int}', async function (tab) {
   await takeScreenshot.call(this)
 })
 When('open', async function () {
-  const { url } = this.results
+  const url = this.results.url && this.results.url !== 'undefined' ? this.results.url : 'http://localhost:3000'
   await driver.get(url)
   await takeScreenshot.call(this)
 })
