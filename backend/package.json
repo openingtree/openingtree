@@ -1,0 +1,47 @@
+{
+  "name": "scouttree-backend",
+  "version": "1.0.0",
+  "description": "ScoutTree opponent scouting backend API and analysis workers",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "nodemon src/server.js",
+    "worker": "node src/workers/analysisWorker.js",
+    "migrate": "node src/db/migrate.js",
+    "test": "jest --coverage"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.3.1",
+    "pg": "^8.11.3",
+    "redis": "^4.6.10",
+    "bull": "^4.11.5",
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2",
+    "stripe": "^14.7.0",
+    "axios": "^1.6.2",
+    "chess.js": "^1.0.0-beta.6",
+    "node-fetch": "^2.7.0",
+    "joi": "^17.11.0",
+    "winston": "^3.11.0",
+    "stockfish": "^16.0.0",
+    "uuid": "^9.0.1",
+    "express-rate-limit": "^7.1.5",
+    "express-validator": "^7.0.1",
+    "prom-client": "^15.1.0",
+    "@sentry/node": "^7.87.0",
+    "date-fns": "^2.30.0",
+    "p-queue": "^6.6.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "jest": "^29.7.0",
+    "supertest": "^6.3.3",
+    "eslint": "^8.55.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
