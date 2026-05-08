@@ -56,7 +56,7 @@ export default class Actions extends React.Component {
                 let success = this.props.importOpeningTreeObject(data)
                 this.setState({exportingInProgress:false})
                 if(success) {
-                    this.props.showInfo("Successfuly loaded openingtree")                
+                    this.props.showInfo("Successfuly loaded openingtree")
                 }
             })
     }
@@ -151,8 +151,8 @@ export default class Actions extends React.Component {
         }
     }
 
-    load() {
-        this.props.clear()
+    load(clear = true) {
+        if (clear) { this.props.clear() }
         this.setState({ isGamesSubsectionOpen: true, loadedSite:this.props.site })
         // set the player name and color in the global state
         this.props.onChange("playerName", this.props.playerName)
@@ -189,13 +189,22 @@ export default class Actions extends React.Component {
                                         this.props.isDownloading)
         return <div>
         <div className="pgnloadersection"><MaterialUIButton
-            onClick={this.load.bind(this)}
+            onClick={this.load.bind(this, true)}
             variant="contained"
             color="primary"
             startIcon={<Equalizer />}
             className="mainButton" disableElevation
         >
             Analyze games
+        </MaterialUIButton></div>
+        <div className="pgnloadersection"><MaterialUIButton
+            onClick={this.load.bind(this, false)}
+            variant="contained"
+            color="primary"
+            startIcon={<Equalizer />}
+            className="mainButton" disableElevation
+        >
+            Add to current analysis
         </MaterialUIButton></div>
         <div className="pgnloadersection"><MaterialUIButton
             onClick={this.download.bind(this)}
