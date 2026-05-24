@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Col, Container, Row } from 'reactstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDesktop, faFastBackward, faMoon, faLightbulb, faRetweet, faTrashAlt } from '@fortawesome/free-solid-svg-icons';
+import OpeningTheory from './OpeningTheory';
 
 import { trackEvent } from '../app/Analytics';
 import * as Constants from '../app/Constants';
@@ -106,6 +107,7 @@ export default class SettingsView extends React.Component {
                             </span>
                         </Button>
                     </Col>
+                    <OpeningTheory openingManager={this.props.openingManager} />
                     <Col xs="4">
                         <Button className="settingButton" onClick={this.toggle(Constants.SETTING_NAME_DARK_MODE)} color="">
                             <h3>

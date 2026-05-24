@@ -29,6 +29,7 @@ import cookieManager from '../app/CookieManager'
 import { handleDarkMode } from '../pres/DarkMode';
 import UserProfile, { USER_PROFILE_NEW_USER } from '../app/UserProfile'
 import {initializeAnalytics} from '../app/Analytics'
+import OpeningManager from '../app/OpeningManager'
 
 import Navigator from './Navigator'
 import GlobalHeader from './GlobalHeader'
@@ -63,7 +64,8 @@ export default class MainContainer extends React.Component {
         diagnosticsDataOpen:false,
         variant:selectedVariant,
         update:0,//increase count to force update the component
-        highlightedMove:null
+        highlightedMove:null,
+        openingManager: new OpeningManager(selectedVariant)
       }
     this.chessboardWidth = this.getChessboardWidth()
 
@@ -165,7 +167,8 @@ export default class MainContainer extends React.Component {
           <Col lg={{order:0, size:2}} xs={{order:2}}>
             <Navigator fen = {this.state.fen} move={this.state.lastMove}
               onChange ={this.navigateTo.bind(this)}
-              variant = {this.state.variant} />
+              variant = {this.state.variant}
+              openingManager={this.state.openingManager} />
           </Col>
           <Col lg="6">
             <Chessground key={this.state.resize}
@@ -209,6 +212,7 @@ export default class MainContainer extends React.Component {
               variantChange={this.variantChange.bind(this)}
               forceFetchBookMoves={this.forceFetchBookMoves.bind(this)}
               highlightArrow={this.highlightArrow.bind(this)}
+              openingManager={this.state.openingManager}
               oauthManager={this.oauth}
             />
           </Col>
