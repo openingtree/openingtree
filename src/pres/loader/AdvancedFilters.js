@@ -6,7 +6,7 @@ import {Collapse, Container, Row, Col, Badge} from 'reactstrap'
 import { FormControlLabel,Slider } from '@material-ui/core';
 import * as Constants from '../../app/Constants'
 import {getTimeControlLabel, getELORangeLabel, getRatedLabel, 
-    getDownloadLimitLabel, opponentNameLabel, getFromDateLabel, getToDateLabel} from './FilterLabels'
+    getDownloadLimitLabel, opponentNameLabel, getFromDateLabel, getToDateLabel, getOutcomesLabel } from './FilterLabels'
 import * as Common from '../../app/Common'
 import { trackEvent } from '../../app/Analytics'
 import { TextField } from '@material-ui/core'
@@ -78,6 +78,11 @@ export default class AdvancedFilters extends React.Component {
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'opponent'}>
                     {this.getOpponentNameFilter()}
                 </Collapse>, true)}
+            {this.subSectionComponent('Game outcome', getOutcomesLabel(this.props.advancedFilters),
+                this.setCurrentlyOpenAdvancedFilter(Constants.FILTER_OUTCOME).bind(this),
+                <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === Constants.FILTER_OUTCOME}>
+                    {this.getOutcomeFilters()}
+                </Collapse>)}
             {this.subSectionComponent('Download limit', getDownloadLimitLabel(this.props.advancedFilters[Constants.FILTER_NAME_DOWNLOAD_LIMIT]), 
                 this.setCurrentlyOpenAdvancedFilter('downloadLimit').bind(this),
                 <Collapse isOpen={this.state.currentlyOpenAdvancedFilter === 'downloadLimit'}>
@@ -124,6 +129,19 @@ export default class AdvancedFilters extends React.Component {
             label={"Opponent Name"} variant="outlined" value={this.props.advancedFilters[Constants.FILTER_NAME_OPPONENT]}/>
     }
 
+    getOutcomeFilters() {
+        let row = [Constants.OUTCOME_DRAW,
+            Constants.OUTCOME_LOSE, Constants.OUTCOME_WIN]
+        let colWidth = '3'
+        return <FormControl>
+            <FormGroup>
+                <Container>
+                    {this.getFilterRow(row, colWidth, 'first', Common.OUTCOME_LABELS)}
+                </Container>
+            </FormGroup>
+        </FormControl>
+    }
+
     getTimeControlFilters(site){
         let firstRow = null, middleRow = null, lastRow = null
         let colWidth = null
@@ -144,15 +162,15 @@ export default class AdvancedFilters extends React.Component {
             colWidth = '6'
         }
         return <FormControl><FormGroup><Container>
-            {this.getTimeControlFilterRow(firstRow,colWidth,'first')}
-            {middleRow?this.getTimeControlFilterRow(middleRow,colWidth,'middle'):null}
-            {this.getTimeControlFilterRow(lastRow,colWidth,'last')}
+            {this.getFilterRow(firstRow,colWidth,'first', Common.TIME_CONTROL_LABELS)}
+            {middleRow?this.getFilterRow(middleRow,colWidth,'middle', Common.TIME_CONTROL_LABELS):null}
+            {this.getFilterRow(lastRow,colWidth,'last', Common.TIME_CONTROL_LABELS)}
           </Container>
         </FormGroup></FormControl>
       
     }
 
-    getTimeControlFilterRow(controls,firstColumnWidth, position){
+    getFilterRow(controls,firstColumnWidth, position, labels){
         let clsName = 'topBottomNegativeMargin'
         if(position === "first") {
             clsName = 'bottomNegativeMargin'
@@ -165,8 +183,8 @@ export default class AdvancedFilters extends React.Component {
                 
             <FormControlLabel className = "nomargin"
                 control={<Checkbox checked={this.props.advancedFilters[control]} color="primary" 
-                onChange={this.props.handleTimeControlChange} name={control} />}
-                label={Common.TIME_CONTROL_LABELS[control]}
+                onChange={this.props.handleRootLevelChange} name={control} />}
+                label={labels[control]}
           /></Col>)}</Row>
     }
 

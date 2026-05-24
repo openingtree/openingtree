@@ -1,5 +1,7 @@
 import {timeControlLabel} from './TimeControlLabels'
+import { getOutcomesArray } from '../../app/util'
 import * as Constants from '../../app/Constants'
+import { OUTCOMES, OUTCOME_LABELS } from '../../app/Common'
 
 export const getTimeControlLabel = timeControlLabel
 
@@ -30,6 +32,19 @@ export function opponentNameLabel(value) {
 }
 export function getDownloadLimitLabel(downloadLimit) {
     return downloadLimit>= Constants.MAX_DOWNLOAD_LIMIT?"No limit":`${downloadLimit} games`
+}
+
+function getOutcomeLabel(outcome) {
+    return OUTCOME_LABELS[outcome.toLowerCase()]
+}
+
+export function getOutcomesLabel(outcomeState) {
+    let outcomes = getOutcomesArray(outcomeState)
+    if (outcomes.length === OUTCOMES.length) {
+        return 'All'
+    } else {
+        return outcomes.map(x => getOutcomeLabel(x)).join(" and ")
+    }
 }
 
 export function getFromDateLabel(date) {

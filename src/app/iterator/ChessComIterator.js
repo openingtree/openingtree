@@ -3,11 +3,20 @@ import { parse }  from '../PGNParser'
 import request from 'request'
 import * as Constants from '../Constants'
 import * as Common from '../Common'
-import {isOpponentEloInSelectedRange} from '../util'
+import {getOutcomesArray, isAcceptedOutcome, isOpponentEloInSelectedRange} from '../util'
 import {trackEvent} from '../Analytics'
 import {normalizePGN} from './IteratorUtils'
 
 export default class ChessComIterator {
+
+    applyOutcomeFilter(advancedFilters, game) {
+        let outcomesArray = getOutcomesArray(advancedFilters)
+        if(game.result && outcomesArray && outcomesArray.length > 0) {
+            if (!isAcceptedOutcome(game.result, outcomesArray))
+                return false
+        }
+        return true
+    }
 
     constructor(variant, playerName, playerColor, advancedFilters, ready, showError) {
         let chessAPI = new ChessWebAPI({
@@ -75,7 +84,7 @@ export default class ChessComIterator {
                             trackEvent(Constants.EVENT_CATEGORY_ERROR, "parseFailedChessCom", `${playerName}:${playerColor}`)
                             return null
                         }
-                    }).filter(game=> game !== null), pendingRequests>0)
+                    }).filter(game=> game !== null && this.applyOutcomeFilter(advancedFilters, game)), pendingRequests>0)
             if(!continueProcessing) {
                 //cancel all pending requests
                 while(chessAPI.dequeue()){}
