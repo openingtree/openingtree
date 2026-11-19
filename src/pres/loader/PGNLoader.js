@@ -94,8 +94,13 @@ export default class PGNLoader extends React.Component {
                 "You can try loading it by visiting the old website", Constants.ERROR_ACTION_VISIT_OLD_SITE)
             return false
         }
+        let advancedFilters = openingTreeSave.header.advancedFilters
+        let fromDate = advancedFilters[Constants.FILTER_NAME_FROM_DATE]
+        let toDate = advancedFilters[Constants.FILTER_NAME_TO_DATE]
         this.setState({
-            ...openingTreeSave.header.advancedFilters,
+            ...advancedFilters,
+            [Constants.FILTER_NAME_FROM_DATE]: fromDate?new Date(fromDate):fromDate,
+            [Constants.FILTER_NAME_TO_DATE]: toDate?new Date(toDate):toDate,
             playerColor:openingTreeSave.header.settings.playerColor,
             site:openingTreeSave.header.site,
             playerName:openingTreeSave.header.settings.playerName,
