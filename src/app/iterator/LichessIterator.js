@@ -61,7 +61,7 @@ export default class LichessIterator {
             let total  = parseInt(base) + 40 * parseInt(inc)
             if (total<30) {
                 return Constants.TIME_CONTROL_ULTRA_BULLET
-            } else if (total<120){
+            } else if (total<180){
                 return Constants.TIME_CONTROL_BULLET
             } else if (total<480){
                 return Constants.TIME_CONTROL_BLITZ
